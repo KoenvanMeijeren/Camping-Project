@@ -5,6 +5,7 @@ namespace System
 {
     class DatabaseConnector
     {
+        private static SqlConnection connection;
         public static void Connect()
         {
             try 
@@ -15,26 +16,30 @@ namespace System
                 builder.Password = "Klimaatverandering1";     
                 builder.InitialCatalog = "TestDB";
 
-                using SqlConnection connection = new SqlConnection(builder.ConnectionString);
-                Console.WriteLine("\nQuery data example:");
-                Console.WriteLine("=========================================\n");
-
-                String sql = "SELECT name, quantity FROM Inventory";
-
-                using SqlCommand command = new SqlCommand(sql, connection);
+                connection = new SqlConnection(builder.ConnectionString);
                 connection.Open();
-                
-                using SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    Console.WriteLine("{0} {1}", reader.GetString(0), reader.GetInt32(1));
-                }
             }
             catch (SqlException e)
             {
                 Console.WriteLine(e.ToString());
             }
-            Console.ReadLine();
+        }
+
+        public static SqlConnection GetConnection()
+        {
+            return connection;
+        }
+
+        public static void Close()
+        {
+            try
+            {
+                connection.Close();
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
     }
 }
