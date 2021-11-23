@@ -3,30 +3,37 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Collections.Specialized;
 
-namespace System
+namespace SystemCore
 {
     public static class ConfigReader
     {
-        public static void Reader()
+        private static Dictionary<string, string> ConfigData;
+
+        private static void Initalize()
         {
-            Dictionary<string, string> configData = new Dictionary<string, string>();
-
-            // Read all the keys from the config file
-            NameValueCollection sAll;
-            sAll = ConfigurationManager.AppSettings;
-
-            foreach (string s in sAll.AllKeys)
+            // Initalize once, then return initalized value.
+            if (ConfigData == null || ConfigData.Count == 0)
             {
-                configData.Add(s, sAll.Get(s));
-                //Console.WriteLine("Key: " + s + " Value: " + sAll.Get(s));
-            }
 
-            Console.WriteLine("Dictionary");
-            foreach (KeyValuePair<string, string> entry in configData)
-            {
-                Console.WriteLine("Key: " + entry.Key + " Value: " + entry.Value);
+                ConfigData = new Dictionary<string, string>();
+
+                // Read all the keys from the config file
+                NameValueCollection appSettings = ConfigurationManager.AppSettings;
+
+                foreach (string setting in appSettings.AllKeys)
+                {
+                    ConfigData.Add(setting, appSettings.Get(setting));
+                }
             }
-            Console.ReadLine();
+        }
+
+
+        public static string GetSetting(string setting)
+        {
+            Initalize();
+
+            string value; 
+            return ConfigData.TryGetValue(setting, out value).ToString();
         }
     }
 }

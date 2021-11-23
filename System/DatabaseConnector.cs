@@ -1,23 +1,24 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 
-namespace System
+namespace SystemCore
 {
-    class DatabaseConnector
+    public class DatabaseConnector
     {
         private static SqlConnection connection;
+
         public static void Connect()
         {
             try 
             { 
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-                builder.DataSource = "127.0.0.1";
-                builder.UserID = "SA";            
-                builder.Password = "Klimaatverandering1";     
-                builder.InitialCatalog = "TestDB";
+                builder.DataSource = ConfigReader.GetSetting("UserID");
+                builder.UserID = ConfigReader.GetSetting("Password");            
+                builder.Password = ConfigReader.GetSetting("NameDB");     
+                builder.InitialCatalog = ConfigReader.GetSetting("ApplicationName");
 
                 connection = new SqlConnection(builder.ConnectionString);
-                connection.Open();
             }
             catch (SqlException e)
             {
@@ -32,13 +33,17 @@ namespace System
 
         public static void Close()
         {
-            try
+            if(connection.State == ConnectionState.Open)
             {
                 connection.Close();
             }
-            catch (SqlException e)
+        }
+
+        public static void Open()
+        {
+            if(connection.State == ConnectionState.Closed)
             {
-                Console.WriteLine(e.ToString());
+                connection.Open();
             }
         }
     }

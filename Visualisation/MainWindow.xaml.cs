@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SystemCore;
 
 namespace Visualisation
 {
@@ -22,7 +23,10 @@ namespace Visualisation
     {
         public MainWindow()
         {
+            var result = Query.Select("SELECT * FROM Inventory");
             InitializeComponent();
         }
+
+
     }
 }
