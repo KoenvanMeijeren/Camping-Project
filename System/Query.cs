@@ -13,36 +13,27 @@ namespace SystemCore
 {
     public static class Query
     {
-        public static IEnumerable<Dictionary<string, string>> Select(string query)
+        public static IEnumerable<Dictionary<string, string>> Select(SqlCommand sqlCommand)
         {
             List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
             
             DatabaseConnector.Open();
-            using (DatabaseConnector.GetConnection())
+            sqlCommand.Connection = DatabaseConnector.GetConnection();
+            
+            using SqlDataReader reader = sqlCommand.ExecuteReader();
+            while (reader.Read())
             {
-                using (SqlCommand command = new SqlCommand(query, DatabaseConnector.GetConnection()))
-                {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            list.Add(Query.DataRecordToDictionary(reader));
-                        }
-                    }
-                }
+                list.Add(Query.DataRecordToDictionary(reader));
             }
+
             DatabaseConnector.Close();
             
             return list;
         }
-
+        
         public static void Update() { }
 
         public static void Delete() { }
-
-        private static void Execute()
-        {
-        }
 
         private static Dictionary<string, string> DataRecordToDictionary(IDataRecord dataRecord)
         {

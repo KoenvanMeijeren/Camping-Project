@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace SystemCore
 {
-    public class DatabaseConnector
+    public static class DatabaseConnector
     {
         private static SqlConnection _connection;
 
