@@ -20,18 +20,18 @@ namespace Visualisation
     /// </summary>
     public partial class MainWindow : Window
     {
-        CampingPitchesOverviewPage plattegrondFrame { get; set; }
+        public CampingPitchesOverviewPage CampingPitchesOverviewFrame { get; set; }
         public MainWindow()
         {
-            InitializeComponent();
-            plattegrondFrame = new CampingPitchesOverviewPage();
+            this.InitializeComponent();
+            this.CampingPitchesOverviewFrame = new CampingPitchesOverviewPage();
         }
 
         private void ReserveButtonClick(object sender, RoutedEventArgs e)
         {
-            ReserveButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
-            ReserveButton.Foreground = Brushes.White;
-            MainFrame.Content = plattegrondFrame.Content;
+            this.ReserveButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
+            this.ReserveButton.Foreground = Brushes.White;
+            MainFrame.Content = this.CampingPitchesOverviewFrame.Content;
         }
     }
 }
