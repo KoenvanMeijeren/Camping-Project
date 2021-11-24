@@ -22,7 +22,7 @@ namespace Visualisation
     /// </summary>
     public partial class MainWindow : Window
     {
-        PlattegrondFrame plattegrondFrame { get; set; }
+        public CampingPitchesOverviewPage CampingPitchesOverviewFrame { get; set; }
         public MainWindow()
         {
             Query insertQuery = new Query("INSERT INTO Inventory VALUES (@id, @name, @quantity)");
@@ -56,13 +56,15 @@ namespace Visualisation
             
             InitializeComponent();
             plattegrondFrame = new PlattegrondFrame();
+            this.InitializeComponent();
+            this.CampingPitchesOverviewFrame = new CampingPitchesOverviewPage();
         }
 
-        private void MenuReserverenClick(object sender, RoutedEventArgs e)
+        private void ReserveButtonClick(object sender, RoutedEventArgs e)
         {
-            ReserverenButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
-            ReserverenButton.Foreground = Brushes.White;
-            MainFrame.Content = plattegrondFrame.Content;
+            this.ReserveButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
+            this.ReserveButton.Foreground = Brushes.White;
+            MainFrame.Content = this.CampingPitchesOverviewFrame.Content;
         }
 
 

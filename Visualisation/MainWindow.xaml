@@ -10,7 +10,7 @@
         <Grid x:Name="Menu" HorizontalAlignment="Left" Width="180" MinWidth="180" MaxWidth="180" Background="White">
             <Label Content="Camping&#xD;&#xA;" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22"/>
             <Label Content="&#xA;De Camper&#xA;" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22" Foreground="#FF006837"/>
-            <Button x:Name="ReserverenButton" Content="Reserveren" Margin="0,199,0,0" VerticalAlignment="Top" Height="55" Click="MenuReserverenClick" FontFamily="Century Gothic" FontWeight="Normal" FontSize="16" BorderThickness="0,0,0,0" Foreground="Black" Background="White"/>
+            <Button x:Name="ReserveButton" Content="Reserveren" Margin="0,199,0,0" VerticalAlignment="Top" Height="55" Click="ReserveButtonClick" FontFamily="Century Gothic" FontWeight="Normal" FontSize="16" BorderThickness="0,0,0,0" Foreground="Black" Background="White"/>
         </Grid>
         <Frame x:Name="MainFrame" Margin="180,0,0,0" MinHeight="634.04" MaxHeight="634.04" MinWidth="820" MaxWidth="820" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 

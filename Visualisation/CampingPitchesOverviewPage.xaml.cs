@@ -18,16 +18,17 @@ namespace Visualisation
     /// <summary>
     /// Interaction logic for PlattegrondFrame.xaml
     /// </summary>
-    public partial class PlattegrondFrame : Page
+    public partial class CampingPitchesOverviewPage : Page
     {
-        public PlattegrondFrame()
+        public CampingPitchesOverviewPage()
         {
-            InitializeComponent();
-            TypeVerblijfplaatsCB.SelectedItem = TypeVerblijfplaatsCB.Items[0];
+            this.InitializeComponent();
+            this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
