@@ -27,10 +27,10 @@ namespace Visualisation
             plattegrondFrame = new PlattegrondFrame();
         }
 
-        private void MenuReserverenClick(object sender, RoutedEventArgs e)
+        private void ReserveButtonClick(object sender, RoutedEventArgs e)
         {
-            ReserverenButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
-            ReserverenButton.Foreground = Brushes.White;
+            ReserveButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
+            ReserveButton.Foreground = Brushes.White;
             MainFrame.Content = plattegrondFrame.Content;
         }
     }
