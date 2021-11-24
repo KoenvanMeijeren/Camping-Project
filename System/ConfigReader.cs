@@ -9,32 +9,30 @@ namespace SystemCore
     {
         private static Dictionary<string, string> ConfigData;
 
-        private static void Initalize()
+        private static void Initialize()
         {
-            // Initalize once, then return initalized value.
-            if (ConfigData != null && ConfigData.Count != 0)
+            // Initialize once, on initialized skip re-reading the config data.
+            if (ConfigReader.ConfigData != null && ConfigReader.ConfigData.Count != 0)
             {
                 return;
             }
             
-            ConfigData = new Dictionary<string, string>();
+            ConfigReader.ConfigData = new Dictionary<string, string>();
 
             // Read all the keys from the config file
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
 
             foreach (string setting in appSettings.AllKeys)
             {
-                ConfigData.Add(setting, appSettings.Get(setting));
+                ConfigReader.ConfigData.Add(setting, appSettings.Get(setting));
             }
         }
 
-
         public static string GetSetting(string setting)
         {
-            ConfigReader.Initalize();
+            ConfigReader.Initialize();
 
-            string value; 
-            return ConfigData.TryGetValue(setting, out value).ToString();
+            return ConfigReader.ConfigData.TryGetValue(setting, out string value).ToString();
         }
     }
 }
