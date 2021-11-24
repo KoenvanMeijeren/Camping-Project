@@ -20,11 +20,11 @@ namespace Visualisation
     /// </summary>
     public partial class MainWindow : Window
     {
-        PlattegrondFrame plattegrondFrame { get; set; }
+        CampingPitchesOverviewPage plattegrondFrame { get; set; }
         public MainWindow()
         {
             InitializeComponent();
-            plattegrondFrame = new PlattegrondFrame();
+            plattegrondFrame = new CampingPitchesOverviewPage();
         }
 
         private void ReserveButtonClick(object sender, RoutedEventArgs e)

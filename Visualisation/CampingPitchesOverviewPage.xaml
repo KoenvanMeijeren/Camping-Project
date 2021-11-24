@@ -1,4 +1,4 @@
-﻿<Page x:Class="Visualisation.PlattegrondFrame"
+﻿<Page x:Class="Visualisation.CampingPitchesOverviewPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -24,7 +24,7 @@
         </Border>
         <Label Content="Start datum" HorizontalAlignment="Left" Margin="296,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,147,30,37" CornerRadius="15,15,15,15" Background="White"/>
-        <Label Content="Beschikbare plekken" HorizontalAlignment="Left" Margin="46,159,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+        <Label Content="Beschikbare verblijven&#xD;&#xA;" HorizontalAlignment="Left" Margin="46,159,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="454,29,219,506" CornerRadius="15,15,15,15" Background="White">
             <DatePicker Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
         </Border>
