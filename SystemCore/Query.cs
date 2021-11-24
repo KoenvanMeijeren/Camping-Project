@@ -22,7 +22,7 @@ namespace SystemCore
         private bool _success;
 
         /// <summary>
-        /// Inserts string query in SqlCommand.
+        /// Constructs the query.
         /// </summary>
         public Query(string query)
         {
