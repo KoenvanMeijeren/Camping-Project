@@ -39,7 +39,12 @@ namespace SystemCore
         /// </summary>
         public static void Open()
         {
-            if(DatabaseConnector._connection == null || DatabaseConnector._connection?.State == ConnectionState.Closed)
+            if (DatabaseConnector._connection?.State == ConnectionState.Open)
+            {
+                return;
+            }
+            
+            if(DatabaseConnector._connection == null)
             {
                 DatabaseConnector.Initialize();
             }
