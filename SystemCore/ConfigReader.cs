@@ -14,10 +14,11 @@ namespace SystemCore
 
         /// <summary>
         /// Initializes the config data.
-        ///
+        /// </summary>
+        /// <footer>
         /// Reads the data of the config file and stores it in the config data property.
         /// This is done once, when the config is initialized, re-reading the config data is skipped.
-        /// </summary>
+        /// </footer>
         private static void Initialize()
         {
             if (ConfigReader._configData != null && ConfigReader._configData.Count != 0)
