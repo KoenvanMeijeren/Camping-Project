@@ -30,7 +30,7 @@ namespace SystemCore
         {
             if (!this._sqlCommand.CommandText.Contains("SELECT"))
             {
-                throw new ArgumentException("SQL query must contain a SELECT query in order to execute this method.");
+                SystemError.Handle(new ArgumentException("SQL query must contain a SELECT query in order to execute this method."));
             }
             
             List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
@@ -54,7 +54,7 @@ namespace SystemCore
         {
             if (!this._sqlCommand.CommandText.Contains("SELECT"))
             {
-                throw new ArgumentException("SQL query must contain a SELECT query in order to execute this method.");
+                SystemError.Handle(new ArgumentException("SQL query must contain a SELECT query in order to execute this method."));
             }
             
             DatabaseConnector.Open();

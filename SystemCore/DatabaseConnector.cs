@@ -4,10 +4,16 @@ using System.Data.SqlClient;
 
 namespace SystemCore
 {
+    /// <summary>
+    /// Provides a class for creating a connection with the database.
+    /// </summary>
     public static class DatabaseConnector
     {
         private static SqlConnection _connection;
 
+        /// <summary>
+        /// Initializes the database connection.
+        /// </summary>
         private static void Initialize()
         {
             try 
@@ -22,23 +28,13 @@ namespace SystemCore
             }
             catch (SqlException e)
             {
-                Console.WriteLine(e.ToString());
+                SystemError.Handle(e);
             }
         }
-
-        public static SqlConnection GetConnection()
-        {
-            return DatabaseConnector._connection;
-        }
-
-        public static void Close()
-        {
-            if(DatabaseConnector._connection?.State == ConnectionState.Open)
-            {
-                DatabaseConnector._connection.Close();
-            }
-        }
-
+        
+        /// <summary>
+        /// Opens the databases connection.
+        /// </summary>
         public static void Open()
         {
             if(DatabaseConnector._connection == null || DatabaseConnector._connection?.State == ConnectionState.Closed)
@@ -47,6 +43,26 @@ namespace SystemCore
             }
 
             DatabaseConnector._connection.Open();
+        }
+
+        /// <summary>
+        /// Gets the connection with the database.
+        /// </summary>
+        /// <returns>Database connection</returns>
+        public static SqlConnection GetConnection()
+        {
+            return DatabaseConnector._connection;
+        }
+
+        /// <summary>
+        /// Closes the database connection.
+        /// </summary>
+        public static void Close()
+        {
+            if(DatabaseConnector._connection?.State == ConnectionState.Open)
+            {
+                DatabaseConnector._connection.Close();
+            }
         }
     }
 }
