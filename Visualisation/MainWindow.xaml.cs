@@ -22,6 +22,7 @@ namespace Visualisation
     /// </summary>
     public partial class MainWindow : Window
     {
+        public CampingPitchesOverviewPage CampingPitchesOverviewFrame { get; set; }
         public MainWindow()
         {
             Query insertQuery = new Query("INSERT INTO Inventory VALUES (@id, @name, @quantity)");
@@ -53,9 +54,16 @@ namespace Visualisation
             Query selectQuery = new Query("SELECT * FROM Inventory");
             var resultSecond = selectQuery.Select();
             
-            InitializeComponent();
+            this.InitializeComponent();
+            this.CampingPitchesOverviewFrame = new CampingPitchesOverviewPage();
         }
 
+        private void ReserveButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.ReserveButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
+            this.ReserveButton.Foreground = Brushes.White;
+            this.MainFrame.Content = this.CampingPitchesOverviewFrame.Content;
+        }
 
     }
 }
