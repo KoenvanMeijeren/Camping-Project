@@ -16,22 +16,23 @@ using System.Windows.Shapes;
 namespace Visualisation
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for PlattegrondFrame.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class PlattegrondFrame : Page
     {
-        PlattegrondFrame plattegrondFrame { get; set; }
-        public MainWindow()
+        public PlattegrondFrame()
         {
             InitializeComponent();
-            plattegrondFrame = new PlattegrondFrame();
+            TypeVerblijfplaatsCB.SelectedItem = TypeVerblijfplaatsCB.Items[0];
         }
 
-        private void MenuReserverenClick(object sender, RoutedEventArgs e)
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ReserverenButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
-            ReserverenButton.Foreground = Brushes.White;
-            MainFrame.Content = plattegrondFrame.Content;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }
