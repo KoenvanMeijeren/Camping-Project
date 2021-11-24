@@ -23,7 +23,7 @@ namespace Visualisation
     {
         public MainWindow()
         {
-            var result = Query.Select("SELECT * FROM Inventory");
+            var result = Query.SelectFirst("SELECT * FROM Inventory");
             InitializeComponent();
         }
 
