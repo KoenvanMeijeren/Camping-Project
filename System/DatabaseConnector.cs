@@ -6,19 +6,19 @@ namespace SystemCore
 {
     public class DatabaseConnector
     {
-        private static SqlConnection connection;
+        private static SqlConnection _connection;
 
-        public static void Connect()
+        private static void Initialize()
         {
             try 
             { 
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-                builder.DataSource = ConfigReader.GetSetting("UserID");
-                builder.UserID = ConfigReader.GetSetting("Password");            
-                builder.Password = ConfigReader.GetSetting("NameDB");     
-                builder.InitialCatalog = ConfigReader.GetSetting("ApplicationName");
+                builder.DataSource = "127.0.0.1";
+                builder.UserID = "SA";            
+                builder.Password = "Klimaatverandering1";     
+                builder.InitialCatalog = "TestDB";
 
-                connection = new SqlConnection(builder.ConnectionString);
+                DatabaseConnector._connection = new SqlConnection(builder.ConnectionString);
             }
             catch (SqlException e)
             {
@@ -28,23 +28,25 @@ namespace SystemCore
 
         public static SqlConnection GetConnection()
         {
-            return connection;
+            return DatabaseConnector._connection;
         }
 
         public static void Close()
         {
-            if(connection.State == ConnectionState.Open)
+            if(DatabaseConnector._connection?.State == ConnectionState.Open)
             {
-                connection.Close();
+                DatabaseConnector._connection.Close();
             }
         }
 
         public static void Open()
         {
-            if(connection.State == ConnectionState.Closed)
+            if(DatabaseConnector._connection == null || DatabaseConnector._connection?.State == ConnectionState.Closed)
             {
-                connection.Open();
+                DatabaseConnector.Initialize();
             }
+
+            DatabaseConnector._connection.Open();
         }
     }
 }

@@ -12,25 +12,26 @@ namespace SystemCore
         private static void Initalize()
         {
             // Initalize once, then return initalized value.
-            if (ConfigData == null || ConfigData.Count == 0)
+            if (ConfigData != null && ConfigData.Count != 0)
             {
+                return;
+            }
+            
+            ConfigData = new Dictionary<string, string>();
 
-                ConfigData = new Dictionary<string, string>();
+            // Read all the keys from the config file
+            NameValueCollection appSettings = ConfigurationManager.AppSettings;
 
-                // Read all the keys from the config file
-                NameValueCollection appSettings = ConfigurationManager.AppSettings;
-
-                foreach (string setting in appSettings.AllKeys)
-                {
-                    ConfigData.Add(setting, appSettings.Get(setting));
-                }
+            foreach (string setting in appSettings.AllKeys)
+            {
+                ConfigData.Add(setting, appSettings.Get(setting));
             }
         }
 
 
         public static string GetSetting(string setting)
         {
-            Initalize();
+            ConfigReader.Initalize();
 
             string value; 
             return ConfigData.TryGetValue(setting, out value).ToString();
