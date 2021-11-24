@@ -32,26 +32,18 @@ namespace SystemCore
         }
 
 
-        public static IEnumerable<Dictionary<string, string>> SelectFirst(string query)
+        public static Dictionary<string, string> SelectFirst(SqlCommand sqlCommand)
         {
-            List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
-            
-
             DatabaseConnector.Open();
-            using (DatabaseConnector.GetConnection())
-            {
-                using (SqlCommand command = new SqlCommand(query, DatabaseConnector.GetConnection()))
-                {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        reader.Read();
-                        list.Add(Query.DataRecordToDictionary(reader));
-                    }
-                }
-            }
+            sqlCommand.Connection = DatabaseConnector.GetConnection();
+            
+            using SqlDataReader reader = sqlCommand.ExecuteReader();
+            reader.Read();
+            Dictionary<string, string> dictionary = Query.DataRecordToDictionary(reader);
+            
             DatabaseConnector.Close();
 
-            return list;
+            return dictionary;
         }
 
         public static void Update() {}
