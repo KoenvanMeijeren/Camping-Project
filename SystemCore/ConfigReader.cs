@@ -31,8 +31,11 @@ namespace SystemCore
         public static string GetSetting(string setting)
         {
             ConfigReader.Initialize();
+            var config = ConfigReader._configData;
 
-            return ConfigReader._configData.TryGetValue(setting, out string value).ToString();
+            ConfigReader._configData.TryGetValue(setting, out string value);
+
+            return value;
         }
     }
 }

@@ -13,10 +13,10 @@ namespace SystemCore
             try 
             { 
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-                builder.DataSource = "127.0.0.1";
-                builder.UserID = "SA";            
-                builder.Password = "Klimaatverandering1";     
-                builder.InitialCatalog = "TestDB";
+                builder.DataSource = ConfigReader.GetSetting("DBSource");
+                builder.UserID = ConfigReader.GetSetting("DBUser");            
+                builder.Password = ConfigReader.GetSetting("DBPassword");     
+                builder.InitialCatalog = ConfigReader.GetSetting("DBName");
 
                 DatabaseConnector._connection = new SqlConnection(builder.ConnectionString);
             }
