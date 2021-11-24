@@ -38,9 +38,9 @@ namespace SystemCore
         }
         
         /// <summary>
-        /// Fills List with chosen items from the database. ??? 
+        /// Selects rows from SqlCommand. 
         /// </summary>
-        /// <returns>List with chosen items</returns>
+        /// <returns>List with chosen rows</returns>
         public IEnumerable<Dictionary<string, string>> Select()
         {
             if (!this._sqlCommand.CommandText.Contains("SELECT"))
@@ -68,9 +68,9 @@ namespace SystemCore
         }
 
         /// <summary>
-        /// Fills Dictionary with the first item from all the chosen items. ???
+        /// Select first row from SqlCommand.
         /// </summary>
-        /// <returns>Dictionary with first item from the SELECT statement</returns>
+        /// <returns>Dictionary with first row from the SELECT statement</returns>
         public Dictionary<string, string> SelectFirst()
         {
             if (!this._sqlCommand.CommandText.Contains("SELECT"))
