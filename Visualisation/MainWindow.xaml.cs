@@ -69,18 +69,18 @@ namespace Visualisation
             this.OverviewButton.Background = Brushes.White;
             this.OverviewButton.Foreground = Brushes.Black;
 
-            MainFrame.Content = this.CampingPitchesOverviewFrame.Content;
+            this.MainFrame.Content = this.CampingPitchesOverviewFrame.Content;
         }
 
         private void OverviewButtonClick(object sender, RoutedEventArgs e)
         {
-            this.OverviewButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
+            this.OverviewButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
             this.OverviewButton.Foreground = Brushes.White;
 
             this.ReserveButton.Background = Brushes.White;
             this.ReserveButton.Foreground = Brushes.Black;
 
-            MainFrame.Content = this.ReservationOverviewFrame.Content;
+            this.MainFrame.Content = this.ReservationOverviewFrame.Content;
         }
     }
 }
