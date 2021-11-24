@@ -54,8 +54,6 @@ namespace Visualisation
             Query selectQuery = new Query("SELECT * FROM Inventory");
             var resultSecond = selectQuery.Select();
             
-            InitializeComponent();
-            plattegrondFrame = new PlattegrondFrame();
             this.InitializeComponent();
             this.CampingPitchesOverviewFrame = new CampingPitchesOverviewPage();
         }
@@ -64,9 +62,8 @@ namespace Visualisation
         {
             this.ReserveButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
             this.ReserveButton.Foreground = Brushes.White;
-            MainFrame.Content = this.CampingPitchesOverviewFrame.Content;
+            this.MainFrame.Content = this.CampingPitchesOverviewFrame.Content;
         }
-
 
     }
 }
