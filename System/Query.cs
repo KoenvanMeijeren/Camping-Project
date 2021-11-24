@@ -11,19 +11,37 @@ using Microsoft.SqlServer.Server;
 
 namespace SystemCore
 {
-    public static class Query
+    public class Query
     {
-        public static IEnumerable<Dictionary<string, string>> Select(SqlCommand sqlCommand)
+
+        private readonly SqlCommand _sqlCommand;
+
+        public Query(string query)
         {
+            this._sqlCommand = new SqlCommand(query);
+        }
+
+        public void AddParameter(string parameter, object value)
+        {
+            this._sqlCommand.Parameters.AddWithValue(parameter, value);
+        }
+        
+        public IEnumerable<Dictionary<string, string>> Select()
+        {
+            if (!this._sqlCommand.CommandText.Contains("SELECT"))
+            {
+                throw new ArgumentException("SQL query must contain a SELECT query in order to execute this method.");
+            }
+            
             List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
             
             DatabaseConnector.Open();
-            sqlCommand.Connection = DatabaseConnector.GetConnection();
+            this._sqlCommand.Connection = DatabaseConnector.GetConnection();
             
-            using SqlDataReader reader = sqlCommand.ExecuteReader();
+            using SqlDataReader reader = this._sqlCommand.ExecuteReader();
             while (reader.Read())
             {
-                list.Add(Query.DataRecordToDictionary(reader));
+                list.Add(this.DataRecordToDictionary(reader));
             }
 
             DatabaseConnector.Close();
@@ -32,26 +50,31 @@ namespace SystemCore
         }
 
 
-        public static Dictionary<string, string> SelectFirst(SqlCommand sqlCommand)
+        public Dictionary<string, string> SelectFirst()
         {
-            DatabaseConnector.Open();
-            sqlCommand.Connection = DatabaseConnector.GetConnection();
+            if (!this._sqlCommand.CommandText.Contains("SELECT"))
+            {
+                throw new ArgumentException("SQL query must contain a SELECT query in order to execute this method.");
+            }
             
-            using SqlDataReader reader = sqlCommand.ExecuteReader();
+            DatabaseConnector.Open();
+            this._sqlCommand.Connection = DatabaseConnector.GetConnection();
+            
+            using SqlDataReader reader = this._sqlCommand.ExecuteReader();
             reader.Read();
-            Dictionary<string, string> dictionary = Query.DataRecordToDictionary(reader);
+            Dictionary<string, string> dictionary = this.DataRecordToDictionary(reader);
             
             DatabaseConnector.Close();
 
             return dictionary;
         }
 
-        public static void Update() {}
+        public void Update() {}
 
-        public static void Delete() { }
+        public void Delete() { }
 
 
-        private static Dictionary<string, string> DataRecordToDictionary(IDataRecord dataRecord)
+        private Dictionary<string, string> DataRecordToDictionary(IDataRecord dataRecord)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
 

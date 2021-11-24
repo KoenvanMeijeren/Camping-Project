@@ -24,8 +24,12 @@ namespace Visualisation
     {
         public MainWindow()
         {
-            SqlCommand sqlCommand = new SqlCommand("SELECT * FROM Inventory");
-            var result = Query.SelectFirst(sqlCommand);
+            Query query = new Query("SELECT * FROM Inventory");
+            var result = query.Select();
+
+            Query queryFirst = new Query("SELECT * FROM Inventory WHERE id = @id");
+            queryFirst.AddParameter("id", 3);
+            var first = query.SelectFirst();
             
             InitializeComponent();
         }
