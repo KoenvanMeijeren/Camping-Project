@@ -26,17 +26,12 @@ namespace SystemCore
                     {
                         while (reader.Read())
                         {
-                            IEnumerator enumerator = reader.GetEnumerator();
-                            while (enumerator.MoveNext())
-                            {
-                                IDataRecord current = (IDataRecord) enumerator.Current;
-
-                                list.Add(Query.DataRecordToDictionary(current));
-                            }
+                            list.Add(Query.DataRecordToDictionary(reader));
                         }
                     }
                 }
             }
+            DatabaseConnector.Close();
             
             return list;
         }
