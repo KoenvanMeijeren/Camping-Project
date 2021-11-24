@@ -7,24 +7,24 @@ namespace SystemCore
 {
     public static class ConfigReader
     {
-        private static Dictionary<string, string> ConfigData;
+        private static Dictionary<string, string> _configData;
 
         private static void Initialize()
         {
             // Initialize once, on initialized skip re-reading the config data.
-            if (ConfigReader.ConfigData != null && ConfigReader.ConfigData.Count != 0)
+            if (ConfigReader._configData != null && ConfigReader._configData.Count != 0)
             {
                 return;
             }
             
-            ConfigReader.ConfigData = new Dictionary<string, string>();
+            ConfigReader._configData = new Dictionary<string, string>();
 
             // Read all the keys from the config file
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
 
             foreach (string setting in appSettings.AllKeys)
             {
-                ConfigReader.ConfigData.Add(setting, appSettings.Get(setting));
+                ConfigReader._configData.Add(setting, appSettings.Get(setting));
             }
         }
 
@@ -32,7 +32,7 @@ namespace SystemCore
         {
             ConfigReader.Initialize();
 
-            return ConfigReader.ConfigData.TryGetValue(setting, out string value).ToString();
+            return ConfigReader._configData.TryGetValue(setting, out string value).ToString();
         }
     }
 }
