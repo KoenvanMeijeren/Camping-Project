@@ -36,13 +36,32 @@ namespace SystemCore
             return list;
         }
 
-        public static void Update() { }
+        public static IEnumerable<Dictionary<string, string>> SelectFirst(string query)
+        {
+            List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
+            
+
+            DatabaseConnector.Open();
+            using (DatabaseConnector.GetConnection())
+            {
+                using (SqlCommand command = new SqlCommand(query, DatabaseConnector.GetConnection()))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        reader.Read();
+                        list.Add(Query.DataRecordToDictionary(reader));
+                    }
+                }
+            }
+            DatabaseConnector.Close();
+
+            return list;
+        }
+
+        public static void Update() {}
 
         public static void Delete() { }
 
-        private static void Execute()
-        {
-        }
 
         private static Dictionary<string, string> DataRecordToDictionary(IDataRecord dataRecord)
         {
