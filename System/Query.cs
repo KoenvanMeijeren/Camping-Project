@@ -58,6 +58,7 @@ namespace SystemCore
                     "string" => dataRecord.GetString(delta),
                     "nvarchar" => dataRecord.GetString(delta),
                     "int" => dataRecord.GetInt32(delta).ToString(),
+                    "bool" => dataRecord.GetBoolean(delta).ToString(),
                     _ => throw new InvalidEnumArgumentException(
                         $"The data type: {dataType} is not supported yet to read data from database records.")
                 };
