@@ -16,6 +16,8 @@ namespace SystemCore
 
         private readonly SqlCommand _sqlCommand;
 
+        private bool _success;
+
         public Query(string query)
         {
             this._sqlCommand = new SqlCommand(query);
@@ -30,6 +32,7 @@ namespace SystemCore
         {
             if (!this._sqlCommand.CommandText.Contains("SELECT"))
             {
+                this._success = false;
                 SystemError.Handle(new ArgumentException("SQL query must contain a SELECT query in order to execute this method."));
             }
             
@@ -45,7 +48,9 @@ namespace SystemCore
             }
 
             DatabaseConnector.Close();
-            
+
+            this._success = true;
+
             return list;
         }
 
@@ -54,6 +59,7 @@ namespace SystemCore
         {
             if (!this._sqlCommand.CommandText.Contains("SELECT"))
             {
+                this._success = false;
                 SystemError.Handle(new ArgumentException("SQL query must contain a SELECT query in order to execute this method."));
             }
             
@@ -66,14 +72,28 @@ namespace SystemCore
             
             DatabaseConnector.Close();
 
+            this._success = true;
+            
             return dictionary;
         }
 
-        public void Update() {}
+        public void Execute()
+        {
+            DatabaseConnector.Open();
 
-        public void Delete() { }
+            this._sqlCommand.Connection = DatabaseConnector.GetConnection();
+            var updatedRows = this._sqlCommand.ExecuteNonQuery();
+            
+            DatabaseConnector.Close();
 
+            this._success = updatedRows > 0;
+        }
 
+        public bool SuccessFullyExecuted()
+        {
+            return this._success;
+        }
+        
         private Dictionary<string, string> DataRecordToDictionary(IDataRecord dataRecord)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>();

@@ -24,12 +24,34 @@ namespace Visualisation
     {
         public MainWindow()
         {
+            Query insertQuery = new Query("INSERT INTO Inventory VALUES (@id, @name, @quantity)");
+            insertQuery.AddParameter("id", 5);
+            insertQuery.AddParameter("name", "butter");
+            insertQuery.AddParameter("quantity", 50);
+            insertQuery.Execute();
+            
             Query query = new Query("SELECT * FROM Inventory");
             var result = query.Select();
 
             Query queryFirst = new Query("SELECT * FROM Inventory WHERE id = @id");
             queryFirst.AddParameter("id", 3);
             var first = query.SelectFirst();
+
+            Query updateQuery = new Query("UPDATE Inventory SET name = @name WHERE id = @id");
+            updateQuery.AddParameter("name", "peanuts");
+            updateQuery.AddParameter("id", 4);
+            updateQuery.Execute();
+
+            Query updateSecond = new Query("SELECT * FROM Inventory WHERE id = @id");
+            updateSecond.AddParameter("id", 4);
+            var second = updateSecond.SelectFirst();
+
+            Query deleteQuery = new Query("DELETE FROM Inventory WHERE id = @id");
+            deleteQuery.AddParameter("id", 5);
+            deleteQuery.Execute();
+            
+            Query selectQuery = new Query("SELECT * FROM Inventory");
+            var resultSecond = selectQuery.Select();
             
             InitializeComponent();
         }
