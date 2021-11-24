@@ -11,6 +11,9 @@ using Microsoft.SqlServer.Server;
 
 namespace SystemCore
 {
+    /// <summary>
+    /// Provides a class for executing SQL statements.
+    /// </summary>
     public class Query
     {
 
@@ -18,16 +21,26 @@ namespace SystemCore
 
         private bool _success;
 
+        /// <summary>
+        /// Inserts string query in SqlCommand.
+        /// </summary>
         public Query(string query)
         {
             this._sqlCommand = new SqlCommand(query);
         }
 
+        /// <summary>
+        /// Adds parameters to the SqlCommand.
+        /// </summary>
         public void AddParameter(string parameter, object value)
         {
             this._sqlCommand.Parameters.AddWithValue(parameter, value);
         }
         
+        /// <summary>
+        /// Fills List with chosen items from the database. ??? 
+        /// </summary>
+        /// <returns>List with chosen items</returns>
         public IEnumerable<Dictionary<string, string>> Select()
         {
             if (!this._sqlCommand.CommandText.Contains("SELECT"))
@@ -54,7 +67,10 @@ namespace SystemCore
             return list;
         }
 
-
+        /// <summary>
+        /// Fills Dictionary with the first item from all the chosen items. ???
+        /// </summary>
+        /// <returns>Dictionary with first item from the SELECT statement</returns>
         public Dictionary<string, string> SelectFirst()
         {
             if (!this._sqlCommand.CommandText.Contains("SELECT"))
@@ -77,6 +93,9 @@ namespace SystemCore
             return dictionary;
         }
 
+        /// <summary>
+        /// Executes the SqlCommand.
+        /// </summary>
         public void Execute()
         {
             DatabaseConnector.Open();
@@ -89,11 +108,19 @@ namespace SystemCore
             this._success = updatedRows > 0;
         }
 
+        /// <summary>
+        /// Checks succes.
+        /// </summary>
+        /// <returns>Succes status</returns>
         public bool SuccessFullyExecuted()
         {
             return this._success;
         }
         
+        /// <summary>
+        /// Inserts DataRecord items in a Dictionary.
+        /// </summary>
+        /// <returns>Filled Dictionary</returns>
         private Dictionary<string, string> DataRecordToDictionary(IDataRecord dataRecord)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
