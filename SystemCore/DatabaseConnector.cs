@@ -18,11 +18,13 @@ namespace SystemCore
         {
             try 
             { 
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-                builder.DataSource = ConfigReader.GetSetting("DBSource");
-                builder.UserID = ConfigReader.GetSetting("DBUser");            
-                builder.Password = ConfigReader.GetSetting("DBPassword");     
-                builder.InitialCatalog = ConfigReader.GetSetting("DBName");
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder
+                {
+                    DataSource = ConfigReader.GetSetting("DBSource"),
+                    UserID = ConfigReader.GetSetting("DBUser"),
+                    Password = ConfigReader.GetSetting("DBPassword"),
+                    InitialCatalog = ConfigReader.GetSetting("DBName")
+                };
 
                 DatabaseConnector._connection = new SqlConnection(builder.ConnectionString);
             }
