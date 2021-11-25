@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Visualisation
 {
     /// <summary>
-    /// Interaction logic for PlattegrondFrame.xaml
+    /// Interaction logic for CampingPitchesCollectionPage.xaml
     /// </summary>
-    public partial class CampingPitchesOverviewPage : Page
+    public partial class CampingPitchesCollectionPage : Page
     {
-        public CampingPitchesOverviewPage()
+        public CampingPitchesCollectionPage()
         {
             this.InitializeComponent();
             this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];

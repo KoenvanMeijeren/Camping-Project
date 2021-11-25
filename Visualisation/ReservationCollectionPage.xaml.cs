@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Visualisation
 {
     /// <summary>
-    /// Interaction logic for ReservationOverviewPage.xaml
+    /// Interaction logic for ReservationCollectionPage.xaml
     /// </summary>
-    public partial class ReservationOverviewPage : Page
+    public partial class ReservationCollectionPage : Page
     {
-        public ReservationOverviewPage()
+        public ReservationCollectionPage()
         {
             this.InitializeComponent();
         }
