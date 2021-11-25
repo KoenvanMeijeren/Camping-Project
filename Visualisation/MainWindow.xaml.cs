@@ -22,54 +22,26 @@ namespace Visualisation
     /// </summary>
     public partial class MainWindow : Window
     {
-        public CampingPitchesOverviewPage CampingPitchesOverviewFrame { get; set; }
-        public ReservationOverviewPage ReservationOverviewFrame { get; set; }
+        private readonly CampingPitchesCollectionPage _campingPitchesCollectionFrame;
+        private readonly ReservationCollectionPage _reservationCollectionFrame;
 
         public MainWindow()
         {
-            Query insertQuery = new Query("INSERT INTO Inventory VALUES (@id, @name, @quantity)");
-            insertQuery.AddParameter("id", 5);
-            insertQuery.AddParameter("name", "butter");
-            insertQuery.AddParameter("quantity", 50);
-            insertQuery.Execute();
-
-            Query query = new Query("SELECT * FROM Inventory");
-            var result = query.Select();
-
-            Query queryFirst = new Query("SELECT * FROM Inventory WHERE id = @id");
-            queryFirst.AddParameter("id", 3);
-            var first = query.SelectFirst();
-
-            Query updateQuery = new Query("UPDATE Inventory SET name = @name WHERE id = @id");
-            updateQuery.AddParameter("name", "peanuts");
-            updateQuery.AddParameter("id", 4);
-            updateQuery.Execute();
-
-            Query updateSecond = new Query("SELECT * FROM Inventory WHERE id = @id");
-            updateSecond.AddParameter("id", 4);
-            var second = updateSecond.SelectFirst();
-
-            Query deleteQuery = new Query("DELETE FROM Inventory WHERE id = @id");
-            deleteQuery.AddParameter("id", 5);
-            deleteQuery.Execute();
-
-            Query selectQuery = new Query("SELECT * FROM Inventory");
-            var resultSecond = selectQuery.Select();
-
             this.InitializeComponent();
-            this.CampingPitchesOverviewFrame = new CampingPitchesOverviewPage();
-            this.ReservationOverviewFrame = new ReservationOverviewPage();
+            
+            this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
+            this._reservationCollectionFrame = new ReservationCollectionPage();
         }
 
         private void ReserveButtonClick(object sender, RoutedEventArgs e)
         {
-            this.ReserveButton.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#006837");
+            this.ReserveButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
             this.ReserveButton.Foreground = Brushes.White;
 
             this.OverviewButton.Background = Brushes.White;
             this.OverviewButton.Foreground = Brushes.Black;
 
-            this.MainFrame.Content = this.CampingPitchesOverviewFrame.Content;
+            this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
         }
 
         private void OverviewButtonClick(object sender, RoutedEventArgs e)
@@ -80,7 +52,7 @@ namespace Visualisation
             this.ReserveButton.Background = Brushes.White;
             this.ReserveButton.Foreground = Brushes.Black;
 
-            this.MainFrame.Content = this.ReservationOverviewFrame.Content;
+            this.MainFrame.Content = this._reservationCollectionFrame.Content;
         }
     }
 }

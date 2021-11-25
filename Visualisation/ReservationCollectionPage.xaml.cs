@@ -16,24 +16,13 @@ using System.Windows.Shapes;
 namespace Visualisation
 {
     /// <summary>
-    /// Interaction logic for PlattegrondFrame.xaml
+    /// Interaction logic for ReservationCollectionPage.xaml
     /// </summary>
-    public partial class CampingPitchesOverviewPage : Page
+    public partial class ReservationCollectionPage : Page
     {
-        public CampingPitchesOverviewPage()
+        public ReservationCollectionPage()
         {
             this.InitializeComponent();
-            this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
     }
 }

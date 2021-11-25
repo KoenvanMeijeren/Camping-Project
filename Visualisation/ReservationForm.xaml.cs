@@ -16,13 +16,13 @@ using System.Windows.Shapes;
 namespace Visualisation
 {
     /// <summary>
-    /// Interaction logic for ReservationOverviewPage.xaml
+    /// Interaction logic for ReservationForm.xaml
     /// </summary>
-    public partial class ReservationOverviewPage : Page
+    public partial class ReservationForm : Page
     {
-        public ReservationOverviewPage()
+        public ReservationForm()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }
