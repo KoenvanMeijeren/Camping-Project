@@ -35,5 +35,10 @@ namespace Visualisation
         {
 
         }
+
+        private void CampingPitchTypeDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
