@@ -13,7 +13,7 @@
 
         <Label Content="Uw gegevens&#xA;" HorizontalAlignment="Left" Margin="94,116,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Label Content="Voornaam" HorizontalAlignment="Left" Margin="94,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Text="Voornaam" BorderThickness="3" Height="24"  Width="96" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="95,195,0,0">
+        <TextBox Text="Voornaam" Name="CustomerFirstName" BorderThickness="3" Height="24"  Width="121" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="95,195,0,0" TextChanged="TextBox_TextChanged">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -24,8 +24,8 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Achternaam" HorizontalAlignment="Left" Margin="224,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Text="Achternaam" BorderThickness="3" Height="24"  Width="130" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="224,195,0,0">
+        <Label Content="Achternaam" HorizontalAlignment="Left" Margin="242,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <TextBox Text="Achternaam" Name="CustomerLastName"  BorderThickness="3" Height="24"  Width="130" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="242,196,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -36,11 +36,11 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Geboortedatum" HorizontalAlignment="Left" Margin="94,241,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <DatePicker Height="28" HorizontalAlignment="Left" Margin="94,269,0,0" Name="datePicker1" VerticalAlignment="Top" Width="244" />
+        <Label Content="Geboortedatum" HorizontalAlignment="Left" Margin="94,258,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <DatePicker Height="28" HorizontalAlignment="Left" Margin="94,289,0,0" Name="CustomerBirthDate" VerticalAlignment="Top" Width="244" />
 
         <Label Content="Mailadres" HorizontalAlignment="Left" Margin="465,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Text="Mailadres" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,195,0,0">
+        <TextBox Text="Mailadres" Name="CustomerMailadres" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,195,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -51,8 +51,8 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Telefoonnummer" HorizontalAlignment="Left" Margin="465,245,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Telefoonnummer" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,273,0,0">
+        <Label Content="Telefoonnummer" HorizontalAlignment="Left" Margin="465,262,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Text="Telefoonnummer" Name="CustomerPhonenumber" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,293,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -63,20 +63,16 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Straatnaam" HorizontalAlignment="Left" Margin="95,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Straatnaam" BorderThickness="3" Height="24"  Width="168" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,367,0,0">
-            <TextBox.BorderBrush>
-                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
-                    <GradientStop Color="White" Offset="0"/>
-                    <GradientStop Color="White" Offset="0.75"/>
-                    <GradientStop Color="Black" Offset="0.75"/>
-                    <GradientStop Color="Black" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBox.BorderBrush>
-        </TextBox>
-
-        <Label Content="Huisnummer"  HorizontalAlignment="Left" Margin="303,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Huisnummer" BorderThickness="3" Height="24"  Width="76" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="303,367,0,0">
+        <Label Content="Adres" HorizontalAlignment="Left" Margin="95,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Text="Adres" Name="CustomerAddress" BorderThickness="3" Height="24"  Width="233" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,367,0,0" RenderTransformOrigin="0.5,0.5">
+            <TextBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.015"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBox.RenderTransform>
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -88,7 +84,7 @@
         </TextBox>
 
         <Label Content="Postcode" HorizontalAlignment="Left" Margin="94,419,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Postcode" BorderThickness="3" Height="24"  Width="121" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,442,0,0">
+        <TextBox Text="Postcode" Name="CustomerPostalcode" BorderThickness="3" Height="24"  Width="121" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,442,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -100,7 +96,7 @@
         </TextBox>
 
         <Label Content="Plaatsnaam" HorizontalAlignment="Left" Margin="265,419,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Plaatsnaam" BorderThickness="3" Height="24"  Width="121" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,442,0,0">
+        <TextBox Text="Plaatsnaam" Name="CustomerPlacename" BorderThickness="3" Height="24"  Width="121" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,442,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -111,7 +107,7 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Button Content="Bevestig" Margin="457,431,119,161" Background="black" Foreground="white" FontSize="16" FontFamily="Century gothic">
+        <Button Content="Bevestig" Margin="457,431,119,161" Background="black" Foreground="white" FontSize="16" FontFamily="Century gothic" Click="ReservationCustomerFormSubmit">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
