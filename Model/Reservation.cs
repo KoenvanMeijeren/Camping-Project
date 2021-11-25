@@ -107,7 +107,7 @@ namespace Model
         {
             string query = "SELECT * FROM Reservation R ";
             query += "INNER JOIN CampingPlace CP ON CP.CampingPlaceID = R.CampingPlaceID ";
-            query += "INNER JOIN CampingPlaceType CPT ON CPT.AccommodationID = CP.TypeID ";
+            query += "INNER JOIN CampingPlaceType CPT ON CPT.CampingPlaceTypeID = CP.TypeID ";
             query += "INNER JOIN CampingCustomer CC ON CC.CampingCustomerID = R.CampingCustomerID ";
             query += "INNER JOIN Address CCA ON CCA.AddressID = CC.CampingCustomerAddressID ";
             query += "INNER JOIN ReservationDuration RD ON RD.ReservationDurationID = R.ReservationDurationID ";

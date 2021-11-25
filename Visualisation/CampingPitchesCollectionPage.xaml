@@ -26,10 +26,7 @@
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,147,30,37" CornerRadius="15,15,15,15" Background="White">
             <DataGrid x:Name="CampingViewDataGrid" Margin="23,54,23,54" Background="White" FontFamily="Century Gothic" FontWeight="Bold">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Type" MinWidth="150"/>
-                    <DataGridTextColumn Header="Aantal personen" MinWidth="150"/>
-                    <DataGridTextColumn Header="Oppervlakte" MinWidth="150"/>
-                    <DataGridTextColumn Header="Dagtarief" MinWidth="150"/>
+                    
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

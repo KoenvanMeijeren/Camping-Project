@@ -22,16 +22,12 @@ namespace Visualisation
     /// </summary>
     public partial class CampingPitchesCollectionPage : Page
     {
-        private CampingPlaceCollection CampingPlaceCollection = new CampingPlaceCollection();
-        private List<CampingPlace> CampingPlaceList = new List<CampingPlace>();
         public CampingPitchesCollectionPage()
         {
             this.InitializeComponent();
             this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];
 
-            this.CampingPlaceList = this.CampingPlaceCollection.Select();
-
-            this.CampingViewDataGrid.ItemsSource = CampingPlaceList;
+            this.CampingViewDataGrid.ItemsSource = CampingPlaceDataCollection.Select();
 
 
 

@@ -7,51 +7,50 @@ using SystemCore;
 
 namespace Model
 {
-    public class CampingPlaceCollection : IModelCollection
+    public static class CampingPlaceDataCollection
     {
-        private List<CampingPlace> _collection;
-        public CampingPlaceCollection()
-        {
-            this._collection = new List<CampingPlace>();
-        }
+        private static List<CampingPlaceData> _collection;
 
-        public List<CampingPlace> Select()
+        public static List<CampingPlaceData> Select()
         {
-            if (this._collection.Count > 0)
+            if (_collection != null)
             {
-                return this._collection;
+                return _collection;
             }
 
-            var campingPlaces = (new Query(this.BaseQuery())).Select();
+            _collection = new List<CampingPlaceData>();
+            var campingPlaces = (new Query(BaseQuery())).Select();
             foreach (Dictionary<string, string> dictionary in campingPlaces)
             {
-                this._collection.Add(this.ToModel(dictionary));
+                _collection.Add(ToModel(dictionary));
             }
 
-            return this._collection;
+            return _collection;
         }
 
-        private CampingPlace ToModel(Dictionary<string, string> dictionary)
+        private static CampingPlaceData ToModel(Dictionary<string, string> dictionary)
         {
             dictionary.TryGetValue("CampingPlaceID", out string campingPlaceId);
             dictionary.TryGetValue("CampingPlaceTypeID", out string campingPlaceTypeId);
             dictionary.TryGetValue("AccommodationID", out string accommodationId);
             dictionary.TryGetValue("Prefix", out string prefix);
-            dictionary.TryGetValue("AccommodationName", out string name);
+            dictionary.TryGetValue("AccommodationName", out string accommodationName);
             dictionary.TryGetValue("GuestLimit", out string guestLimit);
             dictionary.TryGetValue("StandardNightPrice", out string standardNightPrice);
             dictionary.TryGetValue("PlaceNumber", out string placeNumber);
             dictionary.TryGetValue("Surface", out string surface);
             dictionary.TryGetValue("ExtraNightPrice", out string extraNightPrice);
 
-            Accommodation accommodation = new Accommodation(accommodationId, prefix, name);
+            Accommodation accommodation = new Accommodation(accommodationId, prefix, accommodationName);
             CampingPlaceType campingPlaceType = new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
             CampingPlace campingPlace = new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
 
-            return campingPlace;
+            CampingPlaceData campingPlaceData = new CampingPlaceData(accommodationName, int.Parse(guestLimit), int.Parse(surface), (int.Parse(standardNightPrice)+ int.Parse(extraNightPrice)));
+
+            return campingPlaceData;
         }
 
-        private string BaseQuery()
+        private static string BaseQuery()
         {
             string query = "SELECT * FROM CampingPlace ";
             query += "INNER JOIN CampingPlaceType CPT ON CPT.CampingPlaceTypeID = TypeID ";
@@ -59,6 +58,5 @@ namespace Model
 
             return query;
         }
-
     }
 }
