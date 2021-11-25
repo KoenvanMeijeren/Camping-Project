@@ -9,7 +9,115 @@
       Title="Klantgegevens formulier" Height="634.04" Width="820" MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
 
     <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837">
-        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="77,104,77,104" CornerRadius="15,15,15,15" Background="White"/>
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="77,104,77,104" CornerRadius="15,15,15,15" Background="White" />
+
         <Label Content="Uw gegevens&#xA;" HorizontalAlignment="Left" Margin="94,116,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+        <Label Content="Voornaam" HorizontalAlignment="Left" Margin="94,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <TextBox Text="Voornaam" BorderThickness="3" Height="24"  Width="96" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="95,195,0,0">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+
+        <Label Content="Achternaam" HorizontalAlignment="Left" Margin="224,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <TextBox Text="Achternaam" BorderThickness="3" Height="24"  Width="130" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="224,195,0,0">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+
+        <Label Content="Geboortedatum" HorizontalAlignment="Left" Margin="94,241,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <DatePicker Height="28" HorizontalAlignment="Left" Margin="94,269,0,0" Name="datePicker1" VerticalAlignment="Top" Width="244" />
+
+        <Label Content="Mailadres" HorizontalAlignment="Left" Margin="465,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <TextBox Text="Mailadres" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,195,0,0">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+
+        <Label Content="Telefoonnummer" HorizontalAlignment="Left" Margin="465,245,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Text="Telefoonnummer" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,273,0,0">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+
+        <Label Content="Straatnaam" HorizontalAlignment="Left" Margin="95,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Text="Straatnaam" BorderThickness="3" Height="24"  Width="168" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,367,0,0">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+
+        <Label Content="Huisnummer"  HorizontalAlignment="Left" Margin="303,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Text="Huisnummer" BorderThickness="3" Height="24"  Width="76" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="303,367,0,0">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+
+        <Label Content="Postcode" HorizontalAlignment="Left" Margin="94,419,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Text="Postcode" BorderThickness="3" Height="24"  Width="121" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,442,0,0">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+
+        <Label Content="Plaatsnaam" HorizontalAlignment="Left" Margin="265,419,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Text="Plaatsnaam" BorderThickness="3" Height="24"  Width="121" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,442,0,0">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+
+        <Button Content="Bevestig" Margin="457,431,119,161" Background="black" Foreground="white" FontSize="16" FontFamily="Century gothic">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
     </Grid>
+
 </Page>
