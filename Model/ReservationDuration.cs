@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,12 +17,10 @@ namespace Model
 
         public void SetDuration(DateTime checkin, DateTime checkout)
         {
-            /*CultureInfo culture = new CultureInfo("es-ES");
-            String myDate = "15/05/2018";
-            DateTime date = DateTime.Parse(myDate, culture);*/
             CheckInDatetime = checkin;
             CheckInDatetime = checkout;
         }
+
 
         private Boolean insertReservationDuration()
         {
