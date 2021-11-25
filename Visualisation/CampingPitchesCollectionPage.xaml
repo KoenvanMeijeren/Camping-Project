@@ -24,7 +24,7 @@
         </Border>
         <Label Content="Start datum" HorizontalAlignment="Left" Margin="296,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,147,30,37" CornerRadius="15,15,15,15" Background="White">
-            <DataGrid Margin="23,54,23,54" Background="White" FontFamily="Century Gothic" FontWeight="Bold">
+            <DataGrid x:Name="CampingViewDataGrid" Margin="23,54,23,54" Background="White" FontFamily="Century Gothic" FontWeight="Bold">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Type" MinWidth="150"/>
                     <DataGridTextColumn Header="Aantal personen" MinWidth="150"/>

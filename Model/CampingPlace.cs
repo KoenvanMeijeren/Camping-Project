@@ -12,7 +12,8 @@ namespace Model
         public int Number { get; private set; }
         public float Surface { get; private set; }
         public float ExtraNightPrice { get; private set; }
-        
+        public string Location { get; private set; }
+
         public CampingPlaceType Type { get; private set; }
 
         public CampingPlace(string id, string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType)
@@ -22,7 +23,14 @@ namespace Model
             this.Surface = float.Parse(surface);
             this.ExtraNightPrice = float.Parse(extraNightPrice);
             this.Type = campingPlaceType;
+            this.Location = this.GetLocation();
         }
         
+
+        public string GetLocation()
+        {
+            return $"{this.Type.Accommodation.Prefix}-{this.Number}";
+        }
+
     }
 }
