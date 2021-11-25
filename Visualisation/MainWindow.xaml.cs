@@ -22,14 +22,14 @@ namespace Visualisation
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly CampingPitchesOverviewPage _campingPitchesOverviewFrame;
+        private readonly CampingPitchesCollectionPage _campingPitchesCollectionFrame;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
 
         public MainWindow()
         {
             this.InitializeComponent();
             
-            this._campingPitchesOverviewFrame = new CampingPitchesOverviewPage();
+            this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
             this._reservationCollectionFrame = new ReservationCollectionPage();
         }
 
@@ -41,7 +41,7 @@ namespace Visualisation
             this.OverviewButton.Background = Brushes.White;
             this.OverviewButton.Foreground = Brushes.Black;
 
-            this.MainFrame.Content = this._campingPitchesOverviewFrame.Content;
+            this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
         }
 
         private void OverviewButtonClick(object sender, RoutedEventArgs e)
