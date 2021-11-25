@@ -30,7 +30,7 @@ namespace Visualisation
             insertQuery.AddParameter("name", "butter");
             insertQuery.AddParameter("quantity", 50);
             insertQuery.Execute();
-            
+
             Query query = new Query("SELECT * FROM Inventory");
             var result = query.Select();
 
@@ -50,10 +50,10 @@ namespace Visualisation
             Query deleteQuery = new Query("DELETE FROM Inventory WHERE id = @id");
             deleteQuery.AddParameter("id", 5);
             deleteQuery.Execute();
-            
+
             Query selectQuery = new Query("SELECT * FROM Inventory");
             var resultSecond = selectQuery.Select();
-            
+
             this.InitializeComponent();
             this.CampingPitchesOverviewFrame = new CampingPitchesOverviewPage();
         }
