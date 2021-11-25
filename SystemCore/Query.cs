@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -129,13 +130,22 @@ namespace SystemCore
             {
                 string dataType = dataRecord.GetDataTypeName(delta);
                 string column = dataRecord.GetName(delta);
-
+                if (dictionary.ContainsKey(column))
+                {
+                    continue;
+                }
+                
                 string value = dataType switch
                 {
                     "string" => dataRecord.GetString(delta),
+                    "varchar" => dataRecord.GetString(delta),
                     "nvarchar" => dataRecord.GetString(delta),
                     "int" => dataRecord.GetInt32(delta).ToString(),
+                    "float" => dataRecord.GetDouble(delta).ToString(CultureInfo.InvariantCulture),
+                    "double" => dataRecord.GetDouble(delta).ToString(CultureInfo.InvariantCulture),
                     "bool" => dataRecord.GetBoolean(delta).ToString(),
+                    "date" => dataRecord.GetDateTime(delta).ToString(),
+                    "datetime" => dataRecord.GetDateTime(delta).ToString(),
                     _ => throw new InvalidEnumArgumentException(
                         $"The data type: {dataType} is not supported yet to read data from database records.")
                 };
