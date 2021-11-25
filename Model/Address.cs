@@ -10,9 +10,9 @@ namespace Model
         
         public string place { get; private set; }
 
-        public Address(int id, string address, string postalCode, string place)
+        public Address(string id, string address, string postalCode, string place)
         {
-            this.Id = id;
+            this.Id = int.Parse(id);
             this.address = address;
             this.postalCode = postalCode;
             this.place = place;

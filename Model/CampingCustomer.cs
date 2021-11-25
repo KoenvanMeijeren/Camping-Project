@@ -18,11 +18,11 @@ namespace Model
         
         public string Phonenumber  { get; private set; }
 
-        public CampingCustomer(int id, Address address, DateTime birthdate, string email, string phonenumber)
+        public CampingCustomer(string id, Address address, string birthdate, string email, string phonenumber)
         {
-            this.Id = id;
+            this.Id = int.Parse(id);
             this.Address = address;
-            this.Birthdate = birthdate;
+            this.Birthdate = DateTime.Parse(birthdate);
             this.Email = email;
             this.Phonenumber = phonenumber;
         }

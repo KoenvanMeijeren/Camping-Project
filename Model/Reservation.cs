@@ -18,10 +18,10 @@ namespace Model
         public CampingPlace CampingPlace { get; private set; }
         public ReservationDuration Duration { get; private set; }
 
-        public Reservation(int id, int numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
         {
-            this.Id = id;
-            this.NumberOfPeople = numberOfPeople;
+            this.Id = int.Parse(id);
+            this.NumberOfPeople = int.Parse(numberOfPeople);
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.Duration = duration;
@@ -39,7 +39,7 @@ namespace Model
             insertNewReservationQuery.AddParameter("campingPlaceID", campingPlace.Id);
             insertNewReservationQuery.AddParameter("numberOfPeople", this.NumberOfPeople);
             insertNewReservationQuery.AddParameter("campingCustomerID", this.CampingCustomer.Id);
-            insertNewReservationQuery.AddParameter("reservationDurationID", reservationDuration.ReservationID);
+            insertNewReservationQuery.AddParameter("reservationDurationID", reservationDuration.Id);
             insertNewReservationQuery.Execute();
             
             return insertNewReservationQuery.SuccessFullyExecuted();

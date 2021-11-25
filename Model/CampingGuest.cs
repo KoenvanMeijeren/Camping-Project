@@ -14,9 +14,9 @@ namespace Model
         
         public DateTime Birthdate { get; private set; }
 
-        public CampingGuest(int id, string name, DateTime birthdate)
+        public CampingGuest(string id, string name, DateTime birthdate)
         {
-            this.Id = id;
+            this.Id = int.Parse(id);
             this.Name = name;
             this.Birthdate = birthdate;
         }

@@ -10,14 +10,19 @@ namespace Model
 {
     public class ReservationDuration
     {
-        public int ReservationID { get; private set; }
+        public int Id { get; private set; }
         private DateTime CheckInDatetime { get; set; }
         private DateTime CheckOutDatetime { get; set; }
 
+        public ReservationDuration(string id, string checkInDate, string checkOutDate)
+        {
+            this.Id = int.Parse(id);
+            this.CheckInDatetime = DateTime.Parse(checkInDate);
+            this.CheckOutDatetime = DateTime.Parse(checkOutDate);
+        }
 
         private Boolean InsertReservationDuration()
         {
-            //ID hoeft niet worden meegegeven i.v.m. auto-increment
             Query insertNewReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@checkinDatetime, @checkOutDatetime) OUTPUT inserted.ReservationDurationID");
             insertNewReservationDurationQuery.AddParameter("checkinDatetime", CheckInDatetime);
             insertNewReservationDurationQuery.AddParameter("checkOutDatetime", CheckOutDatetime);
@@ -41,7 +46,7 @@ namespace Model
             {
                 if (selectedRecord.TryGetValue("ReservationDurationID", out idFromDatabase))
                 {
-                    this.ReservationID = Int32.Parse(idFromDatabase);                    
+                    this.Id = Int32.Parse(idFromDatabase);                    
                 }
             }
            

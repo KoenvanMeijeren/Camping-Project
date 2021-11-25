@@ -12,9 +12,9 @@ namespace Model
         public Reservation Reservation { get; private set; }
         public CampingGuest CampingGuest { get; private set; }
         
-        public ReservationCampingGuest(int id, Reservation reservation, CampingGuest campingGuest)
+        public ReservationCampingGuest(string id, Reservation reservation, CampingGuest campingGuest)
         {
-            this.Id = id;
+            this.Id = int.Parse(id);
             this.Reservation = reservation;
             this.CampingGuest = campingGuest;
         }

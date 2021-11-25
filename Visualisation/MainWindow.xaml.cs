@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SystemCore;
+using Model;
 
 namespace Visualisation
 {
@@ -31,6 +32,10 @@ namespace Visualisation
             
             this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
             this._reservationCollectionFrame = new ReservationCollectionPage();
+
+            ReservationCollection reservationCollection = new ReservationCollection();
+            var results = reservationCollection.Select();
+
         }
 
         private void ReserveButtonClick(object sender, RoutedEventArgs e)

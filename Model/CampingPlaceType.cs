@@ -8,11 +8,11 @@ namespace Model
         
         public Accommodation Accommodation { get; private set; }
 
-        public CampingPlaceType(int id, int guestLimit, float standardNightPrice, Accommodation accommodation)
+        public CampingPlaceType(string id, string guestLimit, string standardNightPrice, Accommodation accommodation)
         {
-            this.Id = id;
-            this.guestLimit = guestLimit;
-            this.StandardNightPrice = standardNightPrice;
+            this.Id = int.Parse(id);
+            this.guestLimit = int.Parse(guestLimit);
+            this.StandardNightPrice = float.Parse(standardNightPrice);
             this.Accommodation = accommodation;
         }
         

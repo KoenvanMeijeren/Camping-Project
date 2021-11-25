@@ -6,9 +6,9 @@ namespace Model
         
         public string Name { get; private set; }
 
-        public CampingOwner(int id, string name)
+        public CampingOwner(string id, string name)
         {
-            this.Id = id;
+            this.Id = int.Parse(id);
             this.Name = name;
         }
         

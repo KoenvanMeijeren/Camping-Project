@@ -15,12 +15,12 @@ namespace Model
         
         public CampingPlaceType Type { get; private set; }
 
-        public CampingPlace(int id, int number, float surface, float extraNightPrice, CampingPlaceType campingPlaceType)
+        public CampingPlace(string id, string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType)
         {
-            this.Id = id;
-            this.Number = number;
-            this.Surface = surface;
-            this.ExtraNightPrice = extraNightPrice;
+            this.Id = int.Parse(id);
+            this.Number = int.Parse(number);
+            this.Surface = float.Parse(surface);
+            this.ExtraNightPrice = float.Parse(extraNightPrice);
             this.Type = campingPlaceType;
         }
         
