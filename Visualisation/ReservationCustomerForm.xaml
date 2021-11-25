@@ -13,7 +13,7 @@
 
         <Label Content="Uw gegevens&#xA;" HorizontalAlignment="Left" Margin="94,116,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Label Content="Voornaam" HorizontalAlignment="Left" Margin="94,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Text="Voornaam" Name="CustomerFirstName" BorderThickness="3" Height="24"  Width="121" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="95,195,0,0" TextChanged="TextBox_TextChanged">
+        <TextBox Text="Voornaam" Name="CustomerFirstName" BorderThickness="3" Height="24"  Width="149" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="95,195,0,0" TextChanged="TextBox_TextChanged">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -24,8 +24,8 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Achternaam" HorizontalAlignment="Left" Margin="242,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Text="Achternaam" Name="CustomerLastName"  BorderThickness="3" Height="24"  Width="130" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="242,196,0,0">
+        <Label Content="Achternaam" HorizontalAlignment="Left" Margin="265,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <TextBox Text="Achternaam" Name="CustomerLastName"  BorderThickness="3" Height="24"  Width="145" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,196,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -84,7 +84,7 @@
         </TextBox>
 
         <Label Content="Postcode" HorizontalAlignment="Left" Margin="94,419,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Postcode" Name="CustomerPostalcode" BorderThickness="3" Height="24"  Width="121" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,442,0,0">
+        <TextBox Text="Postcode" Name="CustomerPostalcode" BorderThickness="3" Height="24"  Width="178" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,442,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -95,8 +95,8 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Plaatsnaam" HorizontalAlignment="Left" Margin="265,419,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Plaatsnaam" Name="CustomerPlacename" BorderThickness="3" Height="24"  Width="121" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,442,0,0">
+        <Label Content="Plaatsnaam" HorizontalAlignment="Left" Margin="295,416,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Text="Plaatsnaam" Name="CustomerPlacename" BorderThickness="3" Height="24"  Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="295,442,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -107,13 +107,22 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Button Content="Bevestig" Margin="457,431,119,161" Background="black" Foreground="white" FontSize="16" FontFamily="Century gothic" Click="ReservationCustomerFormSubmit">
+        <Button Content="Bevestig" Margin="479,432,119,161" Background="black" Foreground="white" FontSize="16" FontFamily="Century gothic" Click="ReservationCustomerFormSubmit">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
                 </Style>
             </Button.Resources>
         </Button>
+
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorFirstName" Margin="95,227,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="149"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorLastName" Margin="265,227,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="149"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorMail" Margin="465,224,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="194"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorBirthDate" Margin="95,317,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="243"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorPhonenumber" Margin="465,326,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="194"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorAddress" Margin="95,393,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="231"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorPostalcode" Margin="94,471,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="179"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorPlacename" Margin="295,471,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="150"/>
     </Grid>
 
 </Page>

@@ -33,6 +33,7 @@ namespace Visualisation
 
         private void ReservationCustomerFormSubmit(object sender, RoutedEventArgs e)
         {
+            //neem textbox mee
             string firstName = CheckInput(CustomerFirstName.Text.Trim()) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerFirstName.Text.Trim() : "";
             string lastName = CheckInput(CustomerLastName.Text.Trim()) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerLastName.Text.Trim() : "";
             string birthdate = CheckInput(CustomerBirthDate.Text.Trim()) && CheckBirthDate(CustomerBirthDate.Text.Trim()) ? CustomerBirthDate.Text.Trim() : "";
@@ -40,6 +41,7 @@ namespace Visualisation
             string streetname = CheckInput(CustomerAddress.Text.Trim()) && CheckAddress(CustomerAddress.Text.Trim()) ? CustomerAddress.Text.Trim() : "";
             string postalcode = CheckInput(CustomerPostalcode.Text.Trim()) && ValidatePostalcode(CustomerPostalcode.Text.Trim()) ? CustomerPostalcode.Text.Trim() : "";
             string placename = CheckInput(CustomerPlacename.Text.Trim()) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerPlacename.Text.Trim() : "";
+            string emailadres = CheckInput(CustomerMailadres.Text.Trim()) && CheckEmail(CustomerMailadres.Text.Trim()) ? CustomerMailadres.Text.Trim() : "";
 
 
         }
@@ -88,9 +90,25 @@ namespace Visualisation
             return false;
         }
 
-        private void ErrorMessageBuilder()
+        private void ErrorFieldIsEmpty()
+        {            
+            ErrorFirstName.Content = "";
+            ErrorLastName.Content = "";
+            ErrorBirthDate.Content = "";
+            ErrorPhonenumber.Content = "";
+            ErrorPostalcode.Content = "";
+            ErrorPlacename.Content = "";
+        }
+
+        private void ErrorFieldIsIncorrect()
         {
 
+            ErrorFirstName.Content = "";
+            ErrorLastName.Content = "";
+            ErrorBirthDate.Content = "";
+            ErrorPhonenumber.Content = "";
+            ErrorPostalcode.Content = "";
+            ErrorPlacename.Content = "";
         }
 
         private static bool CheckBirthDate(string birthDate)
