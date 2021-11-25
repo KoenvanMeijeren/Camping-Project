@@ -32,7 +32,6 @@ namespace Visualisation
             
             this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
             this._reservationCollectionFrame = new ReservationCollectionPage();
-
         }
 
         private void ReserveButtonClick(object sender, RoutedEventArgs e)
