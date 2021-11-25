@@ -21,9 +21,13 @@ namespace Visualisation
     /// </summary>
     public partial class ReservationCustomerForm : Page
     {
+        private string ErrorMessageFieldIsEmpty { get; set; }
+        private string ErrorMessageFieldIsIncorrect { get; set; }
         public ReservationCustomerForm()
         {
             InitializeComponent();
+            ErrorMessageFieldIsEmpty = " is een verplicht vak.";
+            ErrorMessageFieldIsIncorrect = " is incorrect ingevuld.";
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -33,17 +37,24 @@ namespace Visualisation
 
         private void ReservationCustomerFormSubmit(object sender, RoutedEventArgs e)
         {
-            //neem textbox mee
-            string firstName = CheckInput(CustomerFirstName.Text.Trim()) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerFirstName.Text.Trim() : "";
-            string lastName = CheckInput(CustomerLastName.Text.Trim()) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerLastName.Text.Trim() : "";
-            string birthdate = CheckInput(CustomerBirthDate.Text.Trim()) && CheckBirthDate(CustomerBirthDate.Text.Trim()) ? CustomerBirthDate.Text.Trim() : "";
-            string phonenumber = CheckInput(CustomerPhonenumber.Text.Trim()) && CheckPhoneNumber(CustomerPhonenumber.Text.Trim()) ? CustomerPhonenumber.Text.Trim() : "";
-            string streetname = CheckInput(CustomerAddress.Text.Trim()) && CheckAddress(CustomerAddress.Text.Trim()) ? CustomerAddress.Text.Trim() : "";
-            string postalcode = CheckInput(CustomerPostalcode.Text.Trim()) && ValidatePostalcode(CustomerPostalcode.Text.Trim()) ? CustomerPostalcode.Text.Trim() : "";
-            string placename = CheckInput(CustomerPlacename.Text.Trim()) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerPlacename.Text.Trim() : "";
-            string emailadres = CheckInput(CustomerMailadres.Text.Trim()) && CheckEmail(CustomerMailadres.Text.Trim()) ? CustomerMailadres.Text.Trim() : "";
+            string firstName = CheckInput(CustomerFirstName) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerFirstName.Text.Trim() : "";
+            string lastName = CheckInput(CustomerLastName) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerLastName.Text.Trim() : "";
+            string birthdate = CheckBirthDate(CustomerBirthDate.Text.Trim()) ? CustomerBirthDate.Text.Trim() : "";//can't checkInput, no textbox type
+            string phonenumber = CheckInput(CustomerPhonenumber) && CheckPhoneNumber(CustomerPhonenumber.Text.Trim()) ? CustomerPhonenumber.Text.Trim() : "";
+            string streetname = CheckInput(CustomerAddress) && CheckAddress(CustomerAddress.Text.Trim()) ? CustomerAddress.Text.Trim() : "";
+            string postalcode = CheckInput(CustomerPostalcode) && ValidatePostalcode(CustomerPostalcode.Text.Trim()) ? CustomerPostalcode.Text.Trim() : "";
+            string placename = CheckInput(CustomerPlacename) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerPlacename.Text.Trim() : "";
+            string emailadres = CheckInput(CustomerMailadres) && CheckEmail(CustomerMailadres.Text.Trim()) ? CustomerMailadres.Text.Trim() : "";
 
 
+        }
+
+        private bool CheckLegalAge(DatePicker selectedBirthDate)
+        {
+            //calculate age
+            //return true if age >=18
+
+            return false;
         }
 
         private static bool CheckPostalcode(string postalcode)
@@ -78,37 +89,73 @@ namespace Visualisation
             return regex.IsMatch(inputNameValue);
         }
 
-        private Boolean CheckInput(string inputvalue)
+        private Boolean CheckInput(TextBox input)
         {
-            if (inputvalue != null || inputvalue != string.Empty)
+            if (input != null || input.Text != string.Empty)
             {
-                if (inputvalue.Length > 0)
+                if (input.Text.Trim().Length > 0)
                 {
                     return true;
+                }
+                else
+                {
+                    ErrorFieldIsEmpty(input);
                 }
             }
             return false;
         }
 
-        private void ErrorFieldIsEmpty()
-        {            
-            ErrorFirstName.Content = "";
-            ErrorLastName.Content = "";
-            ErrorBirthDate.Content = "";
-            ErrorPhonenumber.Content = "";
-            ErrorPostalcode.Content = "";
-            ErrorPlacename.Content = "";
+        private void ErrorFieldIsEmpty(TextBox emptyFieldTextbox)
+        {
+            if (emptyFieldTextbox.Name.ToLower().Contains("name"))
+            {
+                if (emptyFieldTextbox.Name.Equals("CustomerFirstName"))
+                {
+                    ErrorPlacename.Content = "Voornaam" + ErrorMessageFieldIsEmpty; ;
+                }
+                else if (emptyFieldTextbox.Name.Equals("CustomerLastName"))
+                {
+                    ErrorLastName.Content = "Achternaam" + ErrorMessageFieldIsEmpty; ;
+                }
+                else
+                {
+                    ErrorFirstName.Content = "Plaatsnaam" + ErrorMessageFieldIsEmpty; ;
+                }         
+            } else if (emptyFieldTextbox.Name.Equals("CustomerPhonenumber"))
+            {
+                ErrorPhonenumber.Content = "Telefoonnummer" + ErrorMessageFieldIsEmpty;
+            }else 
+            {
+                ErrorPostalcode.Content = "Poscode" + ErrorMessageFieldIsEmpty; ;
+            }
+            
         }
 
-        private void ErrorFieldIsIncorrect()
+        private void ErrorFieldIsIncorrect(TextBox incorrectFieldTextbox)
         {
-
-            ErrorFirstName.Content = "";
-            ErrorLastName.Content = "";
-            ErrorBirthDate.Content = "";
-            ErrorPhonenumber.Content = "";
-            ErrorPostalcode.Content = "";
-            ErrorPlacename.Content = "";
+            if (incorrectFieldTextbox.Name.ToLower().Contains("name"))
+            {
+                if (incorrectFieldTextbox.Name.Equals("CustomerFirstName"))
+                {
+                    ErrorPlacename.Content = "Voornaam" + ErrorMessageFieldIsIncorrect; ;
+                }
+                else if (incorrectFieldTextbox.Name.Equals("CustomerLastName"))
+                {
+                    ErrorLastName.Content = "Achternaam" + ErrorMessageFieldIsIncorrect; ;
+                }
+                else
+                {
+                    ErrorFirstName.Content = "Plaatsnaam" + ErrorMessageFieldIsIncorrect; ;
+                }
+            }
+            else if (incorrectFieldTextbox.Name.Equals("CustomerPhonenumber"))
+            {
+                ErrorPhonenumber.Content = "Telefoonnummer" + ErrorMessageFieldIsIncorrect;
+            }
+            else
+            {
+                ErrorPostalcode.Content = "Poscode" + ErrorMessageFieldIsIncorrect; ;
+            }
         }
 
         private static bool CheckBirthDate(string birthDate)
@@ -141,8 +188,6 @@ namespace Visualisation
             return regex.IsMatch(phoneNumber.Trim());
         }
 
-
-
     }
 }
-}
+
