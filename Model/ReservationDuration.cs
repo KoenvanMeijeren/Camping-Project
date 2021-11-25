@@ -22,7 +22,7 @@ namespace Model
         }
 
 
-        private Boolean insertReservationDuration()
+        private Boolean InsertReservationDuration()
         {
             //ID hoeft niet worden meegegeven i.v.m. auto-increment
             Query insertNewReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@checkinDatetime, @checkOutDatetime) OUTPUT inserted.ReservationDurationID");
@@ -30,12 +30,12 @@ namespace Model
             insertNewReservationDurationQuery.AddParameter("checkOutDatetime", CheckOutDatetime);
             insertNewReservationDurationQuery.Execute();
 
-            getReservationID();
+            GetReservationID();
            
             return insertNewReservationDurationQuery.SuccessFullyExecuted();
         }
 
-        private void getReservationID()
+        private void GetReservationID()
         {
             string idFromDatabase = "";
 

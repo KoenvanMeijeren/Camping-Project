@@ -14,7 +14,7 @@ namespace Model
         public int CampingCustomerID { get; private set; }
         public ReservationDuration duration { get; private set; }
 
-        private Boolean insertReservation()
+        private Boolean InsertReservation()
         {
             //ID hoeft niet worden meegegeven i.v.m. auto-increment
             Query insertNewReservationQuery = new Query("INSERT INTO Reservation VALUES (@campingPlaceID, @numberOfPeople, @campingCustomerID, @reservationDurationID)");
