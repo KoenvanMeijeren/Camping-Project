@@ -26,10 +26,6 @@ namespace Model
                 dictionary.TryGetValue("NumberOfPeople", out string peopleCount);
                 int.TryParse(campingPlaceId, out int campingPlaceIdNumeric);
                 int.TryParse(peopleCount, out int peopleCountNumeric);
-
-                Reservation reservation = new Reservation(campingPlaceIdNumeric, peopleCountNumeric, null);
-                
-                this._collection.Add(reservation);
             }
 
             return this._collection;

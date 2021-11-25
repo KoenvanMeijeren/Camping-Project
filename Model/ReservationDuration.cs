@@ -15,13 +15,6 @@ namespace Model
         private DateTime CheckOutDatetime { get; set; }
 
 
-        public void SetDuration(DateTime checkin, DateTime checkout)
-        {
-            CheckInDatetime = checkin;
-            CheckInDatetime = checkout;
-        }
-
-
         private Boolean InsertReservationDuration()
         {
             //ID hoeft niet worden meegegeven i.v.m. auto-increment

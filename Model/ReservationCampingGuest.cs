@@ -8,5 +8,16 @@ namespace Model
 {
     public class ReservationCampingGuest
     {
+        public int Id { get; private set; }
+        public Reservation Reservation { get; private set; }
+        public CampingGuest CampingGuest { get; private set; }
+        
+        public ReservationCampingGuest(int id, Reservation reservation, CampingGuest campingGuest)
+        {
+            this.Id = id;
+            this.Reservation = reservation;
+            this.CampingGuest = campingGuest;
+        }
+        
     }
 }

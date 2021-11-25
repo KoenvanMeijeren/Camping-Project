@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,34 +10,45 @@ namespace Model
 {
     public class Reservation
     {
-        public int CampingPlaceID { get; private set; }
+        
+        public int Id;
         public int NumberOfPeople { get; private set; }
-        public int CampingCustomerID { get; private set; }
-        public ReservationDuration duration { get; private set; }
+        
+        public CampingCustomer CampingCustomer { get; private set; }
+        public CampingPlace CampingPlace { get; private set; }
+        public ReservationDuration Duration { get; private set; }
 
-        public Reservation(int campingPlaceId, int numberOfPeople, ReservationDuration duration)
+        public Reservation(int id, int numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
         {
-            this.CampingPlaceID = campingPlaceId;
+            this.Id = id;
             this.NumberOfPeople = numberOfPeople;
-            this.duration = duration;
+            this.CampingCustomer = campingCustomer;
+            this.CampingPlace = campingPlace;
+            this.Duration = duration;
         }
         
-        public Boolean Insert()
+        public Boolean Insert(CampingPlace campingPlace, ReservationDuration reservationDuration)
         {
+            if (this.Id > 0)
+            {
+                throw new ArgumentException("You cannot insert an existing reservation.");
+                return false;
+            }
+            
             Query insertNewReservationQuery = new Query("INSERT INTO Reservation VALUES (@campingPlaceID, @numberOfPeople, @campingCustomerID, @reservationDurationID)");
-            insertNewReservationQuery.AddParameter("campingPlaceID", CampingPlaceID);
-            insertNewReservationQuery.AddParameter("numberOfPeople", NumberOfPeople);
-            insertNewReservationQuery.AddParameter("campingCustomerID", CampingCustomerID);
-            insertNewReservationQuery.AddParameter("reservationDurationID", duration.ReservationID);//ophalen van id
+            insertNewReservationQuery.AddParameter("campingPlaceID", campingPlace.Id);
+            insertNewReservationQuery.AddParameter("numberOfPeople", this.NumberOfPeople);
+            insertNewReservationQuery.AddParameter("campingCustomerID", this.CampingCustomer.Id);
+            insertNewReservationQuery.AddParameter("reservationDurationID", reservationDuration.ReservationID);
             insertNewReservationQuery.Execute();
             
             return insertNewReservationQuery.SuccessFullyExecuted();
         }
 
-        public Boolean Delete(int id)
+        public Boolean Delete()
         {
             Query deleteQuery = new Query("DELETE FROM Reservation WHERE id = @id");
-            deleteQuery.AddParameter("id", id);
+            deleteQuery.AddParameter("id", this.Id);
             deleteQuery.Execute();
 
             return deleteQuery.SuccessFullyExecuted();
