@@ -1,6 +1,6 @@
 namespace Model
 {
-    public class Accommodation
+    public class Accommodation : IModel
     {
         public int Id { get; private set; }
         public string Prefix { get; private set; }

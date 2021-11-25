@@ -1,6 +1,6 @@
 namespace Model
 {
-    public class CampingPlaceType
+    public class CampingPlaceType : IModel
     {
         public int Id { get; private set; }
         public int guestLimit { get; private set; }

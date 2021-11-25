@@ -1,6 +1,6 @@
 namespace Model
 {
-    public class Address
+    public class Address : IModel
     {
         public int Id { get; private set; }
 

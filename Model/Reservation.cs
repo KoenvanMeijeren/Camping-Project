@@ -8,7 +8,7 @@ using SystemCore;
 
 namespace Model
 {
-    public class Reservation
+    public class Reservation : IModel
     {
         
         public int Id;

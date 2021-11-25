@@ -3,7 +3,7 @@ using SystemCore;
 
 namespace Model
 {
-    public class ReservationCollection
+    public class ReservationCollection : IModelCollection
     {
         private List<Reservation> _collection;
 
@@ -22,13 +22,13 @@ namespace Model
             var reservations = (new Query(this.BaseQuery())).Select();
             foreach (Dictionary<string,string> dictionary in reservations)
             {
-                this._collection.Add(this.DictionaryToReservation(dictionary));
+                this._collection.Add(this.ToModel(dictionary));
             }
 
             return this._collection;
         }
 
-        private Reservation DictionaryToReservation(Dictionary<string, string> dictionary)
+        private Reservation ToModel(Dictionary<string, string> dictionary)
         {
             dictionary.TryGetValue("ReservationID", out string reservationId);
             dictionary.TryGetValue("CampingCustomerID", out string campingCustomerId);
