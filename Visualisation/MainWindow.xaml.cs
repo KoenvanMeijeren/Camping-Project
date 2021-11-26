@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SystemCore;
+using Model;
+using Visualisation.Model;
 
 namespace Visualisation
 {
@@ -26,6 +28,8 @@ namespace Visualisation
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
 
+        public static event EventHandler<ReservationEventArgs> ReservationsChanged;
+        
         public MainWindow()
         {
             this.InitializeComponent();
@@ -54,7 +58,9 @@ namespace Visualisation
             this.ReserveButton.Background = Brushes.White;
             this.ReserveButton.Foreground = Brushes.Black;
 
-            this.MainFrame.Content = this._reservationCustomerForm.Content;
+            this.MainFrame.Content = this._reservationCollectionFrame.Content;
+            
+            MainWindow.ReservationsChanged?.Invoke(this, new ReservationEventArgs(ReservationCollection.Select()));
         }
     }
 }

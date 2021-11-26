@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Model;
+using Visualisation.Model;
 
 namespace Visualisation
 {
@@ -20,6 +22,7 @@ namespace Visualisation
     /// </summary>
     public partial class ReservationCollectionPage : Page
     {
+
         public ReservationCollectionPage()
         {
             this.InitializeComponent();

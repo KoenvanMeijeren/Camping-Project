@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    class ReservationCampingGuest
+    public class ReservationCampingGuest : IModel
     {
+        public int Id { get; private set; }
+        public Reservation Reservation { get; private set; }
+        public CampingGuest CampingGuest { get; private set; }
+        
+        public ReservationCampingGuest(string id, Reservation reservation, CampingGuest campingGuest)
+        {
+            this.Id = int.Parse(id);
+            this.Reservation = reservation;
+            this.CampingGuest = campingGuest;
+        }
+        
     }
 }
