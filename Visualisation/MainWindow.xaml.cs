@@ -50,6 +50,8 @@ namespace Visualisation
 
         private void OverviewButtonClick(object sender, RoutedEventArgs e)
         {
+            MainWindow.ReservationsChanged?.Invoke(this, new ReservationEventArgs(ReservationCollection.Select()));
+            
             this.OverviewButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
             this.OverviewButton.Foreground = Brushes.White;
 
@@ -57,8 +59,6 @@ namespace Visualisation
             this.ReserveButton.Foreground = Brushes.Black;
 
             this.MainFrame.Content = this._reservationCollectionFrame.Content;
-            
-            MainWindow.ReservationsChanged?.Invoke(this, new ReservationEventArgs(ReservationCollection.Select()));
         }
     }
 }
