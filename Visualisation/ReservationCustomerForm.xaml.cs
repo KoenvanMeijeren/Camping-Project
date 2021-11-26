@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SystemCore;
 
 namespace Visualisation
 {
@@ -23,7 +24,7 @@ namespace Visualisation
     {
         private string ErrorMessageFieldIsEmpty { get; set; }
         private string ErrorMessageFieldIsIncorrect { get; set; }
-        private bool _errorHasOccurred;
+        private bool _errorHasOccurred { get; set; }
 
         public ReservationCustomerForm()
         {
@@ -40,19 +41,118 @@ namespace Visualisation
         private void ReservationCustomerFormSubmit(object sender, RoutedEventArgs e)
         {
             _errorHasOccurred = false;
-            string firstName = CheckInput(CustomerFirstName) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerFirstName.Text.Trim() : "";
-            string lastName = CheckInput(CustomerLastName) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerLastName.Text.Trim() : "";
-            string birthdate = CheckBirthDate(CustomerBirthDate.Text.Trim()) && CheckLegalAge(CustomerBirthDate) ? CustomerBirthDate.Text.Trim() : "";
-            string phonenumber = CheckInput(CustomerPhonenumber) && CheckPhoneNumber(CustomerPhonenumber.Text.Trim()) ? CustomerPhonenumber.Text.Trim() : "";
-            string streetname = CheckInput(CustomerAddress) && CheckAddress(CustomerAddress.Text.Trim()) ? CustomerAddress.Text.Trim() : "";
-            string postalcode = CheckInput(CustomerPostalcode) && ValidatePostalcode(CustomerPostalcode.Text.Trim()) ? CustomerPostalcode.Text.Trim() : "";
-            string placename = CheckInput(CustomerPlacename) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerPlacename.Text.Trim() : "";
-            string emailadres = CheckInput(CustomerMailadres) && CheckEmail(CustomerMailadres.Text.Trim()) ? CustomerMailadres.Text.Trim() : "";
+            /*            string firstName = CheckInput(CustomerFirstName) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerFirstName.Text.Trim() : "";
+                        string lastName = CheckInput(CustomerLastName) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerLastName.Text.Trim() : "";
+                        string birthdate = CheckBirthDate(CustomerBirthDate.Text.Trim()) && CheckLegalAge(CustomerBirthDate) ? CustomerBirthDate.Text.Trim() : "";
+                        string phonenumber = CheckInput(CustomerPhonenumber) && CheckPhoneNumber(CustomerPhonenumber.Text.Trim()) ? CustomerPhonenumber.Text.Trim() : "";
+                        string streetname = CheckInput(CustomerAddress) && CheckAddress(CustomerAddress.Text.Trim()) ? CustomerAddress.Text.Trim() : "";
+                        string postalcode = CheckInput(CustomerPostalcode) && ValidatePostalcode(CustomerPostalcode.Text.Trim()) ? CustomerPostalcode.Text.Trim() : "";
+                        string placename = CheckInput(CustomerPlacename) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerPlacename.Text.Trim() : "";
+                        string emailadres = CheckInput(CustomerMailadres) && CheckEmail(CustomerMailadres.Text.Trim()) ? CustomerMailadres.Text.Trim() : "";*/
 
+            Console.WriteLine("Reservation submit button has been pressed");
+
+            string firstName = CustomerFirstName.Text.Trim();
+            string lastName = CustomerLastName.Text.Trim();
+            string birthdate = CustomerBirthDate.SelectedDate.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            string phonenumber = CustomerPhonenumber.Text.Trim();
+            string streetname = CustomerAddress.Text.Trim();
+            string postalcode = CustomerPostalcode.Text.Trim();
+            string placename = CustomerPlacename.Text.Trim();
+            string emailadres = CustomerMailadres.Text.Trim();
+
+            // Firstname validation
+/*            if (!CheckInputTemporary(firstName) && !ValidateInputOnlyLetters(firstName)) 
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                Console.WriteLine("Error: firstName invalid");
+            }*/
+
+            // Lastname validation
+/*            if (!CheckInputTemporary(lastName) && !ValidateInputOnlyLetters(lastName))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                Console.WriteLine("Error: lastName invalid");
+            }*/
+
+            // Birthdate validation
+            // TODO: CheckLegalAge moet nog worden geïmplementeerd.
+/*            if (!CheckBirthDate(birthdate))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                Console.WriteLine("Error: birthdate invalid");
+            }*/
+
+            // Phonenumber validation
+            // TODO: Phonenumber regex toevoegen
+/*            if (!CheckInputTemporary(phonenumber))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                Console.WriteLine("Error: phonenumber invalid");
+            }*/
+
+            // Streetname validation
+            // TODO: Streetname regex toevoegen
+/*            if (!CheckInputTemporary(streetname))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                Console.WriteLine("Error: streetname invalid");
+            }*/
+
+            // Postalcode validation
+            // TODO: postalcode regex toevoegen
+/*            if (!CheckInputTemporary(postalcode))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                Console.WriteLine("Error: postalcode invalid");
+            }*/
+
+            // Streetname validation
+/*            if (!CheckInputTemporary(streetname))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                Console.WriteLine("Error: streetname invalid");
+            }*/
+
+            // Emailadres validation
+            // TODO: emailadres regex toevoegen (later implementeren)
+/*            if (!CheckInputTemporary(emailadres))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                Console.WriteLine("Error: emailadres invalid");
+            }*/
+
+
+            // Case submit was valid
             if (!_errorHasOccurred)
             {
+                //TODO: Toevoegen gegevens aan Address tabel, ID ophalen en toevoegen aan 
+                int AddressId = 6;
+
+                Query insertQuery = new Query("INSERT INTO CampingCustomer VALUES (@CampingCustomerAddressID, @Birthdate, @Email, @PhoneNumber, @CustomerFirstName, @CustomerLastName)");
+                insertQuery.AddParameter("CampingCustomerAddressID", AddressId);
+                insertQuery.AddParameter("Birthdate", birthdate);
+                insertQuery.AddParameter("Email", emailadres);
+                insertQuery.AddParameter("PhoneNumber", phonenumber);
+                insertQuery.AddParameter("CustomerFirstName", firstName);
+                insertQuery.AddParameter("CustomerLastName", lastName);
+                insertQuery.Execute();
+
                 //actie naar controller?
             }
+        }
+
+        private bool CheckInputTemporary(string input)
+        {
+            return (input != null || input != string.Empty); 
         }
 
         private bool CheckLegalAge(DatePicker selectedBirthDate)

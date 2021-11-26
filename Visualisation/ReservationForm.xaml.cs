@@ -20,7 +20,6 @@ namespace Visualisation
     /// </summary>
     public partial class ReservationForm : Page
     {
-        private 
         public ReservationForm()
         {
             InitializeComponent();

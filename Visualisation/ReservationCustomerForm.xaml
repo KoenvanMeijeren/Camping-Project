@@ -13,7 +13,7 @@
 
         <Label Content="Uw gegevens&#xA;" HorizontalAlignment="Left" Margin="94,116,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Label Content="Voornaam" HorizontalAlignment="Left" Margin="94,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Text="Voornaam" Name="CustomerFirstName" BorderThickness="3" Height="24"  Width="149" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="95,195,0,0" TextChanged="TextBox_TextChanged">
+        <TextBox Name="CustomerFirstName" BorderThickness="3" Height="24"  Width="149" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="95,195,0,0" TextChanged="TextBox_TextChanged">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -25,7 +25,7 @@
         </TextBox>
 
         <Label Content="Achternaam" HorizontalAlignment="Left" Margin="265,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Text="Achternaam" Name="CustomerLastName"  BorderThickness="3" Height="24"  Width="145" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,196,0,0">
+        <TextBox Name="CustomerLastName"  BorderThickness="3" Height="24"  Width="145" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,196,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -40,7 +40,7 @@
         <DatePicker Height="28" HorizontalAlignment="Left" Margin="94,289,0,0" Name="CustomerBirthDate" VerticalAlignment="Top" Width="244" />
 
         <Label Content="Mailadres" HorizontalAlignment="Left" Margin="465,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Text="Mailadres" Name="CustomerMailadres" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,195,0,0">
+        <TextBox Name="CustomerMailadres" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,195,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -52,7 +52,7 @@
         </TextBox>
 
         <Label Content="Telefoonnummer" HorizontalAlignment="Left" Margin="465,262,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Telefoonnummer" Name="CustomerPhonenumber" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,293,0,0">
+        <TextBox Name="CustomerPhonenumber" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,293,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -64,7 +64,7 @@
         </TextBox>
 
         <Label Content="Adres" HorizontalAlignment="Left" Margin="95,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Adres" Name="CustomerAddress" BorderThickness="3" Height="24"  Width="233" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,367,0,0" RenderTransformOrigin="0.5,0.5">
+        <TextBox Name="CustomerAddress" BorderThickness="3" Height="24"  Width="233" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,367,0,0" RenderTransformOrigin="0.5,0.5">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -84,7 +84,7 @@
         </TextBox>
 
         <Label Content="Postcode" HorizontalAlignment="Left" Margin="94,419,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Postcode" Name="CustomerPostalcode" BorderThickness="3" Height="24"  Width="178" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,442,0,0">
+        <TextBox Name="CustomerPostalcode" BorderThickness="3" Height="24"  Width="178" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,442,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -96,7 +96,7 @@
         </TextBox>
 
         <Label Content="Plaatsnaam" HorizontalAlignment="Left" Margin="295,416,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Text="Plaatsnaam" Name="CustomerPlacename" BorderThickness="3" Height="24"  Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="295,442,0,0">
+        <TextBox Name="CustomerPlacename" BorderThickness="3" Height="24"  Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="295,442,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>

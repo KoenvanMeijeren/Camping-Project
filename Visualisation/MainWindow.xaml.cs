@@ -24,6 +24,7 @@ namespace Visualisation
     {
         private readonly CampingPitchesCollectionPage _campingPitchesCollectionFrame;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
+        private readonly ReservationCustomerForm _reservationCustomerForm;
 
         public MainWindow()
         {
@@ -31,6 +32,7 @@ namespace Visualisation
             
             this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
             this._reservationCollectionFrame = new ReservationCollectionPage();
+            this._reservationCustomerForm = new ReservationCustomerForm();
         }
 
         private void ReserveButtonClick(object sender, RoutedEventArgs e)
@@ -52,7 +54,7 @@ namespace Visualisation
             this.ReserveButton.Background = Brushes.White;
             this.ReserveButton.Foreground = Brushes.Black;
 
-            this.MainFrame.Content = this._reservationCollectionFrame.Content;
+            this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
     }
 }

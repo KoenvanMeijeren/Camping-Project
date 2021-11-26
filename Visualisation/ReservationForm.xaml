@@ -16,20 +16,5 @@
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,38,280,79" CornerRadius="15,15,15,15" Background="White"/>
         <Label Content="Toevoegen campinggasten" HorizontalAlignment="Left" Margin="51,53,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
 
-        <Button Content="Bevestig" Margin="571,569,27,24" Background="black" Foreground="white" FontSize="16" FontFamily="Century gothic" Click="ReservationFormSubmit">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="5"/>
-                </Style>
-            </Button.Resources>
-        </Button>
-
-        <Button Content="Annuleer" Margin="30,569,568,24" Background="black" Foreground="white" FontSize="16" FontFamily="Century gothic" Click="ReservationFormSubmit">
-            <Button.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="5"/>
-                </Style>
-            </Button.Resources>
-        </Button>
     </Grid>
 </Page>
