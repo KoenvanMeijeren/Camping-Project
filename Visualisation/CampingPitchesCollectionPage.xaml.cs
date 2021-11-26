@@ -25,7 +25,7 @@ namespace Visualisation
         public CampingPitchesCollectionPage()
         {
             this.InitializeComponent();
-            this.CampingPitchLocationDropdown.ItemsSource = CampingPlaceDataCollection.SelectLocations();
+            this.CampingPitchLocationDropdown.ItemsSource = CampingPlaceViewDataCollection.SelectLocations();
 
             this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];
 
