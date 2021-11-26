@@ -22,49 +22,36 @@ namespace Visualisation
     /// </summary>
     public partial class CampingPitchesCollectionPage : Page
     {
+        private static List<CampingPlaceViewData> _campingPlaceViewDataCollection { get;  set; }
+        private String _filterAccommodationType { get; set; }
         public CampingPitchesCollectionPage()
         {
             this.InitializeComponent();
             this.CampingPitchLocationDropdown.ItemsSource = CampingPlaceViewDataCollection.SelectLocations();
-
             this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];
 
-            this.CampingViewDataGrid.ItemsSource = CampingPlaceViewDataCollection.Select();
+            SetOverview();
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FilterButton_Click(object sender, RoutedEventArgs e)
         {
-
+            _filterAccommodationType = CampingPitchTypeDropdown.Text;
+            SetOverview();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        public void SetOverview()
         {
+            _campingPlaceViewDataCollection = CampingPlaceViewDataCollection.Select();
 
-        }
+            if (_filterAccommodationType != null && _filterAccommodationType != "Alle")
+            {
+                var result = _campingPlaceViewDataCollection
+                    .Where(campingPlaceViewData => campingPlaceViewData.Type.Equals(_filterAccommodationType));
 
-        private void CampingPitchTypeDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+                _campingPlaceViewDataCollection = result.ToList();
+            }
 
-        }
-
-        private void CampingPitchLocationDropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CampingViewDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void ReserveButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
-        {
-
+            this.CampingViewDataGrid.ItemsSource = _campingPlaceViewDataCollection;
         }
     }
 }

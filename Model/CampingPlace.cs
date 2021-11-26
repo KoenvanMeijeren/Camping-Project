@@ -13,6 +13,8 @@ namespace Model
         public float Surface { get; private set; }
         public float ExtraNightPrice { get; private set; }
         public string Location { get; private set; }
+
+        public string LocationSelect { get; private set; }
         
         public float TotalPrice { get; private set; }
         
@@ -26,6 +28,7 @@ namespace Model
             this.ExtraNightPrice = float.Parse(extraNightPrice);
             this.Type = campingPlaceType;
             this.Location = this.GetLocation();
+            this.LocationSelect = this.GetLocationSelect();
             this.TotalPrice = this.ExtraNightPrice + this.Type.StandardNightPrice;
         }
         
@@ -34,7 +37,12 @@ namespace Model
         {
             return $"{this.Type.Accommodation.Prefix}-{this.Number}";
         }
-        
+
+        public string GetLocationSelect()
+        {
+            return $"{this.GetLocation()} ({this.Id})";
+        }
+
         public static CampingPlace ToModel(Dictionary<string, string> dictionary)
         {
             dictionary.TryGetValue("CampingPlaceID", out string campingPlaceId);

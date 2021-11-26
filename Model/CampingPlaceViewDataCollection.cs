@@ -12,7 +12,7 @@ namespace Model
         private static List<CampingPlaceViewData> _collection;
         
         private static List<string> _locations;
-        private static List<string> _campingPlaceTypes;
+        public static string FilterAccommodationType { get; set; }
 
 
         public static List<CampingPlaceViewData> Select()
@@ -35,7 +35,7 @@ namespace Model
             {
                 var campingPlace = CampingPlaceViewDataCollection.ToCampingPlaceModel(dictionary);
                 
-                CampingPlaceViewDataCollection._locations.Add(campingPlace.Location);
+                CampingPlaceViewDataCollection._locations.Add(campingPlace.LocationSelect);
             }
             
             return CampingPlaceViewDataCollection._locations;
