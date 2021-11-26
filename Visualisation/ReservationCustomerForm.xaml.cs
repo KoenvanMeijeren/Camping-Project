@@ -142,28 +142,52 @@ namespace Visualisation
             // Case submit was valid
             if (!_errorHasOccurred)
             {
-                //TODO: Toevoegen gegevens aan Address tabel, ID ophalen en toevoegen aan
+                //TODO: Transactie en toevoegen aan controller
+                // Insert user input address in Address table
                 Query addressInsertQuery = new Query("INSERT INTO Address VALUES (@Address, @Postalcode, @Place)");
                 addressInsertQuery.AddParameter("Address", streetname);
                 addressInsertQuery.AddParameter("Postalcode", postalcode);
                 addressInsertQuery.AddParameter("Place", placename);
                 addressInsertQuery.Execute();
 
-                Query fetchInsertedAddressID = new Query("SELECT SCOPE_IDENTITY()");
-                var result = fetchInsertedAddressID.Select();
+                // Fetch latest inserted addressID from Address table
+                Query fetchInsertedAddressID = new Query("SELECT AddressID FROM Address ORDER BY AddressID DESC");
+                var fetchedInsertedAddressID = fetchInsertedAddressID.SelectFirst();
+                fetchedInsertedAddressID.TryGetValue("AddressID", out string addressID);
 
-                int AddressId = 6;
+                // Insert customer into CampingCustomer table
+                Query insertCustomerQuery = new Query("INSERT INTO CampingCustomer VALUES (@CampingCustomerAddressID, @Birthdate, @Email, @PhoneNumber, @CustomerFirstName, @CustomerLastName)");
+                insertCustomerQuery.AddParameter("CampingCustomerAddressID", Int32.Parse(addressID));
+                insertCustomerQuery.AddParameter("Birthdate", birthdate);
+                insertCustomerQuery.AddParameter("Email", emailadres);
+                insertCustomerQuery.AddParameter("PhoneNumber", phonenumber);
+                insertCustomerQuery.AddParameter("CustomerFirstName", firstName);
+                insertCustomerQuery.AddParameter("CustomerLastName", lastName);
+                insertCustomerQuery.Execute();
 
-                Query insertQuery = new Query("INSERT INTO CampingCustomer VALUES (@CampingCustomerAddressID, @Birthdate, @Email, @PhoneNumber, @CustomerFirstName, @CustomerLastName)");
-                insertQuery.AddParameter("CampingCustomerAddressID", AddressId);
-                insertQuery.AddParameter("Birthdate", birthdate);
-                insertQuery.AddParameter("Email", emailadres);
-                insertQuery.AddParameter("PhoneNumber", phonenumber);
-                insertQuery.AddParameter("CustomerFirstName", firstName);
-                insertQuery.AddParameter("CustomerLastName", lastName);
-                insertQuery.Execute();
+                // Fetch latest inserted addressID from Address table
+                Query fetchInsertedCustomerID = new Query("SELECT CampingCustomerID FROM CampingCustomer ORDER BY CampingCustomerID DESC");
+                var fetchedInsertedCustomerID = fetchInsertedCustomerID.SelectFirst();
+                fetchedInsertedCustomerID.TryGetValue("CampingCustomerID", out string campingCustomerID);
 
-                //actie naar controller?
+                // Insert reservation duration in ReservationDuration table
+                Query insertReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@CheckinDatetime, @CheckoutDatetime)");
+                insertReservationDurationQuery.AddParameter("CheckinDatetime", "2020-01-01 10:00:00"); // TODO: Job, you know what to do
+                insertReservationDurationQuery.AddParameter("CheckoutDatetime", "2021-01-01 10:00:00"); // TODO: Job, you know what to do
+                insertReservationDurationQuery.Execute();
+
+                // Fetch latest inserted reservation duration
+                Query fetchInserterdReservationDurationID = new Query("SELECT ReservationDurationID FROM ReservationDuration ORDER BY ReservationDurationID DESC");
+                var fetchedInsertedReservationDurationID = fetchInserterdReservationDurationID.SelectFirst();
+                fetchedInsertedReservationDurationID.TryGetValue("ReservationDurationID", out string reservationDurationID);
+
+                // Insert reservation in Reservation table
+                Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
+                insertReservationQuery.AddParameter("CampingPlaceID", 18); // TODO: Job, you know what to do
+                insertReservationQuery.AddParameter("NumberOfPeople", 4); // TODO: Job, you know what to do
+                insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
+                insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
+                insertReservationQuery.Execute();
             }
         }
 
