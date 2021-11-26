@@ -10,7 +10,7 @@
 
     <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,29,560,506" CornerRadius="15,15,15,15" Background="White">
-            <ComboBox x:Name="CampingPitchTypeDropdown" Margin="22,48,22,23" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White">
+            <ComboBox x:Name="CampingPitchTypeDropdown" Margin="22,48,22,23" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White" SelectionChanged="CampingPitchTypeDropdown_SelectionChanged">
                 <ComboBoxItem Content="Alle" FontFamily="Century Gothic" VerticalContentAlignment="Center"/>
                 <ComboBoxItem Content="Bungalow" FontFamily="Century Gothic" VerticalContentAlignment="Center"/>
                 <ComboBoxItem Content="Camper" FontFamily="Century Gothic" VerticalContentAlignment="Center"/>
@@ -23,8 +23,14 @@
             <DatePicker Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
         </Border>
         <Label Content="Start datum" HorizontalAlignment="Left" Margin="296,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
-        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,147,30,37" CornerRadius="15,15,15,15" Background="White"/>
-        <Label Content="Beschikbare verblijven&#xD;&#xA;" HorizontalAlignment="Left" Margin="46,159,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,147,30,37" CornerRadius="15,15,15,15" Background="White">
+            <DataGrid x:Name="CampingViewDataGrid" Margin="23,54,23,54" Background="White" FontFamily="Century Gothic" FontWeight="Bold">
+                <DataGrid.Columns>
+                    
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+        <Label Content="Beschikbare verblijven" HorizontalAlignment="Left" Margin="46,159,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="454,29,219,506" CornerRadius="15,15,15,15" Background="White">
             <DatePicker Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
         </Border>
