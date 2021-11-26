@@ -25,8 +25,8 @@
                     <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Id}" />
                     <GridViewColumn Header="Camping verblijf" Width="100" DisplayMemberBinding="{Binding CampingPlace.Location}" />
                     <GridViewColumn Header="Klantnummer" Width="100" DisplayMemberBinding="{Binding CampingCustomer.Id}" />
-                    <GridViewColumn Header="Inchecken datum" Width="150" DisplayMemberBinding="{Binding Duration.CheckInDate}" />
-                    <GridViewColumn Header="Uitchecken datum" Width="150" DisplayMemberBinding="{Binding Duration.CheckOutDate}" />
+                    <GridViewColumn Header="Begindatum" Width="150" DisplayMemberBinding="{Binding Duration.CheckInDate}" />
+                    <GridViewColumn Header="Einddatum" Width="150" DisplayMemberBinding="{Binding Duration.CheckOutDate}" />
                     <GridViewColumn Header="Totaalprijs" Width="100" DisplayMemberBinding="{Binding TotalPriceString}" />
                 </GridView>
             </ListView.View>
