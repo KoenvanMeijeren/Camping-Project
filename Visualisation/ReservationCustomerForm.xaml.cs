@@ -63,6 +63,7 @@ namespace Visualisation
             string postalcode = CustomerPostalcode.Text.Trim();
             string placename = CustomerPlacename.Text.Trim();
             string emailadres = CustomerMailadres.Text.Trim();
+            string amountOfGuests = CustomerGuestAmount.Text.Trim();
 
             // Firstname validation
             /*            if (!CheckInputTemporary(firstName) && !ValidateInputOnlyLetters(firstName)) 
@@ -84,7 +85,7 @@ namespace Visualisation
             // TODO: CheckLegalAge moet nog worden geïmplementeerd.
             if (CustomerBirthDate.SelectedDate != null)
             {
-                birthdate = CustomerBirthDate.SelectedDate.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                birthdate = CustomerBirthDate.SelectedDate.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
 
 /*                if (!CheckBirthDate(birthdate))
                 {
@@ -184,7 +185,7 @@ namespace Visualisation
                 // Insert reservation in Reservation table
                 Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
                 insertReservationQuery.AddParameter("CampingPlaceID", 18); // TODO: Job, you know what to do
-                insertReservationQuery.AddParameter("NumberOfPeople", 4); // TODO: Job, you know what to do
+                insertReservationQuery.AddParameter("NumberOfPeople", Int32.Parse(amountOfGuests));
                 insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
                 insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
                 insertReservationQuery.Execute();
