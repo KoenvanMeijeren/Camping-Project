@@ -11,15 +11,17 @@ namespace Model
     public class Reservation : IModel
     {
         
-        public int Id;
+        public int Id { get; private set; }
         public int NumberOfPeople { get; private set; }
         
         public CampingCustomer CampingCustomer { get; private set; }
         public CampingPlace CampingPlace { get; private set; }
         public ReservationDuration Duration { get; private set; }
+        public float TotalPrice { get; private set; }
+        public string TotalPriceString { get; private set; }
 
         public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, 
-            ReservationDuration duration): this("0", numberOfPeople, campingCustomer, campingPlace, duration)
+            ReservationDuration duration): this("-1", numberOfPeople, campingCustomer, campingPlace, duration)
         {
         }
         
@@ -30,6 +32,16 @@ namespace Model
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.Duration = duration;
+            this.TotalPrice = this.CalculateTotalPrice();
+            this.TotalPriceString = $"€{this.TotalPrice}";
+        }
+
+        public float CalculateTotalPrice()
+        {
+            var timeSpan = this.Duration.CheckOutDatetime.Subtract(this.Duration.CheckInDatetime);
+            int days = timeSpan.Days;
+
+            return this.CampingPlace.TotalPrice * days;
         }
         
         public bool Insert()
@@ -76,7 +88,7 @@ namespace Model
             dictionary.TryGetValue("CampingPlaceTypeID", out string campingPlaceTypeId);
             dictionary.TryGetValue("AccommodationID", out string accommodationId);
             dictionary.TryGetValue("Prefix", out string prefix);
-            dictionary.TryGetValue("Name", out string name);
+            dictionary.TryGetValue("AccommodationName", out string name);
             dictionary.TryGetValue("GuestLimit", out string guestLimit);
             dictionary.TryGetValue("StandardNightPrice", out string standardNightPrice);
             dictionary.TryGetValue("PlaceNumber", out string placeNumber);
@@ -108,6 +120,7 @@ namespace Model
             string query = "SELECT * FROM Reservation R ";
             query += "INNER JOIN CampingPlace CP ON CP.CampingPlaceID = R.CampingPlaceID ";
             query += "INNER JOIN CampingPlaceType CPT ON CPT.CampingPlaceTypeID = CP.TypeID ";
+            query += "INNER JOIN Accommodation AM ON AM.AccommodationID = CPT.AccommodationID ";
             query += "INNER JOIN CampingCustomer CC ON CC.CampingCustomerID = R.CampingCustomerID ";
             query += "INNER JOIN Address CCA ON CCA.AddressID = CC.CampingCustomerAddressID ";
             query += "INNER JOIN ReservationDuration RD ON RD.ReservationDurationID = R.ReservationDurationID ";

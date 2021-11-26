@@ -3,29 +3,19 @@ using SystemCore;
 
 namespace Model
 {
-    public class ReservationCollection : IModelCollection
+    public static class ReservationCollection
     {
-        private List<Reservation> _collection;
+        private static List<Reservation> Collection = new List<Reservation>();
 
-        public ReservationCollection()
+        public static List<Reservation> Select()
         {
-            this._collection = new List<Reservation>();
-        }
-
-        public List<Reservation> Select()
-        {
-            if (this._collection.Count > 0)
-            {
-                return this._collection;
-            }
-
             var reservations = (new Query(Reservation.BaseQuery())).Select();
             foreach (Dictionary<string,string> dictionary in reservations)
             {
-                this._collection.Add(Reservation.ToModel(dictionary));
+                ReservationCollection.Collection.Add(Reservation.ToModel(dictionary));
             }
 
-            return this._collection;
+            return ReservationCollection.Collection;
         }
 
     }

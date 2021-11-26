@@ -11,14 +11,19 @@ namespace Model
     public class ReservationDuration : IModel
     {
         public int Id { get; private set; }
-        private DateTime CheckInDatetime { get; set; }
-        private DateTime CheckOutDatetime { get; set; }
+        public DateTime CheckInDatetime { get; private set; }
+        public DateTime CheckOutDatetime { get; private set; }
+        
+        public string CheckInDate { get; private set; }
+        public string CheckOutDate { get; private set; }
 
         public ReservationDuration(string id, string checkInDate, string checkOutDate)
         {
             this.Id = int.Parse(id);
             this.CheckInDatetime = DateTime.Parse(checkInDate);
             this.CheckOutDatetime = DateTime.Parse(checkOutDate);
+            this.CheckInDate = this.CheckInDatetime.ToShortDateString();
+            this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
         }
 
         private Boolean InsertReservationDuration()
