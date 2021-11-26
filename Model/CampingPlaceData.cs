@@ -12,13 +12,15 @@ namespace Model
         public int Personen { get; private set; }
         public string Oppervlakte { get; private set; }
         public string Dagtarief { get; private set; }
+        public string Location { get; private set; }
 
-        public CampingPlaceData(string type, int personen, int oppervlakte, int dagtarief)
+        public CampingPlaceData(string type, int personen, int oppervlakte, int dagtarief, int placenumber, string prefix)
         {
             this.Type = type;
             this.Personen = personen;
             this.Oppervlakte = oppervlakte + " m2";
             this.Dagtarief = "€" + dagtarief;
+            this.Location = prefix + "-" + placenumber;
         }
     }
 }

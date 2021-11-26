@@ -10,14 +10,11 @@ namespace Model
     public static class CampingPlaceDataCollection
     {
         private static List<CampingPlaceData> _collection;
+        private static List<string> _locations;
+        private static List<string> _campingPlaceTypes;
 
         public static List<CampingPlaceData> Select()
         {
-            if (_collection != null)
-            {
-                return _collection;
-            }
-
             _collection = new List<CampingPlaceData>();
             var campingPlaces = (new Query(BaseQuery())).Select();
             foreach (Dictionary<string, string> dictionary in campingPlaces)
@@ -26,6 +23,18 @@ namespace Model
             }
 
             return _collection;
+        }
+
+        public static List<string> SelectLocations()
+        {
+            _locations = new List<string>();
+            var campingPlaces = (new Query(BaseQuery())).Select();
+            foreach (Dictionary<string, string> dictionary in campingPlaces)
+            {
+                _locations.Add(ToModel(dictionary).Location);
+            }
+
+            return _locations;
         }
 
         private static CampingPlaceData ToModel(Dictionary<string, string> dictionary)
@@ -45,7 +54,7 @@ namespace Model
             CampingPlaceType campingPlaceType = new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
             CampingPlace campingPlace = new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
 
-            CampingPlaceData campingPlaceData = new CampingPlaceData(accommodationName, int.Parse(guestLimit), int.Parse(surface), (int.Parse(standardNightPrice)+ int.Parse(extraNightPrice)));
+            CampingPlaceData campingPlaceData = new CampingPlaceData(accommodationName, int.Parse(guestLimit), int.Parse(surface), (int.Parse(standardNightPrice)+ int.Parse(extraNightPrice)), int.Parse(placeNumber), prefix);
 
             return campingPlaceData;
         }
