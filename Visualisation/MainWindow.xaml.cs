@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SystemCore;
 using Model;
+using Visualisation.Model;
 
 namespace Visualisation
 {
@@ -26,6 +27,8 @@ namespace Visualisation
         private readonly CampingPitchesCollectionPage _campingPitchesCollectionFrame;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
 
+        public static event EventHandler<ReservationEventArgs> ReservationsChanged;
+        
         public MainWindow()
         {
             this.InitializeComponent();
@@ -54,6 +57,8 @@ namespace Visualisation
             this.ReserveButton.Foreground = Brushes.Black;
 
             this.MainFrame.Content = this._reservationCollectionFrame.Content;
+            
+            MainWindow.ReservationsChanged?.Invoke(this, new ReservationEventArgs(ReservationCollection.Select()));
         }
     }
 }

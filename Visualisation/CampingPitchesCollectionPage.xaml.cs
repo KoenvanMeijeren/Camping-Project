@@ -27,10 +27,7 @@ namespace Visualisation
             this.InitializeComponent();
             this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];
 
-            this.CampingViewDataGrid.ItemsSource = CampingPlaceDataCollection.Select();
-
-
-
+            this.CampingViewDataGrid.ItemsSource = CampingPlaceViewDataCollection.Select();
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
