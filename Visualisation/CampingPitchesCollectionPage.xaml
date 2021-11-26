@@ -24,10 +24,8 @@
         </Border>
         <Label Content="Start datum" HorizontalAlignment="Left" Margin="296,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,147,30,37" CornerRadius="15,15,15,15" Background="White">
-            <DataGrid x:Name="CampingViewDataGrid" Margin="23,54,23,54" Background="White" FontFamily="Century Gothic" FontWeight="Bold">
-                <DataGrid.Columns>
-                    
-                </DataGrid.Columns>
+            <DataGrid x:Name="CampingViewDataGrid" Margin="23,48,23,73" Background="White" FontFamily="Century Gothic" FontWeight="Bold" SelectionChanged="CampingViewDataGrid_SelectionChanged">
+
             </DataGrid>
         </Border>
         <Label Content="Beschikbare verblijven" HorizontalAlignment="Left" Margin="46,159,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
@@ -36,11 +34,16 @@
         </Border>
         <Label Content="Eind datum" HorizontalAlignment="Left" Margin="465,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="622,29,30,506" CornerRadius="15,15,15,15" Background="White">
-            <Label Content="Prijs" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Margin="10,9,0,0"/>
+            <Label Content="Dagtarief" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Margin="10,9,0,0"/>
         </Border>
         <TextBox HorizontalAlignment="Left" Height="21" Margin="679,68,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="TextBox_TextChanged"/>
         <TextBox HorizontalAlignment="Left" Height="21" Margin="679,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" TextChanged="TextBox_TextChanged"/>
         <Label Content="Min&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="634,66,0,0" Height="25"/>
         <Label Content="Max&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="634,92,0,0" Height="25"/>
+        <Label Content="Locatie:" HorizontalAlignment="Left" Margin="491,547,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+        <Button Content="Reserveer" Margin="677,547,53,59" Click="ReserveButton_Click"/>
+        <ComboBox x:Name="CampingPitchLocationDropdown" Margin="572,547,157,59" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White" SelectionChanged="CampingPitchTypeDropdown_SelectionChanged">
+
+        </ComboBox>
     </Grid>
 </Page>
