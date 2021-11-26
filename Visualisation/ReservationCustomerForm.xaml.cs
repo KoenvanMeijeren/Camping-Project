@@ -23,6 +23,8 @@ namespace Visualisation
     {
         private string ErrorMessageFieldIsEmpty { get; set; }
         private string ErrorMessageFieldIsIncorrect { get; set; }
+        private bool _errorHasOccurred;
+
         public ReservationCustomerForm()
         {
             InitializeComponent();
@@ -37,23 +39,37 @@ namespace Visualisation
 
         private void ReservationCustomerFormSubmit(object sender, RoutedEventArgs e)
         {
+            _errorHasOccurred = false;
             string firstName = CheckInput(CustomerFirstName) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerFirstName.Text.Trim() : "";
             string lastName = CheckInput(CustomerLastName) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerLastName.Text.Trim() : "";
-            string birthdate = CheckBirthDate(CustomerBirthDate.Text.Trim()) ? CustomerBirthDate.Text.Trim() : "";//can't checkInput, no textbox type
+            string birthdate = CheckBirthDate(CustomerBirthDate.Text.Trim()) && CheckLegalAge(CustomerBirthDate) ? CustomerBirthDate.Text.Trim() : "";
             string phonenumber = CheckInput(CustomerPhonenumber) && CheckPhoneNumber(CustomerPhonenumber.Text.Trim()) ? CustomerPhonenumber.Text.Trim() : "";
             string streetname = CheckInput(CustomerAddress) && CheckAddress(CustomerAddress.Text.Trim()) ? CustomerAddress.Text.Trim() : "";
             string postalcode = CheckInput(CustomerPostalcode) && ValidatePostalcode(CustomerPostalcode.Text.Trim()) ? CustomerPostalcode.Text.Trim() : "";
             string placename = CheckInput(CustomerPlacename) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerPlacename.Text.Trim() : "";
             string emailadres = CheckInput(CustomerMailadres) && CheckEmail(CustomerMailadres.Text.Trim()) ? CustomerMailadres.Text.Trim() : "";
 
-
+            if (!_errorHasOccurred)
+            {
+                //actie naar controller?
+            }
         }
 
         private bool CheckLegalAge(DatePicker selectedBirthDate)
         {
-            //calculate age
-            //return true if age >=18
+            DateTime birthdate = selectedBirthDate.DisplayDate;
+            DateTime today = DateTime.Today;
 
+            int customerAge = today.Year - birthdate.Year;
+
+            // Go back to the year in which the person was born in case of a leap year
+            if (birthdate.Date > today.AddYears(-customerAge)) customerAge--;
+
+
+            if(customerAge >= 18)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -107,6 +123,11 @@ namespace Visualisation
 
         private void ErrorFieldIsEmpty(TextBox emptyFieldTextbox)
         {
+            if (!_errorHasOccurred)
+            {
+                _errorHasOccurred = true;
+            }
+
             if (emptyFieldTextbox.Name.ToLower().Contains("name"))
             {
                 if (emptyFieldTextbox.Name.Equals("CustomerFirstName"))
@@ -133,6 +154,11 @@ namespace Visualisation
 
         private void ErrorFieldIsIncorrect(TextBox incorrectFieldTextbox)
         {
+            if (!_errorHasOccurred)
+            {
+                _errorHasOccurred = true;
+            }
+
             if (incorrectFieldTextbox.Name.ToLower().Contains("name"))
             {
                 if (incorrectFieldTextbox.Name.Equals("CustomerFirstName"))
