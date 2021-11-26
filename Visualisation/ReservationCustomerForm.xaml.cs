@@ -25,6 +25,9 @@ namespace Visualisation
         private string ErrorMessageFieldIsEmpty { get; set; }
         private string ErrorMessageFieldIsIncorrect { get; set; }
         private bool _errorHasOccurred { get; set; }
+        public DateTime CheckInDatetime { get; set; }
+        public DateTime CheckOutDatetime { get; set; }
+        public int CampingPlaceID { get; set; }
 
         public ReservationCustomerForm()
         {
@@ -54,7 +57,7 @@ namespace Visualisation
 
             string firstName = CustomerFirstName.Text.Trim();
             string lastName = CustomerLastName.Text.Trim();
-            string birthdate = CustomerBirthDate.SelectedDate.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            string birthdate = string.Empty;
             string phonenumber = CustomerPhonenumber.Text.Trim();
             string streetname = CustomerAddress.Text.Trim();
             string postalcode = CustomerPostalcode.Text.Trim();
@@ -62,79 +65,93 @@ namespace Visualisation
             string emailadres = CustomerMailadres.Text.Trim();
 
             // Firstname validation
-/*            if (!CheckInputTemporary(firstName) && !ValidateInputOnlyLetters(firstName)) 
-            {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                Console.WriteLine("Error: firstName invalid");
-            }*/
+            /*            if (!CheckInputTemporary(firstName) && !ValidateInputOnlyLetters(firstName)) 
+                        {
+                            // TODO: Foutmelding op scherm
+                            _errorHasOccurred = true;
+                            Console.WriteLine("Error: firstName invalid");
+                        }*/
 
             // Lastname validation
-/*            if (!CheckInputTemporary(lastName) && !ValidateInputOnlyLetters(lastName))
-            {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                Console.WriteLine("Error: lastName invalid");
-            }*/
+            /*            if (!CheckInputTemporary(lastName) && !ValidateInputOnlyLetters(lastName))
+                        {
+                            // TODO: Foutmelding op scherm
+                            _errorHasOccurred = true;
+                            Console.WriteLine("Error: lastName invalid");
+                        }*/
 
             // Birthdate validation
             // TODO: CheckLegalAge moet nog worden geïmplementeerd.
-/*            if (!CheckBirthDate(birthdate))
+            if (CustomerBirthDate.SelectedDate != null)
             {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                Console.WriteLine("Error: birthdate invalid");
-            }*/
+                birthdate = CustomerBirthDate.SelectedDate.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
+/*                if (!CheckBirthDate(birthdate))
+                {
+                    // TODO: Foutmelding op scherm
+                    _errorHasOccurred = true;
+                    Console.WriteLine("Error: birthdate invalid");
+                }*/
+            }
 
             // Phonenumber validation
             // TODO: Phonenumber regex toevoegen
-/*            if (!CheckInputTemporary(phonenumber))
-            {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                Console.WriteLine("Error: phonenumber invalid");
-            }*/
+            /*            if (!CheckInputTemporary(phonenumber))
+                        {
+                            // TODO: Foutmelding op scherm
+                            _errorHasOccurred = true;
+                            Console.WriteLine("Error: phonenumber invalid");
+                        }*/
 
             // Streetname validation
             // TODO: Streetname regex toevoegen
-/*            if (!CheckInputTemporary(streetname))
-            {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                Console.WriteLine("Error: streetname invalid");
-            }*/
+            /*            if (!CheckInputTemporary(streetname))
+                        {
+                            // TODO: Foutmelding op scherm
+                            _errorHasOccurred = true;
+                            Console.WriteLine("Error: streetname invalid");
+                        }*/
 
             // Postalcode validation
             // TODO: postalcode regex toevoegen
-/*            if (!CheckInputTemporary(postalcode))
-            {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                Console.WriteLine("Error: postalcode invalid");
-            }*/
+            /*            if (!CheckInputTemporary(postalcode))
+                        {
+                            // TODO: Foutmelding op scherm
+                            _errorHasOccurred = true;
+                            Console.WriteLine("Error: postalcode invalid");
+                        }*/
 
             // Streetname validation
-/*            if (!CheckInputTemporary(streetname))
-            {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                Console.WriteLine("Error: streetname invalid");
-            }*/
+            /*            if (!CheckInputTemporary(streetname))
+                        {
+                            // TODO: Foutmelding op scherm
+                            _errorHasOccurred = true;
+                            Console.WriteLine("Error: streetname invalid");
+                        }*/
 
             // Emailadres validation
             // TODO: emailadres regex toevoegen (later implementeren)
-/*            if (!CheckInputTemporary(emailadres))
-            {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                Console.WriteLine("Error: emailadres invalid");
-            }*/
+            /*            if (!CheckInputTemporary(emailadres))
+                        {
+                            // TODO: Foutmelding op scherm
+                            _errorHasOccurred = true;
+                            Console.WriteLine("Error: emailadres invalid");
+                        }*/
 
 
             // Case submit was valid
             if (!_errorHasOccurred)
             {
-                //TODO: Toevoegen gegevens aan Address tabel, ID ophalen en toevoegen aan 
+                //TODO: Toevoegen gegevens aan Address tabel, ID ophalen en toevoegen aan
+                Query addressInsertQuery = new Query("INSERT INTO Address VALUES (@Address, @Postalcode, @Place)");
+                addressInsertQuery.AddParameter("Address", streetname);
+                addressInsertQuery.AddParameter("Postalcode", postalcode);
+                addressInsertQuery.AddParameter("Place", placename);
+                addressInsertQuery.Execute();
+
+                Query fetchInsertedAddressID = new Query("SELECT SCOPE_IDENTITY()");
+                var result = fetchInsertedAddressID.Select();
+
                 int AddressId = 6;
 
                 Query insertQuery = new Query("INSERT INTO CampingCustomer VALUES (@CampingCustomerAddressID, @Birthdate, @Email, @PhoneNumber, @CustomerFirstName, @CustomerLastName)");
