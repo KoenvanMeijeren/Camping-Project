@@ -26,7 +26,6 @@ namespace Visualisation
     {
         private readonly CampingPitchesCollectionPage _campingPitchesCollectionFrame;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
-        private readonly ReservationCustomerForm _reservationCustomerForm;
 
         public static event EventHandler<ReservationEventArgs> ReservationsChanged;
         
@@ -36,44 +35,30 @@ namespace Visualisation
             
             this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
             this._reservationCollectionFrame = new ReservationCollectionPage();
-            this._reservationCustomerForm = new ReservationCustomerForm();
         }
 
-        private void DashboardButtonClick(object sender, RoutedEventArgs e)
+        private void ReserveButtonClick(object sender, RoutedEventArgs e)
         {
-            this.DashboardButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.DashboardButton.Foreground = Brushes.White;
+            this.ReserveButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
+            this.ReserveButton.Foreground = Brushes.White;
 
-            this.DashboardButton.Background = Brushes.White;
-            this.DashboardButton.Foreground = Brushes.Black;
-
-            this.MainFrame.Content = this._reservationCollectionFrame.Content;
-        }
-
-        private void CampingPitchesButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.CampingPitchesButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.CampingPitchesButton.Foreground = Brushes.White;
-
-            this.CampingPitchesButton.Background = Brushes.White;
-            this.CampingPitchesButton.Foreground = Brushes.Black;
+            this.OverviewButton.Background = Brushes.White;
+            this.OverviewButton.Foreground = Brushes.Black;
 
             this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
-            
-            MainWindow.ReservationsChanged?.Invoke(this, new ReservationEventArgs(ReservationCollection.Select()));
         }
-        
-        private void ReservationAddFormButtonClick(object sender, RoutedEventArgs e)
+
+        private void OverviewButtonClick(object sender, RoutedEventArgs e)
         {
-            this.ReservationAddFormButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.ReservationAddFormButton.Foreground = Brushes.White;
-
-            this.ReservationAddFormButton.Background = Brushes.White;
-            this.ReservationAddFormButton.Foreground = Brushes.Black;
-
-            this.MainFrame.Content = this._reservationCustomerForm.Content;
-            
             MainWindow.ReservationsChanged?.Invoke(this, new ReservationEventArgs(ReservationCollection.Select()));
+            
+            this.OverviewButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
+            this.OverviewButton.Foreground = Brushes.White;
+
+            this.ReserveButton.Background = Brushes.White;
+            this.ReserveButton.Foreground = Brushes.Black;
+
+            this.MainFrame.Content = this._reservationCollectionFrame.Content;
         }
     }
 }
