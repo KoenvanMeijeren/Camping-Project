@@ -24,7 +24,7 @@ namespace Visualisation
     {
         private static List<CampingPlaceViewData> _campingPlaceViewDataCollection;
         private static List<String> _selectionList;
-        public static ReserveEvent ReserveEvent;
+        public static event EventHandler<ReserveEventArgs> ReserveEvent;
         public CampingPitchesCollectionPage()
         {
             this.InitializeComponent();
@@ -122,7 +122,7 @@ namespace Visualisation
             CampingPlaceViewData selectedCampingPlace = _campingPlaceViewDataCollection.Find(campingPlace => campingPlace.Locatie.Equals(this.CampingPitchLocationDropdown.SelectedItem));
             int CampingPlaceID = selectedCampingPlace.GetId();
 
-            ReserveEvent?.Invoke(new ReserveEventArgs(CampingPlaceID, CheckInDatetime, CheckOutDatetime));
+            ReserveEvent?.Invoke(this, new ReserveEventArgs(CampingPlaceID, CheckInDatetime, CheckOutDatetime));
         }
     }
 }

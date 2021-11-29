@@ -61,7 +61,7 @@ namespace Visualisation
             this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
         }
 
-        public void onReserveEvent(ReserveEventArgs args)
+        public void onReserveEvent(object sender, ReserveEventArgs args)
         {
             this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceID;
             this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;
