@@ -24,14 +24,13 @@ namespace Visualisation
         public string LastName { get; set; }
         public DateTime CheckInDatetime { private get; set; }
         public DateTime CheckOutDatetime { private get; set; }
-        private readonly ReservationConfirmedPage _reservationConfirmedPage;
         public ReservationConfirmedPage()
         {
-            InitializeComponent();
-            ReservationCustomerForm.ReservationConfirmedEvent += onReservationConfirmedEvent;
+            this.InitializeComponent();
+            ReservationCustomerForm.ReservationConfirmedEvent += OnReservationConfirmedEvent;
         }
 
-        public void onReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
         {
             this.FirstName = args.FirstName;
             this.LastName = args.LastName;
