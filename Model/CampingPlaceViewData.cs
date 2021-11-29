@@ -15,8 +15,10 @@ namespace Model
         public int Personen { get; private set; }
         public string Oppervlakte { get; private set; }
         public string Dagtarief { get; private set; }
-        private int _id { get; set; }
-        private float _dagtarief { get; set; }
+
+        // These are private because it should not show in the overview
+        private int _id;
+        private float _dagtarief;
 
         public CampingPlaceViewData(CampingPlace campingPlace)
         {

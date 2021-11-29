@@ -22,69 +22,58 @@ namespace Visualisation
     /// </summary>
     public partial class CampingPitchesCollectionPage : Page
     {
-        private static List<CampingPlaceViewData> _campingPlaceViewDataCollection { get;  set; }
-        private static List<String> _selectionList { get; set; }
+        private static List<CampingPlaceViewData> _campingPlaceViewDataCollection;
+        private static List<String> _selectionList;
         public CampingPitchesCollectionPage()
         {
             this.InitializeComponent();
             this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];
 
-            SetOverview();
+            this.SetOverview();
         }
 
         public void SetOverview()
         {
-            if (this.CheckoutDatetime.SelectedDate != null && this.CheckinDatetime.SelectedDate != null)
-            {
-                _campingPlaceViewDataCollection = CampingPlaceViewDataCollection.Select();
-                _selectionList = new List<string>();
-
-                if (this.CampingPitchTypeDropdown.Text != null && this.CampingPitchTypeDropdown.Text != "Alle")
-                {
-                    _campingPlaceViewDataCollection = _campingPlaceViewDataCollection.Where(campingPlaceViewData => campingPlaceViewData.Type.Equals(this.CampingPitchTypeDropdown.Text)).ToList();
-                }
-
-                if (int.TryParse(this.MinNightPrice.Text, out int min))
-                {
-                    _campingPlaceViewDataCollection = _campingPlaceViewDataCollection.Where(campingPlaceViewData => campingPlaceViewData.GetNumericNightPrice() >= min).ToList();
-                }
-
-                if (int.TryParse(this.MaxNightPrice.Text, out int max))
-                {
-                    _campingPlaceViewDataCollection = _campingPlaceViewDataCollection.Where(campingPlaceViewData => campingPlaceViewData.GetNumericNightPrice() <= max).ToList();
-                }
-
-
-                _campingPlaceViewDataCollection = CampingPlaceViewDataCollection.ToFilteredOnReservedCampingPitches(_campingPlaceViewDataCollection, (DateTime)this.CheckinDatetime.SelectedDate, (DateTime)this.CheckoutDatetime.SelectedDate);
-                
-
-                foreach (CampingPlaceViewData campingPlaceViewData in _campingPlaceViewDataCollection)
-                {
-                    _selectionList.Add(campingPlaceViewData.Locatie);
-                }
-
-                this.OverviewTitle.Content = "Beschikbare verblijven:";
-
-                if (CampingPitchLocationDropdown.SelectedItem != null)
-                {
-                    this.ReserveButton.IsEnabled = true;
-                }
-                else
-                {
-                    this.ReserveButton.IsEnabled = false;
-                }
-
-                this.CampingPitchLocationDropdown.ItemsSource = _selectionList;
-                this.CampingViewDataGrid.ItemsSource = _campingPlaceViewDataCollection;
-            }
-            else
+            if (this.CheckinDatetime.SelectedDate == null || this.CheckoutDatetime.SelectedDate == null)
             {
                 this.OverviewTitle.Content = "Selecteer uw verblijfstermijn";
                 this.ReserveButton.IsEnabled = false;
                 this.CampingPitchLocationDropdown.ItemsSource = null;
                 this.CampingViewDataGrid.ItemsSource = null;
-
+                return;
             }
+
+            CampingPitchesCollectionPage._campingPlaceViewDataCollection = CampingPlaceViewDataCollection.Select();
+            CampingPitchesCollectionPage._selectionList = new List<string>();
+
+            if (this.CampingPitchTypeDropdown.Text != null && this.CampingPitchTypeDropdown.Text != "Alle")
+            {
+                CampingPitchesCollectionPage._campingPlaceViewDataCollection = CampingPitchesCollectionPage._campingPlaceViewDataCollection.Where(campingPlaceViewData => campingPlaceViewData.Type.Equals(this.CampingPitchTypeDropdown.Text)).ToList();
+            }
+
+            if (int.TryParse(this.MinNightPrice.Text, out int min))
+            {
+                CampingPitchesCollectionPage._campingPlaceViewDataCollection = CampingPitchesCollectionPage._campingPlaceViewDataCollection.Where(campingPlaceViewData => campingPlaceViewData.GetNumericNightPrice() >= min).ToList();
+            }
+
+            if (int.TryParse(this.MaxNightPrice.Text, out int max))
+            {
+                CampingPitchesCollectionPage._campingPlaceViewDataCollection = CampingPitchesCollectionPage._campingPlaceViewDataCollection.Where(campingPlaceViewData => campingPlaceViewData.GetNumericNightPrice() <= max).ToList();
+            }
+
+
+            CampingPitchesCollectionPage._campingPlaceViewDataCollection = CampingPlaceViewDataCollection.ToFilteredOnReservedCampingPitches(_campingPlaceViewDataCollection, (DateTime)this.CheckinDatetime.SelectedDate, (DateTime)this.CheckoutDatetime.SelectedDate);
+
+
+            foreach (CampingPlaceViewData campingPlaceViewData in _campingPlaceViewDataCollection)
+            {
+                CampingPitchesCollectionPage._selectionList.Add(campingPlaceViewData.Locatie);
+            }
+
+            this.OverviewTitle.Content = "Beschikbare verblijven:";
+            this.ReserveButton.IsEnabled = CampingPitchLocationDropdown.SelectedItem != null;
+            this.CampingPitchLocationDropdown.ItemsSource = _selectionList;
+            this.CampingViewDataGrid.ItemsSource = _campingPlaceViewDataCollection;
         }
         private void CheckinDatetimeChanged(object sender, RoutedEventArgs e)
         {
@@ -92,7 +81,7 @@ namespace Visualisation
             {
                 this.CheckinDatetime.SelectedDate = null;
             }
-            SetOverview();
+            this.SetOverview();
         }
 
         private void CheckoutDatetimeChanged(object sender, RoutedEventArgs e)
@@ -101,22 +90,22 @@ namespace Visualisation
             {
                 this.CheckoutDatetime.SelectedDate = null;
             }
-            SetOverview();
+            this.SetOverview();
         }
 
         private void CampingPitchTypeDropdownChanged(object sender, EventArgs e)
         {
-            SetOverview();
+            this.SetOverview();
         }
 
         private void MinNightPriceChanged(object sender, KeyEventArgs e)
         {
-            SetOverview();
+            this.SetOverview();
         }
 
         private void MaxNightPriceChanged(object sender, KeyEventArgs e)
         {
-            SetOverview();
+            this.SetOverview();
         }
 
         private void CampingPitchLocationDropdownChanged(object sender, SelectionChangedEventArgs e)
