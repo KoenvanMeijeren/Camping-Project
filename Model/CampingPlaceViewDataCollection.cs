@@ -36,7 +36,7 @@ namespace Model
             return CampingPlace.ToModel(dictionary);
         }
 
-        public static List<CampingPlaceViewData> FilterReserved(List<CampingPlaceViewData> campingPlaceViewDatas, DateTime checkinDate, DateTime checkoutDate)
+        public static List<CampingPlaceViewData> ToFilteredOnReservedCampingPitches(List<CampingPlaceViewData> campingPlaceViewDatas, DateTime checkinDate, DateTime checkoutDate)
         {
             var reservations = (new Query(FilterReservedQuery())).Select();
 

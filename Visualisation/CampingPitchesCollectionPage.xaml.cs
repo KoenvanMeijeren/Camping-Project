@@ -55,7 +55,7 @@ namespace Visualisation
                 }
 
 
-                _campingPlaceViewDataCollection = CampingPlaceViewDataCollection.FilterReserved(_campingPlaceViewDataCollection, (DateTime)this.CheckinDatetime.SelectedDate, (DateTime)this.CheckoutDatetime.SelectedDate);
+                _campingPlaceViewDataCollection = CampingPlaceViewDataCollection.ToFilteredOnReservedCampingPitches(_campingPlaceViewDataCollection, (DateTime)this.CheckinDatetime.SelectedDate, (DateTime)this.CheckoutDatetime.SelectedDate);
                 
 
                 foreach (CampingPlaceViewData campingPlaceViewData in _campingPlaceViewDataCollection)
