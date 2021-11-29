@@ -10,8 +10,6 @@ namespace Model
     public static class CampingPlaceViewDataCollection
     {
         private static List<CampingPlaceViewData> _collection;
-        
-        private static List<string> _locations;
         public static string FilterAccommodationType { get; set; }
 
 
@@ -26,20 +24,6 @@ namespace Model
 
             return CampingPlaceViewDataCollection._collection;
         }
-        
-        public static List<string> SelectLocations()
-        {
-            CampingPlaceViewDataCollection._locations = new List<string>();
-            var campingPlaces = (new Query(CampingPlace.BaseQuery())).Select();
-            foreach (Dictionary<string, string> dictionary in campingPlaces)
-            {
-                var campingPlace = CampingPlaceViewDataCollection.ToCampingPlaceModel(dictionary);
-                
-                CampingPlaceViewDataCollection._locations.Add(campingPlace.LocationSelect);
-            }
-            
-            return CampingPlaceViewDataCollection._locations;
-        }
 
 
         public static CampingPlaceViewData ToModel(Dictionary<string, string> dictionary)
@@ -51,6 +35,38 @@ namespace Model
         {
             return CampingPlace.ToModel(dictionary);
         }
-        
+
+        public static List<CampingPlaceViewData> FilterReserved(List<CampingPlaceViewData> campingPlaceViewDatas, DateTime checkinDate, DateTime checkoutDate)
+        {
+            var reservations = (new Query(FilterReservedQuery())).Select();
+
+            foreach (Dictionary<string, string> dictionary in reservations)
+            {
+                dictionary.TryGetValue("CampingPlaceID", out string CampingPlaceID);
+                dictionary.TryGetValue("CheckinDatetime", out string checkinDatetime);
+                dictionary.TryGetValue("CheckoutDatetime", out string checkoutDatetime);
+
+                int.TryParse(CampingPlaceID, out int campingPlaceNumber);
+                DateTime.TryParse(checkinDatetime, out DateTime checkinDateCurrent);
+                DateTime.TryParse(checkoutDatetime, out DateTime checkoutDateCurrent);
+
+                if (checkinDateCurrent.Date < checkoutDate.Date && checkinDate.Date < checkoutDateCurrent.Date)
+                {
+                    campingPlaceViewDatas = campingPlaceViewDatas.Where(campingPlaceViewData => campingPlaceViewData.GetId() != campingPlaceNumber).ToList();
+                } 
+
+            }
+
+            return campingPlaceViewDatas;
+        }
+
+        private static string FilterReservedQuery()
+        {
+            string query = "SELECT CampingPlaceID, CheckinDatetime, CheckoutDatetime FROM Reservation R ";
+            query += "INNER JOIN ReservationDuration RD ON RD.ReservationDurationID = R.ReservationDurationID";
+
+            return query;
+        }
+
     }
 }
