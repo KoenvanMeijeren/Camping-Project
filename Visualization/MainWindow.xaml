@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visualization"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="1000">
+        Title="Camping De Wildhoeve" Height="650" Width="1000">
     <Grid Background="#FF006837">
         <Grid x:Name="Menu" HorizontalAlignment="Left" Width="180" MinWidth="180" MaxWidth="180" Background="White">
             <Label Content="Camping&#xD;&#xA;" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22"/>
-            <Label Content="&#xA;De Camper&#xA;" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22" Foreground="#FF006837"/>
+            <Label Content="&#xA;Wildhoeve&#xA;" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22" Foreground="#FF006837"/>
             <Button x:Name="DashboardButton" Content="Dashboard" VerticalAlignment="Top" Height="55" Click="DashboardButtonClick" FontFamily="Century Gothic" FontWeight="Normal" FontSize="16" BorderThickness="0,0,0,0" Foreground="Black" Background="White" Margin="0,235,0,0"/>
             <Button x:Name="CampingPitchesButton" Content="Reserveren" VerticalAlignment="Top" Height="55" Click="CampingPitchesButtonClick" FontFamily="Century Gothic" FontWeight="Normal" FontSize="16" BorderThickness="0,0,0,0" Foreground="Black" Background="White" Margin="0,290,0,0"/>
         </Grid>
