@@ -27,6 +27,7 @@ namespace Visualisation
         private readonly CampingPitchesCollectionPage _campingPitchesCollectionFrame;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
+        private readonly ReservationConfirmedPage _reservationConfirmedPage;
 
         public MainWindow()
         {
@@ -35,7 +36,9 @@ namespace Visualisation
             this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage(ReservationCollection.Select());
+            this._reservationConfirmedPage = new ReservationConfirmedPage();
 
+            ReservationCustomerForm.ReservationConfirmedEvent += onReservationConfirmedEvent;
             CampingPitchesCollectionPage.ReserveEvent += this.OnReserveEvent;
         }
 
@@ -68,6 +71,11 @@ namespace Visualisation
             this._reservationCustomerForm.CheckOutDatetime = args.CheckOutDatetime;
 
             this.MainFrame.Content = this._reservationCustomerForm.Content;
+        }
+
+        public void onReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
 
     }

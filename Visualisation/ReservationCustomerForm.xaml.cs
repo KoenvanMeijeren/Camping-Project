@@ -34,6 +34,7 @@ namespace Visualisation
         public DateTime CheckInDatetime { private get; set; }
         public DateTime CheckOutDatetime { private get; set; }
         public int CampingPlaceID { private get; set; }
+        public static event EventHandler<ReservationConfirmedEventArgs> ReservationConfirmedEvent;
 
         public ReservationCustomerForm()
         {
@@ -190,6 +191,8 @@ namespace Visualisation
             insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
             insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
             insertReservationQuery.Execute();
+
+            ReservationConfirmedEvent?.Invoke(this, new ReservationConfirmedEventArgs(firstName, lastName, CheckInDatetime, CheckOutDatetime));
         }
 
         // All the checks underneath should be put in their own class.
