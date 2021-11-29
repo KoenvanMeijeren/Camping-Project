@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Model;
 using SystemCore;
 
 namespace Visualisation
@@ -22,9 +23,14 @@ namespace Visualisation
     /// </summary>
     public partial class ReservationCustomerForm : Page
     {
-        private string _errorMessageFieldIsEmpty = "is een verplicht vak.";
-        private string _errorMessageFieldIsIncorrect = "is incorrect ingevuld.";
-        private bool _errorHasOccurred;
+        private const int LegalAge = 18;
+        
+        private const string 
+            ErrorMessageFieldIsEmpty = "is een verplicht vak.", 
+            ErrorMessageFieldIsIncorrect = "is incorrect ingevuld.";
+        
+        private bool _hasErrors;
+        
         public DateTime CheckInDatetime { private get; set; }
         public DateTime CheckOutDatetime { private get; set; }
         public int CampingPlaceID { private get; set; }
@@ -32,7 +38,7 @@ namespace Visualisation
 
         public ReservationCustomerForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         // Deleting this causes application to crash. ¯\_(ツ)_/¯
@@ -43,185 +49,153 @@ namespace Visualisation
 
         private void ReservationCustomerFormSubmit(object sender, RoutedEventArgs e)
         {
-            _errorHasOccurred = false;
+            this._hasErrors = false;
 
-            string firstName = CustomerFirstName.Text.Trim();
-            string lastName = CustomerLastName.Text.Trim();
+            string firstName = this.CustomerFirstName.Text.Trim();
+            string lastName = this.CustomerLastName.Text.Trim();
             string birthdate = string.Empty;
-            string phonenumber = CustomerPhonenumber.Text.Trim();
-            string streetname = CustomerAddress.Text.Trim();
-            string postalcode = CustomerPostalcode.Text.Trim();
-            string placename = CustomerPlacename.Text.Trim();
-            string emailadres = CustomerMailadres.Text.Trim();
-            string amountOfGuests = CustomerGuestAmount.Text.Trim();
+            string phoneNumber = this.CustomerPhonenumber.Text.Trim();
+            string streetName = this.CustomerAddress.Text.Trim();
+            string postalcode = this.CustomerPostalcode.Text.Trim();
+            string placeName = this.CustomerPlacename.Text.Trim();
+            string emailAddress = this.CustomerMailadres.Text.Trim();
+            string amountOfGuests = this.CustomerGuestAmount.Text.Trim();
 
             // Firstname validation
-            if (String.IsNullOrEmpty(firstName))
+            this.ErrorFirstName.Content = string.Empty;
+            if (string.IsNullOrEmpty(firstName))
             {
-                ErrorFirstName.Content = _errorMessageFieldIsEmpty;
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-            } else
-            {
-                ErrorFirstName.Content = string.Empty;
+                this.ErrorFirstName.Content = ErrorMessageFieldIsEmpty;
+                this._hasErrors = true;
             }
 
             // Lastname validation
-            if (String.IsNullOrEmpty(lastName))
+            this.ErrorLastName.Content = string.Empty;
+            if (string.IsNullOrEmpty(lastName))
             {
-                // TODO: Foutmelding op scherm
-                ErrorLastName.Content = _errorMessageFieldIsEmpty;
-                _errorHasOccurred = true;
-            } else
-            {
-                ErrorLastName.Content = string.Empty;
+                this.ErrorLastName.Content = ErrorMessageFieldIsEmpty;
+                this._hasErrors = true;
             }
 
             // Birthdate validation
             // TODO: CheckLegalAge moet nog worden geïmplementeerd.
-            if (CustomerBirthDate.SelectedDate != null)
+            this.ErrorBirthDate.Content = ErrorMessageFieldIsEmpty;
+            if (this.CustomerBirthDate.SelectedDate != null)
             {
-                birthdate = CustomerBirthDate.SelectedDate.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-                ErrorBirthDate.Content = string.Empty;
-            }
-            else
-            {
-                ErrorBirthDate.Content = _errorMessageFieldIsEmpty;
+                birthdate = this.CustomerBirthDate.SelectedDate.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                this.ErrorBirthDate.Content = string.Empty;
             }
 
             // Phonenumber validation
             // TODO: Phonenumber regex toevoegen
-            if (String.IsNullOrEmpty(phonenumber))
+            this.ErrorPhonenumber.Content = string.Empty;
+            if (string.IsNullOrEmpty(phoneNumber))
             {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                ErrorPhonenumber.Content = _errorMessageFieldIsEmpty;
-            }
-            else
-            {
-                ErrorPhonenumber.Content = string.Empty;
+                this._hasErrors = true;
+                this.ErrorPhonenumber.Content = ErrorMessageFieldIsEmpty;
             }
 
             // Streetname validation
             // TODO: Placename regex toevoegen
-            if (String.IsNullOrEmpty(placename))
+            this.ErrorPlacename.Content = string.Empty;
+            if (string.IsNullOrEmpty(placeName))
             {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                ErrorPlacename.Content = _errorMessageFieldIsEmpty;
-            } else
-            {
-                ErrorPlacename.Content = string.Empty;
+                this._hasErrors = true;
+                this.ErrorPlacename.Content = ErrorMessageFieldIsEmpty;
             }
 
             // Postalcode validation
             // TODO: postalcode regex toevoegen
-            if (String.IsNullOrEmpty(postalcode))
+            this.ErrorPostalcode.Content = string.Empty;
+            if (string.IsNullOrEmpty(postalcode))
             {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                ErrorPostalcode.Content = _errorMessageFieldIsEmpty;
-            } else
-            {
-                ErrorPostalcode.Content = string.Empty;
+                this._hasErrors = true;
+                this.ErrorPostalcode.Content = ErrorMessageFieldIsEmpty;
             }
 
             // Placename validation
-            if (String.IsNullOrEmpty(streetname))
+            this.ErrorAddress.Content = string.Empty;
+            if (string.IsNullOrEmpty(streetName))
             {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                ErrorAddress.Content = _errorMessageFieldIsEmpty;
-            } else
-            {
-                ErrorAddress.Content = string.Empty;
+                this._hasErrors = true;
+                this.ErrorAddress.Content = ErrorMessageFieldIsEmpty;
             }
 
             // Emailadres validation
             // TODO: emailadres regex toevoegen (later implementeren)
-            if (String.IsNullOrEmpty(emailadres))
+            this.ErrorMail.Content = string.Empty;
+            if (string.IsNullOrEmpty(emailAddress))
             {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                ErrorMail.Content = _errorMessageFieldIsEmpty;
-            } else
-            {
-                ErrorMail.Content = string.Empty;
+                this._hasErrors = true;
+                this.ErrorMail.Content = ErrorMessageFieldIsEmpty;
             }
 
             // Amount of guests validation
             // TODO: emailadres regex toevoegen (later implementeren)
-            if (String.IsNullOrEmpty(amountOfGuests))
+            this.ErrorAmountOfGuests.Content = string.Empty;
+            if (string.IsNullOrEmpty(amountOfGuests))
             {
-                // TODO: Foutmelding op scherm
-                _errorHasOccurred = true;
-                ErrorAmountOfGuests.Content = _errorMessageFieldIsEmpty;
-            }
-            else
-            {
-                ErrorAmountOfGuests.Content = string.Empty;
+                this._hasErrors = true;
+                this.ErrorAmountOfGuests.Content = ErrorMessageFieldIsEmpty;
             }
 
             // Case submit was valid
-            if (!_errorHasOccurred)
+            if (this._hasErrors)
             {
-                //TODO: Transactie en toevoegen aan controller
-                // Insert user input address in Address table
-                Query addressInsertQuery = new Query("INSERT INTO Address VALUES (@Address, @Postalcode, @Place)");
-                addressInsertQuery.AddParameter("Address", streetname);
-                addressInsertQuery.AddParameter("Postalcode", postalcode);
-                addressInsertQuery.AddParameter("Place", placename);
-                addressInsertQuery.Execute();
-
-                // Fetch latest inserted addressID from Address table
-                Query fetchInsertedAddressID = new Query("SELECT AddressID FROM Address ORDER BY AddressID DESC");
-                var fetchedInsertedAddressID = fetchInsertedAddressID.SelectFirst();
-                fetchedInsertedAddressID.TryGetValue("AddressID", out string addressID);
-
-                // Insert customer into CampingCustomer table
-                Query insertCustomerQuery = new Query("INSERT INTO CampingCustomer VALUES (@CampingCustomerAddressID, @Birthdate, @Email, @PhoneNumber, @CustomerFirstName, @CustomerLastName)");
-                insertCustomerQuery.AddParameter("CampingCustomerAddressID", Int32.Parse(addressID));
-                insertCustomerQuery.AddParameter("Birthdate", birthdate);
-                insertCustomerQuery.AddParameter("Email", emailadres);
-                insertCustomerQuery.AddParameter("PhoneNumber", phonenumber);
-                insertCustomerQuery.AddParameter("CustomerFirstName", firstName);
-                insertCustomerQuery.AddParameter("CustomerLastName", lastName);
-                insertCustomerQuery.Execute();
-
-                // Fetch latest inserted addressID from Address table
-                Query fetchInsertedCustomerID = new Query("SELECT CampingCustomerID FROM CampingCustomer ORDER BY CampingCustomerID DESC");
-                var fetchedInsertedCustomerID = fetchInsertedCustomerID.SelectFirst();
-                fetchedInsertedCustomerID.TryGetValue("CampingCustomerID", out string campingCustomerID);
-
-                // Insert reservation duration in ReservationDuration table
-                Query insertReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@CheckinDatetime, @CheckoutDatetime)");
-                insertReservationDurationQuery.AddParameter("CheckinDatetime", CheckInDatetime); // TODO: Job, you know what to do
-                insertReservationDurationQuery.AddParameter("CheckoutDatetime", CheckOutDatetime); // TODO: Job, you know what to do
-                insertReservationDurationQuery.Execute();
-
-                // Fetch latest inserted reservation duration
-                Query fetchInserterdReservationDurationID = new Query("SELECT ReservationDurationID FROM ReservationDuration ORDER BY ReservationDurationID DESC");
-                var fetchedInsertedReservationDurationID = fetchInserterdReservationDurationID.SelectFirst();
-                fetchedInsertedReservationDurationID.TryGetValue("ReservationDurationID", out string reservationDurationID);
-
-                // Insert reservation in Reservation table
-                Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
-                insertReservationQuery.AddParameter("CampingPlaceID", CampingPlaceID); // TODO: Job, you know what to do
-                insertReservationQuery.AddParameter("NumberOfPeople", Int32.Parse(amountOfGuests));
-                insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
-                insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
-                insertReservationQuery.Execute();
-
-                ReservationConfirmedEvent?.Invoke(this, new ReservationConfirmedEventArgs(firstName, lastName, CheckInDatetime, CheckOutDatetime));
+                return;
             }
+            
+            //TODO: Transactie en toevoegen aan controller
+            // Insert user input address in Address table
+            Query addressInsertQuery = new Query("INSERT INTO Address VALUES (@Address, @Postalcode, @Place)");
+            addressInsertQuery.AddParameter("Address", streetName);
+            addressInsertQuery.AddParameter("Postalcode", postalcode);
+            addressInsertQuery.AddParameter("Place", placeName);
+            addressInsertQuery.Execute();
+
+            // Fetch latest inserted addressID from Address table
+            Query lastAddressQuery = new Query("SELECT AddressID FROM Address ORDER BY AddressID DESC");
+            var lastAddressId = lastAddressQuery.SelectFirst();
+            lastAddressId.TryGetValue("AddressID", out string addressID);
+
+            // Insert customer into CampingCustomer table
+            Query insertCustomerQuery = new Query("INSERT INTO CampingCustomer VALUES (@CampingCustomerAddressID, @Birthdate, @Email, @PhoneNumber, @CustomerFirstName, @CustomerLastName)");
+            insertCustomerQuery.AddParameter("CampingCustomerAddressID", Int32.Parse(addressID));
+            insertCustomerQuery.AddParameter("Birthdate", birthdate);
+            insertCustomerQuery.AddParameter("Email", emailAddress);
+            insertCustomerQuery.AddParameter("PhoneNumber", phoneNumber);
+            insertCustomerQuery.AddParameter("CustomerFirstName", firstName);
+            insertCustomerQuery.AddParameter("CustomerLastName", lastName);
+            insertCustomerQuery.Execute();
+
+            // Fetch latest inserted addressID from Address table
+            Query lastCustomerQuery = new Query("SELECT CampingCustomerID FROM CampingCustomer ORDER BY CampingCustomerID DESC");
+            var lastCustomerId = lastCustomerQuery.SelectFirst();
+            lastCustomerId.TryGetValue("CampingCustomerID", out string campingCustomerID);
+
+            // Insert reservation duration in ReservationDuration table
+            Query insertReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@CheckinDatetime, @CheckoutDatetime)");
+            insertReservationDurationQuery.AddParameter("CheckinDatetime", CheckInDatetime); // TODO: Job, you know what to do
+            insertReservationDurationQuery.AddParameter("CheckoutDatetime", CheckOutDatetime); // TODO: Job, you know what to do
+            insertReservationDurationQuery.Execute();
+
+            // Fetch latest inserted reservation duration
+            Query lastReservationDurationQuery = new Query("SELECT ReservationDurationID FROM ReservationDuration ORDER BY ReservationDurationID DESC");
+            var lastReservationDurationId = lastReservationDurationQuery.SelectFirst();
+            lastReservationDurationId.TryGetValue("ReservationDurationID", out string reservationDurationID);
+
+            // Insert reservation in Reservation table
+            Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
+            insertReservationQuery.AddParameter("CampingPlaceID", CampingPlaceID); // TODO: Job, you know what to do
+            insertReservationQuery.AddParameter("NumberOfPeople", Int32.Parse(amountOfGuests));
+            insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
+            insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
+            insertReservationQuery.Execute();
+
+            ReservationConfirmedEvent?.Invoke(this, new ReservationConfirmedEventArgs(firstName, lastName, CheckInDatetime, CheckOutDatetime));
         }
 
         // All the checks underneath should be put in their own class.
-        private bool CheckInputTemporary(string input)
-        {
-            return (input != null || input != string.Empty); 
-        }
-
         private bool CheckLegalAge(DatePicker selectedBirthDate)
         {
             DateTime birthdate = selectedBirthDate.DisplayDate;
@@ -230,27 +204,26 @@ namespace Visualisation
             int customerAge = today.Year - birthdate.Year;
 
             // Go back to the year in which the person was born in case of a leap year
-            if (birthdate.Date > today.AddYears(-customerAge)) customerAge--;
-
-
-            if(customerAge >= 18)
+            if (birthdate.Date > today.AddYears(-customerAge))
             {
-                return true;
+                customerAge--;
             }
-            return false;
+            
+            return customerAge >= LegalAge;
         }
 
         private static bool CheckPostalcode(string postalcode)
         {
-            var regex = new Regex(@"/^\W*[1-9]{1}[0-9]{3}\W*[a-zA-Z]{2}\W*$/", RegexOptions.IgnoreCase); //8183XY
+            // Only dutch postal codes. For example: 8183XY.
+            var regex = new Regex(@"/^\W*[1-9]{1}[0-9]{3}\W*[a-zA-Z]{2}\W*$/", RegexOptions.IgnoreCase);
             return regex.IsMatch(CleanPostalCode(postalcode));
         }
 
         /// <summary>
-        /// removes all spaces and capitalize all letters from a string.
+        /// Removes all spaces and capitalize all letters from a string.
         /// </summary>
-        /// <param name="postalcode">user input</param>
-        /// <returns>clean postalcode</returns>
+        /// <param name="postalcode">User input</param>
+        /// <returns>Cleaned postalcode.</returns>
         private static string CleanPostalCode(string postalcode)
         {
             return Regex.Replace(postalcode, @"s", "").ToUpper();
@@ -259,7 +232,7 @@ namespace Visualisation
         private Boolean ValidatePostalcode(string inputPostalcode)
         {
             inputPostalcode = CleanPostalCode(inputPostalcode);
-            return CheckPostalcode(inputPostalcode);
+            return ReservationCustomerForm.CheckPostalcode(inputPostalcode);
         }
 
         private Boolean ValidateInputOnlyLetters(string inputNameValue)
@@ -270,80 +243,77 @@ namespace Visualisation
 
         private Boolean CheckInput(TextBox input)
         {
-            if (input != null || input.Text != string.Empty)
+            if (string.IsNullOrEmpty(input.Text) || input.Text.Trim().Length < 1)
             {
-                if (input.Text.Trim().Length > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    ErrorFieldIsEmpty(input);
-                }
+                this.ErrorFieldIsEmpty(input);
+                return false;
             }
-            return false;
+
+            return true;
         }
 
         private void ErrorFieldIsEmpty(TextBox emptyFieldTextbox)
         {
-            if (!_errorHasOccurred)
+            if (!this._hasErrors)
             {
-                _errorHasOccurred = true;
+                this._hasErrors = true;
             }
 
             if (emptyFieldTextbox.Name.ToLower().Contains("name"))
             {
-                if (emptyFieldTextbox.Name.Equals("CustomerFirstName"))
+                switch (emptyFieldTextbox.Name)
                 {
-                    ErrorPlacename.Content = "Voornaam" + _errorMessageFieldIsIncorrect;
+                    case "CustomerFirstName":
+                        this.ErrorPlacename.Content = "Voornaam" + ErrorMessageFieldIsIncorrect;
+                        break;
+                    case "CustomerLastName":
+                        this.ErrorLastName.Content = "Achternaam" + ErrorMessageFieldIsIncorrect;
+                        break;
+                    default:
+                        this.ErrorFirstName.Content = "Plaatsnaam" + ErrorMessageFieldIsIncorrect;
+                        break;
                 }
-                else if (emptyFieldTextbox.Name.Equals("CustomerLastName"))
-                {
-                    ErrorLastName.Content = "Achternaam" + _errorMessageFieldIsIncorrect;
-                }
-                else
-                {
-                    ErrorFirstName.Content = "Plaatsnaam" + _errorMessageFieldIsIncorrect;
-                }         
-            } else if (emptyFieldTextbox.Name.Equals("CustomerPhonenumber"))
+            } 
+            else if (emptyFieldTextbox.Name.Equals("CustomerPhonenumber"))
             {
-                ErrorPhonenumber.Content = "Telefoonnummer" + _errorMessageFieldIsIncorrect;
-            }else 
+                this.ErrorPhonenumber.Content = "Telefoonnummer" + ErrorMessageFieldIsIncorrect;
+            }
+            else 
             {
-                ErrorPostalcode.Content = "Poscode" + _errorMessageFieldIsIncorrect;
+                this.ErrorPostalcode.Content = "Poscode" + ErrorMessageFieldIsIncorrect;
             }
             
         }
 
         private void ErrorFieldIsIncorrect(TextBox incorrectFieldTextbox)
         {
-            if (!_errorHasOccurred)
+            if (!this._hasErrors)
             {
-                _errorHasOccurred = true;
+                this._hasErrors = true;
             }
 
             if (incorrectFieldTextbox.Name.ToLower().Contains("name"))
             {
-                if (incorrectFieldTextbox.Name.Equals("CustomerFirstName"))
+                switch (incorrectFieldTextbox.Name)
                 {
-                    ErrorPlacename.Content = "Voornaam" + _errorMessageFieldIsIncorrect;
-                }
-                else if (incorrectFieldTextbox.Name.Equals("CustomerLastName"))
-                {
-                    ErrorLastName.Content = "Achternaam" + _errorMessageFieldIsIncorrect;
-                }
-                else
-                {
-                    ErrorFirstName.Content = "Plaatsnaam" + _errorMessageFieldIsIncorrect;
+                    case "CustomerFirstName":
+                        this.ErrorPlacename.Content = "Voornaam" + ErrorMessageFieldIsIncorrect;
+                        break;
+                    case "CustomerLastName":
+                        this.ErrorLastName.Content = "Achternaam" + ErrorMessageFieldIsIncorrect;
+                        break;
+                    default:
+                        this.ErrorFirstName.Content = "Plaatsnaam" + ErrorMessageFieldIsIncorrect;
+                        break;
                 }
             }
             else if (incorrectFieldTextbox.Name.Equals("CustomerPhonenumber"))
             {
-                ErrorPhonenumber.Content = "Telefoonnummer" + _errorMessageFieldIsIncorrect;
+                this.ErrorPhonenumber.Content = "Telefoonnummer" + ErrorMessageFieldIsIncorrect;
             }
             else
             {
-                ErrorPostalcode.Content = "Poscode" + _errorMessageFieldIsIncorrect;
+                this.ErrorPostalcode.Content = "Poscode" + ErrorMessageFieldIsIncorrect;
             }
         }
 

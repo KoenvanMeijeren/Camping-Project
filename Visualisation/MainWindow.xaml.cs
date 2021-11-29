@@ -38,8 +38,8 @@ namespace Visualisation
             this._reservationCollectionFrame = new ReservationCollectionPage(ReservationCollection.Select());
             this._reservationConfirmedPage = new ReservationConfirmedPage();
 
-            CampingPitchesCollectionPage.ReserveEvent += onReserveEvent;
-            ReservationCustomerForm.ReservationConfirmedEvent += onReservationConfirmedEvent;
+            ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            CampingPitchesCollectionPage.ReserveEvent += this.OnReserveEvent;
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
@@ -64,7 +64,7 @@ namespace Visualisation
             this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
         }
 
-        public void onReserveEvent(object sender, ReserveEventArgs args)
+        private void OnReserveEvent(object sender, ReserveEventArgs args)
         {
             this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceID;
             this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;
@@ -73,7 +73,7 @@ namespace Visualisation
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        public void onReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
         {
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }

@@ -22,7 +22,7 @@ namespace Visualisation
     {
         public ReservationForm()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }
