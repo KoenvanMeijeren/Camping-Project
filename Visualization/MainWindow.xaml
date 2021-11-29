@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Visualization"
         mc:Ignorable="d"
-        Title="Camping De Wildhoeve" Height="650" Width="1000">
+        Title="Camping Wildhoeve" Height="650" Width="1000">
     <Grid Background="#FF006837">
         <Grid x:Name="Menu" HorizontalAlignment="Left" Width="180" MinWidth="180" MaxWidth="180" Background="White">
             <Label Content="Camping&#xD;&#xA;" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22"/>
