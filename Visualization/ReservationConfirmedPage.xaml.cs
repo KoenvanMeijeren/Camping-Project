@@ -38,7 +38,7 @@ namespace Visualization
             this.CheckOutDatetime = args.CheckOutDatetime;
 
             this.Title.Content = $"Gefeliciteerd {FirstName} {LastName},";
-            this.ConfirmationText.Content = $"Uw reservering van {CheckInDatetime.Date.ToShortDateString()} tot {CheckInDatetime.Date.ToShortDateString()}";
+            this.ConfirmationText.Content = $"Uw reservering van {this.CheckInDatetime.Date.ToShortDateString()} tot {this.CheckOutDatetime.Date.ToShortDateString()}";
         }
     }
 }
