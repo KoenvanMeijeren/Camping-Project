@@ -175,8 +175,8 @@ namespace Visualization
 
             // Insert reservation duration in ReservationDuration table
             Query insertReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@CheckinDatetime, @CheckoutDatetime)");
-            insertReservationDurationQuery.AddParameter("CheckinDatetime", CheckInDatetime); // TODO: Job, you know what to do
-            insertReservationDurationQuery.AddParameter("CheckoutDatetime", CheckOutDatetime); // TODO: Job, you know what to do
+            insertReservationDurationQuery.AddParameter("CheckinDatetime", CheckInDatetime);
+            insertReservationDurationQuery.AddParameter("CheckoutDatetime", CheckOutDatetime);
             insertReservationDurationQuery.Execute();
 
             // Fetch latest inserted reservation duration
@@ -186,7 +186,7 @@ namespace Visualization
 
             // Insert reservation in Reservation table
             Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
-            insertReservationQuery.AddParameter("CampingPlaceID", CampingPlaceID); // TODO: Job, you know what to do
+            insertReservationQuery.AddParameter("CampingPlaceID", CampingPlaceID);
             insertReservationQuery.AddParameter("NumberOfPeople", Int32.Parse(amountOfGuests));
             insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
             insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
