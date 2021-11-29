@@ -170,24 +170,25 @@ namespace Visualisation
             var lastCustomerId = lastCustomerQuery.SelectFirst();
             lastCustomerId.TryGetValue("CampingCustomerID", out string campingCustomerID);
 
-            // Insert reservation duration in ReservationDuration table
-            Query insertReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@CheckinDatetime, @CheckoutDatetime)");
-            insertReservationDurationQuery.AddParameter("CheckinDatetime", "2020-01-01 10:00:00"); // TODO: Job, you know what to do
-            insertReservationDurationQuery.AddParameter("CheckoutDatetime", "2021-01-01 10:00:00"); // TODO: Job, you know what to do
-            insertReservationDurationQuery.Execute();
+                // Insert reservation duration in ReservationDuration table
+                Query insertReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@CheckinDatetime, @CheckoutDatetime)");
+                insertReservationDurationQuery.AddParameter("CheckinDatetime", CheckInDatetime); // TODO: Job, you know what to do
+                insertReservationDurationQuery.AddParameter("CheckoutDatetime", CheckOutDatetime); // TODO: Job, you know what to do
+                insertReservationDurationQuery.Execute();
 
             // Fetch latest inserted reservation duration
             Query lastReservationDurationQuery = new Query("SELECT ReservationDurationID FROM ReservationDuration ORDER BY ReservationDurationID DESC");
             var lastReservationDurationId = lastReservationDurationQuery.SelectFirst();
             lastReservationDurationId.TryGetValue("ReservationDurationID", out string reservationDurationID);
 
-            // Insert reservation in Reservation table
-            Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
-            insertReservationQuery.AddParameter("CampingPlaceID", 18); // TODO: Job, you know what to do
-            insertReservationQuery.AddParameter("NumberOfPeople", Int32.Parse(amountOfGuests));
-            insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
-            insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
-            insertReservationQuery.Execute();
+                // Insert reservation in Reservation table
+                Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
+                insertReservationQuery.AddParameter("CampingPlaceID", CampingPlaceID); // TODO: Job, you know what to do
+                insertReservationQuery.AddParameter("NumberOfPeople", Int32.Parse(amountOfGuests));
+                insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
+                insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
+                insertReservationQuery.Execute();
+            }
         }
 
         // All the checks underneath should be put in their own class.

@@ -21,17 +21,22 @@ namespace Visualisation
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
     public partial class MainWindow : Window
     {
         private readonly CampingPitchesCollectionPage _campingPitchesCollectionFrame;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
+        private readonly ReservationCustomerForm _reservationCustomerForm;
 
         public MainWindow()
         {
             this.InitializeComponent();
             
             this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
+            this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage(ReservationCollection.Select());
+
+            CampingPitchesCollectionPage.ReserveEvent += onReserveEvent;
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
@@ -54,6 +59,15 @@ namespace Visualisation
             this.DashboardButton.Foreground = Brushes.Black;
 
             this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
+        }
+
+        public void onReserveEvent(object sender, ReserveEventArgs args)
+        {
+            this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceID;
+            this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;
+            this._reservationCustomerForm.CheckOutDatetime = args.CheckOutDatetime;
+
+            this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
     }
