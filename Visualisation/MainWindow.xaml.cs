@@ -36,7 +36,7 @@ namespace Visualisation
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage(ReservationCollection.Select());
 
-            CampingPitchesCollectionPage.ReserveEvent += onReserveEvent;
+            CampingPitchesCollectionPage.ReserveEvent += this.OnReserveEvent;
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
@@ -61,7 +61,7 @@ namespace Visualisation
             this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
         }
 
-        public void onReserveEvent(object sender, ReserveEventArgs args)
+        private void OnReserveEvent(object sender, ReserveEventArgs args)
         {
             this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceID;
             this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;

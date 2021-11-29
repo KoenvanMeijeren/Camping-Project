@@ -22,6 +22,8 @@ namespace Visualisation
     /// </summary>
     public partial class CampingPitchesCollectionPage : Page
     {
+        private const string SelectAll = "Alle";
+        
         private static List<CampingPlaceViewData> _campingPlaceViewDataCollection;
         private static List<String> _selectionList;
         public static event EventHandler<ReserveEventArgs> ReserveEvent;
@@ -33,7 +35,7 @@ namespace Visualisation
             this.SetOverview();
         }
 
-        public void SetOverview()
+        private void SetOverview()
         {
             if (this.CheckinDatetime.SelectedDate == null || this.CheckoutDatetime.SelectedDate == null)
             {
@@ -47,7 +49,7 @@ namespace Visualisation
             CampingPitchesCollectionPage._campingPlaceViewDataCollection = CampingPlaceViewDataCollection.Select();
             CampingPitchesCollectionPage._selectionList = new List<string>();
 
-            if (this.CampingPitchTypeDropdown.Text != null && this.CampingPitchTypeDropdown.Text != "Alle")
+            if (this.CampingPitchTypeDropdown.Text != null && this.CampingPitchTypeDropdown.Text != SelectAll)
             {
                 CampingPitchesCollectionPage._campingPlaceViewDataCollection = CampingPitchesCollectionPage._campingPlaceViewDataCollection.Where(campingPlaceViewData => campingPlaceViewData.Type.Equals(this.CampingPitchTypeDropdown.Text)).ToList();
             }

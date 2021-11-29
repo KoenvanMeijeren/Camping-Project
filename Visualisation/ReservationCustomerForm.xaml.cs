@@ -23,6 +23,8 @@ namespace Visualisation
     /// </summary>
     public partial class ReservationCustomerForm : Page
     {
+        private const int LegalAge = 18;
+        
         private const string 
             ErrorMessageFieldIsEmpty = "is een verplicht vak.", 
             ErrorMessageFieldIsIncorrect = "is incorrect ingevuld.";
@@ -170,25 +172,24 @@ namespace Visualisation
             var lastCustomerId = lastCustomerQuery.SelectFirst();
             lastCustomerId.TryGetValue("CampingCustomerID", out string campingCustomerID);
 
-                // Insert reservation duration in ReservationDuration table
-                Query insertReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@CheckinDatetime, @CheckoutDatetime)");
-                insertReservationDurationQuery.AddParameter("CheckinDatetime", CheckInDatetime); // TODO: Job, you know what to do
-                insertReservationDurationQuery.AddParameter("CheckoutDatetime", CheckOutDatetime); // TODO: Job, you know what to do
-                insertReservationDurationQuery.Execute();
+            // Insert reservation duration in ReservationDuration table
+            Query insertReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@CheckinDatetime, @CheckoutDatetime)");
+            insertReservationDurationQuery.AddParameter("CheckinDatetime", CheckInDatetime); // TODO: Job, you know what to do
+            insertReservationDurationQuery.AddParameter("CheckoutDatetime", CheckOutDatetime); // TODO: Job, you know what to do
+            insertReservationDurationQuery.Execute();
 
             // Fetch latest inserted reservation duration
             Query lastReservationDurationQuery = new Query("SELECT ReservationDurationID FROM ReservationDuration ORDER BY ReservationDurationID DESC");
             var lastReservationDurationId = lastReservationDurationQuery.SelectFirst();
             lastReservationDurationId.TryGetValue("ReservationDurationID", out string reservationDurationID);
 
-                // Insert reservation in Reservation table
-                Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
-                insertReservationQuery.AddParameter("CampingPlaceID", CampingPlaceID); // TODO: Job, you know what to do
-                insertReservationQuery.AddParameter("NumberOfPeople", Int32.Parse(amountOfGuests));
-                insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
-                insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
-                insertReservationQuery.Execute();
-            }
+            // Insert reservation in Reservation table
+            Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
+            insertReservationQuery.AddParameter("CampingPlaceID", CampingPlaceID); // TODO: Job, you know what to do
+            insertReservationQuery.AddParameter("NumberOfPeople", Int32.Parse(amountOfGuests));
+            insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
+            insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
+            insertReservationQuery.Execute();
         }
 
         // All the checks underneath should be put in their own class.
@@ -205,12 +206,13 @@ namespace Visualisation
                 customerAge--;
             }
             
-            return customerAge >= 18;
+            return customerAge >= LegalAge;
         }
 
         private static bool CheckPostalcode(string postalcode)
         {
-            var regex = new Regex(@"/^\W*[1-9]{1}[0-9]{3}\W*[a-zA-Z]{2}\W*$/", RegexOptions.IgnoreCase); //8183XY
+            // Only dutch postal codes. For example: 8183XY.
+            var regex = new Regex(@"/^\W*[1-9]{1}[0-9]{3}\W*[a-zA-Z]{2}\W*$/", RegexOptions.IgnoreCase);
             return regex.IsMatch(CleanPostalCode(postalcode));
         }
 
@@ -238,19 +240,13 @@ namespace Visualisation
 
         private Boolean CheckInput(TextBox input)
         {
-            if (input == null || input.Text == string.Empty)
+            if (string.IsNullOrEmpty(input.Text) || input.Text.Trim().Length < 1)
             {
+                this.ErrorFieldIsEmpty(input);
                 return false;
             }
-            
-            if (input.Text.Trim().Length > 0)
-            {
-                return true;
-            }
-            
-            this.ErrorFieldIsEmpty(input);
-            
-            return false;
+
+            return true;
         }
 
         private void ErrorFieldIsEmpty(TextBox emptyFieldTextbox)
