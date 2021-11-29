@@ -143,6 +143,7 @@ namespace SystemCore
                     "int" => dataRecord.GetInt32(delta).ToString(),
                     "float" => dataRecord.GetDouble(delta).ToString(CultureInfo.InvariantCulture),
                     "double" => dataRecord.GetDouble(delta).ToString(CultureInfo.InvariantCulture),
+                    "decimal" => dataRecord.GetDecimal(delta).ToString(CultureInfo.InvariantCulture),
                     "bool" => dataRecord.GetBoolean(delta).ToString(),
                     "date" => dataRecord.GetDateTime(delta).ToString(),
                     "datetime" => dataRecord.GetDateTime(delta).ToString(),
