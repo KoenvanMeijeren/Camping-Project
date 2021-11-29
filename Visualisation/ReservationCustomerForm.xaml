@@ -135,14 +135,15 @@
             </Button.Resources>
         </Button>
 
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorFirstName" Margin="95,227,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="149"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorLastName" Margin="265,227,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="149"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorMail" Margin="465,224,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="194"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorBirthDate" Margin="95,317,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="243"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorPhonenumber" Margin="465,326,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="194"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorAddress" Margin="95,393,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="231"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorPostalcode" Margin="94,471,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="179"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorPlacename" Margin="295,471,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="150"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorFirstName" Margin="95,227,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="149"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorLastName" Margin="265,227,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="149"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorMail" Margin="465,224,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="194"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorBirthDate" Margin="95,317,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="243"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorPhonenumber" Margin="465,326,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="194"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorAddress" Margin="95,393,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="231"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorPostalcode" Margin="94,471,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="179"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorPlacename" Margin="295,471,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="150"/>
+        <Label Content="" HorizontalAlignment="Left" Name="ErrorAmountOfGuests" Margin="465,444,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="150"/>
     </Grid>
 
 </Page>

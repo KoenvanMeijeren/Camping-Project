@@ -22,20 +22,19 @@ namespace Visualisation
     /// </summary>
     public partial class ReservationCustomerForm : Page
     {
-        private string ErrorMessageFieldIsEmpty { get; set; }
-        private string ErrorMessageFieldIsIncorrect { get; set; }
-        private bool _errorHasOccurred { get; set; }
-        public DateTime CheckInDatetime { get; set; }
-        public DateTime CheckOutDatetime { get; set; }
-        public int CampingPlaceID { get; set; }
+        private string _errorMessageFieldIsEmpty = "is een verplicht vak.";
+        private string _errorMessageFieldIsIncorrect = "is incorrect ingevuld.";
+        private bool _errorHasOccurred;
+        public DateTime CheckInDatetime { private get; set; }
+        public DateTime CheckOutDatetime { private get; set; }
+        public int CampingPlaceID { private get; set; }
 
         public ReservationCustomerForm()
         {
             InitializeComponent();
-            ErrorMessageFieldIsEmpty = " is een verplicht vak.";
-            ErrorMessageFieldIsIncorrect = " is incorrect ingevuld.";
         }
 
+        // Deleting this causes application to crash. ¯\_(ツ)_/¯
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
@@ -44,16 +43,6 @@ namespace Visualisation
         private void ReservationCustomerFormSubmit(object sender, RoutedEventArgs e)
         {
             _errorHasOccurred = false;
-            /*            string firstName = CheckInput(CustomerFirstName) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerFirstName.Text.Trim() : "";
-                        string lastName = CheckInput(CustomerLastName) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerLastName.Text.Trim() : "";
-                        string birthdate = CheckBirthDate(CustomerBirthDate.Text.Trim()) && CheckLegalAge(CustomerBirthDate) ? CustomerBirthDate.Text.Trim() : "";
-                        string phonenumber = CheckInput(CustomerPhonenumber) && CheckPhoneNumber(CustomerPhonenumber.Text.Trim()) ? CustomerPhonenumber.Text.Trim() : "";
-                        string streetname = CheckInput(CustomerAddress) && CheckAddress(CustomerAddress.Text.Trim()) ? CustomerAddress.Text.Trim() : "";
-                        string postalcode = CheckInput(CustomerPostalcode) && ValidatePostalcode(CustomerPostalcode.Text.Trim()) ? CustomerPostalcode.Text.Trim() : "";
-                        string placename = CheckInput(CustomerPlacename) && ValidateInputOnlyLetters(CustomerFirstName.Text.Trim()) ? CustomerPlacename.Text.Trim() : "";
-                        string emailadres = CheckInput(CustomerMailadres) && CheckEmail(CustomerMailadres.Text.Trim()) ? CustomerMailadres.Text.Trim() : "";*/
-
-            Console.WriteLine("Reservation submit button has been pressed");
 
             string firstName = CustomerFirstName.Text.Trim();
             string lastName = CustomerLastName.Text.Trim();
@@ -66,79 +55,111 @@ namespace Visualisation
             string amountOfGuests = CustomerGuestAmount.Text.Trim();
 
             // Firstname validation
-            /*            if (!CheckInputTemporary(firstName) && !ValidateInputOnlyLetters(firstName)) 
-                        {
-                            // TODO: Foutmelding op scherm
-                            _errorHasOccurred = true;
-                            Console.WriteLine("Error: firstName invalid");
-                        }*/
+            if (String.IsNullOrEmpty(firstName))
+            {
+                ErrorFirstName.Content = _errorMessageFieldIsEmpty;
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+            } else
+            {
+                ErrorFirstName.Content = string.Empty;
+            }
 
             // Lastname validation
-            /*            if (!CheckInputTemporary(lastName) && !ValidateInputOnlyLetters(lastName))
-                        {
-                            // TODO: Foutmelding op scherm
-                            _errorHasOccurred = true;
-                            Console.WriteLine("Error: lastName invalid");
-                        }*/
+            if (String.IsNullOrEmpty(lastName))
+            {
+                // TODO: Foutmelding op scherm
+                ErrorLastName.Content = _errorMessageFieldIsEmpty;
+                _errorHasOccurred = true;
+            } else
+            {
+                ErrorLastName.Content = string.Empty;
+            }
 
             // Birthdate validation
             // TODO: CheckLegalAge moet nog worden geïmplementeerd.
             if (CustomerBirthDate.SelectedDate != null)
             {
                 birthdate = CustomerBirthDate.SelectedDate.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-
-/*                if (!CheckBirthDate(birthdate))
-                {
-                    // TODO: Foutmelding op scherm
-                    _errorHasOccurred = true;
-                    Console.WriteLine("Error: birthdate invalid");
-                }*/
+                ErrorBirthDate.Content = string.Empty;
+            }
+            else
+            {
+                ErrorBirthDate.Content = _errorMessageFieldIsEmpty;
             }
 
             // Phonenumber validation
             // TODO: Phonenumber regex toevoegen
-            /*            if (!CheckInputTemporary(phonenumber))
-                        {
-                            // TODO: Foutmelding op scherm
-                            _errorHasOccurred = true;
-                            Console.WriteLine("Error: phonenumber invalid");
-                        }*/
+            if (String.IsNullOrEmpty(phonenumber))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                ErrorPhonenumber.Content = _errorMessageFieldIsEmpty;
+            }
+            else
+            {
+                ErrorPhonenumber.Content = string.Empty;
+            }
 
             // Streetname validation
-            // TODO: Streetname regex toevoegen
-            /*            if (!CheckInputTemporary(streetname))
-                        {
-                            // TODO: Foutmelding op scherm
-                            _errorHasOccurred = true;
-                            Console.WriteLine("Error: streetname invalid");
-                        }*/
+            // TODO: Placename regex toevoegen
+            if (String.IsNullOrEmpty(placename))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                ErrorPlacename.Content = _errorMessageFieldIsEmpty;
+            } else
+            {
+                ErrorPlacename.Content = string.Empty;
+            }
 
             // Postalcode validation
             // TODO: postalcode regex toevoegen
-            /*            if (!CheckInputTemporary(postalcode))
-                        {
-                            // TODO: Foutmelding op scherm
-                            _errorHasOccurred = true;
-                            Console.WriteLine("Error: postalcode invalid");
-                        }*/
+            if (String.IsNullOrEmpty(postalcode))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                ErrorPostalcode.Content = _errorMessageFieldIsEmpty;
+            } else
+            {
+                ErrorPostalcode.Content = string.Empty;
+            }
 
-            // Streetname validation
-            /*            if (!CheckInputTemporary(streetname))
-                        {
-                            // TODO: Foutmelding op scherm
-                            _errorHasOccurred = true;
-                            Console.WriteLine("Error: streetname invalid");
-                        }*/
+            // Placename validation
+            if (String.IsNullOrEmpty(streetname))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                ErrorAddress.Content = _errorMessageFieldIsEmpty;
+            } else
+            {
+                ErrorAddress.Content = string.Empty;
+            }
 
             // Emailadres validation
             // TODO: emailadres regex toevoegen (later implementeren)
-            /*            if (!CheckInputTemporary(emailadres))
-                        {
-                            // TODO: Foutmelding op scherm
-                            _errorHasOccurred = true;
-                            Console.WriteLine("Error: emailadres invalid");
-                        }*/
+            if (String.IsNullOrEmpty(emailadres))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                ErrorMail.Content = _errorMessageFieldIsEmpty;
+            } else
+            {
+                ErrorMail.Content = string.Empty;
+            }
 
+            // Amount of guests validation
+            // TODO: emailadres regex toevoegen (later implementeren)
+            if (String.IsNullOrEmpty(amountOfGuests))
+            {
+                // TODO: Foutmelding op scherm
+                _errorHasOccurred = true;
+                ErrorAmountOfGuests.Content = _errorMessageFieldIsEmpty;
+            }
+            else
+            {
+                ErrorAmountOfGuests.Content = string.Empty;
+            }
 
             // Case submit was valid
             if (!_errorHasOccurred)
@@ -192,6 +213,7 @@ namespace Visualisation
             }
         }
 
+        // All the checks underneath should be put in their own class.
         private bool CheckInputTemporary(string input)
         {
             return (input != null || input != string.Empty); 
@@ -274,22 +296,22 @@ namespace Visualisation
             {
                 if (emptyFieldTextbox.Name.Equals("CustomerFirstName"))
                 {
-                    ErrorPlacename.Content = "Voornaam" + ErrorMessageFieldIsEmpty; ;
+                    ErrorPlacename.Content = "Voornaam" + _errorMessageFieldIsIncorrect;
                 }
                 else if (emptyFieldTextbox.Name.Equals("CustomerLastName"))
                 {
-                    ErrorLastName.Content = "Achternaam" + ErrorMessageFieldIsEmpty; ;
+                    ErrorLastName.Content = "Achternaam" + _errorMessageFieldIsIncorrect;
                 }
                 else
                 {
-                    ErrorFirstName.Content = "Plaatsnaam" + ErrorMessageFieldIsEmpty; ;
+                    ErrorFirstName.Content = "Plaatsnaam" + _errorMessageFieldIsIncorrect;
                 }         
             } else if (emptyFieldTextbox.Name.Equals("CustomerPhonenumber"))
             {
-                ErrorPhonenumber.Content = "Telefoonnummer" + ErrorMessageFieldIsEmpty;
+                ErrorPhonenumber.Content = "Telefoonnummer" + _errorMessageFieldIsIncorrect;
             }else 
             {
-                ErrorPostalcode.Content = "Poscode" + ErrorMessageFieldIsEmpty; ;
+                ErrorPostalcode.Content = "Poscode" + _errorMessageFieldIsIncorrect;
             }
             
         }
@@ -305,24 +327,24 @@ namespace Visualisation
             {
                 if (incorrectFieldTextbox.Name.Equals("CustomerFirstName"))
                 {
-                    ErrorPlacename.Content = "Voornaam" + ErrorMessageFieldIsIncorrect; ;
+                    ErrorPlacename.Content = "Voornaam" + _errorMessageFieldIsIncorrect;
                 }
                 else if (incorrectFieldTextbox.Name.Equals("CustomerLastName"))
                 {
-                    ErrorLastName.Content = "Achternaam" + ErrorMessageFieldIsIncorrect; ;
+                    ErrorLastName.Content = "Achternaam" + _errorMessageFieldIsIncorrect;
                 }
                 else
                 {
-                    ErrorFirstName.Content = "Plaatsnaam" + ErrorMessageFieldIsIncorrect; ;
+                    ErrorFirstName.Content = "Plaatsnaam" + _errorMessageFieldIsIncorrect;
                 }
             }
             else if (incorrectFieldTextbox.Name.Equals("CustomerPhonenumber"))
             {
-                ErrorPhonenumber.Content = "Telefoonnummer" + ErrorMessageFieldIsIncorrect;
+                ErrorPhonenumber.Content = "Telefoonnummer" + _errorMessageFieldIsIncorrect;
             }
             else
             {
-                ErrorPostalcode.Content = "Poscode" + ErrorMessageFieldIsIncorrect; ;
+                ErrorPostalcode.Content = "Poscode" + _errorMessageFieldIsIncorrect;
             }
         }
 
@@ -332,8 +354,6 @@ namespace Visualisation
             var regex = new Regex(@"^(((0[1 - 9] |[12]\d | 3[01])\/ (0[13578] | 1[02])\/ ((19 |[2 - 9]\d)\d{ 2}))| ((0[1 - 9] |[12]\d | 30)\/ (0[13456789] | 1[012])\/ ((19 |[2 - 9]\d)\d{ 2}))| ((0[1 - 9] | 1\d | 2[0 - 8])\/ 02\/ ((19 |[2 - 9]\d)\d{ 2}))| (29\/ 02\/ ((1[6 - 9] |[2 - 9]\d)(0[48] |[2468][048] |[13579][26]) | ((16 |[2468][048] |[3579][26])00))))$", RegexOptions.IgnoreCase);
             return regex.IsMatch(birthDate.Trim());
         }
-
-
 
         private static bool CheckAddress(string address)
         {
@@ -348,14 +368,10 @@ namespace Visualisation
             return regex.IsMatch(email.Trim());
         }
 
-
-
         private static bool CheckPhoneNumber(string phoneNumber)
         {
             var regex = new Regex(@"^([+]31)-?06(\s?|-)([0-9]\s{0,3}){8}$", RegexOptions.IgnoreCase); //+310642165086
             return regex.IsMatch(phoneNumber.Trim());
         }
-
     }
 }
-
