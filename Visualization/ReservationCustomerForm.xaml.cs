@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using Model;
 using SystemCore;
 
-namespace Visualisation
+namespace Visualization
 {
     /// <summary>
     /// Interaction logic for ReservationCustomerForm.xaml

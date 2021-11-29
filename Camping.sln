@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualisation", "Visualisation\Visualisation.csproj", "{504A9D53-DA4F-42FD-9AD2-DBA1A047B306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualization", "Visualization\Visualization.csproj", "{504A9D53-DA4F-42FD-9AD2-DBA1A047B306}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controller", "Controller\Controller.csproj", "{FA56DF42-8518-4A6A-BFEB-3A9E2E7E7BD9}"
 EndProject

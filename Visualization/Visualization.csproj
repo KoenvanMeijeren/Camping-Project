@@ -5,7 +5,8 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>caravan-solid.ico</ApplicationIcon>
-    <StartupObject>Visualisation.App</StartupObject>
+    <StartupObject>Visualization.App</StartupObject>
+    <RootNamespace>Visualization</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

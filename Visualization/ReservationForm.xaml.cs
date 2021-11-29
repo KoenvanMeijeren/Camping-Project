@@ -12,21 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Model;
 
-namespace Visualisation
+namespace Visualization
 {
     /// <summary>
-    /// Interaction logic for ReservationCollectionPage.xaml
+    /// Interaction logic for ReservationForm.xaml
     /// </summary>
-    public partial class ReservationCollectionPage : Page
+    public partial class ReservationForm : Page
     {
-
-        public ReservationCollectionPage(List<Reservation> reservations)
+        public ReservationForm()
         {
             this.InitializeComponent();
-
-            this.ReservationsViewDataGrid.ItemsSource = reservations;
         }
     }
 }
