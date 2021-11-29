@@ -15,7 +15,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SystemCore;
 using Model;
-using Visualisation.Model;
 
 namespace Visualisation
 {
@@ -27,14 +26,12 @@ namespace Visualisation
         private readonly CampingPitchesCollectionPage _campingPitchesCollectionFrame;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
 
-        public static event EventHandler<ReservationEventArgs> ReservationsChanged;
-        
         public MainWindow()
         {
             this.InitializeComponent();
             
             this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
-            this._reservationCollectionFrame = new ReservationCollectionPage();
+            this._reservationCollectionFrame = new ReservationCollectionPage(ReservationCollection.Select());
         }
 
         private void ReserveButtonClick(object sender, RoutedEventArgs e)
@@ -50,8 +47,6 @@ namespace Visualisation
 
         private void OverviewButtonClick(object sender, RoutedEventArgs e)
         {
-            MainWindow.ReservationsChanged?.Invoke(this, new ReservationEventArgs(ReservationCollection.Select()));
-            
             this.OverviewButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
             this.OverviewButton.Foreground = Brushes.White;
 
