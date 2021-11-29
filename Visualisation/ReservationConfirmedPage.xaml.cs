@@ -28,7 +28,6 @@ namespace Visualisation
         public ReservationConfirmedPage()
         {
             InitializeComponent();
-            this._reservationConfirmedPage = new ReservationConfirmedPage();
             ReservationCustomerForm.ReservationConfirmedEvent += onReservationConfirmedEvent;
         }
 
@@ -40,7 +39,7 @@ namespace Visualisation
             this.CheckOutDatetime = args.CheckOutDatetime;
 
             this.Title.Content = $"Gefeliciteerd {FirstName} {LastName},";
-            this.ConfirmationText.Content = $"Uw reservering van {CheckInDatetime.Date} tot {CheckInDatetime.Date}";
+            this.ConfirmationText.Content = $"Uw reservering van {CheckInDatetime.Date.ToShortDateString()} tot {CheckInDatetime.Date.ToShortDateString()}";
         }
     }
 }
