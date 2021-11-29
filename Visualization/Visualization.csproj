@@ -5,11 +5,12 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>caravan-solid.ico</ApplicationIcon>
-    <StartupObject>Visualisation.App</StartupObject>
+    <StartupObject>Visualization.App</StartupObject>
+    <RootNamespace>Visualization</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Controller\Controller.csproj" />
+    <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
     <ProjectReference Include="..\SystemCore\SystemCore.csproj" />
   </ItemGroup>

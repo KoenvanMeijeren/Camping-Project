@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Model;
 
-namespace Visualisation
+namespace Visualization
 {
     /// <summary>
     /// Interaction logic for CampingPitchesCollectionPage.xaml

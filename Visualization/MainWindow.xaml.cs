@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using SystemCore;
 using Model;
 
-namespace Visualisation
+namespace Visualization
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
