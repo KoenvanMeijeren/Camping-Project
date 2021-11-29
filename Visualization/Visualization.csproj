@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Controller\Controller.csproj" />
+    <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
     <ProjectReference Include="..\Model\Model.csproj" />
     <ProjectReference Include="..\SystemCore\SystemCore.csproj" />
   </ItemGroup>
