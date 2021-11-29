@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Model;
-using Visualisation.Model;
 
 namespace Visualisation
 {
@@ -23,9 +22,11 @@ namespace Visualisation
     public partial class ReservationCollectionPage : Page
     {
 
-        public ReservationCollectionPage()
+        public ReservationCollectionPage(List<Reservation> reservations)
         {
             this.InitializeComponent();
+
+            this.ReservationsViewDataGrid.ItemsSource = reservations;
         }
     }
 }
