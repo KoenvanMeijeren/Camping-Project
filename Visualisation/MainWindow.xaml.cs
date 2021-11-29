@@ -38,7 +38,7 @@ namespace Visualisation
             this._reservationCollectionFrame = new ReservationCollectionPage(ReservationCollection.Select());
             this._reservationConfirmedPage = new ReservationConfirmedPage();
 
-            ReservationCustomerForm.ReservationConfirmedEvent += onReservationConfirmedEvent;
+            ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             CampingPitchesCollectionPage.ReserveEvent += this.OnReserveEvent;
         }
 
@@ -73,7 +73,7 @@ namespace Visualisation
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        public void onReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
         {
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
