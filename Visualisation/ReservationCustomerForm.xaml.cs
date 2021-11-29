@@ -256,10 +256,6 @@ namespace Visualisation
         private Boolean ValidatePostalcode(string inputPostalcode)
         {
             inputPostalcode = CleanPostalCode(inputPostalcode);
-            if (!CheckPostalcode(inputPostalcode))
-            {
-                //activate postalcode label
-            }
             return CheckPostalcode(inputPostalcode);
         }
 
