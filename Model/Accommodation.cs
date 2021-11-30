@@ -41,6 +41,11 @@ namespace Model
 
         protected override Accommodation ToModel(Dictionary<string, string> dictionary)
         {
+            if (dictionary == null)
+            {
+                return null;
+            }
+            
             dictionary.TryGetValue("AccommodationID", out string id);
             dictionary.TryGetValue("Prefix", out string prefix);
             dictionary.TryGetValue("Name", out string name);
