@@ -77,9 +77,9 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"Name", name},
-                {"Address", address.Id.ToString()},
-                {"CampingOwner", campingOwner.Id.ToString()}
+                {"CampingName", name},
+                {"AddressID", address.Id.ToString()},
+                {"CampingOwnerID", campingOwner.Id.ToString()}
             };
 
             return dictionary;
