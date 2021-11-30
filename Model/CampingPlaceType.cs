@@ -1,5 +1,6 @@
 namespace Model
 {
+    // todo: henk
     public class CampingPlaceType : IModel
     {
         public int Id { get; private set; }

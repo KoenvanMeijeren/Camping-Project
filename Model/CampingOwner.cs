@@ -1,5 +1,6 @@
 namespace Model
 {
+    // todo: job
     public class CampingOwner : IModel
     {
         public int Id { get; private set; }

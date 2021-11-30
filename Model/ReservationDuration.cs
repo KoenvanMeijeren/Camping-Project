@@ -8,6 +8,7 @@ using SystemCore;
 
 namespace Model
 {
+    // todo: henk
     public class ReservationDuration : IModel
     {
         public int Id { get; private set; }

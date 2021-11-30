@@ -35,11 +35,16 @@ namespace Visualization
             
             this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
             this._reservationCustomerForm = new ReservationCustomerForm();
-            this._reservationCollectionFrame = new ReservationCollectionPage(ReservationCollection.Select());
+            this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
 
             ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             CampingPitchesCollectionPage.ReserveEvent += this.OnReserveEvent;
+
+            CampingCustomer camping = new CampingCustomer();
+            var result = camping.Select(2);
+            var results = camping.Select();
+            var last = camping.SelectLast();
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)

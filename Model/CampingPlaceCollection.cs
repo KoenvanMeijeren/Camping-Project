@@ -7,6 +7,7 @@ using SystemCore;
 
 namespace Model
 {
+    // todo: koen
     public class CampingPlaceCollection
     {
         private List<CampingPlace> _collection;

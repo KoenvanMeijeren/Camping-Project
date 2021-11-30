@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+    // todo: henk
     public class ReservationCampingGuest : IModel
     {
         public int Id { get; private set; }
