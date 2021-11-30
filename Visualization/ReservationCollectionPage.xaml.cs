@@ -21,12 +21,13 @@ namespace Visualization
     /// </summary>
     public partial class ReservationCollectionPage : Page
     {
+        private readonly Reservation _reservation = new Reservation();
 
-        public ReservationCollectionPage(List<Reservation> reservations)
+        public ReservationCollectionPage()
         {
             this.InitializeComponent();
 
-            this.ReservationsViewDataGrid.ItemsSource = reservations;
+            this.ReservationsViewDataGrid.ItemsSource = this._reservation.Select();
         }
     }
 }
