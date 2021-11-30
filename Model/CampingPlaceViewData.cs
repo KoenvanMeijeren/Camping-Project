@@ -34,12 +34,12 @@ namespace Model
 
         public int GetId() 
         {
-            return _id;
+            return this._id;
         }
 
         public float GetNumericNightPrice()
         {
-            return _dagtarief;
+            return this._dagtarief;
         }
     }
 }
