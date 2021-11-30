@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    // todo: koen
     public class CampingPlace : ModelBase<CampingPlace>
     {
         public int Id { get; private set; }
