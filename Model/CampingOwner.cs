@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 namespace Model
 {
-    // todo: job
     public class CampingOwner : ModelBase<CampingOwner>
     {
         public int Id { get; private set; }
