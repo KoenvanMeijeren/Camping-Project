@@ -33,15 +33,13 @@ namespace Model
             insertNewReservationDurationQuery.AddParameter("checkOutDatetime", CheckOutDatetime);
             insertNewReservationDurationQuery.Execute();
 
-            GetReservationID();
+            this.GetReservationID();
            
             return insertNewReservationDurationQuery.SuccessFullyExecuted();
         }
 
         private void GetReservationID()
         {
-            string idFromDatabase = "";
-
             Query selectQuery = new Query("SELECT id FROM ReservationDuration WHERE CheckinDatetime=@checkinDatetime AND CheckoutDatetime=@checkoutDatetime");
             selectQuery.AddParameter("checkinDatetime", CheckInDatetime);
             selectQuery.AddParameter("checkOutDatetime", CheckOutDatetime);
@@ -49,7 +47,7 @@ namespace Model
 
             if (selectQuery.SuccessFullyExecuted())
             {
-                if (selectedRecord.TryGetValue("ReservationDurationID", out idFromDatabase))
+                if (selectedRecord.TryGetValue("ReservationDurationID", out string idFromDatabase))
                 {
                     this.Id = Int32.Parse(idFromDatabase);                    
                 }
