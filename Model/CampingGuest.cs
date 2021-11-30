@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Model
 {
     // todo: job
-    public class CampingGuest : IModel
+    public class CampingGuest : ModelBase<CampingGuest>
     {
         public int Id { get; private set; }
         
@@ -15,12 +15,66 @@ namespace Model
         
         public DateTime Birthdate { get; private set; }
 
+        public CampingGuest()
+        {
+        }
+
+        public CampingGuest(string name, DateTime birthdate) : this("-1", name, birthdate)
+        {
+        }
+
         public CampingGuest(string id, string name, DateTime birthdate)
         {
             this.Id = int.Parse(id);
             this.Name = name;
             this.Birthdate = birthdate;
         }
-        
+
+        protected override string Table()
+        {
+            return "CampingGuest";
+        }
+
+        protected override string PrimaryKey()
+        {
+            return "CampingGuestID";
+        }
+
+        public bool Update(string name, DateTime birthdate)
+        {
+            this.Name = name;
+
+            return base.Update(CampingOwner.ToDictionary(name, birthdate));
+        }
+
+        protected override CampingGuest ToModel(Dictionary<string, string> dictionary)
+        {
+            if (dictionary == null)
+            {
+                return null;
+            }
+
+            dictionary.TryGetValue("CampingID", out string id);
+            dictionary.TryGetValue("CampingGuestName", out string name);
+            dictionary.TryGetValue("Birthdate", out string birthdate);
+
+            return new CampingGuest(id, name, DateTime.Parse(birthdate));
+        }
+
+        protected override Dictionary<string, string> ToDictionary()
+        {
+            return CampingGuest.ToDictionary(this.Name, this.Birthdate);
+        }
+
+        private static Dictionary<string, string> ToDictionary(string name, DateTime birthdate)
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>
+            {
+                {"CampingGuestName", name},
+                {"Birthdate", birthdate.ToShortDateString()}
+            };
+
+            return dictionary;
+        }
     }
 }
