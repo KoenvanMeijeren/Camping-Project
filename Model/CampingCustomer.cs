@@ -55,6 +55,13 @@ namespace Model
 
         public bool Update(Address address, DateTime birthdate, string email, string phoneNumber, string firstName, string lastName)
         {
+            this.Address = address;
+            this.Birthdate = birthdate;
+            this.Email = email;
+            this.PhoneNumber = phoneNumber;
+            this.FirstName = firstName;
+            this.LastName = lastName;
+
             return base.Update(CampingCustomer.ToDictionary(address, birthdate, email, phoneNumber, firstName, lastName));
         }
 

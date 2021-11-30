@@ -39,6 +39,10 @@ namespace Model
 
         public bool Update(string name, Address address, CampingOwner campingOwner)
         {
+            this.Name = name;
+            this.Address = address;
+            this.CampingOwner = campingOwner;
+            
             return base.Update(Camping.ToDictionary(name, address, campingOwner));
         }
 
