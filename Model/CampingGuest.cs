@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    // todo: job
     public class CampingGuest : ModelBase<CampingGuest>
     {
-        public int Id { get; private set; }
-        
         public string Name { get; private set; }
         
         public DateTime Birthdate { get; private set; }
@@ -19,15 +16,15 @@ namespace Model
         {
         }
 
-        public CampingGuest(string name, DateTime birthdate) : this("-1", name, birthdate)
+        public CampingGuest(string name, string birthdate) : this("-1", name, birthdate)
         {
         }
 
-        public CampingGuest(string id, string name, DateTime birthdate)
+        public CampingGuest(string id, string name, string birthdate)
         {
             this.Id = int.Parse(id);
             this.Name = name;
-            this.Birthdate = birthdate;
+            this.Birthdate = DateTime.Parse(birthdate);
         }
 
         protected override string Table()
@@ -43,8 +40,9 @@ namespace Model
         public bool Update(string name, DateTime birthdate)
         {
             this.Name = name;
+            this.Birthdate = birthdate;
 
-            return base.Update(CampingOwner.ToDictionary(name, birthdate));
+            return base.Update(CampingGuest.ToDictionary(name, birthdate));
         }
 
         protected override CampingGuest ToModel(Dictionary<string, string> dictionary)
@@ -58,7 +56,7 @@ namespace Model
             dictionary.TryGetValue("CampingGuestName", out string name);
             dictionary.TryGetValue("Birthdate", out string birthdate);
 
-            return new CampingGuest(id, name, DateTime.Parse(birthdate));
+            return new CampingGuest(id, name, birthdate);
         }
 
         protected override Dictionary<string, string> ToDictionary()
