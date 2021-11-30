@@ -94,12 +94,14 @@ namespace Model
             dictionary.TryGetValue("PhoneNumber", out string phoneNumber);
             dictionary.TryGetValue("CheckinDatetime", out string checkInDateTime);
             dictionary.TryGetValue("CheckoutDatetime", out string checkOutDateTime);
+            dictionary.TryGetValue("CustomerFirstName", out string firstName);
+            dictionary.TryGetValue("CustomerLastName", out string lastName);
 
             Address customerAddress = new Address(addressId, address, postalCode, place);
             Accommodation accommodation = new Accommodation(accommodationId, prefix, name);
             CampingPlaceType campingPlaceType = new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
             CampingPlace campingPlace = new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
-            CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, customerAddress, birthdate, email, phoneNumber);
+            CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, customerAddress, birthdate, email, phoneNumber, firstName, lastName);
             ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
             return new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
