@@ -4,7 +4,6 @@ namespace Model
 {
     public class Camping : ModelBase<Camping>
     {
-        public int Id { get; private set; }
         public string Name { get; private set; }
         
         public Address Address { get; private set; }

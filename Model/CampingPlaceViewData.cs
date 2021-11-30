@@ -8,9 +8,7 @@ namespace Model
 {
     public class CampingPlaceViewData
     {
-
         public string Type { get; private set; }
-
         public string Locatie { get; private set; }
         public int Personen { get; private set; }
         public string Oppervlakte { get; private set; }

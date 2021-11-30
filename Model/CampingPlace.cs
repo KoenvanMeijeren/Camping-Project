@@ -9,16 +9,12 @@ namespace Model
 {
     public class CampingPlace : ModelBase<CampingPlace>
     {
-        public int Id { get; private set; }
         public int Number { get; private set; }
         public float Surface { get; private set; }
         public float ExtraNightPrice { get; private set; }
         public string Location { get; private set; }
-
         public string LocationSelect { get; private set; }
-        
         public float TotalPrice { get; private set; }
-        
         public CampingPlaceType Type { get; private set; }
 
         public CampingPlace()

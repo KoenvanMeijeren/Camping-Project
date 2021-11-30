@@ -9,7 +9,6 @@ namespace Model
     public class CampingGuest : ModelBase<CampingGuest>
     {
         public string Name { get; private set; }
-        
         public DateTime Birthdate { get; private set; }
 
         public CampingGuest()
