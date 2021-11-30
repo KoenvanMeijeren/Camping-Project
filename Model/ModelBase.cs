@@ -103,17 +103,17 @@ namespace Model
 
         protected virtual string BaseQuery()
         {
-            return $"SELECT * FROM {this.Table()}";
+            return $"SELECT * FROM {this.Table()} BT";
         }
 
         protected virtual string SelectQuery()
         {
-            return $"SELECT * FROM {this.Table()} WHERE {this.PrimaryKey()} = @{this.PrimaryKey()}";
+            return $"{this.BaseQuery()} WHERE {this.PrimaryKey()} = @{this.PrimaryKey()}";
         }
         
         protected virtual string SelectLastQuery()
         {
-            return $"SELECT * FROM {this.Table()} ORDER BY {this.PrimaryKey()} DESC";
+            return $"{this.BaseQuery()} ORDER BY {this.PrimaryKey()} DESC";
         }
 
     }
