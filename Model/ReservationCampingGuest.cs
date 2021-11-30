@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    // todo: henk
     public class ReservationCampingGuest : ModelBase<ReservationCampingGuest>
     {
-        public int Id { get; private set; }
         public Reservation Reservation { get; private set; }
         public CampingGuest CampingGuest { get; private set; }
 

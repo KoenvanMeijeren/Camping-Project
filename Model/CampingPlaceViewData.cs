@@ -22,7 +22,7 @@ namespace Model
         {
             this.Type = campingPlace.Type.Accommodation.Name;
             this.Locatie = campingPlace.Type.Accommodation.Prefix + " " + campingPlace.Number;
-            this.Personen = campingPlace.Type.guestLimit;
+            this.Personen = campingPlace.Type.GuestLimit;
             this.Oppervlakte = campingPlace.Surface + " m2";
             this.Dagtarief = "€" + (campingPlace.Type.StandardNightPrice + campingPlace.ExtraNightPrice);
 
