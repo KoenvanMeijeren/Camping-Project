@@ -84,7 +84,12 @@ namespace SystemCore
             this._sqlCommand.Connection = DatabaseConnector.GetConnection();
             
             using SqlDataReader reader = this._sqlCommand.ExecuteReader();
-            reader.Read();
+            bool hasData = reader.Read();
+            if (!hasData)
+            {
+                return null;
+            }
+            
             Dictionary<string, string> dictionary = this.DataRecordToDictionary(reader);
             
             DatabaseConnector.Close();
