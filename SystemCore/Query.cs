@@ -84,6 +84,11 @@ namespace SystemCore
             this._sqlCommand.Connection = DatabaseConnector.GetConnection();
             
             using SqlDataReader reader = this._sqlCommand.ExecuteReader();
+            if (reader == null)
+            {
+                return null;
+            }
+            
             bool hasData = reader.Read();
             if (!hasData)
             {
