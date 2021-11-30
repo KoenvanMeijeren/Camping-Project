@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Visualisation", "Visualisation\Visualisation.csproj", "{504A9D53-DA4F-42FD-9AD2-DBA1A047B306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Visualization", "Visualization\Visualization.csproj", "{504A9D53-DA4F-42FD-9AD2-DBA1A047B306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "Controller\Controller.csproj", "{FA56DF42-8518-4A6A-BFEB-3A9E2E7E7BD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{FA56DF42-8518-4A6A-BFEB-3A9E2E7E7BD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{33646699-4D8F-4E3F-BC0F-D383548BF687}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{33646699-4D8F-4E3F-BC0F-D383548BF687}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelTests", "ModelTests\ModelTests.csproj", "{85A02BEA-DCA0-4EB5-A193-7DD70B0F11E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelTests", "ModelTests\ModelTests.csproj", "{85A02BEA-DCA0-4EB5-A193-7DD70B0F11E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControllerTests", "ControllerTests\ControllerTests.csproj", "{E946D769-E05A-46D4-8D1E-AF0492143151}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModelTests", "ViewModelTests\ViewModelTests.csproj", "{E946D769-E05A-46D4-8D1E-AF0492143151}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System", "System\System.csproj", "{76158905-D0DD-4D2F-AFA7-75AC534B0F35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemCore", "SystemCore\SystemCore.csproj", "{52035C9C-200B-4251-BB64-67EEE7C425DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{E946D769-E05A-46D4-8D1E-AF0492143151}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E946D769-E05A-46D4-8D1E-AF0492143151}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E946D769-E05A-46D4-8D1E-AF0492143151}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76158905-D0DD-4D2F-AFA7-75AC534B0F35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76158905-D0DD-4D2F-AFA7-75AC534B0F35}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76158905-D0DD-4D2F-AFA7-75AC534B0F35}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76158905-D0DD-4D2F-AFA7-75AC534B0F35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52035C9C-200B-4251-BB64-67EEE7C425DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52035C9C-200B-4251-BB64-67EEE7C425DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52035C9C-200B-4251-BB64-67EEE7C425DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52035C9C-200B-4251-BB64-67EEE7C425DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
