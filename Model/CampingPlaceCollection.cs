@@ -7,7 +7,7 @@ using SystemCore;
 
 namespace Model
 {
-    public class CampingPlaceCollection : IModelCollection
+    public class CampingPlaceCollection
     {
         private List<CampingPlace> _collection;
         public CampingPlaceCollection()
