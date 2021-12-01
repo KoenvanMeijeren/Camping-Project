@@ -27,7 +27,20 @@ namespace Visualization
         {
             this.InitializeComponent();
 
+            ReservationCustomerForm.ReservationConfirmedEvent += OnReservationConfirmedEvent;
+            
+           this.SetReservations();
+        }
+
+        private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
+        {
+            this.SetReservations();
+        }
+
+        private void SetReservations()
+        {
             this.ReservationsViewDataGrid.ItemsSource = this._reservation.Select();
         }
+        
     }
 }

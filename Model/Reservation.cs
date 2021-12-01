@@ -55,6 +55,18 @@ namespace Model
             return "ReservationID";
         }
 
+        public override IEnumerable<Reservation> Select()
+        {
+            Query query = new Query(this.BaseQuery());
+            var items = query.Select();
+            foreach (Dictionary<string, string> dictionary in items)
+            {
+                this.Collection.Add(this.ToModel(dictionary));
+            }
+
+            return this.Collection;
+        }
+
         public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
         {
             return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
