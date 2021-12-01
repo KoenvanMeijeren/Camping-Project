@@ -2,10 +2,8 @@ using System.Collections.Generic;
 
 namespace Model
 {
-    // todo: henk
     public class CampingPlaceType : ModelBase<CampingPlaceType>
     {
-        public int Id { get; private set; }
         public int GuestLimit { get; private set; }
         public float StandardNightPrice { get; private set; }
         
