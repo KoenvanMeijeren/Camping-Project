@@ -8,16 +8,10 @@ namespace Model
 {
     public class CampingCustomer : ModelBase<CampingCustomer>
     {
-        public int Id { get; private set; }
-        
         public Address Address { get; private set; }
-        
         public DateTime Birthdate { get; private set; }
-        
         public string Email { get; private set; }
-        
         public string PhoneNumber  { get; private set; }
-
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         

@@ -8,7 +8,7 @@ namespace Model
 {
     public abstract class ModelBase<T> : IModel
     {
-        public int Id { get; protected set; }
+        public int Id { get; protected init; }
         
         private readonly List<T> _collection = new List<T>();
 

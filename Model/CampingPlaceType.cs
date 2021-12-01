@@ -24,7 +24,7 @@ namespace Model
         public CampingPlaceType(string id, string guestLimit, string standardNightPrice, Accommodation accommodation)
         {
             this.Id = int.Parse(id);
-            this.guestLimit = int.Parse(guestLimit);
+            this.GuestLimit = int.Parse(guestLimit);
             this.StandardNightPrice = float.Parse(standardNightPrice);
             this.Accommodation = accommodation;
         }

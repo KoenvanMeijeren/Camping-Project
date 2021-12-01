@@ -10,10 +10,7 @@ namespace Model
 {
     public class Reservation : ModelBase<Reservation>
     {
-        
-        public int Id { get; private set; }
         public int NumberOfPeople { get; private set; }
-        
         public CampingCustomer CampingCustomer { get; private set; }
         public CampingPlace CampingPlace { get; private set; }
         public ReservationDuration Duration { get; private set; }
@@ -22,7 +19,6 @@ namespace Model
 
         public Reservation()
         {
-            
         }
         
         public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, 
