@@ -35,7 +35,7 @@ namespace Visualization
             
             this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
             this._reservationCustomerForm = new ReservationCustomerForm();
-            this._reservationCollectionFrame = new ReservationCollectionPage(ReservationCollection.Select());
+            this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
 
             ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;

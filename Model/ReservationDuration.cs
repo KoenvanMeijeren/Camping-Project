@@ -8,14 +8,23 @@ using SystemCore;
 
 namespace Model
 {
-    public class ReservationDuration : IModel
+    public class ReservationDuration : ModelBase<ReservationDuration>
     {
-        public int Id { get; private set; }
         public DateTime CheckInDatetime { get; private set; }
         public DateTime CheckOutDatetime { get; private set; }
         
         public string CheckInDate { get; private set; }
         public string CheckOutDate { get; private set; }
+
+        public ReservationDuration()
+        {
+
+        }
+
+        public ReservationDuration(string checkInDate, string checkOutDate): this ("-1", checkInDate, checkOutDate)
+        {
+
+        }
 
         public ReservationDuration(string id, string checkInDate, string checkOutDate)
         {
@@ -26,35 +35,53 @@ namespace Model
             this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
         }
 
-        private Boolean InsertReservationDuration()
+        protected override string Table()
         {
-            Query insertNewReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@checkinDatetime, @checkOutDatetime) OUTPUT inserted.ReservationDurationID");
-            insertNewReservationDurationQuery.AddParameter("checkinDatetime", CheckInDatetime);
-            insertNewReservationDurationQuery.AddParameter("checkOutDatetime", CheckOutDatetime);
-            insertNewReservationDurationQuery.Execute();
-
-            GetReservationID();
-           
-            return insertNewReservationDurationQuery.SuccessFullyExecuted();
+            return "ReservationDuration";
         }
 
-        private void GetReservationID()
+        protected override string PrimaryKey()
         {
-            string idFromDatabase = "";
+            return "ReservationDurationID";
+        }
 
-            Query selectQuery = new Query("SELECT id FROM ReservationDuration WHERE CheckinDatetime=@checkinDatetime AND CheckoutDatetime=@checkoutDatetime");
-            selectQuery.AddParameter("checkinDatetime", CheckInDatetime);
-            selectQuery.AddParameter("checkOutDatetime", CheckOutDatetime);
-            Dictionary<string, string> selectedRecord = selectQuery.SelectFirst();
+        public bool Update(string checkInDate, string checkOutDate)
+        {
+            this.CheckInDate = checkInDate;
+            this.CheckOutDate = checkOutDate;
 
-            if (selectQuery.SuccessFullyExecuted())
+            return base.Update(ReservationDuration.ToDictionary(checkInDate, checkOutDate));
+        }
+
+        protected override ReservationDuration ToModel(Dictionary<string, string> dictionary)
+        {
+            if(dictionary == null)
             {
-                if (selectedRecord.TryGetValue("ReservationDurationID", out idFromDatabase))
-                {
-                    this.Id = Int32.Parse(idFromDatabase);                    
-                }
+                return null;
             }
-           
+
+            dictionary.TryGetValue("ReservationDurationID", out string id);
+            dictionary.TryGetValue("CheckinDateTime", out string checkInDateTime);
+            dictionary.TryGetValue("CheckoutDateTime", out string checkOutDateTime);
+
+            return new ReservationDuration(id, checkInDateTime, checkOutDateTime);
         }
+        protected override Dictionary<string, string> ToDictionary()
+        {
+            return ReservationDuration.ToDictionary(this.CheckInDate, this.CheckOutDate);
+        }
+
+        private static Dictionary<string, string> ToDictionary(string checkInDate, string checkOutDate)
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>
+            {
+                {"CheckinDateTime", checkInDate},
+                {"CheckoutDateTime", checkOutDate}
+            };
+
+            return dictionary;
+
+        }
+
     }
 }

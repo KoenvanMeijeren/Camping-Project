@@ -8,9 +8,7 @@ namespace Model
 {
     public class CampingPlaceViewData
     {
-
         public string Type { get; private set; }
-
         public string Locatie { get; private set; }
         public int Personen { get; private set; }
         public string Oppervlakte { get; private set; }
@@ -24,7 +22,7 @@ namespace Model
         {
             this.Type = campingPlace.Type.Accommodation.Name;
             this.Locatie = campingPlace.Type.Accommodation.Prefix + " " + campingPlace.Number;
-            this.Personen = campingPlace.Type.guestLimit;
+            this.Personen = campingPlace.Type.GuestLimit;
             this.Oppervlakte = campingPlace.Surface + " m2";
             this.Dagtarief = "€" + (campingPlace.Type.StandardNightPrice + campingPlace.ExtraNightPrice);
 
@@ -34,12 +32,12 @@ namespace Model
 
         public int GetId() 
         {
-            return _id;
+            return this._id;
         }
 
         public float GetNumericNightPrice()
         {
-            return _dagtarief;
+            return this._dagtarief;
         }
     }
 }

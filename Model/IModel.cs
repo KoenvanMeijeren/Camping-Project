@@ -1,7 +1,14 @@
+using System.Collections.Generic;
+
 namespace Model
 {
-    public class IModel
+    public interface IModel
     {
         public int Id { get; }
+        
+        public bool Insert();
+        public bool Update(Dictionary<string, string> dictionary);
+        
+        public bool Delete();
     }
 }

@@ -1,22 +1,81 @@
+using System.Collections.Generic;
+
 namespace Model
 {
-    public class Address : IModel
+    public class Address : ModelBase<Address>
     {
-        public int Id { get; private set; }
-
         public string address { get; private set; }
         
         public string postalCode { get; private set; }
         
         public string place { get; private set; }
 
+        public Address()
+        {
+            
+        }
+        
+        public Address(string address, string postalCode, string place): this(null, address, postalCode, place)
+        {
+            
+        }
+        
         public Address(string id, string address, string postalCode, string place)
         {
-            this.Id = int.Parse(id);
+            bool successFul = int.TryParse(id, out int idNumeric);
+
+            this.Id = successFul ? idNumeric : -1;
             this.address = address;
             this.postalCode = postalCode;
             this.place = place;
         }
 
+        protected override string Table()
+        {
+            return "Address";
+        }
+
+        protected override string PrimaryKey()
+        {
+            return "AddressID";
+        }
+
+        public bool Update(string address, string postalCode, string place)
+        {
+            return base.Update(Address.ToDictionary(address, postalCode, place));
+        }
+
+        protected override Address ToModel(Dictionary<string, string> dictionary)
+        {
+            if (dictionary == null)
+            {
+                return null;
+            }
+            
+            dictionary.TryGetValue("AddressID", out string id);
+            dictionary.TryGetValue("Address", out string address);
+            dictionary.TryGetValue("PostalCode", out string postalCode);
+            dictionary.TryGetValue("Place", out string place);
+
+            return new Address(id, address, postalCode, place);
+        }
+
+        protected override Dictionary<string, string> ToDictionary()
+        {
+            return Address.ToDictionary(this.address, this.postalCode, this.place);
+        }
+
+        private static Dictionary<string, string> ToDictionary(string address, string postalCode, string place)
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>
+            {
+                {"Address", address},
+                {"PostalCode", postalCode},
+                {"Place", place}
+            };
+
+            return dictionary;
+        }
+        
     }
 }

@@ -8,18 +8,19 @@ using SystemCore;
 
 namespace Model
 {
-    public class Reservation : IModel
+    public class Reservation : ModelBase<Reservation>
     {
-        
-        public int Id { get; private set; }
         public int NumberOfPeople { get; private set; }
-        
         public CampingCustomer CampingCustomer { get; private set; }
         public CampingPlace CampingPlace { get; private set; }
         public ReservationDuration Duration { get; private set; }
         public float TotalPrice { get; private set; }
         public string TotalPriceString { get; private set; }
 
+        public Reservation()
+        {
+        }
+        
         public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, 
             ReservationDuration duration): this("-1", numberOfPeople, campingCustomer, campingPlace, duration)
         {
@@ -44,45 +45,30 @@ namespace Model
             return this.CampingPlace.TotalPrice * days;
         }
         
-        public bool Insert()
+        protected override string Table()
         {
-            if (this.Id > 0)
+            return "Reservation";
+        }
+
+        protected override string PrimaryKey()
+        {
+            return "ReservationID";
+        }
+
+        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        {
+            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
+        }
+
+        protected override Reservation ToModel(Dictionary<string, string> dictionary)
+        {
+            if (dictionary == null)
             {
-                throw new ArgumentException("You cannot insert an existing reservation.");
+                return null;
             }
-            
-            Query insertNewReservationQuery = new Query("INSERT INTO Reservation VALUES (@campingPlaceID, @numberOfPeople, @campingCustomerID, @reservationDurationID)");
-            insertNewReservationQuery.AddParameter("campingPlaceID", this.CampingPlace.Id);
-            insertNewReservationQuery.AddParameter("numberOfPeople", this.NumberOfPeople);
-            insertNewReservationQuery.AddParameter("campingCustomerID", this.CampingCustomer.Id);
-            insertNewReservationQuery.AddParameter("reservationDurationID", this.Duration.Id);
-            insertNewReservationQuery.Execute();
-            
-            return insertNewReservationQuery.SuccessFullyExecuted();
-        }
 
-        public bool Delete()
-        {
-            Query deleteQuery = new Query("DELETE FROM Reservation WHERE id = @id");
-            deleteQuery.AddParameter("id", this.Id);
-            deleteQuery.Execute();
-
-            return deleteQuery.SuccessFullyExecuted();
-        }
-
-        public static Reservation LoadFromId(int id)
-        {
-            string queryString = Reservation.BaseQuery();
-            queryString += "WHERE id = @id";
-            Query query = new Query(queryString);
-            query.AddParameter("id", id);
-
-            return Reservation.ToModel(query.SelectFirst());
-        }
-        
-        public static Reservation ToModel(Dictionary<string, string> dictionary)
-        {
             dictionary.TryGetValue("ReservationID", out string reservationId);
+            dictionary.TryGetValue("ReservationDurationID", out string durationId);
             dictionary.TryGetValue("CampingCustomerID", out string campingCustomerId);
             dictionary.TryGetValue("CampingPlaceID", out string campingPlaceId);
             dictionary.TryGetValue("CampingPlaceTypeID", out string campingPlaceTypeId);
@@ -104,18 +90,38 @@ namespace Model
             dictionary.TryGetValue("PhoneNumber", out string phoneNumber);
             dictionary.TryGetValue("CheckinDatetime", out string checkInDateTime);
             dictionary.TryGetValue("CheckoutDatetime", out string checkOutDateTime);
+            dictionary.TryGetValue("CustomerFirstName", out string firstName);
+            dictionary.TryGetValue("CustomerLastName", out string lastName);
 
             Address customerAddress = new Address(addressId, address, postalCode, place);
             Accommodation accommodation = new Accommodation(accommodationId, prefix, name);
             CampingPlaceType campingPlaceType = new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
             CampingPlace campingPlace = new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
-            CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, customerAddress, birthdate, email, phoneNumber);
-            ReservationDuration reservationDuration = new ReservationDuration(reservationId, checkInDateTime, checkOutDateTime);
+            CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, customerAddress, birthdate, email, phoneNumber, firstName, lastName);
+            ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
             return new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
         }
         
-        public static string BaseQuery()
+        protected override Dictionary<string, string> ToDictionary()
+        {
+            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration);
+        }
+
+        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>
+            {
+                {"NumberOfPeople", numberOfPeople},
+                {"CampingCustomerID", campingCustomer.Id.ToString()},
+                {"CampingPlaceID", campingPlace.Id.ToString()},
+                {"ReservationDurationID", duration.Id.ToString()}
+            };
+
+            return dictionary;
+        }
+        
+        protected override string BaseQuery()
         {
             string query = "SELECT * FROM Reservation R ";
             query += "INNER JOIN CampingPlace CP ON CP.CampingPlaceID = R.CampingPlaceID ";
