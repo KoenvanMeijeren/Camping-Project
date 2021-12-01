@@ -4,20 +4,22 @@ namespace Model
 {
     public class CampingOwner : ModelBase<CampingOwner>
     {
-        public string Name { get; private set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
 
         public CampingOwner()
         {
         }
 
-        public CampingOwner(string name) : this("-1", name)
+        public CampingOwner(string firstName, string lastName) : this("-1", firstName, lastName)
         {
         }
 
-        public CampingOwner(string id, string name)
+        public CampingOwner(string id, string firstName, string lastName)
         {
             this.Id = int.Parse(id);
-            this.Name = name;
+            this.FirstName = firstName;
+            this.LastName = lastName;
         }
 
         protected override string Table()
@@ -30,11 +32,12 @@ namespace Model
             return "CampingOwnerID";
         }
 
-        public bool Update(string name)
+        public bool Update(string firstName, string lastName)
         {
-            this.Name = name;
+            this.FirstName = firstName;
+            this.LastName = lastName;
 
-            return base.Update(CampingOwner.ToDictionary(name));
+            return base.Update(CampingOwner.ToDictionary(firstName, lastName));
         }
 
         protected override CampingOwner ToModel(Dictionary<string, string> dictionary)
@@ -45,22 +48,24 @@ namespace Model
             }
 
             dictionary.TryGetValue("CampingOwnerID", out string id);
-            dictionary.TryGetValue("CampingOwnerName", out string name);
+            dictionary.TryGetValue("CampingOwnerFirstName", out string firstName);
+            dictionary.TryGetValue("CampingOwnerLastName", out string lastName);
 
 
-            return new CampingOwner(id, name);
+            return new CampingOwner(id, firstName, lastName);
         }
 
         protected override Dictionary<string, string> ToDictionary()
         {
-            return CampingOwner.ToDictionary(this.Name);
+            return CampingOwner.ToDictionary(this.FirstName, this.LastName);
         }
 
-        private static Dictionary<string, string> ToDictionary(string name)
+        private static Dictionary<string, string> ToDictionary(string firstName, string lastName)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"CampingOwnerName", name}
+                {"CampingOwnerFirstName", firstName},
+                {"CampingOwnerLastName", lastName}
             };
 
             return dictionary;
