@@ -8,21 +8,23 @@ namespace Model
 {
     public class CampingGuest : ModelBase<CampingGuest>
     {
-        public string Name { get; private set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
         public DateTime Birthdate { get; private set; }
 
         public CampingGuest()
         {
         }
 
-        public CampingGuest(string name, string birthdate) : this("-1", name, birthdate)
+        public CampingGuest(string firstName, string lastName, string birthdate) : this("-1", firstName, lastName, birthdate)
         {
         }
 
-        public CampingGuest(string id, string name, string birthdate)
+        public CampingGuest(string id, string firstName, string lastName, string birthdate)
         {
             this.Id = int.Parse(id);
-            this.Name = name;
+            this.FirstName = firstName;
+            this.LastName = lastName;
             this.Birthdate = DateTime.Parse(birthdate);
         }
 
@@ -36,12 +38,13 @@ namespace Model
             return "CampingGuestID";
         }
 
-        public bool Update(string name, DateTime birthdate)
+        public bool Update(string firstName, string lastName, DateTime birthdate)
         {
-            this.Name = name;
+            this.FirstName = firstName;
+            this.LastName = lastName;
             this.Birthdate = birthdate;
 
-            return base.Update(CampingGuest.ToDictionary(name, birthdate));
+            return base.Update(CampingGuest.ToDictionary(firstName, lastName, birthdate));
         }
 
         protected override CampingGuest ToModel(Dictionary<string, string> dictionary)
@@ -52,22 +55,24 @@ namespace Model
             }
 
             dictionary.TryGetValue("CampingID", out string id);
-            dictionary.TryGetValue("CampingGuestName", out string name);
+            dictionary.TryGetValue("CampingGuestFirstName", out string firstName);
+            dictionary.TryGetValue("CampingGuestLastName", out string lastName);
             dictionary.TryGetValue("CampingGuestBirthdate", out string birthdate);
 
-            return new CampingGuest(id, name, birthdate);
+            return new CampingGuest(id, firstName, lastName, birthdate);
         }
 
         protected override Dictionary<string, string> ToDictionary()
         {
-            return CampingGuest.ToDictionary(this.Name, this.Birthdate);
+            return CampingGuest.ToDictionary(this.FirstName, this.LastName, this.Birthdate);
         }
 
-        private static Dictionary<string, string> ToDictionary(string name, DateTime birthdate)
+        private static Dictionary<string, string> ToDictionary(string firstName, string lastName, DateTime birthdate)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"CampingGuestName", name},
+                {"CampingGuestFirstName", firstName},
+                {"CampingGuestLastName", lastName},
                 {"CampingGuestBirthdate", birthdate.ToShortDateString()}
             };
 
