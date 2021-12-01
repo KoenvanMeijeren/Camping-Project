@@ -46,8 +46,8 @@ namespace Model
             }
             
             dictionary.TryGetValue("AccommodationID", out string id);
-            dictionary.TryGetValue("Prefix", out string prefix);
-            dictionary.TryGetValue("Name", out string name);
+            dictionary.TryGetValue("AccommodationPrefix", out string prefix);
+            dictionary.TryGetValue("AccommodationName", out string name);
 
             return new Accommodation(id, prefix, name);
         }
@@ -59,9 +59,11 @@ namespace Model
         
         private static Dictionary<string, string> ToDictionary(string prefix, string name)
         {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            dictionary.Add("Prefix", prefix);
-            dictionary.Add("Name", name);
+            Dictionary<string, string> dictionary = new Dictionary<string, string>
+            {
+                {"AccommodationPrefix", prefix},
+                {"AccommodationName", name}
+            };
 
             return dictionary;
         }

@@ -34,7 +34,7 @@ namespace Visualization
 
         private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
         {
-            this.SetReservations();
+            // todo: find out how to update data.
         }
 
         private void SetReservations()

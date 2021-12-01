@@ -54,8 +54,8 @@ namespace Model
             
             dictionary.TryGetValue("AddressID", out string id);
             dictionary.TryGetValue("Address", out string address);
-            dictionary.TryGetValue("PostalCode", out string postalCode);
-            dictionary.TryGetValue("Place", out string place);
+            dictionary.TryGetValue("AddressPostalCode", out string postalCode);
+            dictionary.TryGetValue("AddressPlace", out string place);
 
             return new Address(id, address, postalCode, place);
         }
@@ -70,8 +70,8 @@ namespace Model
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 {"Address", address},
-                {"PostalCode", postalCode},
-                {"Place", place}
+                {"AddressPostalCode", postalCode},
+                {"AddressPlace", place}
             };
 
             return dictionary;

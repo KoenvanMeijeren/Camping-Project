@@ -54,10 +54,10 @@ namespace Model
             
             dictionary.TryGetValue("CampingID", out string id);
             dictionary.TryGetValue("CampingName", out string name);
-            dictionary.TryGetValue("AddressID", out string addressId);
-            dictionary.TryGetValue("Address", out string street);
-            dictionary.TryGetValue("PostalCode", out string postalCode);
-            dictionary.TryGetValue("Place", out string place);
+            dictionary.TryGetValue("CampingAddressID", out string addressId);
+            dictionary.TryGetValue("CampingAddress", out string street);
+            dictionary.TryGetValue("CampingPostalCode", out string postalCode);
+            dictionary.TryGetValue("CampingPlace", out string place);
             dictionary.TryGetValue("CampingOwnerID", out string campingOwnerId);
             dictionary.TryGetValue("CampingOwnerName", out string campingOwnerName);
 
@@ -77,7 +77,7 @@ namespace Model
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 {"CampingName", name},
-                {"AddressID", address.Id.ToString()},
+                {"CampingAddressID", address.Id.ToString()},
                 {"CampingOwnerID", campingOwner.Id.ToString()}
             };
 
@@ -87,7 +87,7 @@ namespace Model
         protected override string BaseQuery()
         {
             string query = base.BaseQuery();
-            query += " INNER JOIN CampingOwner CO ON BT.OwnerID = CO.CampingOwnerID";
+            query += " INNER JOIN CampingOwner CO ON BT.CampingOwnerID = CO.CampingOwnerID";
             query += " INNER JOIN Address A ON BT.CampingAddressID = A.AddressID";
 
             return query;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Model
 {
@@ -53,16 +54,16 @@ namespace Model
                 return null;
             }
 
-            dictionary.TryGetValue("CampingTypePlaceID", out string campingPlaceTypeId);
-            dictionary.TryGetValue("AccommodationID", out string accommodationId);
-            dictionary.TryGetValue("GuestLimit", out string guestLimit);
-            dictionary.TryGetValue("StandardNightPrice", out string standardNightPrice);
-            dictionary.TryGetValue("Prefix", out string prefix);
-            dictionary.TryGetValue("AccommodationType", out string accommodationType);
+            dictionary.TryGetValue("CampingPlaceTypeID", out string campingPlaceTypeId);
+            dictionary.TryGetValue("CampingPlaceTypeAccommodationID", out string accommodationId);
+            dictionary.TryGetValue("CampingPlaceTypeGuestLimit", out string guestLimit);
+            dictionary.TryGetValue("CampingPlaceTypeStandardNightPrice", out string standardNightPrice);
+            dictionary.TryGetValue("AccommodationPrefix", out string prefix);
+            dictionary.TryGetValue("AccommodationName", out string accommodationName);
 
-            Accommodation accommodation = new Accommodation(prefix, accommodationType);
+            Accommodation accommodation = new Accommodation(accommodationId, prefix, accommodationName);
 
-            return new CampingPlaceType(guestLimit, standardNightPrice, accommodation);
+            return new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
         }
 
         protected override Dictionary<string, string> ToDictionary()
@@ -74,9 +75,9 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"GuestLimit", guestLimit.ToString()},
-                {"StandardNightPrice", standardNightPrice.ToString()},
-                {"AccommodationID", accommodation.Id.ToString()}
+                {"CampingPlaceTypeGuestLimit", guestLimit.ToString()},
+                {"CampingPlaceTypeStandardNightPrice", standardNightPrice.ToString(CultureInfo.InvariantCulture)},
+                {"CampingPlaceTypeAccommodationID", accommodation.Id.ToString()}
             };
 
             return dictionary;
@@ -85,7 +86,7 @@ namespace Model
         protected override string BaseQuery()
         {
             string query = base.BaseQuery();
-            query += "INNER JOIN Accommodation AC ON BT.AccommodationID = AC.AccomodationID";
+            query += "INNER JOIN Accommodation AC ON BT.CampingPlaceTypeAccommodationID = AC.AccommodationID";
 
             return query;
         }
