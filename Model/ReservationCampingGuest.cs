@@ -55,9 +55,9 @@ namespace Model
 
             dictionary.TryGetValue("ReservationCampingGuestID", out string reservationCampingGuestId);
             dictionary.TryGetValue("ReservationID", out string reservationId);
-            dictionary.TryGetValue("CampingPlaceID", out string campingPlaceID);
-            dictionary.TryGetValue("NumberOfPeople", out string numberOfPeople);
-            dictionary.TryGetValue("CampingCustomerID", out string campingCustomerId);
+            dictionary.TryGetValue("ReservationCampingPlaceID", out string campingPlaceID);
+            dictionary.TryGetValue("ReservationNumberOfPeople", out string numberOfPeople);
+            dictionary.TryGetValue("ReservationCampingCustomerID", out string campingCustomerId);
             dictionary.TryGetValue("ReservationDurationID", out string reservationDurationId);
             dictionary.TryGetValue("CampingGuestID", out string campingGuestId);
             dictionary.TryGetValue("CampingGuestName", out string campingGuestName);

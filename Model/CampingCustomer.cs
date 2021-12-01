@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,13 +70,13 @@ namespace Model
             dictionary.TryGetValue("CampingCustomerID", out string id);
             dictionary.TryGetValue("AddressID", out string addressId);
             dictionary.TryGetValue("Address", out string street);
-            dictionary.TryGetValue("PostalCode", out string postalCode);
-            dictionary.TryGetValue("Place", out string place);
-            dictionary.TryGetValue("Birthdate", out string birthdate);
-            dictionary.TryGetValue("Email", out string email);
-            dictionary.TryGetValue("PhoneNumber", out string phoneNumber);
-            dictionary.TryGetValue("CustomerFirstName", out string firstName);
-            dictionary.TryGetValue("CustomerLastName", out string lastName);
+            dictionary.TryGetValue("AddressPostalCode", out string postalCode);
+            dictionary.TryGetValue("AddressPlace", out string place);
+            dictionary.TryGetValue("CampingCustomerBirthdate", out string birthdate);
+            dictionary.TryGetValue("CampingCustomerEmail", out string email);
+            dictionary.TryGetValue("CampingCustomerPhoneNumber", out string phoneNumber);
+            dictionary.TryGetValue("CampingCustomerFirstName", out string firstName);
+            dictionary.TryGetValue("CampingCustomerLastName", out string lastName);
 
             Address address = new Address(addressId, street, postalCode, place);
 
@@ -92,11 +93,11 @@ namespace Model
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 {"CampingCustomerAddressID", address.Id.ToString()},
-                {"Birthdate", birthdate.ToString()},
-                {"Email", email},
-                {"PhoneNumber", phoneNumber},
-                {"CustomerFirstName", firstName},
-                {"CustomerLastName", lastName}
+                {"CampingCustomerBirthdate", birthdate.ToString(CultureInfo.InvariantCulture)},
+                {"CampingCustomerEmail", email},
+                {"CampingCustomerPhoneNumber", phoneNumber},
+                {"CampingCustomerFirstName", firstName},
+                {"CampingCustomerLastName", lastName}
             };
 
             return dictionary;

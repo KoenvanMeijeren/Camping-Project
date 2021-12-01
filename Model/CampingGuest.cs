@@ -53,7 +53,7 @@ namespace Model
 
             dictionary.TryGetValue("CampingID", out string id);
             dictionary.TryGetValue("CampingGuestName", out string name);
-            dictionary.TryGetValue("Birthdate", out string birthdate);
+            dictionary.TryGetValue("CampingGuestBirthdate", out string birthdate);
 
             return new CampingGuest(id, name, birthdate);
         }
@@ -68,7 +68,7 @@ namespace Model
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 {"CampingGuestName", name},
-                {"Birthdate", birthdate.ToShortDateString()}
+                {"CampingGuestBirthdate", birthdate.ToShortDateString()}
             };
 
             return dictionary;

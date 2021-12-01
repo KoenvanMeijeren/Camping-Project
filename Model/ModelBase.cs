@@ -10,7 +10,7 @@ namespace Model
     {
         public int Id { get; protected init; }
         
-        private readonly List<T> _collection = new List<T>();
+        protected readonly List<T> Collection = new List<T>();
 
         protected abstract string Table();
         
@@ -22,10 +22,10 @@ namespace Model
             var items = query.Select();
             foreach (Dictionary<string, string> dictionary in items)
             {
-                this._collection.Add(this.ToModel(dictionary));
+                this.Collection.Add(this.ToModel(dictionary));
             }
 
-            return this._collection;
+            return this.Collection;
         }
         
         public virtual T Select(int id)

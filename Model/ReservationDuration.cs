@@ -61,8 +61,8 @@ namespace Model
             }
 
             dictionary.TryGetValue("ReservationDurationID", out string id);
-            dictionary.TryGetValue("CheckinDateTime", out string checkInDateTime);
-            dictionary.TryGetValue("CheckoutDateTime", out string checkOutDateTime);
+            dictionary.TryGetValue("ReservationDurationCheckInDateTime", out string checkInDateTime);
+            dictionary.TryGetValue("ReservationDurationCheckOutDateTime", out string checkOutDateTime);
 
             return new ReservationDuration(id, checkInDateTime, checkOutDateTime);
         }
@@ -75,8 +75,8 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"CheckinDateTime", checkInDate},
-                {"CheckoutDateTime", checkOutDate}
+                {"ReservationDurationCheckInDateTime", checkInDate},
+                {"ReservationDurationCheckOutDateTime", checkOutDate}
             };
 
             return dictionary;

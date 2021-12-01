@@ -71,14 +71,14 @@ namespace Model
         {
             dictionary.TryGetValue("CampingPlaceID", out string campingPlaceId);
             dictionary.TryGetValue("CampingPlaceTypeID", out string campingPlaceTypeId);
-            dictionary.TryGetValue("AccommodationID", out string accommodationId);
-            dictionary.TryGetValue("Prefix", out string prefix);
+            dictionary.TryGetValue("CampingPlaceTypeAccommodationID", out string accommodationId);
+            dictionary.TryGetValue("AccommodationPrefix", out string prefix);
             dictionary.TryGetValue("AccommodationName", out string accommodationName);
-            dictionary.TryGetValue("GuestLimit", out string guestLimit);
-            dictionary.TryGetValue("StandardNightPrice", out string standardNightPrice);
-            dictionary.TryGetValue("PlaceNumber", out string placeNumber);
-            dictionary.TryGetValue("Surface", out string surface);
-            dictionary.TryGetValue("ExtraNightPrice", out string extraNightPrice);
+            dictionary.TryGetValue("CampingPlaceTypeGuestLimit", out string guestLimit);
+            dictionary.TryGetValue("CampingPlaceTypeStandardNightPrice", out string standardNightPrice);
+            dictionary.TryGetValue("CampingPlaceNumber", out string placeNumber);
+            dictionary.TryGetValue("CampingPlaceSurface", out string surface);
+            dictionary.TryGetValue("CampingPlaceExtraNightPrice", out string extraNightPrice);
 
             Accommodation accommodation = new Accommodation(accommodationId, prefix, accommodationName);
             CampingPlaceType campingPlaceType = new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
@@ -95,10 +95,10 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"GuestLimit", number.ToString()},
-                {"Surface", surface.ToString(CultureInfo.InvariantCulture)},
-                {"ExtraNightPrice", extraNightPrice.ToString(CultureInfo.InvariantCulture)},
-                {"CampingPlaceTypeID", campingPlaceType.Id.ToString()}
+                {"CampingPlaceTypeID", campingPlaceType.Id.ToString()},
+                {"CampingPlaceNumber", number.ToString()},
+                {"CampingPlaceSurface", surface.ToString(CultureInfo.InvariantCulture)},
+                {"CampingPlaceExtraNightPrice", extraNightPrice.ToString(CultureInfo.InvariantCulture)}
             };
 
             return dictionary;
@@ -106,9 +106,9 @@ namespace Model
         
         protected override string BaseQuery()
         {
-            string query = "SELECT * FROM CampingPlace ";
-            query += " INNER JOIN CampingPlaceType CPT ON CPT.CampingPlaceTypeID = TypeID";
-            query += " INNER JOIN Accommodation ACM ON ACM.AccommodationID = CPT.AccommodationID";
+            string query = base.BaseQuery();
+            query += " INNER JOIN CampingPlaceType CPT ON CPT.CampingPlaceTypeID = BT.CampingPlaceTypeID";
+            query += " INNER JOIN Accommodation ACM ON ACM.AccommodationID = CPT.CampingPlaceTypeAccommodationID";
 
             return query;
         }
