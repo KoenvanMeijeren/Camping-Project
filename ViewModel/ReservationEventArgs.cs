@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
-    public class ReserveEventArgs : EventArgs
+    public class ReservationEventArgs : EventArgs
     {
         public int CampingPlaceId { get; set; }
         public DateTime CheckInDatetime { get; set; }
         public DateTime CheckOutDatetime { get; set; }
 
-        public ReserveEventArgs(int campingPlaceId, DateTime checkInDatetime, DateTime checkOutDatetime)
+        public ReservationEventArgs(int campingPlaceId, DateTime checkInDatetime, DateTime checkOutDatetime)
         {
             this.CampingPlaceId = campingPlaceId;
             this.CheckInDatetime = checkInDatetime;

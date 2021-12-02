@@ -19,7 +19,7 @@ namespace ViewModel
         
         private readonly ObservableCollection<string> _campingPlaceTypes;
         private ObservableCollection<CampingPlace> _campingPlaces;
-        public static event EventHandler<ReserveEventArgs> ReserveEvent;
+        public static event EventHandler<ReservationEventArgs> ReserveEvent;
 
         public ObservableCollection<CampingPlace> CampingPlaces
         {
