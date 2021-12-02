@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SystemCore;
 using Model;
+using ViewModel;
 
 namespace Visualization
 {
@@ -82,7 +83,7 @@ namespace Visualization
 
         private void OnReserveEvent(object sender, ReserveEventArgs args)
         {
-            this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceID;
+            this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceId;
             this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;
             this._reservationCustomerForm.CheckOutDatetime = args.CheckOutDatetime;
 
