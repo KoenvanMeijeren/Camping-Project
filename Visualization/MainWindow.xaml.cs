@@ -25,7 +25,7 @@ namespace Visualization
 
     public partial class MainWindow : Window
     {
-        private readonly CampingPitchesCollectionPage _campingPitchesCollectionFrame;
+        private readonly CampingPlacesCollectionPage _campingPlacesCollectionFrame;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
@@ -36,7 +36,7 @@ namespace Visualization
         {
             this.InitializeComponent();
             
-            this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
+            this._campingPlacesCollectionFrame = new CampingPlacesCollectionPage();
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
@@ -78,7 +78,7 @@ namespace Visualization
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
 
-            this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
+            this.MainFrame.Content = this._campingPlacesCollectionFrame.Content;
         }
         
         private void TestClick(object sender, RoutedEventArgs e)

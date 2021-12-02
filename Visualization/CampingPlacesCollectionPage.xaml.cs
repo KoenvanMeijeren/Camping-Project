@@ -21,14 +21,14 @@ namespace Visualization
     /// <summary>
     /// Interaction logic for CampingPitchesCollectionPage.xaml
     /// </summary>
-    public partial class CampingPitchesCollectionPage : Page
+    public partial class CampingPlacesCollectionPage : Page
     {
 /*        private const string SelectAll = "Alle";
         
         private static List<CampingPlaceViewData> _campingPlaceViewDataCollection;
         private static List<String> _selectionList;
         public static event EventHandler<ReserveEventArgs> ReserveEvent;*/
-        public CampingPitchesCollectionPage()
+        public CampingPlacesCollectionPage()
         {
             this.InitializeComponent();
             /*this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];
