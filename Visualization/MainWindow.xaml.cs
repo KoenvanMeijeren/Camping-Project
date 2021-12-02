@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SystemCore;
 using Model;
+using ViewModel;
 
 namespace Visualization
 {
@@ -28,6 +29,8 @@ namespace Visualization
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
+        private readonly TestInputPage _testInputPage;
+        private readonly TestPage _testPage;
 
         public MainWindow()
         {
@@ -37,6 +40,8 @@ namespace Visualization
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
+            this._testPage = new TestPage();
+            this._testInputPage = new TestInputPage();
 
             ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             CampingPitchesCollectionPage.ReserveEvent += this.OnReserveEvent;
@@ -49,6 +54,12 @@ namespace Visualization
 
             this.CampingPitchesButton.Background = Brushes.White;
             this.CampingPitchesButton.Foreground = Brushes.Black;
+            
+            this.TestButton.Background = Brushes.White;
+            this.TestButton.Foreground = Brushes.Black;
+            
+            this.TestInputButton.Background = Brushes.White;
+            this.TestInputButton.Foreground = Brushes.Black;
 
             this.MainFrame.Content = this._reservationCollectionFrame.Content;
         }
@@ -60,13 +71,57 @@ namespace Visualization
 
             this.DashboardButton.Background = Brushes.White;
             this.DashboardButton.Foreground = Brushes.Black;
+            
+            this.TestButton.Background = Brushes.White;
+            this.TestButton.Foreground = Brushes.Black;
+            
+            this.TestInputButton.Background = Brushes.White;
+            this.TestInputButton.Foreground = Brushes.Black;
 
             this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
         }
+        
+        private void TestClick(object sender, RoutedEventArgs e)
+        {
+            this.TestButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
+            this.TestButton.Foreground = Brushes.White;
+
+            this.CampingPitchesButton.Background = Brushes.White;
+            this.CampingPitchesButton.Foreground = Brushes.Black;
+            
+            this.DashboardButton.Background = Brushes.White;
+            this.DashboardButton.Foreground = Brushes.Black;
+            
+            this.TestButton.Background = Brushes.White;
+            this.TestButton.Foreground = Brushes.Black;
+            
+            this.TestInputButton.Background = Brushes.White;
+            this.TestInputButton.Foreground = Brushes.Black;
+
+            this.MainFrame.Content = this._testPage.Content;
+        }
+        
+        private void TestInputClick(object sender, RoutedEventArgs e)
+        {
+            this.TestInputButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
+            this.TestInputButton.Foreground = Brushes.White;
+
+            this.TestButton.Background = Brushes.White;
+            this.TestButton.Foreground = Brushes.Black;
+            
+            this.CampingPitchesButton.Background = Brushes.White;
+            this.CampingPitchesButton.Foreground = Brushes.Black;
+            
+            this.DashboardButton.Background = Brushes.White;
+            this.DashboardButton.Foreground = Brushes.Black;
+
+            this.MainFrame.Content = this._testInputPage.Content;
+        }
+
 
         private void OnReserveEvent(object sender, ReserveEventArgs args)
         {
-            this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceID;
+            this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceId;
             this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;
             this._reservationCustomerForm.CheckOutDatetime = args.CheckOutDatetime;
 
