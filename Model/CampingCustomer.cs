@@ -19,13 +19,11 @@ namespace Model
         {
             
         }
-
-        public CampingCustomer(Address address, string birthdate, string email, string phoneNumber, string firstName, string lastName) : this("-1", address,
-            birthdate, email, phoneNumber, firstName, lastName)
+        public CampingCustomer(Address address, string birtdate, string email, string phoneNumber, string firstName, string lastName): this("-1",address, birtdate, email, phoneNumber, firstName, lastName)
         {
-            
+
         }
-        
+
         public CampingCustomer(string id, Address address, string birthdate, string email, string phoneNumber, string firstName, string lastName)
         {
             this.Id = int.Parse(id);
