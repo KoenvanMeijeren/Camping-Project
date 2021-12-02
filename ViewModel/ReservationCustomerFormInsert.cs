@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model;
 
 namespace ViewModel
 {
-    class ReservationCustomerFormInsert
+    public class ReservationCustomerFormInsert
     {
         public Dictionary<string, string> errorDictionary { get; private set; }
         private string _firstNameValidated { get; set; }
@@ -58,7 +59,7 @@ namespace ViewModel
             {
                 if (!ValidateBirthday(value))
                 {
-                    errorDictionary.Add("birthdate", "Ongeldige waarde ingevoerd");
+                    errorDictionary.Add("birthDate", "Ongeldige waarde ingevoerd");
                 }
             }
         }
@@ -142,7 +143,7 @@ namespace ViewModel
             {
                 if (!ValidateEmailAdress(value))
                 {
-                    errorDictionary.Add("placeName", "Ongeldige waarde ingevoerd");
+                    errorDictionary.Add("emailAdress", "Ongeldige waarde ingevoerd");
                 }
             }
         }
@@ -186,7 +187,8 @@ namespace ViewModel
 
             if (this.errorDictionary.Count == 0)
             {
-                this.InsertAllDataInDatabase();
+                // Temporary commented
+                /*this.InsertAllDataInDatabase();*/
             }
         }
 
@@ -194,7 +196,7 @@ namespace ViewModel
         {
             //TODO: Transactie en toevoegen aan controller
             // Create or/and fetch address based on user input
-            /*Address address = new Address(_streetName, _postalCode, _placeName);
+            Address address = new Address(_streetName, _postalCode, _placeName);
             var fetchLatestAddressOrCreateOne = address.FirstOrInsert();
 
             // Insert customer into CampingCustomer table
@@ -211,7 +213,7 @@ namespace ViewModel
             CampingPlace campingPlaceModel = new CampingPlace();
             CampingPlace campingPlace = campingPlaceModel.Select(_campingPlaceID);
             Reservation reservation = new Reservation(_amountOfGuests, fetchCampingCustomer, campingPlace, fetchNewestReservationDuration);
-            reservation.Insert();*/
+            reservation.Insert();
         }
 
         private void removeFromErrorDictionary(string key)

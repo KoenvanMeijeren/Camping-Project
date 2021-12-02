@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Model;
 using SystemCore;
+using ViewModel;
 
 namespace Visualization
 {
@@ -47,10 +48,16 @@ namespace Visualization
 
         }
 
+    /*    private Label[] errorLabels = new Label[this.ErrorFirstName, this.ErrorLastName, this.ErrorBirthDate, this.ErrorPhonenumber, this.ErrorPlacename, this.ErrorPostalcode, this.ErrorAddress, this.ErrorMail, this.ErrorAmountOfGuests];
+        private void ClearErrorLabels()
+        {
+            foreach (Label element in errorLabels)
+            {
+                element.Content = "";
+            }
+        }*/
         private void ReservationCustomerFormSubmit(object sender, RoutedEventArgs e)
         {
-            this._hasErrors = false;
-
             string firstName = this.CustomerFirstName.Text;
             string lastName = this.CustomerLastName.Text;
             string birthdate = string.Empty;
@@ -60,95 +67,53 @@ namespace Visualization
             string placeName = this.CustomerPlacename.Text;
             string emailAddress = this.CustomerMailadres.Text;
             string amountOfGuests = this.CustomerGuestAmount.Text;
+            
+            ReservationCustomerFormInsert reservationCustomerFormInsert = new ReservationCustomerFormInsert(firstName, lastName, birthdate, phoneNumber, streetName, postalcode, placeName, emailAddress, amountOfGuests, this.CheckInDatetime, this.CheckOutDatetime, this.CampingPlaceID);
 
-
-            /*            // Firstname validation
-                        this.ErrorFirstName.Content = string.Empty;
-                        if (string.IsNullOrEmpty(firstName))
-                        {
-                            this.ErrorFirstName.Content = ErrorMessageFieldIsEmpty;
-                            this._hasErrors = true;
-                        }
-
-                        // Lastname validation
-                        this.ErrorLastName.Content = string.Empty;
-                        if (string.IsNullOrEmpty(lastName))
-                        {
-                            this.ErrorLastName.Content = ErrorMessageFieldIsEmpty;
-                            this._hasErrors = true;
-                        }
-
-                        // Birthdate validation
-                        // TODO: CheckLegalAge moet nog worden geïmplementeerd.
-                        this.ErrorBirthDate.Content = ErrorMessageFieldIsEmpty;
-                        if (this.CustomerBirthDate.SelectedDate != null)
-                        {
-                            birthdate = this.CustomerBirthDate.SelectedDate.Value.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
-                            this.ErrorBirthDate.Content = string.Empty;
-                        }
-
-                        // Phonenumber validation
-                        // TODO: Phonenumber regex toevoegen
-                        this.ErrorPhonenumber.Content = string.Empty;
-                        if (string.IsNullOrEmpty(phoneNumber))
-                        {
-                            this._hasErrors = true;
-                            this.ErrorPhonenumber.Content = ErrorMessageFieldIsEmpty;
-                        }
-
-                        // Streetname validation
-                        // TODO: Placename regex toevoegen
-                        this.ErrorPlacename.Content = string.Empty;
-                        if (string.IsNullOrEmpty(placeName))
-                        {
-                            this._hasErrors = true;
-                            this.ErrorPlacename.Content = ErrorMessageFieldIsEmpty;
-                        }
-
-                        // Postalcode validation
-                        // TODO: postalcode regex toevoegen
-                        this.ErrorPostalcode.Content = string.Empty;
-                        if (string.IsNullOrEmpty(postalcode))
-                        {
-                            this._hasErrors = true;
-                            this.ErrorPostalcode.Content = ErrorMessageFieldIsEmpty;
-                        }
-
-                        // Placename validation
-                        this.ErrorAddress.Content = string.Empty;
-                        if (string.IsNullOrEmpty(streetName))
-                        {
-                            this._hasErrors = true;
-                            this.ErrorAddress.Content = ErrorMessageFieldIsEmpty;
-                        }
-
-                        // Emailadres validation
-                        // TODO: emailadres regex toevoegen (later implementeren)
-                        this.ErrorMail.Content = string.Empty;
-                        if (string.IsNullOrEmpty(emailAddress))
-                        {
-                            this._hasErrors = true;
-                            this.ErrorMail.Content = ErrorMessageFieldIsEmpty;
-                        }
-
-                        // Amount of guests validation
-                        // TODO: emailadres regex toevoegen (later implementeren)
-                        this.ErrorAmountOfGuests.Content = string.Empty;
-                        if (string.IsNullOrEmpty(amountOfGuests))
-                        {
-                            this._hasErrors = true;
-                            this.ErrorAmountOfGuests.Content = ErrorMessageFieldIsEmpty;
-                        }
-
-                        // Case submit was valid
-                        if (this._hasErrors)
-                        {
-                            return;
-                        }
-            */
-
-
-            ReservationConfirmedEvent?.Invoke(this, new ReservationConfirmedEventArgs(firstName, lastName, CheckInDatetime, CheckOutDatetime));
+          /*  this.ClearErrorMessages();
+            if (ReservationConfirmedEvent.errorDictionary.Count > 0)
+            {
+                foreach(KeyValuePair<string, string> error in ReservationConfirmedEvent.errorDictionary)
+                {
+                    var element; 
+                    switch(error.Key)
+                    {
+                        case "firstName":
+                            element = this.ErrorFirstName;
+                            break;
+                        case "lastName":
+                            element = this.ErrorLastName;
+                            break;
+                        case "birthDate":
+                            element = this.ErrorBirthDate;
+                            break;
+                        case "phoneNumber":
+                            element = this.ErrorPhonenumber;
+                            break;
+                        case "streetName":
+                            element = this.ErrorPlacename;
+                            break;
+                        case "postalCode":
+                            element = this.ErrorPostalcode;
+                            break;
+                        case "placeName":
+                            element = this.ErrorPlacename;
+                            break;
+                        case "emailAdress":
+                            element = this.ErrorMail;
+                            break;
+                        case "amountOfGuests":
+                            element = this.CustomerGuestAmount;
+                            break;
+                        default: 
+                            Console.WriteLine("Hier had hij niet mogen komen");
+                            break;
+                    }
+                    element.Content = error.Value;
+                }
+                return;
+            }
+            ReservationConfirmedEvent?.Invoke(this, new ReservationConfirmedEventArgs(firstName, lastName, CheckInDatetime, CheckOutDatetime));*/
         }
 
         /*        // All the checks underneath should be put in their own class.
