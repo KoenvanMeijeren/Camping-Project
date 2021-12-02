@@ -23,19 +23,19 @@ namespace Visualization
     /// </summary>
     public partial class CampingPitchesCollectionPage : Page
     {
-        private const string SelectAll = "Alle";
+/*        private const string SelectAll = "Alle";
         
         private static List<CampingPlaceViewData> _campingPlaceViewDataCollection;
         private static List<String> _selectionList;
-        public static event EventHandler<ReserveEventArgs> ReserveEvent;
+        public static event EventHandler<ReserveEventArgs> ReserveEvent;*/
         public CampingPitchesCollectionPage()
         {
             this.InitializeComponent();
-            this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];
+            /*this.CampingPitchTypeDropdown.SelectedItem = this.CampingPitchTypeDropdown.Items[0];
 
-            this.SetOverview();
+            this.SetOverview();*/
         }
-
+/*
         private void SetOverview()
         {
             if (this.CheckinDatetime.SelectedDate == null || this.CheckoutDatetime.SelectedDate == null)
@@ -126,6 +126,6 @@ namespace Visualization
             int CampingPlaceID = selectedCampingPlace.GetId();
 
             ReserveEvent?.Invoke(this, new ReserveEventArgs(CampingPlaceID, CheckInDatetime, CheckOutDatetime));
-        }
+        }*/
     }
 }
