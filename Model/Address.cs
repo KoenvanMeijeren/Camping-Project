@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SystemCore;
 
 namespace Model
 {
@@ -38,6 +39,38 @@ namespace Model
         protected override string PrimaryKey()
         {
             return "AddressID";
+        }
+
+        /// <summary>
+        /// Fetches Address with given parameters, if address already exists in database
+        /// </summary>
+        /// <param name="address">given address</param>
+        /// <param name="postalCode">given postalcode</param>
+        /// <returns>Address object</returns>
+        private Address FetchAddressByParameters(string address, string postalCode)
+        {
+            Query query = new Query("SELECT * FROM Address WHERE Address = @Address AND AddressPostalCode = @AddressPostalCode");
+            query.AddParameter("Address", address);
+            query.AddParameter("AddressPostalCode", postalCode);
+            var result = query.SelectFirst();
+
+            return result != null ? this.ToModel(result) : null;
+        }
+
+        /// <summary>
+        /// Returns Address object based on if it already exists in database. If it doesn't exist it creates one and returns that one
+        /// </summary>
+        /// <returns>Address object</returns>
+        public Address FirstOrInsert()
+        {
+            var result = this.FetchAddressByParameters(this.address, this.postalCode);
+            if (result != null)
+            {
+                return result;
+            }
+
+            this.Insert();
+            return this.FetchAddressByParameters(this.address, this.postalCode);
         }
 
         public bool Update(string address, string postalCode, string place)

@@ -144,53 +144,66 @@ namespace Visualization
             {
                 return;
             }
-            
+
             //TODO: Transactie en toevoegen aan controller
-            // Insert user input address in Address table
-            Query addressInsertQuery = new Query("INSERT INTO Address VALUES (@Address, @Postalcode, @Place)");
-            addressInsertQuery.AddParameter("Address", streetName);
-            addressInsertQuery.AddParameter("Postalcode", postalcode);
-            addressInsertQuery.AddParameter("Place", placeName);
-            addressInsertQuery.Execute();
+            // Create or/and fetch address based on user input
+            Address address = new Address(streetName, postalcode, placeName);
+            var fetchLatestAddressOrCreateOne = address.FirstOrInsert();
+            /*            Query addressInsertQuery = new Query("INSERT INTO Address VALUES (@Address, @Postalcode, @Place)");
+                        addressInsertQuery.AddParameter("Address", streetName);
+                        addressInsertQuery.AddParameter("Postalcode", postalcode);
+                        addressInsertQuery.AddParameter("Place", placeName);
+                        addressInsertQuery.Execute();*/
 
             // Fetch latest inserted addressID from Address table
-            Query lastAddressQuery = new Query("SELECT AddressID FROM Address ORDER BY AddressID DESC");
-            var lastAddressId = lastAddressQuery.SelectFirst();
-            lastAddressId.TryGetValue("AddressID", out string addressID);
+            /*            Query lastAddressQuery = new Query("SELECT AddressID FROM Address ORDER BY AddressID DESC");
+                        var lastAddressId = lastAddressQuery.SelectFirst();
+                        lastAddressId.TryGetValue("AddressID", out string addressID);*/
 
             // Insert customer into CampingCustomer table
-            Query insertCustomerQuery = new Query("INSERT INTO CampingCustomer VALUES (@CampingCustomerAddressID, @Birthdate, @Email, @PhoneNumber, @CustomerFirstName, @CustomerLastName)");
-            insertCustomerQuery.AddParameter("CampingCustomerAddressID", Int32.Parse(addressID));
-            insertCustomerQuery.AddParameter("Birthdate", birthdate);
-            insertCustomerQuery.AddParameter("Email", emailAddress);
-            insertCustomerQuery.AddParameter("PhoneNumber", phoneNumber);
-            insertCustomerQuery.AddParameter("CustomerFirstName", firstName);
-            insertCustomerQuery.AddParameter("CustomerLastName", lastName);
-            insertCustomerQuery.Execute();
+            CampingCustomer campingCustomer = new CampingCustomer(fetchLatestAddressOrCreateOne, birthdate, emailAddress, phoneNumber, firstName, lastName);
+            campingCustomer.Insert();
+            var fetchCampingCustomer = campingCustomer.SelectLast();
+            /*            Query insertCustomerQuery = new Query("INSERT INTO CampingCustomer VALUES (@CampingCustomerAddressID, @Birthdate, @Email, @PhoneNumber, @CustomerFirstName, @CustomerLastName)");
+                        insertCustomerQuery.AddParameter("CampingCustomerAddressID", Int32.Parse(addressID));
+                        insertCustomerQuery.AddParameter("Birthdate", birthdate);
+                        insertCustomerQuery.AddParameter("Email", emailAddress);
+                        insertCustomerQuery.AddParameter("PhoneNumber", phoneNumber);
+                        insertCustomerQuery.AddParameter("CustomerFirstName", firstName);
+                        insertCustomerQuery.AddParameter("CustomerLastName", lastName);
+                        insertCustomerQuery.Execute();*/
 
             // Fetch latest inserted addressID from Address table
-            Query lastCustomerQuery = new Query("SELECT CampingCustomerID FROM CampingCustomer ORDER BY CampingCustomerID DESC");
-            var lastCustomerId = lastCustomerQuery.SelectFirst();
-            lastCustomerId.TryGetValue("CampingCustomerID", out string campingCustomerID);
+            /*            Query lastCustomerQuery = new Query("SELECT CampingCustomerID FROM CampingCustomer ORDER BY CampingCustomerID DESC");
+                        var lastCustomerId = lastCustomerQuery.SelectFirst();
+                        lastCustomerId.TryGetValue("CampingCustomerID", out string campingCustomerID);*/
 
-            // Insert reservation duration in ReservationDuration table
-            Query insertReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@CheckinDatetime, @CheckoutDatetime)");
-            insertReservationDurationQuery.AddParameter("CheckinDatetime", CheckInDatetime);
-            insertReservationDurationQuery.AddParameter("CheckoutDatetime", CheckOutDatetime);
-            insertReservationDurationQuery.Execute();
+            // Insert and fetch reservation duration in ReservationDuration table
+            ReservationDuration reservationDuration = new ReservationDuration(CheckInDatetime.ToString(), CheckOutDatetime.ToString());
+            reservationDuration.Insert();
+            var fetchNewestReservationDuration = reservationDuration.SelectLast();
+            /*           Query insertReservationDurationQuery = new Query("INSERT INTO ReservationDuration VALUES (@CheckinDatetime, @CheckoutDatetime)");
+                       insertReservationDurationQuery.AddParameter("CheckinDatetime", CheckInDatetime);
+                       insertReservationDurationQuery.AddParameter("CheckoutDatetime", CheckOutDatetime);
+                       insertReservationDurationQuery.Execute();*/
 
-            // Fetch latest inserted reservation duration
-            Query lastReservationDurationQuery = new Query("SELECT ReservationDurationID FROM ReservationDuration ORDER BY ReservationDurationID DESC");
-            var lastReservationDurationId = lastReservationDurationQuery.SelectFirst();
-            lastReservationDurationId.TryGetValue("ReservationDurationID", out string reservationDurationID);
+            /*            Query lastReservationDurationQuery = new Query("SELECT ReservationDurationID FROM ReservationDuration ORDER BY ReservationDurationID DESC");
+                        var lastReservationDurationId = lastReservationDurationQuery.SelectFirst();
+                        lastReservationDurationId.TryGetValue("ReservationDurationID", out string reservationDurationID);*/
 
             // Insert reservation in Reservation table
-            Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
-            insertReservationQuery.AddParameter("CampingPlaceID", CampingPlaceID);
-            insertReservationQuery.AddParameter("NumberOfPeople", Int32.Parse(amountOfGuests));
-            insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
-            insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
-            insertReservationQuery.Execute();
+            CampingPlace campingPlaceModel = new CampingPlace();
+            CampingPlace campingPlace = campingPlaceModel.Select(CampingPlaceID);
+            Reservation reservation = new Reservation(amountOfGuests, fetchCampingCustomer, campingPlace, fetchNewestReservationDuration);
+            reservation.Insert();
+
+
+            /*         Query insertReservationQuery = new Query("INSERT INTO Reservation VALUES (@CampingPlaceID, @NumberOfPeople, @CampingCustomerID, @ReservationDurationID)");
+                     insertReservationQuery.AddParameter("CampingPlaceID", CampingPlaceID);
+                     insertReservationQuery.AddParameter("NumberOfPeople", Int32.Parse(amountOfGuests));
+                     insertReservationQuery.AddParameter("CampingCustomerID", Int32.Parse(campingCustomerID));
+                     insertReservationQuery.AddParameter("ReservationDurationID", reservationDurationID);
+                     insertReservationQuery.Execute();*/
 
             ReservationConfirmedEvent?.Invoke(this, new ReservationConfirmedEventArgs(firstName, lastName, CheckInDatetime, CheckOutDatetime));
         }
