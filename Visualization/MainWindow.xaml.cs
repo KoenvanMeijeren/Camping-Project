@@ -119,7 +119,7 @@ namespace Visualization
         }
 
 
-        private void OnReserveEvent(object sender, ReserveEventArgs args)
+        private void OnReserveEvent(object sender, ReservationEventArgs args)
         {
             this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceId;
             this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;

@@ -6,17 +6,21 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
-    public class ReserveEventArgs : EventArgs
+
+    public class ReservationConfirmedEventArgs : EventArgs
     {
-        public int CampingPlaceId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public DateTime CheckInDatetime { get; set; }
         public DateTime CheckOutDatetime { get; set; }
 
-        public ReserveEventArgs(int campingPlaceId, DateTime checkInDatetime, DateTime checkOutDatetime)
+        public ReservationConfirmedEventArgs(string firstName, string lastName, DateTime checkInDatetime, DateTime checkOutDatetime)
         {
-            this.CampingPlaceId = campingPlaceId;
+            this.FirstName = firstName;
+            this.LastName = lastName;
             this.CheckInDatetime = checkInDatetime;
             this.CheckOutDatetime = checkOutDatetime;
         }
+
     }
 }
