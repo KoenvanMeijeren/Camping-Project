@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 
-namespace ViewModel
+namespace ViewModel.Examples
 {
     public class AlbumViewModel
     {

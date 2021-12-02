@@ -4,12 +4,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Visualization"
-      xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
+      xmlns:viewModel="clr-namespace:ViewModel.Examples;assembly=ViewModel"
       mc:Ignorable="d"
       Title="TestInputPage" Height="450" Width="800">
     
     <Page.DataContext>
-        <viewModel:MainWindowViewModel />
+        <viewModel:TestInputViewModel />
     </Page.DataContext>
     
     <Grid>

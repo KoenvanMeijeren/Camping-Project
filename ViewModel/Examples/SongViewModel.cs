@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 
-namespace ViewModel
+namespace ViewModel.Examples
 {
     /// <summary>
     /// This class is a view model of a song.
