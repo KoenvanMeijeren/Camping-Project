@@ -4,11 +4,11 @@ namespace Model
 {
     public class Address : ModelBase<Address>
     {
-        public string address { get; private set; }
+        public string Street { get; private set; }
         
-        public string postalCode { get; private set; }
+        public string PostalCode { get; private set; }
         
-        public string place { get; private set; }
+        public string Place { get; private set; }
 
         public Address()
         {
@@ -25,9 +25,9 @@ namespace Model
             bool successFul = int.TryParse(id, out int idNumeric);
 
             this.Id = successFul ? idNumeric : -1;
-            this.address = address;
-            this.postalCode = postalCode;
-            this.place = place;
+            this.Street = address;
+            this.PostalCode = postalCode;
+            this.Place = place;
         }
 
         protected override string Table()
@@ -62,7 +62,7 @@ namespace Model
 
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Address.ToDictionary(this.address, this.postalCode, this.place);
+            return Address.ToDictionary(this.Street, this.PostalCode, this.PostalCode);
         }
 
         private static Dictionary<string, string> ToDictionary(string address, string postalCode, string place)
