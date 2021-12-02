@@ -1,0 +1,23 @@
+﻿<Page x:Class="Visualization.TestInputPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Visualization"
+      xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
+      mc:Ignorable="d"
+      Title="TestInputPage" Height="450" Width="800">
+    
+    <Page.DataContext>
+        <viewModel:MainWindowViewModel />
+    </Page.DataContext>
+    
+    <Grid>
+        <StackPanel Margin="0,78,0,68" Width="233"> 
+            <ComboBox IsEditable="True" SelectedItem="{Binding ModelName}" ItemsSource="{Binding Models}"/>
+            <TextBox Height="23" TextWrapping="Wrap" Text="{Binding SONumber, Mode='TwoWay'}"/>
+            <TextBox Height="23" TextWrapping="Wrap" Text="{Binding SerialNumber, Mode='TwoWay'}"/>
+            <Button Content="Button" Command="{Binding Save}"/>
+        </StackPanel>
+    </Grid>
+</Page>
