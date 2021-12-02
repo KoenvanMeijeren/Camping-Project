@@ -13,79 +13,100 @@ namespace ViewModel
 {
     public class ReservationPitchesCollectionViewModel : ObservableObject
     {
-        private string _campingPitch;
-        private ObservableCollection<string> _campingPlaceTypes;
+        private readonly CampingPlace _campingPlaceModel = new CampingPlace();
+        
+        private string _selectedCampingPlaceType;
+        
+        private readonly ObservableCollection<string> _campingPlaceTypes;
         private ObservableCollection<CampingPlace> _campingPlaces;
         public static event EventHandler<ReserveEventArgs> ReserveEvent;
 
         public ObservableCollection<CampingPlace> CampingPlaces
         {
-            get => _campingPlaces;
+            get => this._campingPlaces;
             private set
             {
-                if (Equals(value, _campingPlaces)) return;
-                _campingPlaces = value;
+                if (Equals(value, this._campingPlaces))
+                {
+                    return;
+                }
+                
+                this._campingPlaces = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
         public ObservableCollection<string> CampingPlaceTypes
         {
-            get => _campingPlaceTypes;
+            get => this._campingPlaceTypes;
             private init
             {
-                if (Equals(value, _campingPlaceTypes)) return;
-                _campingPlaceTypes = value;
+                if (Equals(value, this._campingPlaceTypes))
+                {
+                    return;
+                }
+                
+                this._campingPlaceTypes = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
         public string SelectedPlaceType
         {
-            get => _campingPitch;
+            get => this._selectedCampingPlaceType;
             set
             {
-                if (value == _campingPitch) return;
-                _campingPitch = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                if (Equals(value, this._selectedCampingPlaceType))
+                {
+                    return;
+                }
+
+                this._selectedCampingPlaceType = value;
                 this.SetOverview();
+                
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
         public ReservationPitchesCollectionViewModel()
         {
-            CampingPlaceTypes = new ObservableCollection<string>();
-            CampingPlaceTypes.Add("Alle");
-            CampingPlaceTypes.Add("Bungalow");
-            CampingPlaceTypes.Add("Camper");
-            CampingPlaceTypes.Add("Caravan");
-            CampingPlaceTypes.Add("Chalet");
-            CampingPlaceTypes.Add("Tent");
+            this.CampingPlaceTypes = new ObservableCollection<string>();
+            this.CampingPlaceTypes.Add("Alle");
+            this.CampingPlaceTypes.Add("Bungalow");
+            this.CampingPlaceTypes.Add("Camper");
+            this.CampingPlaceTypes.Add("Caravan");
+            this.CampingPlaceTypes.Add("Chalet");
+            this.CampingPlaceTypes.Add("Tent");
 
-            CampingPlaces = new ObservableCollection<CampingPlace>();
-            var campingPlaceModel = new CampingPlace();
-            foreach (CampingPlace item in campingPlaceModel.Select())
-            {
-                CampingPlaces.Add(item);
-            }
+            this.CampingPlaces = new ObservableCollection<CampingPlace>(this.GetCampingPlaces());
+            
         }
 
         private void SetOverview()
         {
-            var selectedcampingpitch = this._campingPitch;
-            var CampingPlacesResults = CampingPlaces.Where(campingPlaceViewData => campingPlaceViewData.Type.Equals(selectedcampingpitch));
-
-            while(CampingPlaces.Count > 0)
+            while(this.CampingPlaces.Count > 0)
             {
                 this.CampingPlaces.RemoveAt(0);
             }
-
-            foreach (CampingPlace item in CampingPlacesResults)
+            
+            var selectedCampingPlaceType = this._selectedCampingPlaceType;
+            
+            var campingPlaceItems = this.GetCampingPlaces();
+            if (!selectedCampingPlaceType.Equals("Alle"))
             {
-                CampingPlaces.Add(item);
+                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.Type.Accommodation.Name.Equals(selectedCampingPlaceType)).ToList();
+            }
+
+            foreach (CampingPlace item in campingPlaceItems)
+            {
+                this.CampingPlaces.Add(item);
             }
         }
 
+        private IEnumerable<CampingPlace> GetCampingPlaces()
+        {
+            return this._campingPlaceModel.Select();
+        }
     }
 }
 
