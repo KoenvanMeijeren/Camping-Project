@@ -13,13 +13,14 @@ namespace ViewModel
 {
     public class CampingPlacesCollectionViewModel : ObservableObject
     {
+        //CampingPlaceViewData/CampingPlace?
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
         private const string SelectAll = "Alle";
 
         private string _selectedCampingPlaceType;
         
         private readonly ObservableCollection<string> _campingPlaceTypes;
-        private ObservableCollection<CampingPlace> _campingPlaces;//campingPlaceViewData?
+        private ObservableCollection<CampingPlace> _campingPlaces;
         public static event EventHandler<ReserveEventArgs> ReserveEvent;
         private DateTime _checkOutDate;
         private DateTime _checkInDate;
@@ -156,7 +157,9 @@ namespace ViewModel
             this.CampingPlaceTypes.Add("Chalet");
             this.CampingPlaceTypes.Add("Tent");
 
+            
             this.CampingPlaces = new ObservableCollection<CampingPlace>(this.GetCampingPlaces());
+            this.SelectedPlaceType = SelectAll;
             var today = DateTime.Today;
             this.CheckInDate = today;
             this.CheckOutDate = today.AddDays(1);
@@ -164,28 +167,16 @@ namespace ViewModel
             this.MaxNightPrice = null;
             this.MinNightPrice = null;
 
-            this.SelectedPlaceType = SelectAll;
+
         }
 
         private void SetOverview()
         {
-            var campingPlaceItems = this.GetCampingPlaces();
-
             if (this.CheckInDate == null || this.CheckOutDate == null)
             {
                 Title = "Selecteer uw verblijfstermijn";
                 //this.ReserveButton.IsEnabled = false;
                 return;
-            }
-
-            if (int.TryParse(this.MinNightPrice, out int min))
-            {
-                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.TotalPrice >= min).ToList();
-            }
-
-            if (int.TryParse(this.MaxNightPrice, out int max))
-            {
-                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.TotalPrice <= max).ToList();
             }
 
             while (this.CampingPlaces.Count > 0)
@@ -194,20 +185,32 @@ namespace ViewModel
             }
 
 
+            var selectedCampingPlaceType = this._selectedCampingPlaceType;
 
-            var selectedCampingPlaceType = this.SelectedPlaceType;
-            if (selectedCampingPlaceType != null)
+            var campingPlaceItems = this.GetCampingPlaces();
+            if (!selectedCampingPlaceType.Equals("Alle"))
             {
-                if (!selectedCampingPlaceType.Equals("Alle"))
-                {
-                    campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.Type.Accommodation.Name.Equals(selectedCampingPlaceType)).ToList();
-                }
+                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.Type.Accommodation.Name.Equals(selectedCampingPlaceType)).ToList();
             }
 
             foreach (CampingPlace item in campingPlaceItems)
             {
                 this.CampingPlaces.Add(item);
             }
+            var campingCopy = campingPlaceItems;//check collection changed
+            campingPlaceItems = CampingPlaceViewDataCollection.ToFilteredOnReservedCampingPitches(campingPlaceItems, CheckInDate, CheckOutDate);
+
+
+            if (int.TryParse(this.MinNightPrice, out int min))
+            {
+                CampingPlaces = new ObservableCollection<CampingPlace>( CampingPlaces.Where(campingPlace => campingPlace.TotalPrice >= min).ToList());
+            }
+
+            if (int.TryParse(this.MaxNightPrice, out int max))
+            {
+                CampingPlaces = new ObservableCollection<CampingPlace>(CampingPlaces.Where(campingPlace => campingPlace.TotalPrice <= max).ToList());
+            }
+           
         }
 
         private IEnumerable<CampingPlace> GetCampingPlaces()

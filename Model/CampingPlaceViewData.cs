@@ -13,6 +13,7 @@ namespace Model
         public int Personen { get; private set; }
         public string Oppervlakte { get; private set; }
         public string Dagtarief { get; private set; }
+        public CampingPlace CampingPlace { get; private set; }
 
         // These are private because it should not show in the overview
         private int _id;
@@ -28,6 +29,7 @@ namespace Model
 
             this._id = campingPlace.Id;
             this._dagtarief = campingPlace.Type.StandardNightPrice + campingPlace.ExtraNightPrice;
+            this.CampingPlace = campingPlace;
         }
 
         public int GetId() 

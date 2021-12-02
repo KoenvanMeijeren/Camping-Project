@@ -42,5 +42,21 @@ namespace Model
             return viewData;
         }
 
+        public static IEnumerable<CampingPlace> ToFilteredOnReservedCampingPitches(IEnumerable<CampingPlace> viewData, DateTime checkinDate, DateTime checkoutDate)
+        {
+            Reservation reservationModel = new Reservation();
+
+            var reservations = reservationModel.Select();
+            foreach (Reservation reservation in reservations)
+            {
+                ReservationDuration reservationDuration = reservation.Duration;
+                if (reservationDuration.CheckInDatetime.Date < checkoutDate.Date && checkinDate.Date < reservationDuration.CheckOutDatetime.Date)
+                {
+                    viewData = viewData.Where(campingPlaceViewData => campingPlaceViewData.Id != reservation.CampingPlace.Id).ToList();
+                }
+            }
+
+            return viewData;
+        }
     }
 }
