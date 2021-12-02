@@ -44,7 +44,7 @@ namespace Visualization
             this._testInputPage = new TestInputPage();
 
             ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            ReservationPitchesCollectionViewModel.ReserveEvent += this.OnReserveEvent;
+            CampingPlacesCollectionViewModel.ReserveEvent += this.OnReserveEvent;
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)

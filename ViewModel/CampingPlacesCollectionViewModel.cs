@@ -11,7 +11,7 @@ using System.ComponentModel;
 
 namespace ViewModel
 {
-    public class ReservationPitchesCollectionViewModel : ObservableObject
+    public class CampingPlacesCollectionViewModel : ObservableObject
     {
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
         
@@ -68,7 +68,7 @@ namespace ViewModel
             }
         }
 
-        public ReservationPitchesCollectionViewModel()
+        public CampingPlacesCollectionViewModel()
         {
             this.CampingPlaceTypes = new ObservableCollection<string>();
             this.CampingPlaceTypes.Add("Alle");
