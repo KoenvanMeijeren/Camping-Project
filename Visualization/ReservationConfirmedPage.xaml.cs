@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ViewModel;
 
 namespace Visualization
 {
@@ -27,7 +28,7 @@ namespace Visualization
         public ReservationConfirmedPage()
         {
             this.InitializeComponent();
-            ReservationCustomerForm.ReservationConfirmedEvent += OnReservationConfirmedEvent;
+            ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
         }
 
         private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)

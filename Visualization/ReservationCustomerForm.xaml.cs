@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Model;
 using SystemCore;
+using ViewModel;
 
 namespace Visualization
 {
