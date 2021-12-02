@@ -18,7 +18,7 @@
         </Border>
         <Label Content="Type verblijfplaats" HorizontalAlignment="Left" Margin="46,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="285,29,388,506" CornerRadius="15,15,15,15" Background="White">
-            <DatePicker x:Name="CheckinDatetime" Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch" />
+            <DatePicker x:Name="CheckinDatetime" Text="{Binding CheckInDate, StringFormat=dd/MM/yyyy}"  Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch" />
         </Border>
         <Label Content="Startdatum*&#xD;&#xA;" HorizontalAlignment="Left" Margin="296,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,147,30,37" CornerRadius="15,15,15,15" Background="White">
@@ -37,14 +37,14 @@
         </Border>
         <Label x:Name="OverviewTitle" Content="Beschikbare verblijven" HorizontalAlignment="Left" Margin="46,159,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="454,29,219,506" CornerRadius="15,15,15,15" Background="White">
-            <DatePicker x:Name="CheckoutDatetime" Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
+            <DatePicker x:Name="CheckoutDatetime" Text="{Binding CheckOutDate, StringFormat=dd/MM/yyyy}" Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
         </Border>
         <Label Content="Einddatum*&#xD;&#xA;" HorizontalAlignment="Left" Margin="465,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="622,29,30,506" CornerRadius="15,15,15,15" Background="White">
             <Label Content="Dagtarief" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Margin="10,9,0,0"/>
         </Border>
-        <TextBox x:Name="MinNightPrice" HorizontalAlignment="Left" Height="21" Margin="679,68,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" />
-        <TextBox x:Name="MaxNightPrice" HorizontalAlignment="Left" Height="21" Margin="679,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" />
+        <TextBox x:Name="MinNightPrice" Text="{Binding MinNightPrice, Mode='TwoWay', UpdateSourceTrigger='PropertyChanged'}" HorizontalAlignment="Left" Height="21" Margin="679,68,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" />
+        <TextBox x:Name="MaxNightPrice" Text="{Binding MaxNightPrice, Mode='TwoWay', UpdateSourceTrigger='PropertyChanged'}" HorizontalAlignment="Left" Height="21" Margin="679,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" />
         <Label Content="Min&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="634,66,0,0" Height="25"/>
         <Label Content="Max&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="634,92,0,0" Height="25"/>
         <Label Content="Locatie:" HorizontalAlignment="Left" Margin="491,547,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>

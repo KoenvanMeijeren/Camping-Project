@@ -25,7 +25,7 @@ namespace Visualization
     {
 /*        private const string SelectAll = "Alle";
         
-        private static List<CampingPlaceViewData> _campingPlaceViewDataCollection;
+        private static List<> _campingPlaceViewDataCollection;
         private static List<String> _selectionList;
         public static event EventHandler<ReserveEventArgs> ReserveEvent;*/
         public CampingPlacesCollectionPage()

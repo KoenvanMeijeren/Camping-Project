@@ -14,12 +14,87 @@ namespace ViewModel
     public class CampingPlacesCollectionViewModel : ObservableObject
     {
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
-        
+        private const string SelectAll = "Alle";
+
         private string _selectedCampingPlaceType;
         
         private readonly ObservableCollection<string> _campingPlaceTypes;
-        private ObservableCollection<CampingPlace> _campingPlaces;
+        private ObservableCollection<CampingPlace> _campingPlaces;//campingPlaceViewData?
         public static event EventHandler<ReserveEventArgs> ReserveEvent;
+        private DateTime _checkOutDate;
+        private DateTime _checkInDate;
+        private string _minNightPrice;
+        private string _maxNightPrice;
+
+        public string Title { get; private set; }
+
+        #region getters/setters
+        public string MinNightPrice
+        {
+            get => this._minNightPrice;
+            set
+            {
+                if (Equals(value, this._minNightPrice))
+                {
+                    return;
+                }
+
+                this._minNightPrice = value;
+                this.SetOverview();
+
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+        public string MaxNightPrice
+        {
+            get => this._maxNightPrice;
+            set
+            {
+                if (Equals(value, this._maxNightPrice))
+                {
+                    return;
+                }
+
+                this._maxNightPrice = value;
+                this.SetOverview();
+
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+
+        public DateTime CheckInDate
+        {
+            get => this._checkInDate;
+            private set
+            {
+                if (Equals(value, this._checkInDate))
+                {
+                    return;
+                }
+
+                this._checkInDate = value;
+                this.SetOverview();
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+        public DateTime CheckOutDate
+        {
+            get => this._checkOutDate;
+            private set
+            {
+                if (Equals(value, this._checkOutDate))
+                {
+                    return;
+                }
+
+                this._checkOutDate = value;
+                this.SetOverview();
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
 
         public ObservableCollection<CampingPlace> CampingPlaces
         {
@@ -68,8 +143,11 @@ namespace ViewModel
             }
         }
 
+        #endregion
+
         public CampingPlacesCollectionViewModel()
         {
+            
             this.CampingPlaceTypes = new ObservableCollection<string>();
             this.CampingPlaceTypes.Add("Alle");
             this.CampingPlaceTypes.Add("Bungalow");
@@ -79,22 +157,51 @@ namespace ViewModel
             this.CampingPlaceTypes.Add("Tent");
 
             this.CampingPlaces = new ObservableCollection<CampingPlace>(this.GetCampingPlaces());
-            
+            var today = DateTime.Today;
+            this.CheckInDate = today;
+            this.CheckOutDate = today.AddDays(1);
+
+            this.MaxNightPrice = null;
+            this.MinNightPrice = null;
+
+            this.SelectedPlaceType = SelectAll;
         }
 
         private void SetOverview()
         {
-            while(this.CampingPlaces.Count > 0)
+            var campingPlaceItems = this.GetCampingPlaces();
+
+            if (this.CheckInDate == null || this.CheckOutDate == null)
+            {
+                Title = "Selecteer uw verblijfstermijn";
+                //this.ReserveButton.IsEnabled = false;
+                return;
+            }
+
+            if (int.TryParse(this.MinNightPrice, out int min))
+            {
+                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.TotalPrice >= min).ToList();
+            }
+
+            if (int.TryParse(this.MaxNightPrice, out int max))
+            {
+                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.TotalPrice <= max).ToList();
+            }
+
+            while (this.CampingPlaces.Count > 0)
             {
                 this.CampingPlaces.RemoveAt(0);
             }
-            
-            var selectedCampingPlaceType = this._selectedCampingPlaceType;
-            
-            var campingPlaceItems = this.GetCampingPlaces();
-            if (!selectedCampingPlaceType.Equals("Alle"))
+
+
+
+            var selectedCampingPlaceType = this.SelectedPlaceType;
+            if (selectedCampingPlaceType != null)
             {
-                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.Type.Accommodation.Name.Equals(selectedCampingPlaceType)).ToList();
+                if (!selectedCampingPlaceType.Equals("Alle"))
+                {
+                    campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.Type.Accommodation.Name.Equals(selectedCampingPlaceType)).ToList();
+                }
             }
 
             foreach (CampingPlace item in campingPlaceItems)
@@ -107,6 +214,9 @@ namespace ViewModel
         {
             return this._campingPlaceModel.Select();
         }
+
+
+
     }
 }
 
