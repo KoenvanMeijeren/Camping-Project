@@ -28,6 +28,7 @@ namespace Visualization
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
+        private readonly TestPage _testPage;
 
         public MainWindow()
         {
@@ -37,6 +38,7 @@ namespace Visualization
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
+            this._testPage = new TestPage();
 
             ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             CampingPitchesCollectionPage.ReserveEvent += this.OnReserveEvent;
@@ -62,6 +64,20 @@ namespace Visualization
             this.DashboardButton.Foreground = Brushes.Black;
 
             this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
+        }
+        
+        private void TestClick(object sender, RoutedEventArgs e)
+        {
+            this.TestButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
+            this.TestButton.Foreground = Brushes.White;
+
+            this.CampingPitchesButton.Background = Brushes.White;
+            this.CampingPitchesButton.Foreground = Brushes.Black;
+            
+            this.DashboardButton.Background = Brushes.White;
+            this.DashboardButton.Foreground = Brushes.Black;
+
+            this.MainFrame.Content = this._testPage.Content;
         }
 
         private void OnReserveEvent(object sender, ReserveEventArgs args)
