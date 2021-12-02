@@ -21,26 +21,10 @@ namespace Visualization
     /// </summary>
     public partial class ReservationCollectionPage : Page
     {
-        private readonly Reservation _reservation = new Reservation();
-
         public ReservationCollectionPage()
         {
             this.InitializeComponent();
-
-            ReservationCustomerForm.ReservationConfirmedEvent += OnReservationConfirmedEvent;
-            
-           this.SetReservations();
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
-        {
-            // todo: find out how to update data.
-        }
-
-        private void SetReservations()
-        {
-            this.ReservationsViewDataGrid.ItemsSource = this._reservation.Select();
-        }
-        
     }
 }
