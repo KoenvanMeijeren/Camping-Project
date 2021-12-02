@@ -54,15 +54,23 @@ namespace Model
             
             dictionary.TryGetValue("CampingID", out string id);
             dictionary.TryGetValue("CampingName", out string name);
+
+            dictionary.TryGetValue("AccountID", out string accountId);
+            dictionary.TryGetValue("AccountUsername", out string username);
+            dictionary.TryGetValue("AccountPassword", out string password);
+            dictionary.TryGetValue("AccountRights", out string rights);
+
             dictionary.TryGetValue("CampingAddressID", out string addressId);
             dictionary.TryGetValue("CampingAddress", out string street);
             dictionary.TryGetValue("CampingPostalCode", out string postalCode);
             dictionary.TryGetValue("CampingPlace", out string place);
+
             dictionary.TryGetValue("CampingOwnerID", out string campingOwnerId);
             dictionary.TryGetValue("CampingOwnerName", out string campingOwnerName);
 
+            Account account = new Account(accountId, username, password, int.Parse(rights));
             Address address = new Address(addressId, street, postalCode, place);
-            CampingOwner campingOwner = new CampingOwner(campingOwnerId, campingOwnerName);
+            CampingOwner campingOwner = new CampingOwner(account, campingOwnerId, campingOwnerName);
 
             return new Camping(id, name, address, campingOwner);
         }
@@ -89,6 +97,7 @@ namespace Model
             string query = base.BaseQuery();
             query += " INNER JOIN CampingOwner CO ON BT.CampingOwnerID = CO.CampingOwnerID";
             query += " INNER JOIN Address A ON BT.CampingAddressID = A.AddressID";
+            query += " INNER JOIN Account AC on CO.CampingOwnerAccountID = AC.AccountID";
 
             return query;
         }

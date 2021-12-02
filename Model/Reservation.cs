@@ -101,7 +101,12 @@ namespace Model
             dictionary.TryGetValue("Address", out string address);
             dictionary.TryGetValue("AddressPostalcode", out string postalCode);
             dictionary.TryGetValue("AddressPlace", out string place);
-            
+
+            dictionary.TryGetValue("AccountID", out string accountId);
+            dictionary.TryGetValue("AccountUsername", out string username);
+            dictionary.TryGetValue("AccountPassword", out string password);
+            dictionary.TryGetValue("AccountRights", out string rights);
+
             dictionary.TryGetValue("CampingCustomerBirthdate", out string birthdate);
             dictionary.TryGetValue("CampingCustomerEmail", out string email);
             dictionary.TryGetValue("CampingCustomerPhoneNumber", out string phoneNumber);
@@ -115,7 +120,8 @@ namespace Model
             Accommodation accommodation = new Accommodation(accommodationId, prefix, name);
             CampingPlaceType campingPlaceType = new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
             CampingPlace campingPlace = new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
-            CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, customerAddress, birthdate, email, phoneNumber, firstName, lastName);
+            Account account = new Account(accountId, username, password, int.Parse(rights));
+            CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, email, phoneNumber, firstName, lastName);
             ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
             return new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
@@ -146,6 +152,7 @@ namespace Model
             query += "INNER JOIN CampingPlaceType CPT ON CPT.CampingPlaceTypeID = CP.CampingPlaceTypeID ";
             query += "INNER JOIN Accommodation AM ON AM.AccommodationID = CPT.CampingPlaceTypeAccommodationID ";
             query += "INNER JOIN CampingCustomer CC ON CC.CampingCustomerID = R.ReservationCampingCustomerID ";
+            query += " INNER JOIN Account AC on CO.CampingOwnerAccountID = AC.AccountID";
             query += "INNER JOIN Address CCA ON CCA.AddressID = CC.CampingCustomerAddressID ";
             query += "INNER JOIN ReservationDuration RD ON RD.ReservationDurationID = R.ReservationDurationID ";
 
