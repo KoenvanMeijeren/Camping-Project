@@ -43,7 +43,7 @@
         <Label Content="Geboortedatum" HorizontalAlignment="Left" Margin="94,258,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
         <DatePicker Height="28" HorizontalAlignment="Left" SelectedDate="{Binding Birthdate, Mode=TwoWay}" Margin="94,289,0,0" Name="CustomerBirthDate" VerticalAlignment="Top" Width="244" />
 
-        <Label Content="Mailadres" HorizontalAlignment="Left" Margin="465,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <Label Content="Emailadres" HorizontalAlignment="Left" Margin="465,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
         <TextBox Name="CustomerMailadres" Text="{Binding EmailAddress, Mode='TwoWay'}" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,195,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
@@ -139,15 +139,15 @@
             </Button.Resources>
         </Button>
 
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorFirstName" Margin="95,227,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="149"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorLastName" Margin="265,227,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="149"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorMail" Margin="465,224,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="194"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorBirthDate" Margin="95,317,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="243"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorPhonenumber" Margin="465,326,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="194"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorAddress" Margin="95,393,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="231"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorPostalcode" Margin="94,471,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="179"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorPlacename" Margin="295,471,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="150"/>
-        <Label Content="" HorizontalAlignment="Left" Name="ErrorAmountOfGuests" Margin="465,400,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="150"/>
+        <Label Content="{Binding FirstNameError}" HorizontalAlignment="Left" Name="ErrorFirstName" Margin="95,227,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="149"/>
+        <Label Content="{Binding LastNameError}" HorizontalAlignment="Left" Name="ErrorLastName" Margin="265,227,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="149"/>
+        <Label Content="{Binding EmailAddressError}" HorizontalAlignment="Left" Name="ErrorMail" Margin="465,224,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="194"/>
+        <Label Content="{Binding BirthdateError}" HorizontalAlignment="Left" Name="ErrorBirthDate" Margin="95,317,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="243"/>
+        <Label Content="{Binding PhoneNumberError}" HorizontalAlignment="Left" Name="ErrorPhonenumber" Margin="465,326,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="194"/>
+        <Label Content="{Binding StreetNameError}" HorizontalAlignment="Left" Name="ErrorAddress" Margin="95,393,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="231"/>
+        <Label Content="{Binding PostalCodeError}" HorizontalAlignment="Left" Name="ErrorPostalcode" Margin="94,471,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="179"/>
+        <Label Content="{Binding PlaceNameError}" HorizontalAlignment="Left" Name="ErrorPlacename" Margin="295,471,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="150"/>
+        <Label Content="{Binding AmountOfGuestsError}" HorizontalAlignment="Left" Name="ErrorAmountOfGuests" Margin="465,400,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519" Width="150"/>
     </Grid>
 
 </Page>

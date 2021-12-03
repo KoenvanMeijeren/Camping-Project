@@ -18,14 +18,23 @@ namespace ViewModel
         public Dictionary<string, string> errorDictionary { get; private set; }
 
         private string _firstName;
+        private string _firstNameError;
         private string _lastName;
+        private string _lastNameError;
         private DateTime _birthdate;
+        private string _birthdateError;
         private string _phoneNumber;
+        private string _phoneNumberError;
         private string _streetName;
+        private string _streetNameError;
         private string _postalCode;
-        private string _placeNameValidated;
+        private string _postalCodeError;
+        private string _placeName;
+        private string _placeNameError;
         private string _emailAddress;
+        private string _emailAddressError;
         private string _amountOfGuests;
+        private string _amountOfGuestsError;
 
         private DateTime CheckInDatetime { get; set; }
         private DateTime CheckOutDatetime { get; set; }
@@ -33,7 +42,6 @@ namespace ViewModel
 
         public static event EventHandler<ReservationConfirmedEventArgs> ReservationConfirmedEvent;
         #endregion
-
 
         #region properties
         public string FirstName
@@ -44,18 +52,30 @@ namespace ViewModel
             }
             set
             {
-                if (CheckInputIsGiven(value))
+                this._firstName = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                if (errorDictionary.ContainsKey("FirstName"))
                 {
-                    this._firstName = value;
-                    removeFromErrorDictionary("firstName");
-                    //Idea
-                    //create property for error label.
-                    //create two way binding
-                    //change content of error label here
-                    //no dictionary needed
-                    return;
+                    this.FirstNameError = string.Empty;
+                    errorDictionary.Remove("FirstName");
                 }
-                errorDictionary.Add("firstName", "Ongeldige waarde ingevoerd");
+                if (!CheckInputIsGiven(value))
+                {
+                    this.FirstNameError = "Ongeldige input";
+                    errorDictionary.Add("FirstName", "Ongeldige input");
+                }
+            }
+        }
+        public string FirstNameError
+        {
+            get
+            {
+                return this._firstNameError;
+            }
+            set
+            {
+                this._firstNameError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -67,16 +87,33 @@ namespace ViewModel
             }
             set
             {
-                if (CheckInputIsGiven(value))
+                this._lastName = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                if (errorDictionary.ContainsKey("LastName"))
                 {
-                    this._lastName = value;
-                    removeFromErrorDictionary("lastName");
-                    return;
+                    this.LastNameError = string.Empty;
+                    errorDictionary.Remove("LastName");
                 }
-                errorDictionary.Add("lastName", "Ongeldige waarde ingevoerd");
+                if (!CheckInputIsGiven(value))
+                {
+                    this.LastNameError = "Ongeldige input";
+                    errorDictionary.Add("LastName", "Ongeldige input");
+                }
             }
         }
-   
+        public string LastNameError
+        {
+            get
+            {
+                return this._lastNameError;
+            }
+            set
+            {
+                this._lastNameError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
         public DateTime Birthdate
         {
             get
@@ -85,14 +122,33 @@ namespace ViewModel
             }
             set
             {
+                this._birthdate = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                if (errorDictionary.ContainsKey("Birthdate"))
+                {
+                    this.BirthdateError = string.Empty;
+                    errorDictionary.Remove("Birthdate");
+                }
                 if (!ValidateBirthday(value))
                 {
-                    errorDictionary.Add("birthDate", "Ongeldige waarde ingevoerd");
+                    this.BirthdateError = "Ongeldige input";
+                    errorDictionary.Add("Birthdate", "Ongeldige input");
                 }
-                this._birthdate = value;
             }
         }
-       
+        public string BirthdateError
+        {
+            get
+            {
+                return this._birthdateError;
+            }
+            set
+            {
+                this._birthdateError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
         public string PhoneNumber
         {
             get
@@ -101,11 +157,30 @@ namespace ViewModel
             }
             set
             {
+                this._phoneNumber = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                if (errorDictionary.ContainsKey("PhoneNumber"))
+                {
+                    this.PhoneNumberError = string.Empty;
+                    errorDictionary.Remove("PhoneNumber");
+                }
                 if (!ValidatePhoneNumber(value))
                 {
-                    errorDictionary.Add("phoneNumber", "Onjuist telefoonnummer ingevoerd");
+                    this.PhoneNumberError = "Ongeldige input";
+                    errorDictionary.Add("PhoneNumber", "Ongeldige input");
                 }
-                this._phoneNumber = value;
+            }
+        }
+        public string PhoneNumberError
+        {
+            get
+            {
+                return this._phoneNumberError;
+            }
+            set
+            {
+                this._phoneNumberError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -117,12 +192,30 @@ namespace ViewModel
             }
             set
             {
-                if (CheckInputIsGiven(value))
+                this._streetName = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                if (errorDictionary.ContainsKey("StreetName"))
                 {
-                    this._streetName = value;
-                    return;
+                    this.StreetNameError = string.Empty;
+                    errorDictionary.Remove("StreetName");
                 }
-                errorDictionary.Add("streetName", "Ongeldige waarde ingevoerd");
+                if (!CheckInputIsGiven(value))
+                {
+                    this.StreetNameError = "Ongeldige input";
+                    errorDictionary.Add("StreetName", "Ongeldige input");
+                }
+            }
+        }
+        public string StreetNameError
+        {
+            get
+            {
+                return this._streetNameError;
+            }
+            set
+            {
+                this._streetNameError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -134,11 +227,30 @@ namespace ViewModel
             }
             set
             {
+                this._postalCode = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                if (errorDictionary.ContainsKey("PostalCode"))
+                {
+                    this.PostalCodeError = string.Empty;
+                    errorDictionary.Remove("PostalCode");
+                }
                 if (!ValidatePostalCode(value))
                 {
-                    errorDictionary.Add("postalCode", "Ongeldige waarde ingevoerd");
+                    this.PostalCodeError = "Ongeldige input";
+                    errorDictionary.Add("PostalCode", "Ongeldige input");
                 }
-                this._postalCode = value;
+            }
+        }
+        public string PostalCodeError
+        {
+            get
+            {
+                return this._postalCodeError;
+            }
+            set
+            {
+                this._postalCodeError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -146,16 +258,34 @@ namespace ViewModel
         {
             get
             {
-                return this._placeNameValidated;
+                return this._placeName;
             }
             set
             {
-                if (CheckInputIsGiven(value))
+                this._placeName = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                if (errorDictionary.ContainsKey("PlaceName"))
                 {
-                    _placeNameValidated = value;
-                    return;
+                    this.PlaceNameError = string.Empty;
+                    errorDictionary.Remove("PlaceName");
                 }
-                errorDictionary.Add("placeName", "Ongeldige waarde ingevoerd");
+                if (!CheckInputIsGiven(value))
+                {
+                    this.PlaceNameError = "Ongeldige input";
+                    errorDictionary.Add("PlaceName", "Ongeldige input");
+                }
+            }
+        }
+        public string PlaceNameError
+        {
+            get
+            {
+                return this._placeNameError;
+            }
+            set
+            {
+                this._placeNameError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -167,11 +297,30 @@ namespace ViewModel
             }
             set
             {
+                this._emailAddress = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                if (errorDictionary.ContainsKey("EmailAddress"))
+                {
+                    this.EmailAddress = string.Empty;
+                    errorDictionary.Remove("EmailAdress");
+                }
                 if (!ValidateEmailAdress(value))
                 {
-                    errorDictionary.Add("emailAdress", "Ongeldige waarde ingevoerd");
+                    this.EmailAddressError = "Ongeldige input";
+                    errorDictionary.Add("EmailAddress", "Ongeldige input");
                 }
-                this._emailAddress = value;
+            }
+        }
+        public string EmailAddressError
+        {
+            get
+            {
+                return this._emailAddressError;
+            }
+            set
+            {
+                this._emailAddressError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -183,15 +332,31 @@ namespace ViewModel
             }
             set
             {
+                this._amountOfGuests = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                if (errorDictionary.ContainsKey("AmountOfGuests"))
+                {
+                    this.AmountOfGuestsError = string.Empty;
+                    errorDictionary.Remove("AmountOfGuests");
+                }
                 if (!int.TryParse(value, out int x))
                 {
-                    errorDictionary.Add("amountOfGuests", "Ongeldige waarde ingevoerd");
-                    return;
+                    this.AmountOfGuestsError = "Ongeldige input";
+                    errorDictionary.Add("AmountOfGuests", "Ongeldige input");
                 }
-                removeFromErrorDictionary("amountOfGuests");
-                this._amountOfGuests = value;
             }
-
+        }
+        public string AmountOfGuestsError
+        {
+            get
+            {
+                return this._amountOfGuestsError;
+            }
+            set
+            {
+                this._amountOfGuestsError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
         }
         #endregion
 
