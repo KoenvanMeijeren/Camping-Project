@@ -152,7 +152,7 @@ namespace Model
             query += " INNER JOIN CampingPlaceType CPT ON CPT.CampingPlaceTypeID = CP.CampingPlaceTypeID ";
             query += " INNER JOIN Accommodation AM ON AM.AccommodationID = CPT.CampingPlaceTypeAccommodationID ";
             query += " INNER JOIN CampingCustomer CC ON CC.CampingCustomerID = R.ReservationCampingCustomerID ";
-            query += " INNER JOIN Account AC on CO.CampingOwnerAccountID = AC.AccountID";
+            query += " INNER JOIN Account AC on CC.CampingCustomerAccountID = AC.AccountID";
             query += " INNER JOIN Address CCA ON CCA.AddressID = CC.CampingCustomerAddressID ";
             query += " INNER JOIN ReservationDuration RD ON RD.ReservationDurationID = R.ReservationDurationID ";
 
