@@ -27,19 +27,30 @@ namespace Model
         
         public CampingPlace(string id, string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType)
         {
-            this.Id = int.Parse(id);
-            this.Number = int.Parse(number);
-            this.Surface = float.Parse(surface);
-            this.ExtraNightPrice = float.Parse(extraNightPrice);
+            bool successId = int.TryParse(id, out int numericId);
+            bool successNumber = int.TryParse(id, out int numericNumber);
+            bool successSurface = float.TryParse(id, out float numericSurface);
+            bool successExtraNightPrice = float.TryParse(id, out float numericExtraNightPrice);
+
+            float standardNightPrice = 0;
+            if (campingPlaceType != null)
+            {
+                standardNightPrice = campingPlaceType.StandardNightPrice;
+            }
+
+            this.Id = successId ? numericId : -1;
+            this.Number = successNumber ? numericNumber : 0;
+            this.Surface = successSurface ? numericSurface : 0;
+            this.ExtraNightPrice = successExtraNightPrice ? numericExtraNightPrice : 0;
             this.Type = campingPlaceType;
             this.Location = this.GetLocation();
             this.LocationSelect = this.GetLocationSelect();
-            this.TotalPrice = this.ExtraNightPrice + this.Type.StandardNightPrice;
+            this.TotalPrice = this.ExtraNightPrice + standardNightPrice;
         }
 
         public string GetLocation()
         {
-            return $"{this.Type.Accommodation.Prefix}-{this.Number}";
+            return this.Type == null ? this.Number.ToString() : $"{this.Type.Accommodation.Prefix}-{this.Number}";
         }
 
         public string GetLocationSelect()

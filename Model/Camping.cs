@@ -20,7 +20,9 @@ namespace Model
         
         public Camping(string id, string name, Address address, CampingOwner campingOwner)
         {
-            this.Id = int.Parse(id);
+            bool success = int.TryParse(id, out int idNumeric);
+            
+            this.Id = success ? idNumeric : -1;
             this.Name = name;
             this.Address = address;
             this.CampingOwner = campingOwner;

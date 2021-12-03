@@ -21,7 +21,7 @@ namespace ModelTests
         [Test]
         public void TestCampingConstructorIncorrect()
         {
-            Camping camping = new Camping(null, null, null);
+            Camping camping = new Camping(null, null, null, null);
             Assert.AreEqual(camping.Id, -1);
             Assert.AreEqual(camping.Name, null);
             Assert.AreEqual(camping.CampingOwner, null);
