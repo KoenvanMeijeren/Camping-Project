@@ -11,7 +11,7 @@ namespace ViewModel
     {
         public Dictionary<string, string> errorDictionary { get; private set; }
         private string _firstNameValidated { get; set; }
-        private string _firstName
+        public string FirstName
         {
             get
             {
@@ -25,12 +25,12 @@ namespace ViewModel
                     removeFromErrorDictionary("firstName");
                     return;
                 }
-                    errorDictionary.Add("firstName", "Ongeldige waarde ingevoerd");
+                errorDictionary.Add("firstName", "Ongeldige waarde ingevoerd");
             }
         }
 
         private string _lastNameValidated { get; set; }
-        private string _lastName
+        public string LastName
         {
             get
             {
@@ -49,7 +49,7 @@ namespace ViewModel
         }
 
         private string _birthdateValidated { get; set; }
-        private string _birthdate
+        public string Birthdate
         {
             get
             {
@@ -65,7 +65,7 @@ namespace ViewModel
         }
 
         private string _phoneNumberValidated { get; set; }
-        private string _phoneNumber
+        public string PhoneNumber
         {
             get
             {
@@ -81,7 +81,7 @@ namespace ViewModel
         }
 
         private string _streetNameValidated { get; set; }
-        private string _streetName
+        public string StreetName
         {
             get
             {
@@ -99,7 +99,7 @@ namespace ViewModel
         }
 
         private string _postalCodeValidated { get; set; }
-        private string _postalCode
+        public string PostalCode
         {
             get
             {
@@ -115,7 +115,7 @@ namespace ViewModel
         }
 
         private string _placeNameValidated { get; set; }
-        private string _placeName
+        public string PlaceName
         {
             get
             {
@@ -133,7 +133,7 @@ namespace ViewModel
         }
 
         private string _emailAddressValidated { get; set; }
-        private string _emailAddress
+        public string EmailAddress
         {
             get
             {
@@ -149,7 +149,7 @@ namespace ViewModel
         }
 
         private string _amountOfGuestsValidated { get; set; }
-        private string _amountOfGuests
+        public string AmountOfGuests
         {
             get
             {
