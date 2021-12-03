@@ -31,7 +31,7 @@ namespace ModelTests
         [Test]
         public void TestReservationCampingGuestConstructorIncorrect()
         {
-            ReservationCampingGuest reservationCampingGuest = new ReservationCampingGuest(null, null);
+            ReservationCampingGuest reservationCampingGuest = new ReservationCampingGuest(null, null, null);
             Assert.AreEqual(reservationCampingGuest.Id, -1);
             Assert.AreEqual(reservationCampingGuest.CampingGuest, null);
             Assert.AreEqual(reservationCampingGuest.Reservation, null);

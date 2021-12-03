@@ -20,7 +20,8 @@ namespace ModelTests
         [Test]
         public void TestAccommodationConstructorIncorrect()
         {
-            Accommodation accommodation = new Accommodation(null, null);
+            Accommodation accommodation = new Accommodation(null, null, null);
+            Assert.AreEqual(accommodation.Id, -1);
             Assert.AreEqual(accommodation.Prefix, null);
             Assert.AreEqual(accommodation.Name, null);
         }

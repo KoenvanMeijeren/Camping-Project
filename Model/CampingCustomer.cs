@@ -28,10 +28,13 @@ namespace Model
 
         public CampingCustomer(string id, Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName)
         {
-            this.Id = int.Parse(id);
+            bool success = int.TryParse(id, out int idNumeric);
+            bool successDate = DateTime.TryParse(birthdate, out DateTime dateTime);
+            
+            this.Id = success ? idNumeric : -1;
             this.Account = account;
             this.Address = address;
-            this.Birthdate = DateTime.Parse(birthdate);
+            this.Birthdate = successDate ? dateTime : DateTime.MinValue;
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;

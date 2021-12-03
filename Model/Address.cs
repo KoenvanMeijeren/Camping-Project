@@ -23,9 +23,9 @@ namespace Model
         
         public Address(string id, string address, string postalCode, string place)
         {
-            bool successFul = int.TryParse(id, out int idNumeric);
-
-            this.Id = successFul ? idNumeric : -1;
+            bool success = int.TryParse(id, out int idNumeric);
+            
+            this.Id = success ? idNumeric : -1;
             this.Street = address;
             this.PostalCode = postalCode;
             this.Place = place;

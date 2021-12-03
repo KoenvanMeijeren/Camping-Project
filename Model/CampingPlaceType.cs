@@ -22,9 +22,13 @@ namespace Model
 
         public CampingPlaceType(string id, string guestLimit, string standardNightPrice, Accommodation accommodation)
         {
-            this.Id = int.Parse(id);
-            this.GuestLimit = int.Parse(guestLimit);
-            this.StandardNightPrice = float.Parse(standardNightPrice);
+            bool successId = int.TryParse(id, out int numericId);
+            bool successGuestLimit = int.TryParse(guestLimit, out int numericGuestLimit);
+            bool successStandardNightPrice = float.TryParse(standardNightPrice, out float numericStandardNightPrice);
+            
+            this.Id = successId ? numericId : -1;
+            this.GuestLimit = successGuestLimit ? numericGuestLimit : 0;
+            this.StandardNightPrice = successStandardNightPrice ? numericStandardNightPrice : 0;
             this.Accommodation = accommodation;
         }
 
