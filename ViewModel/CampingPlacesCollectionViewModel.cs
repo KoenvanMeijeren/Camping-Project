@@ -22,7 +22,6 @@ namespace ViewModel
         private readonly ObservableCollection<string> _campingPlaceTypes;
         private string _selectedCampingPlaceType;
         
-        private ObservableCollection<CampingPlace> _selectedCampingPlaces;
         private CampingPlace _selectedCampingPlace;
         
         private ObservableCollection<CampingPlace> _campingPlaces;
