@@ -26,6 +26,7 @@ namespace Model
 
         }
 
+        // @TODO: test this date 12/20/2021 00:00:00. Causes an error currently.
         public ReservationDuration(string id, string checkInDate, string checkOutDate)
         {
             this.Id = int.Parse(id);
