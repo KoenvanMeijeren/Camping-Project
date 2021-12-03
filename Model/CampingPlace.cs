@@ -46,7 +46,12 @@ namespace Model
         {
             return $"{this.GetLocation()} ({this.Id})";
         }
-        
+
+        public override string ToString()
+        {
+            return this.GetLocation();
+        }
+
         protected override string Table()
         {
             return "CampingPlace";
