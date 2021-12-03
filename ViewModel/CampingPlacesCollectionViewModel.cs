@@ -14,14 +14,16 @@ namespace ViewModel
 {
     public class CampingPlacesCollectionViewModel : ObservableObject
     {
+        #region fields
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
+        
         private const string SelectAll = "Alle";
 
         private readonly ObservableCollection<string> _campingPlaceTypes;
         private string _selectedCampingPlaceType;
         
-        private ObservableCollection<string> _selectedCampingPlaces;
-        private string _selectedCampingPlace;
+        private ObservableCollection<CampingPlace> _selectedCampingPlaces;
+        private CampingPlace _selectedCampingPlace;
         
         private ObservableCollection<CampingPlace> _campingPlaces;
         public static event EventHandler<ReservationEventArgs> ReserveEvent;
@@ -31,7 +33,9 @@ namespace ViewModel
         private string _minNightPrice;
         private string _maxNightPrice;
 
-        #region getters/setters
+        #endregion
+        
+        #region properties
         public string MinNightPrice
         {
             get => this._minNightPrice;
@@ -70,7 +74,7 @@ namespace ViewModel
         public DateTime CheckInDate
         {
             get => this._checkInDate;
-            private set
+            set
             {
                 if (Equals(value, this._checkInDate))
                 {
@@ -86,7 +90,7 @@ namespace ViewModel
         public DateTime CheckOutDate
         {
             get => this._checkOutDate;
-            private set
+            set
             {
                 if (Equals(value, this._checkOutDate))
                 {
@@ -114,22 +118,7 @@ namespace ViewModel
             }
         }
         
-        public ObservableCollection<string> SelectedCampingPlaces
-        {
-            get => this._selectedCampingPlaces;
-            private set
-            {
-                if (Equals(value, this._selectedCampingPlaces))
-                {
-                    return;
-                }
-                
-                this._selectedCampingPlaces = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public string SelectedCampingPlace
+        public CampingPlace SelectedCampingPlace
         {
             get => this._selectedCampingPlace;
             set
@@ -178,6 +167,8 @@ namespace ViewModel
 
         #endregion
 
+        #region View construction
+        
         public CampingPlacesCollectionViewModel()
         {
             this.CampingPlaceTypes = new ObservableCollection<string>();
@@ -187,22 +178,12 @@ namespace ViewModel
             this.CampingPlaceTypes.Add("Caravan");
             this.CampingPlaceTypes.Add("Chalet");
             this.CampingPlaceTypes.Add("Tent");
-
             
             this.CampingPlaces = new ObservableCollection<CampingPlace>(this.GetCampingPlaces());
-            this.SelectedCampingPlaces = new ObservableCollection<string>();
-            foreach (CampingPlace campingPlace in this.CampingPlaces)
-            {
-                this.SelectedCampingPlaces.Add(campingPlace.LocationSelect);
-            }
             
             this.SelectedPlaceType = SelectAll;
-            var today = DateTime.Today;
-            this.CheckInDate = today;
-            this.CheckOutDate = today.AddDays(1);
-
-            this.MaxNightPrice = null;
-            this.MinNightPrice = null;
+            this.CheckInDate = DateTime.Today;
+            this.CheckOutDate = DateTime.Today.AddDays(1);
         }
 
         private void SetOverview()
@@ -241,9 +222,12 @@ namespace ViewModel
             }
         }
         
+        #endregion
+
+        #region commands
         private void ExecuteStartReservation()
         {
-            ReserveEvent?.Invoke(this, new ReservationEventArgs(null, this.CheckInDate, this.CheckOutDate));
+            ReserveEvent?.Invoke(this, new ReservationEventArgs(this.SelectedCampingPlace, this.CheckInDate, this.CheckOutDate));
         }
 
         private bool CanExecuteStartReservation()
@@ -253,6 +237,10 @@ namespace ViewModel
 
         public ICommand StartReservation => new RelayCommand(ExecuteStartReservation, CanExecuteStartReservation);
 
+        #endregion
+        
+        #region Database interaction
+        
         private IEnumerable<CampingPlace> GetCampingPlaces()
         {
             return this._campingPlaceModel.Select();
@@ -275,6 +263,8 @@ namespace ViewModel
             return viewData;
         }
 
+        #endregion
+        
     }
 }
 
