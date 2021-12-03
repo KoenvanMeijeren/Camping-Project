@@ -403,8 +403,8 @@ namespace ViewModel
             var lastCustomer = (new CampingCustomer()).SelectLast();
 
             ReservationDuration reservationDuration = new ReservationDuration(
-                this._checkInDatetime.ToString(CultureInfo.InvariantCulture), 
-                this._checkOutDatetime.ToString(CultureInfo.InvariantCulture)
+                this._checkInDatetime.ToShortDateString(), 
+                this._checkOutDatetime.ToShortDateString()
             );
             
             reservationDuration.Insert();

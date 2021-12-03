@@ -26,7 +26,6 @@ namespace Model
 
         }
 
-        // @TODO: test this date 12/20/2021 00:00:00. Causes an error currently.
         public ReservationDuration(string id, string checkInDate, string checkOutDate)
         {
             bool successId = int.TryParse(id, out int numericId);
@@ -36,8 +35,8 @@ namespace Model
             this.Id = successId ? numericId : -1;
             this.CheckInDatetime = successCheckInDate ? dateCheckIn : DateTime.MinValue;
             this.CheckOutDatetime = successCheckOUtDate ? dateCheckOut : DateTime.MinValue;
-            this.CheckInDate = this.CheckInDatetime.ToShortDateString();
-            this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
+            this.CheckInDate = this.CheckInDatetime.ToString("yyyy-MM-dd hh:mm:ss");
+            this.CheckOutDate = this.CheckOutDatetime.ToString("yyyy-MM-dd hh:mm:ss");
         }
 
         protected override string Table()
