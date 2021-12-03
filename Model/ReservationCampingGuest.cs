@@ -90,8 +90,8 @@ namespace Model
         protected override string BaseQuery()
         {
             string query = base.BaseQuery();
-            query += "INNER JOIN Reservation RE ON BT.ReservationID = RE.ReservationID";
-            query += "INNER JOIN CampingGuest CG ON BT.CampingGuestID = CG.CampingGuestID";
+            query += " INNER JOIN Reservation RE ON BT.ReservationID = RE.ReservationID";
+            query += " INNER JOIN CampingGuest CG ON BT.CampingGuestID = CG.CampingGuestID";
 
             return query;
         }

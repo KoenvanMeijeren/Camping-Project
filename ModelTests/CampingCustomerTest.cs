@@ -11,8 +11,9 @@ namespace ModelTests
         [Test]
         public void TestCampingCustomerConstructorCorrect()
         {
+            Account account = new Account("1", "admin", "nimda", 1);
             Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
-            CampingCustomer campingCustomer = new CampingCustomer("1", address, "19/10/21", "testEmail", "testPhoneNumber", "testFirstName", "testLastName");
+            CampingCustomer campingCustomer = new CampingCustomer("1", account, address, "19/10/21", "testEmail", "testPhoneNumber", "testFirstName", "testLastName");
             Assert.AreEqual(campingCustomer.Id, 1);
             Assert.AreEqual(campingCustomer.Address, address);
             Assert.AreEqual(campingCustomer.Birthdate, DateTime.Parse("19/10/21"));
@@ -26,7 +27,7 @@ namespace ModelTests
         [Test]
         public void TestCampingCustomerConstructorIncorrect()
         {
-            CampingCustomer campingCustomer = new CampingCustomer(null, "19/10/21", null, null, null, null);
+            CampingCustomer campingCustomer = new CampingCustomer(null, null, "19/10/21", null, null, null, null);
             Assert.AreEqual(campingCustomer.Id, -1);
             Assert.AreEqual(campingCustomer.Address, null);
             Assert.AreEqual(campingCustomer.Birthdate, DateTime.Parse("19/10/21"));
