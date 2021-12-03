@@ -8,6 +8,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace ViewModel
 {
@@ -16,10 +17,12 @@ namespace ViewModel
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
         private const string SelectAll = "Alle";
 
-        private string _selectedCampingPlaceType;
-        private CampingPlace _selectedCampingPlace;
-        
         private readonly ObservableCollection<string> _campingPlaceTypes;
+        private string _selectedCampingPlaceType;
+        
+        private ObservableCollection<string> _selectedCampingPlaces;
+        private string _selectedCampingPlace;
+        
         private ObservableCollection<CampingPlace> _campingPlaces;
         public static event EventHandler<ReservationEventArgs> ReserveEvent;
         
@@ -110,11 +113,26 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
+        
+        public ObservableCollection<string> SelectedCampingPlaces
+        {
+            get => this._selectedCampingPlaces;
+            private set
+            {
+                if (Equals(value, this._selectedCampingPlaces))
+                {
+                    return;
+                }
+                
+                this._selectedCampingPlaces = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
 
-        public CampingPlace SelectedCampingPlace
+        public string SelectedCampingPlace
         {
             get => this._selectedCampingPlace;
-            private set
+            set
             {
                 if (Equals(value, this._selectedCampingPlace))
                 {
@@ -162,7 +180,6 @@ namespace ViewModel
 
         public CampingPlacesCollectionViewModel()
         {
-            
             this.CampingPlaceTypes = new ObservableCollection<string>();
             this.CampingPlaceTypes.Add("Alle");
             this.CampingPlaceTypes.Add("Bungalow");
@@ -173,6 +190,12 @@ namespace ViewModel
 
             
             this.CampingPlaces = new ObservableCollection<CampingPlace>(this.GetCampingPlaces());
+            this.SelectedCampingPlaces = new ObservableCollection<string>();
+            foreach (CampingPlace campingPlace in this.CampingPlaces)
+            {
+                this.SelectedCampingPlaces.Add(campingPlace.LocationSelect);
+            }
+            
             this.SelectedPlaceType = SelectAll;
             var today = DateTime.Today;
             this.CheckInDate = today;
@@ -185,17 +208,14 @@ namespace ViewModel
         private void SetOverview()
         {
             // Removes all current camping places.
-            while (this.CampingPlaces.Count > 0)
-            {
-                this.CampingPlaces.RemoveAt(0);
-            }
-            
+            this.CampingPlaces.Clear();
+
             var selectedCampingPlaceType = this._selectedCampingPlaceType;
 
             var campingPlaceItems  = this.GetCampingPlaces();
             if (this.CheckInDate != null && this.CheckOutDate != null)
             {
-                campingPlaceItems = this.ToFilteredOnReservedCampingPitches(campingPlaceItems, CheckInDate, CheckOutDate);
+                campingPlaceItems = this.ToFilteredOnReservedCampingPlaces(campingPlaceItems, CheckInDate, CheckOutDate);
             }
 
             if (!selectedCampingPlaceType.Equals(SelectAll))
@@ -213,20 +233,32 @@ namespace ViewModel
             {
                 campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.TotalPrice <= max).ToList();
             }
-            
+
             // Sets the camping places on the screen.
             foreach (CampingPlace item in campingPlaceItems)
             {
                 this.CampingPlaces.Add(item);
             }
         }
+        
+        private void ExecuteStartReservation()
+        {
+            ReserveEvent?.Invoke(this, new ReservationEventArgs(null, this.CheckInDate, this.CheckOutDate));
+        }
+
+        private bool CanExecuteStartReservation()
+        {
+            return true;
+        }
+
+        public ICommand StartReservation => new RelayCommand(ExecuteStartReservation, CanExecuteStartReservation);
 
         private IEnumerable<CampingPlace> GetCampingPlaces()
         {
             return this._campingPlaceModel.Select();
         }
 
-        private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPitches(IEnumerable<CampingPlace> viewData, DateTime checkinDate, DateTime checkoutDate)
+        private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData, DateTime checkinDate, DateTime checkoutDate)
         {
             Reservation reservationModel = new Reservation();
 

@@ -52,7 +52,7 @@
         <Label Content="Max&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="634,92,0,0" Height="25"/>
         <Label Content="Locatie:" HorizontalAlignment="Left" Margin="491,547,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         
-        <Button x:Name="ReserveButton" Content="Reserveer" Margin="676,547,54,59"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
-        <ComboBox x:Name="CampingPitchLocationDropdown" SelectedItem="{Binding SelectedCampingPlace.LocationSelect}" ItemsSource="{Binding CampingPlaces}" Margin="572,547,157,59" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White" />
+        <Button Command="{Binding StartReservation}" Content="Reserveer" Margin="676,547,54,59"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
+        <ComboBox SelectedItem="{Binding SelectedCampingPlace}" ItemsSource="{Binding SelectedCampingPlaces}" Margin="572,547,157,59" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White" />
     </Grid>
 </Page>
