@@ -63,14 +63,14 @@ namespace Model
         /// <returns>Address object</returns>
         public Address FirstOrInsert()
         {
-            var result = this.FetchAddressByParameters(this.address, this.postalCode);
+            var result = this.FetchAddressByParameters(this.Street, this.PostalCode);
             if (result != null)
             {
                 return result;
             }
 
             this.Insert();
-            return this.FetchAddressByParameters(this.address, this.postalCode);
+            return this.FetchAddressByParameters(this.Street, this.PostalCode);
         }
 
         public bool Update(string address, string postalCode, string place)

@@ -170,9 +170,10 @@ namespace ViewModel
         private DateTime _checkOutDatetime { get; set; }
         private int _campingPlaceID { get; set; }
 
-        public ReservationCustomerFormInsert(string firstName, string lastName, string birthDate, string phoneNumber, string streetName, string postalCode, string placeName, string emailAdress, string amountOfGuests, DateTime checkInDatetime, DateTime checkOutDatetime, int campingPlaceID)
+        //public ReservationCustomerFormInsert(string firstName, string lastName, string birthDate, string phoneNumber, string streetName, string postalCode, string placeName, string emailAdress, string amountOfGuests, DateTime checkInDatetime, DateTime checkOutDatetime, int campingPlaceID)
+        public ReservationCustomerFormInsert()
         {
-            this._firstName = firstName.Trim();
+          /*  this._firstName = firstName.Trim();
             this._lastName = lastName.Trim();
             this._birthdate = birthDate.Trim();
             this._phoneNumber = phoneNumber.Trim();
@@ -183,7 +184,7 @@ namespace ViewModel
             this._amountOfGuests = amountOfGuests.Trim();
             this._checkInDatetime = checkInDatetime;
             this._checkOutDatetime = checkOutDatetime;
-            this._campingPlaceID = campingPlaceID;
+            this._campingPlaceID = campingPlaceID;*/
 
             if (this.errorDictionary.Count == 0)
             {
@@ -192,7 +193,7 @@ namespace ViewModel
             }
         }
 
-        private void InsertAllDataInDatabase()
+      /*  private void InsertAllDataInDatabase()
         {
             //TODO: Transactie en toevoegen aan controller
             // Create or/and fetch address based on user input
@@ -214,7 +215,7 @@ namespace ViewModel
             CampingPlace campingPlace = campingPlaceModel.Select(_campingPlaceID);
             Reservation reservation = new Reservation(_amountOfGuests, fetchCampingCustomer, campingPlace, fetchNewestReservationDuration);
             reservation.Insert();
-        }
+        }*/
 
         private void removeFromErrorDictionary(string key)
         {

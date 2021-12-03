@@ -48,15 +48,15 @@ namespace Visualization
 
         }
 
-    /*    private Label[] errorLabels = new Label[this.ErrorFirstName, this.ErrorLastName, this.ErrorBirthDate, this.ErrorPhonenumber, this.ErrorPlacename, this.ErrorPostalcode, this.ErrorAddress, this.ErrorMail, this.ErrorAmountOfGuests];
-        private void ClearErrorLabels()
-        {
-            foreach (Label element in errorLabels)
+        /*    private Label[] errorLabels = new Label[this.ErrorFirstName, this.ErrorLastName, this.ErrorBirthDate, this.ErrorPhonenumber, this.ErrorPlacename, this.ErrorPostalcode, this.ErrorAddress, this.ErrorMail, this.ErrorAmountOfGuests];
+            private void ClearErrorLabels()
             {
-                element.Content = "";
-            }
-        }*/
-        private void ReservationCustomerFormSubmit(object sender, RoutedEventArgs e)
+                foreach (Label element in errorLabels)
+                {
+                    element.Content = "";
+                }
+            }*/
+        /*private void ReservationCustomerFormSubmit(object sender, RoutedEventArgs e)
         {
             string firstName = this.CustomerFirstName.Text;
             string lastName = this.CustomerLastName.Text;
@@ -69,52 +69,52 @@ namespace Visualization
             string amountOfGuests = this.CustomerGuestAmount.Text;
             
             ReservationCustomerFormInsert reservationCustomerFormInsert = new ReservationCustomerFormInsert(firstName, lastName, birthdate, phoneNumber, streetName, postalcode, placeName, emailAddress, amountOfGuests, this.CheckInDatetime, this.CheckOutDatetime, this.CampingPlaceID);
-
-          /*  this.ClearErrorMessages();
-            if (ReservationConfirmedEvent.errorDictionary.Count > 0)
-            {
-                foreach(KeyValuePair<string, string> error in ReservationConfirmedEvent.errorDictionary)
-                {
-                    var element; 
-                    switch(error.Key)
-                    {
-                        case "firstName":
-                            element = this.ErrorFirstName;
-                            break;
-                        case "lastName":
-                            element = this.ErrorLastName;
-                            break;
-                        case "birthDate":
-                            element = this.ErrorBirthDate;
-                            break;
-                        case "phoneNumber":
-                            element = this.ErrorPhonenumber;
-                            break;
-                        case "streetName":
-                            element = this.ErrorPlacename;
-                            break;
-                        case "postalCode":
-                            element = this.ErrorPostalcode;
-                            break;
-                        case "placeName":
-                            element = this.ErrorPlacename;
-                            break;
-                        case "emailAdress":
-                            element = this.ErrorMail;
-                            break;
-                        case "amountOfGuests":
-                            element = this.CustomerGuestAmount;
-                            break;
-                        default: 
-                            Console.WriteLine("Hier had hij niet mogen komen");
-                            break;
-                    }
-                    element.Content = error.Value;
-                }
-                return;
-            }
-            ReservationConfirmedEvent?.Invoke(this, new ReservationConfirmedEventArgs(firstName, lastName, CheckInDatetime, CheckOutDatetime));*/
-        }
+*/
+        /*  this.ClearErrorMessages();
+          if (ReservationConfirmedEvent.errorDictionary.Count > 0)
+          {
+              foreach(KeyValuePair<string, string> error in ReservationConfirmedEvent.errorDictionary)
+              {
+                  var element; 
+                  switch(error.Key)
+                  {
+                      case "firstName":
+                          element = this.ErrorFirstName;
+                          break;
+                      case "lastName":
+                          element = this.ErrorLastName;
+                          break;
+                      case "birthDate":
+                          element = this.ErrorBirthDate;
+                          break;
+                      case "phoneNumber":
+                          element = this.ErrorPhonenumber;
+                          break;
+                      case "streetName":
+                          element = this.ErrorPlacename;
+                          break;
+                      case "postalCode":
+                          element = this.ErrorPostalcode;
+                          break;
+                      case "placeName":
+                          element = this.ErrorPlacename;
+                          break;
+                      case "emailAdress":
+                          element = this.ErrorMail;
+                          break;
+                      case "amountOfGuests":
+                          element = this.CustomerGuestAmount;
+                          break;
+                      default: 
+                          Console.WriteLine("Hier had hij niet mogen komen");
+                          break;
+                  }
+                  element.Content = error.Value;
+              }
+              return;
+          }
+          ReservationConfirmedEvent?.Invoke(this, new ReservationConfirmedEventArgs(firstName, lastName, CheckInDatetime, CheckOutDatetime));*/
+        //   }
 
         /*        // All the checks underneath should be put in their own class.
                 private bool CheckLegalAge(DatePicker selectedBirthDate)
