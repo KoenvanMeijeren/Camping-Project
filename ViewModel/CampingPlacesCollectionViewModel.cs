@@ -14,7 +14,7 @@ namespace ViewModel
 {
     public class CampingPlacesCollectionViewModel : ObservableObject
     {
-        #region fields
+        #region Fields
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
         
         private const string SelectAll = "Alle";
@@ -35,7 +35,7 @@ namespace ViewModel
 
         #endregion
         
-        #region properties
+        #region Properties
         public string MinNightPrice
         {
             get => this._minNightPrice;
@@ -224,7 +224,7 @@ namespace ViewModel
         
         #endregion
 
-        #region commands
+        #region Commands
         private void ExecuteStartReservation()
         {
             ReserveEvent?.Invoke(this, new ReservationEventArgs(this.SelectedCampingPlace, this.CheckInDate, this.CheckOutDate));
