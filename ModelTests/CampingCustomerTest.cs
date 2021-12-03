@@ -27,10 +27,10 @@ namespace ModelTests
         [Test]
         public void TestCampingCustomerConstructorIncorrect()
         {
-            CampingCustomer campingCustomer = new CampingCustomer(null, null, "19/10/21", null, null, null, null);
+            CampingCustomer campingCustomer = new CampingCustomer(null, null, null, null, null, null, null, null);
             Assert.AreEqual(campingCustomer.Id, -1);
             Assert.AreEqual(campingCustomer.Address, null);
-            Assert.AreEqual(campingCustomer.Birthdate, DateTime.Parse("19/10/21"));
+            Assert.AreEqual(campingCustomer.Birthdate, DateTime.MinValue);
             Assert.AreEqual(campingCustomer.Email, null);
             Assert.AreEqual(campingCustomer.PhoneNumber, null);
             Assert.AreEqual(campingCustomer.FirstName, null);

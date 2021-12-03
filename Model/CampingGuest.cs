@@ -22,12 +22,13 @@ namespace Model
 
         public CampingGuest(string id, string firstName, string lastName, string birthdate)
         {
-            var success = int.TryParse(id, out int numericId);
+            bool success = int.TryParse(id, out int numericId);
+            bool successDate = DateTime.TryParse(birthdate, out DateTime dateTime);
             
             this.Id = success ? numericId : -1;
             this.FirstName = firstName;
             this.LastName = lastName;
-            this.Birthdate = DateTime.Parse(birthdate);
+            this.Birthdate = successDate ? dateTime : DateTime.MinValue;
         }
 
         protected override string Table()

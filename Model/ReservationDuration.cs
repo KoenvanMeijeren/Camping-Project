@@ -28,9 +28,13 @@ namespace Model
 
         public ReservationDuration(string id, string checkInDate, string checkOutDate)
         {
-            this.Id = int.Parse(id);
-            this.CheckInDatetime = DateTime.Parse(checkInDate);
-            this.CheckOutDatetime = DateTime.Parse(checkOutDate);
+            bool successId = int.TryParse(id, out int numericId);
+            bool successCheckInDate = DateTime.TryParse(checkInDate, out DateTime dateCheckIn);
+            bool successCheckOUtDate = DateTime.TryParse(checkOutDate, out DateTime dateCheckOut);
+            
+            this.Id = successId ? numericId : -1;
+            this.CheckInDatetime = successCheckInDate ? dateCheckIn : DateTime.MinValue;
+            this.CheckOutDatetime = successCheckOUtDate ? dateCheckOut : DateTime.MinValue;
             this.CheckInDate = this.CheckInDatetime.ToShortDateString();
             this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
         }

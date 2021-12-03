@@ -1,18 +1,16 @@
 using NUnit.Framework;
+using SystemCore;
 
 namespace SystemCoreTests
 {
     public class Tests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
 
         [Test]
-        public void Test1()
+        public void test()
         {
-            Assert.Pass();
+            Assert.AreEqual("test", ConfigReader.GetSetting("test"));
         }
+        
     }
 }

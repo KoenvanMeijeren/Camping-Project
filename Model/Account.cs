@@ -22,7 +22,9 @@ namespace Model
 
         public Account(string id, string username, string password, int rights)
         {
-            this.Id = int.Parse(id);
+            bool success = int.TryParse(id, out int idNumeric);
+            
+            this.Id = success ? idNumeric : -1;
             this.Username = username;
             this.Password = password;
             this.Rights = rights;

@@ -18,7 +18,9 @@ namespace Model
 
         public CampingOwner(string id, Account account, string firstName, string lastName)
         {
-            this.Id = int.Parse(id);
+            bool success = int.TryParse(id, out int numericId);
+
+            this.Id = success ? numericId : -1;
             this.Account = account;
             this.FirstName = firstName;
             this.LastName = lastName;
