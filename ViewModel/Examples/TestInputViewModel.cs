@@ -6,16 +6,16 @@ using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 
-namespace ViewModel
+namespace ViewModel.Examples
 {
-    public class MainWindowViewModel : ObservableObject
+    public class TestInputViewModel : ObservableObject
     {
         private string serialNumber;
         private string modelName;
         private ObservableCollection<Model> models;
         private string soNumber;
 
-        public MainWindowViewModel()
+        public TestInputViewModel()
         {
             Models = new ObservableCollection<Model>();
             Models.Add(new Model("test"));
