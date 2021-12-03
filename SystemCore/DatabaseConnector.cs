@@ -49,7 +49,14 @@ namespace SystemCore
                 DatabaseConnector.Initialize();
             }
 
-            DatabaseConnector._connection.Open();
+            try
+            {
+                DatabaseConnector._connection.Open();
+            }
+            catch (Exception exception)
+            {
+                SystemError.Handle(exception);
+            }
         }
 
         /// <summary>

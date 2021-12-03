@@ -228,7 +228,7 @@ namespace ViewModel
 
         private bool CanExecuteStartReservation()
         {
-            return true;
+            return this.SelectedCampingPlace != null;
         }
 
         public ICommand StartReservation => new RelayCommand(ExecuteStartReservation, CanExecuteStartReservation);
