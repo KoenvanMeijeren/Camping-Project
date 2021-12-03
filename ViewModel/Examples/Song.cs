@@ -1,5 +1,5 @@
 ﻿
-namespace ViewModel
+namespace ViewModel.Examples
 {
     /// <summary>
     /// Model of a 'song'.

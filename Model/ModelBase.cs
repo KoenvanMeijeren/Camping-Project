@@ -10,7 +10,7 @@ namespace Model
     {
         public int Id { get; protected init; }
         
-        protected readonly List<T> Collection = new List<T>();
+        protected List<T> Collection = new List<T>();
 
         protected abstract string Table();
         
@@ -19,6 +19,8 @@ namespace Model
         public virtual IEnumerable<T> Select()
         {
             Query query = new Query(this.BaseQuery());
+
+            this.Collection = new List<T>();
             var items = query.Select();
             foreach (Dictionary<string, string> dictionary in items)
             {
