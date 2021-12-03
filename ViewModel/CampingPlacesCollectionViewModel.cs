@@ -193,10 +193,7 @@ namespace ViewModel
             var selectedCampingPlaceType = this._selectedCampingPlaceType;
 
             var campingPlaceItems  = this.GetCampingPlaces();
-            if (this.CheckInDate != null && this.CheckOutDate != null)
-            {
-                campingPlaceItems = this.ToFilteredOnReservedCampingPlaces(campingPlaceItems, CheckInDate, CheckOutDate);
-            }
+            campingPlaceItems = this.ToFilteredOnReservedCampingPlaces(campingPlaceItems, CheckInDate, CheckOutDate);
 
             if (!selectedCampingPlaceType.Equals(SelectAll))
             {
