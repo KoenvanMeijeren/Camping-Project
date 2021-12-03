@@ -22,7 +22,9 @@ namespace Model
 
         public CampingGuest(string id, string firstName, string lastName, string birthdate)
         {
-            this.Id = int.Parse(id);
+            var success = int.TryParse(id, out int numericId);
+            
+            this.Id = success ? numericId : -1;
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Birthdate = DateTime.Parse(birthdate);

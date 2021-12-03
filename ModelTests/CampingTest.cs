@@ -9,8 +9,9 @@ namespace ModelTests
         [Test]
         public void TestCampingConstructorCorrect()
         {
+            Account account = new Account("1", "admin", "nimda", 1);
             Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
-            CampingOwner campingOwner = new CampingOwner("1", "testName");
+            CampingOwner campingOwner = new CampingOwner("1", account, "test", "testName");
             Camping camping = new Camping("1", "testName", address, campingOwner);
             Assert.AreEqual(camping.Name, "testName");
             Assert.AreEqual(camping.Address, address);

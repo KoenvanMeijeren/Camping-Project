@@ -147,10 +147,12 @@ namespace SystemCore
                 
                 string value = dataType switch
                 {
+                    "text" => dataRecord.GetString(delta),
                     "string" => dataRecord.GetString(delta),
                     "varchar" => dataRecord.GetString(delta),
                     "nvarchar" => dataRecord.GetString(delta),
                     "int" => dataRecord.GetInt32(delta).ToString(),
+                    "tinyint" => dataRecord.GetByte(delta).ToString(),
                     "float" => dataRecord.GetDouble(delta).ToString(CultureInfo.InvariantCulture),
                     "double" => dataRecord.GetDouble(delta).ToString(CultureInfo.InvariantCulture),
                     "decimal" => dataRecord.GetDecimal(delta).ToString(CultureInfo.InvariantCulture),
