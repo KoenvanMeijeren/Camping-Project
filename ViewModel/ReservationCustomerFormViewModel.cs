@@ -15,7 +15,18 @@ namespace ViewModel
     public class ReservationCustomerFormViewModel : ObservableObject
     {
         #region fields
-        public Dictionary<string, string> errorDictionary { get; private set; }
+        public Dictionary<string, string> ErrorDictionary { get; private set; } = new Dictionary<string, string>
+            {
+                {"FirstName", ""},
+                {"LastName", ""},
+                {"Birthdate", ""},
+                {"PhoneNumber", ""},
+                {"StreetName", ""},
+                {"PostalCode", ""},
+                {"PlaceName", ""},
+                {"EmailAdress", ""},
+                {"AmountOfGuests", ""},
+            };
 
         private string _firstName;
         private string _firstNameError;
@@ -54,15 +65,15 @@ namespace ViewModel
             {
                 this._firstName = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                if (errorDictionary.ContainsKey("FirstName"))
+                if (ErrorDictionary.ContainsKey("FirstName"))
                 {
                     this.FirstNameError = string.Empty;
-                    errorDictionary.Remove("FirstName");
+                    ErrorDictionary.Remove("FirstName");
                 }
                 if (!CheckInputIsGiven(value))
                 {
                     this.FirstNameError = "Ongeldige input";
-                    errorDictionary.Add("FirstName", "Ongeldige input");
+                    ErrorDictionary.Add("FirstName", "Ongeldige input");
                 }
             }
         }
@@ -89,15 +100,15 @@ namespace ViewModel
             {
                 this._lastName = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                if (errorDictionary.ContainsKey("LastName"))
+                if (ErrorDictionary.ContainsKey("LastName"))
                 {
                     this.LastNameError = string.Empty;
-                    errorDictionary.Remove("LastName");
+                    ErrorDictionary.Remove("LastName");
                 }
                 if (!CheckInputIsGiven(value))
                 {
                     this.LastNameError = "Ongeldige input";
-                    errorDictionary.Add("LastName", "Ongeldige input");
+                    ErrorDictionary.Add("LastName", "Ongeldige input");
                 }
             }
         }
@@ -124,15 +135,15 @@ namespace ViewModel
             {
                 this._birthdate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                if (errorDictionary.ContainsKey("Birthdate"))
+                if (ErrorDictionary.ContainsKey("Birthdate"))
                 {
                     this.BirthdateError = string.Empty;
-                    errorDictionary.Remove("Birthdate");
+                    ErrorDictionary.Remove("Birthdate");
                 }
                 if (!ValidateBirthday(value))
                 {
                     this.BirthdateError = "Ongeldige input";
-                    errorDictionary.Add("Birthdate", "Ongeldige input");
+                    ErrorDictionary.Add("Birthdate", "Ongeldige input");
                 }
             }
         }
@@ -159,15 +170,15 @@ namespace ViewModel
             {
                 this._phoneNumber = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                if (errorDictionary.ContainsKey("PhoneNumber"))
+                if (ErrorDictionary.ContainsKey("PhoneNumber"))
                 {
                     this.PhoneNumberError = string.Empty;
-                    errorDictionary.Remove("PhoneNumber");
+                    ErrorDictionary.Remove("PhoneNumber");
                 }
                 if (!ValidatePhoneNumber(value))
                 {
                     this.PhoneNumberError = "Ongeldige input";
-                    errorDictionary.Add("PhoneNumber", "Ongeldige input");
+                    ErrorDictionary.Add("PhoneNumber", "Ongeldige input");
                 }
             }
         }
@@ -194,15 +205,15 @@ namespace ViewModel
             {
                 this._streetName = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                if (errorDictionary.ContainsKey("StreetName"))
+                if (ErrorDictionary.ContainsKey("StreetName"))
                 {
                     this.StreetNameError = string.Empty;
-                    errorDictionary.Remove("StreetName");
+                    ErrorDictionary.Remove("StreetName");
                 }
                 if (!CheckInputIsGiven(value))
                 {
                     this.StreetNameError = "Ongeldige input";
-                    errorDictionary.Add("StreetName", "Ongeldige input");
+                    ErrorDictionary.Add("StreetName", "Ongeldige input");
                 }
             }
         }
@@ -229,15 +240,15 @@ namespace ViewModel
             {
                 this._postalCode = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                if (errorDictionary.ContainsKey("PostalCode"))
+                if (ErrorDictionary.ContainsKey("PostalCode"))
                 {
                     this.PostalCodeError = string.Empty;
-                    errorDictionary.Remove("PostalCode");
+                    ErrorDictionary.Remove("PostalCode");
                 }
                 if (!ValidatePostalCode(value))
                 {
                     this.PostalCodeError = "Ongeldige input";
-                    errorDictionary.Add("PostalCode", "Ongeldige input");
+                    ErrorDictionary.Add("PostalCode", "Ongeldige input");
                 }
             }
         }
@@ -264,15 +275,15 @@ namespace ViewModel
             {
                 this._placeName = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                if (errorDictionary.ContainsKey("PlaceName"))
+                if (ErrorDictionary.ContainsKey("PlaceName"))
                 {
                     this.PlaceNameError = string.Empty;
-                    errorDictionary.Remove("PlaceName");
+                    ErrorDictionary.Remove("PlaceName");
                 }
                 if (!CheckInputIsGiven(value))
                 {
                     this.PlaceNameError = "Ongeldige input";
-                    errorDictionary.Add("PlaceName", "Ongeldige input");
+                    ErrorDictionary.Add("PlaceName", "Ongeldige input");
                 }
             }
         }
@@ -299,15 +310,15 @@ namespace ViewModel
             {
                 this._emailAddress = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                if (errorDictionary.ContainsKey("EmailAddress"))
+                if (ErrorDictionary.ContainsKey("EmailAddress"))
                 {
                     this.EmailAddress = string.Empty;
-                    errorDictionary.Remove("EmailAdress");
+                    ErrorDictionary.Remove("EmailAdress");
                 }
                 if (!ValidateEmailAdress(value))
                 {
                     this.EmailAddressError = "Ongeldige input";
-                    errorDictionary.Add("EmailAddress", "Ongeldige input");
+                    ErrorDictionary.Add("EmailAddress", "Ongeldige input");
                 }
             }
         }
@@ -334,15 +345,15 @@ namespace ViewModel
             {
                 this._amountOfGuests = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                if (errorDictionary.ContainsKey("AmountOfGuests"))
+                if (ErrorDictionary.ContainsKey("AmountOfGuests"))
                 {
                     this.AmountOfGuestsError = string.Empty;
-                    errorDictionary.Remove("AmountOfGuests");
+                    ErrorDictionary.Remove("AmountOfGuests");
                 }
                 if (!int.TryParse(value, out int x))
                 {
                     this.AmountOfGuestsError = "Ongeldige input";
-                    errorDictionary.Add("AmountOfGuests", "Ongeldige input");
+                    ErrorDictionary.Add("AmountOfGuests", "Ongeldige input");
                 }
             }
         }
@@ -363,13 +374,13 @@ namespace ViewModel
         public ReservationCustomerFormViewModel()
         {
             CampingPlacesCollectionViewModel.ReserveEvent += this.OnReserveEvent;
-            errorDictionary = new Dictionary<string, string>();
+            ErrorDictionary = new Dictionary<string, string>();
         }
 
         #region validation methods
         private void removeFromErrorDictionary(string key)
         {
-            errorDictionary.Remove(key);
+            ErrorDictionary.Remove(key);
         }
         private Boolean CheckInputIsGiven(string input)
         {
@@ -415,18 +426,42 @@ namespace ViewModel
         #region Commands
         private void ExecuteCustomerDataReservation()
         {
-            //insert call?
+            //If there are any errors in the given user input
+            if (ErrorDictionary.Count == 0)
+            {
+                //TODO: Transactie en toevoegen aan controller
+                // Create or/and fetch address based on user input
+                Address address = new Address(_streetName, _postalCode, _placeName);
+                var fetchLatestAddressOrCreateOne = address.FirstOrInsert();
+
+                // Insert customer into CampingCustomer table
+                // TODO: Need to new Account() later on...
+                Account testAccount = new Account("1", "admin@hotmail.com", "nimda", 1);
+                CampingCustomer campingCustomer = new CampingCustomer(testAccount, fetchLatestAddressOrCreateOne, _birthdate.ToString(), _emailAddress, _phoneNumber, _firstName, _lastName);
+                // 'Invalid column name 'CampingCustomerEmail'.'
+                campingCustomer.Insert();
+                var fetchCampingCustomer = campingCustomer.SelectLast();
+
+                // Insert and fetch reservation duration in ReservationDuration table
+                ReservationDuration reservationDuration = new ReservationDuration(CheckInDatetime.ToString(), CheckOutDatetime.ToString());
+                reservationDuration.Insert();
+                var fetchNewestReservationDuration = reservationDuration.SelectLast();
+
+                // Insert reservation in Reservation table
+                CampingPlace campingPlaceModel = new CampingPlace();
+                CampingPlace campingPlace = campingPlaceModel.Select(CampingPlaceID);
+                Reservation reservation = new Reservation(_amountOfGuests, fetchCampingCustomer, campingPlace, fetchNewestReservationDuration);
+                reservation.Insert();
+            }
             ReservationConfirmedEvent?.Invoke(this, new ReservationConfirmedEventArgs(this.FirstName, this.LastName, this.CheckInDatetime, this.CheckOutDatetime));
         }
         private bool CanExecuteCustomerDataReservation()
-        {            
-            return this.errorDictionary.Count == 0;
+        {
+            // TODO: Doesn't work...
+            return this.ErrorDictionary.Count == 0;
         }
 
         public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerDataReservation, CanExecuteCustomerDataReservation);
-
         #endregion
-
-        
     }
 }
