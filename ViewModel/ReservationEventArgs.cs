@@ -7,17 +7,15 @@ using Model;
 
 namespace ViewModel
 {
+
     public class ReservationEventArgs : EventArgs
     {
-        public int CampingPlaceId { get; set; }
-        public DateTime CheckInDatetime { get; set; }
-        public DateTime CheckOutDatetime { get; set; }
+        public Reservation Reservation { get; private set; }
 
-        public ReservationEventArgs(CampingPlace campingPlace, DateTime checkInDatetime, DateTime checkOutDatetime)
+        public ReservationEventArgs(Reservation reservation)
         {
-            this.CampingPlaceId = campingPlace.Id;
-            this.CheckInDatetime = checkInDatetime;
-            this.CheckOutDatetime = checkOutDatetime;
+            this.Reservation = reservation;
         }
+
     }
 }

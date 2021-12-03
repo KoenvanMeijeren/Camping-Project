@@ -28,15 +28,16 @@ namespace Visualization
         public ReservationConfirmedPage()
         {
             this.InitializeComponent();
-            ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            
+            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
         {
-            this.FirstName = args.FirstName;
-            this.LastName = args.LastName;
-            this.CheckInDatetime = args.CheckInDatetime;
-            this.CheckOutDatetime = args.CheckOutDatetime;
+            this.FirstName = args.Reservation.CampingCustomer.FirstName;
+            this.LastName = args.Reservation.CampingCustomer.LastName;
+            this.CheckInDatetime = args.Reservation.Duration.CheckInDatetime;
+            this.CheckOutDatetime = args.Reservation.Duration.CheckOutDatetime;
 
             this.Title.Content = $"Gefeliciteerd {FirstName} {LastName},";
             this.ConfirmationText.Content = $"Uw reservering van {this.CheckInDatetime.Date.ToShortDateString()} tot {this.CheckOutDatetime.Date.ToShortDateString()}";

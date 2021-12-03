@@ -12,7 +12,6 @@ namespace Model
         public Account Account { get; private set; }
         public Address Address { get; private set; }
         public DateTime Birthdate { get; private set; }
-        public string Email { get; private set; }
         public string PhoneNumber  { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -22,18 +21,17 @@ namespace Model
             
         }
 
-        public CampingCustomer(Account account, Address address, string birtdate, string email, string phoneNumber, string firstName, string lastName): this("-1", account, address, birtdate, email, phoneNumber, firstName, lastName)
+        public CampingCustomer(Account account, Address address, string birtdate, string phoneNumber, string firstName, string lastName): this("-1", account, address, birtdate, phoneNumber, firstName, lastName)
         {
 
         }
 
-        public CampingCustomer(string id, Account account, Address address, string birthdate, string email, string phoneNumber, string firstName, string lastName)
+        public CampingCustomer(string id, Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName)
         {
             this.Id = int.Parse(id);
             this.Account = account;
             this.Address = address;
             this.Birthdate = DateTime.Parse(birthdate);
-            this.Email = email;
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;
@@ -49,17 +47,16 @@ namespace Model
             return "CampingCustomerID";
         }
 
-        public bool Update(Account account, Address address, DateTime birthdate, string email, string phoneNumber, string firstName, string lastName)
+        public bool Update(Account account, Address address, DateTime birthdate, string phoneNumber, string firstName, string lastName)
         {
             this.Account = account;
             this.Address = address;
             this.Birthdate = birthdate;
-            this.Email = email;
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;
 
-            return base.Update(CampingCustomer.ToDictionary(account, address, birthdate, email, phoneNumber, firstName, lastName));
+            return base.Update(CampingCustomer.ToDictionary(account, address, birthdate, phoneNumber, firstName, lastName));
         }
 
         protected override CampingCustomer ToModel(Dictionary<string, string> dictionary)
@@ -82,7 +79,6 @@ namespace Model
             dictionary.TryGetValue("AddressPlace", out string place);
 
             dictionary.TryGetValue("CampingCustomerBirthdate", out string birthdate);
-            dictionary.TryGetValue("CampingCustomerEmail", out string email);
             dictionary.TryGetValue("CampingCustomerPhoneNumber", out string phoneNumber);
             dictionary.TryGetValue("CampingCustomerFirstName", out string firstName);
             dictionary.TryGetValue("CampingCustomerLastName", out string lastName);
@@ -90,22 +86,21 @@ namespace Model
             Account account = new Account(accountId, username, password, int.Parse(rights));
             Address address = new Address(addressId, street, postalCode, place);
 
-            return new CampingCustomer(id, account, address, birthdate, email, phoneNumber, firstName, lastName);
+            return new CampingCustomer(id, account, address, birthdate, phoneNumber, firstName, lastName);
         }
 
         protected override Dictionary<string, string> ToDictionary()
         {
-            return CampingCustomer.ToDictionary(this.Account, this.Address, this.Birthdate, this.Email, this.PhoneNumber, this.FirstName, this.LastName);
+            return CampingCustomer.ToDictionary(this.Account, this.Address, this.Birthdate, this.PhoneNumber, this.FirstName, this.LastName);
         }
 
-        private static Dictionary<string, string> ToDictionary(Account account, Address address, DateTime birthdate, string email, string phoneNumber, string firstName, string lastName)
+        private static Dictionary<string, string> ToDictionary(Account account, Address address, DateTime birthdate, string phoneNumber, string firstName, string lastName)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 {"CampingCustomerAccountID", account.Id.ToString()},
                 {"CampingCustomerAddressID", address.Id.ToString()},
                 {"CampingCustomerBirthdate", birthdate.ToString(CultureInfo.InvariantCulture)},
-                {"CampingCustomerEmail", email},
                 {"CampingCustomerPhoneNumber", phoneNumber},
                 {"CampingCustomerFirstName", firstName},
                 {"CampingCustomerLastName", lastName}

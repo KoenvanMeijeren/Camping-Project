@@ -43,8 +43,8 @@ namespace Visualization
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
 
-            ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            CampingPlacesCollectionViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
@@ -119,16 +119,12 @@ namespace Visualization
         }
 
 
-        private void OnReserveEvent(object sender, ReservationEventArgs args)
+        private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
         {
-            this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceId;
-            this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;
-            this._reservationCustomerForm.CheckOutDatetime = args.CheckOutDatetime;
-
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
         {
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
