@@ -47,7 +47,7 @@ namespace Model
         /// <param name="address">given address</param>
         /// <param name="postalCode">given postalcode</param>
         /// <returns>Address object</returns>
-        private Address FetchAddressByParameters(string address, string postalCode)
+        private Address SelectByParameters(string address, string postalCode)
         {
             Query query = new Query("SELECT * FROM Address WHERE Address = @Address AND AddressPostalCode = @AddressPostalCode");
             query.AddParameter("Address", address);
@@ -63,14 +63,14 @@ namespace Model
         /// <returns>Address object</returns>
         public Address FirstOrInsert()
         {
-            var result = this.FetchAddressByParameters(this.Street, this.PostalCode);
+            var result = this.SelectByParameters(this.Street, this.PostalCode);
             if (result != null)
             {
                 return result;
             }
 
             this.Insert();
-            return this.FetchAddressByParameters(this.Street, this.PostalCode);
+            return this.SelectByParameters(this.Street, this.PostalCode);
         }
 
         public bool Update(string address, string postalCode, string place)
