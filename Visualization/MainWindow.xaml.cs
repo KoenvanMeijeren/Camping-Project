@@ -34,7 +34,7 @@ namespace Visualization
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
-            SignUpPage.SignUpEvent += this.OnSignUpEvent;
+            SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)

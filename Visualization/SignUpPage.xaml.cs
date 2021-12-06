@@ -23,66 +23,19 @@ namespace Visualization
     /// </summary>
     public partial class SignUpPage : Page
     {
-        public static event EventHandler<SignUpEventArgs> SignUpEvent;
-
         public SignUpPage()
         {
             this.InitializeComponent();
         }
 
-        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        private void PasswordTextChanged(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void EmailTextbox_Selected(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            if (this.EmailTextbox.Text == "Voer hier uw email in")
+            if (this.DataContext == null)
             {
-                this.EmailTextbox.Foreground = Brushes.Black;
-                this.EmailTextbox.Text = "";
-            }
-        }
-
-        private void EmailTextbox_Deselected(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            if (this.EmailTextbox.Text == "")
-            {
-                this.EmailTextbox.Foreground = Brushes.Gray;
-                this.EmailTextbox.Text = "Voer hier uw email in";
-            }
-        }
-
-        private void SignUpButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.EmailTextbox.Text == "Voer hier uw email in" || this.PasswordTextbox.Password == "")
-            {
-                this.ErrorText.Content = "Vul alle velden in";
                 return;
             }
 
-            if (!CheckEmail(this.EmailTextbox.Text))
-            {
-                this.ErrorText.Content = "Ongeldig mailadres";
-                return;
-            }
-
-            Account account = new Account();
-            account = account.SelectByEmail(this.EmailTextbox.Text);
-
-            if (account == null || this.PasswordTextbox.Password != account.Password)
-            {
-                this.ErrorText.Content = "Gegevens onjuist";
-                return;
-            }
-
-            SignUpEvent?.Invoke(this, new SignUpEventArgs(account));
-        }
-
-        private static bool CheckEmail(string email)
-        {
-            var regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase);//student@mail.nl
-            return regex.IsMatch(email.Trim());
+            ((dynamic)this.DataContext).Password = ((PasswordBox)sender).Password;
         }
     }
 }
