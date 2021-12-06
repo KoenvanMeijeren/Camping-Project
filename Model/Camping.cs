@@ -70,7 +70,7 @@ namespace Model
             dictionary.TryGetValue("CampingOwnerID", out string campingOwnerId);
             dictionary.TryGetValue("CampingOwnerName", out string campingOwnerName);
 
-            Account account = new Account(accountId, email, password, int.Parse(rights));
+            Account account = new Account(accountId, email, password, rights);
             Address address = new Address(addressId, street, postalCode, place);
             CampingOwner campingOwner = new CampingOwner(account, campingOwnerId, campingOwnerName);
 

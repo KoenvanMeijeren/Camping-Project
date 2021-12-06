@@ -87,7 +87,7 @@ namespace Model
             dictionary.TryGetValue("CampingCustomerFirstName", out string firstName);
             dictionary.TryGetValue("CampingCustomerLastName", out string lastName);
 
-            Account account = new Account(accountId, email, password, int.Parse(rights));
+            Account account = new Account(accountId, email, password, rights);
             Address address = new Address(addressId, street, postalCode, place);
 
             return new CampingCustomer(id, account, address, birthdate, phoneNumber, firstName, lastName);

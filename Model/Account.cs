@@ -23,25 +23,23 @@ namespace Model
         {
         }
 
-        public Account(string email, string password, int rights) : this ("-1", email, password, rights)
+        public Account(string email, string password, string rights) : this ("-1", email, password, rights)
         {
         }
 
-        public Account(string id, string email, string password, int rights)
+        public Account(string id, string email, string password, string rights)
         {
-            bool success = int.TryParse(id, out int idNumeric);
+            bool successId = int.TryParse(id, out int idNumeric);
+            bool successRights = int.TryParse(rights, out int rightsNumeric);
             
-            this.Id = success ? idNumeric : -1;
+            this.Id = successId ? idNumeric : -1;
             this.Email = email;
             this.Password = password;
 
-            if (rights == 0)
+            this.Rights = Rights.Admin;
+            if (successRights && rightsNumeric == 0)
             {
                 this.Rights = Rights.Customer;
-            } 
-            else
-            {
-                this.Rights = Rights.Admin;
             }
         }
 
@@ -60,13 +58,10 @@ namespace Model
             this.Email = email;
             this.Password = password;
 
+            this.Rights = Rights.Admin;
             if (rights == 0)
             {
                 this.Rights = Rights.Customer;
-            }
-            else
-            {
-                this.Rights = Rights.Admin;
             }
 
             return base.Update(Account.ToDictionary(email, password, rights));
@@ -84,7 +79,7 @@ namespace Model
             dictionary.TryGetValue("AccountPassword", out string password);
             dictionary.TryGetValue("AccountRights", out string rights);
 
-            return new Account(id, email, password, int.Parse(rights));
+            return new Account(id, email, password, rights);
         }
 
         protected override Dictionary<string, string> ToDictionary()

@@ -63,7 +63,7 @@ namespace Model
             dictionary.TryGetValue("CampingOwnerFirstName", out string firstName);
             dictionary.TryGetValue("CampingOwnerLastName", out string lastName);
 
-            Account account = new Account(accountId, email, password, int.Parse(rights));
+            Account account = new Account(accountId, email, password, rights);
 
 
             return new CampingOwner(id, account, firstName, lastName);

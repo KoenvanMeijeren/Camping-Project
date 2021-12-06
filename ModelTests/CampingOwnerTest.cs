@@ -9,7 +9,7 @@ namespace ModelTests
         [Test]
         public void TestCampingOwnerConstructorCorrect()
         {
-            Account account = new Account("13", "admin", "nimda", 1);
+            Account account = new Account("13", "admin", "nimda", "1");
             CampingOwner campingOwner = new CampingOwner("1", account, "testName", "last");
             Assert.AreEqual(campingOwner.Id, 1);
             Assert.AreEqual(campingOwner.Account.Id, 13);

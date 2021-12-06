@@ -10,27 +10,25 @@ namespace ViewModel
     public static class CurrentUser
     {
         public static Account Account { get; private set; }
-        private static CampingCustomer CampingCustomer { get; set; }
-        private static CampingOwner CampingOwner { get; set; }
+        private static CampingCustomer _campingCustomer;
+        private static CampingOwner _campingOwner;
 
         public static void SetCurrentUser(Account account)
         {
             Account = account;
 
-            if (Account.Rights == Rights.Customer)
+            switch (Account.Rights)
             {
-                Account = account;
-                CampingCustomer = new CampingCustomer();
-                CampingCustomer = CampingCustomer.SelectByAccount(account);
-                return;
-            }
-
-            if (Account.Rights == Rights.Admin)
-            {
-                Account = account;
-                CampingOwner = new CampingOwner();
-                CampingOwner = CampingOwner.SelectByAccount(account);
-                return;
+                case Rights.Customer:
+                    Account = account;
+                    _campingCustomer = new CampingCustomer();
+                    _campingCustomer = _campingCustomer.SelectByAccount(account);
+                    break;
+                case Rights.Admin:
+                    Account = account;
+                    _campingOwner = new CampingOwner();
+                    _campingOwner = _campingOwner.SelectByAccount(account);
+                    break;
             }
         }
     }

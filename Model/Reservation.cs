@@ -133,7 +133,7 @@ namespace Model
             Accommodation accommodation = new Accommodation(accommodationId, prefix, name);
             CampingPlaceType campingPlaceType = new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
             CampingPlace campingPlace = new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
-            Account account = new Account(accountId, email, password, int.Parse(rights));
+            Account account = new Account(accountId, email, password, rights);
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, phoneNumber, firstName, lastName);
             ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
