@@ -10,6 +10,8 @@ namespace Model
 {
     public class ReservationDuration : ModelBase<ReservationDuration>
     {
+        public const string DatabaseDateTimeFormatString = "MM/dd/yyyy hh:mm:00";
+        
         public DateTime CheckInDatetime { get; private set; }
         public DateTime CheckOutDatetime { get; private set; }
         
@@ -31,16 +33,24 @@ namespace Model
         public ReservationDuration(string id, string checkInDate, string checkOutDate)
         {
             bool successId = int.TryParse(id, out int numericId);
-            bool successCheckInDate = DateTime.TryParse(checkInDate, out DateTime dateCheckIn);
-            bool successCheckOUtDate = DateTime.TryParse(checkOutDate, out DateTime dateCheckOut);
+            bool successCheckInDate = DateTime.TryParseExact(checkInDate, 
+                DatabaseDateTimeFormatString, 
+                CultureInfo.InvariantCulture, 
+                DateTimeStyles.None, 
+                out DateTime checkInDateObject);
+            bool successCheckOutDate = DateTime.TryParseExact(checkOutDate, 
+                DatabaseDateTimeFormatString, 
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None, 
+                out DateTime checkOutDateObject);
             
             this.Id = successId ? numericId : -1;
-            this.CheckInDatetime = successCheckInDate ? dateCheckIn : DateTime.MinValue;
-            this.CheckOutDatetime = successCheckOUtDate ? dateCheckOut : DateTime.MinValue;
+            this.CheckInDatetime = successCheckInDate ? checkInDateObject : DateTime.MinValue;
+            this.CheckOutDatetime = successCheckOutDate ? checkOutDateObject : DateTime.MinValue;
             this.CheckInDate = this.CheckInDatetime.ToShortDateString();
             this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
-            this.CheckInDateDatabaseFormat = this.CheckInDatetime.ToString("yyyy-MM-dd hh:mm:ss");
-            this.CheckOutDateDatabaseFormat = this.CheckOutDatetime.ToString("yyyy-MM-dd hh:mm:ss");
+            this.CheckInDateDatabaseFormat = checkInDate;
+            this.CheckOutDateDatabaseFormat = checkOutDate;
         }
 
         protected override string Table()

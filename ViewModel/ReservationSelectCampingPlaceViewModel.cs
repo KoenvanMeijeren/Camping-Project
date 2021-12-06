@@ -170,18 +170,16 @@ namespace ViewModel
         
         public ReservationSelectCampingPlaceViewModel()
         {
-            this.CampingPlaceTypes = new ObservableCollection<string>
+            this.CampingPlaceTypes = new ObservableCollection<string>();
+            
+            //Loop through rows in Accommodation table
+            this.CampingPlaceTypes.Add(SelectAll);
+            foreach (var accommodationDatabaseRow in new Accommodation().Select())
             {
-                "Alle",
-                "Bungalow",
-                "Camper",
-                "Caravan",
-                "Chalet",
-                "Tent"
-            };
+                this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);
+            }
 
             this.CampingPlaces = new ObservableCollection<CampingPlace>(this.GetCampingPlaces());
-            
             this.SelectedPlaceType = SelectAll;
             this.CheckInDate = DateTime.Today;
             this.CheckOutDate = DateTime.Today.AddDays(1);
@@ -252,13 +250,7 @@ namespace ViewModel
             foreach (Reservation reservation in reservations)
             {
                 ReservationDuration reservationDuration = reservation.Duration;
-                // Database : 2021-06-12    -->     12-06-2021
-                // User     :                       06-12-2021
-                var checkInDateObject = new DateTime(checkInDate.Year, checkInDate.Month, checkInDate.Day);
-                var durationCheckInDateObject = new DateTime(reservationDuration.CheckInDatetime.Year, reservationDuration.CheckInDatetime.Month, reservationDuration.CheckInDatetime.Day);
-                var checkOutDateObject = new DateTime(checkOutDate.Year, checkOutDate.Month, checkOutDate.Day);
-                var durationCheckOutDateObject = new DateTime(reservationDuration.CheckOutDatetime.Year, reservationDuration.CheckOutDatetime.Month, reservationDuration.CheckOutDatetime.Day);
-                if (durationCheckInDateObject.Date < checkOutDateObject.Date && checkInDateObject.Date < durationCheckOutDateObject.Date)
+                if (reservationDuration.CheckInDatetime.Date < checkOutDate.Date && checkInDate.Date < reservationDuration.CheckOutDatetime.Date)
                 {
                     viewData = viewData.Where(campingPlace => campingPlace.Id != reservation.CampingPlace.Id).ToList();
                 }
