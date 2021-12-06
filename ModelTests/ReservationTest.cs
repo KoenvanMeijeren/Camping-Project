@@ -9,7 +9,7 @@ namespace ModelTests
         [Test]
         public void TestReservationConstructorCorrect()
         {
-            Account account = new Account("1", "admin", "nimda", 1);
+            Account account = new Account("1", "admin", "nimda", "1");
             Accommodation accommodation = new Accommodation("1", "testPrefix", "testName");
             CampingPlaceType campingPlaceType = new CampingPlaceType("1", "1", "1", accommodation);
             CampingPlace campingPlace = new CampingPlace("1", "1", "1", "1", campingPlaceType);
@@ -46,7 +46,7 @@ namespace ModelTests
         [Test]
         public void TestReservationCalculateTotalPrice()
         {
-            Account account = new Account("1", "admin", "nimda", 1);
+            Account account = new Account("1", "admin", "nimda", "1");
             Accommodation accommodation = new Accommodation("1", "testPrefix", "testName");
             CampingPlaceType campingPlaceType = new CampingPlaceType("1", "1", "1", accommodation);
             CampingPlace campingPlace = new CampingPlace("1", "1", "1", "1", campingPlaceType);

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SystemCore;
 
 namespace Model
 {
@@ -72,7 +73,7 @@ namespace Model
             dictionary.TryGetValue("CampingCustomerID", out string id);
 
             dictionary.TryGetValue("AccountID", out string accountId);
-            dictionary.TryGetValue("AccountUsername", out string username);
+            dictionary.TryGetValue("AccountEmail", out string email);
             dictionary.TryGetValue("AccountPassword", out string password);
             dictionary.TryGetValue("AccountRights", out string rights);
 
@@ -86,7 +87,7 @@ namespace Model
             dictionary.TryGetValue("CampingCustomerFirstName", out string firstName);
             dictionary.TryGetValue("CampingCustomerLastName", out string lastName);
 
-            Account account = new Account(accountId, username, password, int.Parse(rights));
+            Account account = new Account(accountId, email, password, rights);
             Address address = new Address(addressId, street, postalCode, place);
 
             return new CampingCustomer(id, account, address, birthdate, phoneNumber, firstName, lastName);
@@ -120,6 +121,13 @@ namespace Model
 
             return query;
         }
-        
+
+        public CampingCustomer SelectByAccount(Account account)
+        {
+            Query query = new Query(this.BaseQuery() + " WHERE CampingCustomerAccountID = @AccountID");
+            query.AddParameter("AccountID", account.Id);
+            return this.ToModel(query.SelectFirst());
+        }
+
     }
 }

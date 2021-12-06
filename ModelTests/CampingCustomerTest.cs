@@ -11,7 +11,7 @@ namespace ModelTests
         [Test]
         public void TestCampingCustomerConstructorCorrect()
         {
-            Account account = new Account("1", "admin", "nimda", 1);
+            Account account = new Account("1", "admin", "nimda", "0");
             Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
             CampingCustomer campingCustomer = new CampingCustomer("1", account, address, "19/10/21", "testPhoneNumber", "testFirstName", "testLastName");
             Assert.AreEqual(campingCustomer.Id, 1);

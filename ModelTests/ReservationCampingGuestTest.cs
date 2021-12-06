@@ -9,7 +9,7 @@ namespace ModelTests
         [Test]
         public void TestReservationCampingGuestConstructorCorrect()
         {
-            Account account = new Account("1", "admin", "nimda", 1);
+            Account account = new Account("1", "admin", "nimda",  "1");
             CampingGuest campingGuest = new CampingGuest("1", "testName", "19/10/21");
 
             Accommodation accommodation = new Accommodation("1", "testPrefix", "testName");

@@ -14,6 +14,8 @@ namespace Visualization
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
+        private readonly AccountPage _accountPage;
+        private readonly SignUpPage _signUpPage;
         private readonly TestInputPage _testInputPage;
         private readonly TestPage _testPage;
 
@@ -25,11 +27,14 @@ namespace Visualization
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
+            this._accountPage = new AccountPage();
+            this._signUpPage = new SignUpPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
+            SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
@@ -103,6 +108,11 @@ namespace Visualization
             this.MainFrame.Content = this._testInputPage.Content;
         }
 
+        private void SignUpButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._signUpPage.Content;
+        }
+
 
         private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
         {
@@ -114,5 +124,12 @@ namespace Visualization
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
 
+        private void OnSignUpEvent(object sender, SignUpEventArgs args)
+        {
+            CurrentUser.SetCurrentUser(args.Account);
+            this.MainFrame.Content = this._accountPage.Content;
+        }
+
+        
     }
 }
