@@ -117,7 +117,7 @@ namespace Model
         
         protected virtual string SelectLastQuery()
         {
-            return $"{this.BaseQuery()} ORDER BY {this.PrimaryKey()} DESC";
+            return $"{this.BaseQuery()} ORDER BY {this.PrimaryKey()} ASC";
         }
 
     }
