@@ -8,34 +8,421 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
+using System.Windows.Input;
 
 namespace ViewModel
 {
     public class ReservationCustomerFormViewModel : ObservableObject
     {
-        private string _firstname;
+        #region Fields
 
-        public string Firstname
+        private readonly Dictionary<string, string> _errorDictionary;
+
+        private string _firstName;
+        private string _firstNameError;
+        private string _lastName;
+        private string _lastNameError;
+        private DateTime _birthdate;
+        private string _birthdateError;
+        private string _phoneNumber;
+        private string _phoneNumberError;
+        private string _streetName;
+        private string _streetNameError;
+        private string _postalCode;
+        private string _postalCodeError;
+        private string _placeName;
+        private string _placeNameError;
+        private string _emailAddress;
+        private string _emailAddressError;
+        private string _amountOfGuests;
+        private string _amountOfGuestsError;
+        private DateTime _checkInDatetime;
+        private DateTime _checkOutDatetime;
+        private int _campingPlaceId;
+        
+        #endregion
+
+        #region Properties
+        public string FirstName
         {
-            get => this._firstname;
+            get => this._firstName;
             set
             {
-                if (Equals(value, this._firstname))
+                this._firstName = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                this.FirstNameError = string.Empty;
+                this.RemoveErrorFromDictionary("FirstName");
+                if (this.CheckInputIsGiven(value))
                 {
                     return;
                 }
-
-                this._firstname = value;
-/*                this.SetOverview();
-*/
+                
+                this.FirstNameError = "Ongeldige input";
+                this.AddErrorToDictionary("FirstName", "Ongeldige input");
+            }
+        }
+        public string FirstNameError
+        {
+            get => this._firstNameError;
+            set
+            {
+                this._firstNameError = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
+        public string LastName
+        {
+            get => this._lastName;
+            set
+            {
+                this._lastName = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.LastNameError = string.Empty;
+                this.RemoveErrorFromDictionary("LastName");
+                if (this.CheckInputIsGiven(value))
+                {
+                    return;
+                }
+                
+                this.LastNameError = "Ongeldige input";
+                this.AddErrorToDictionary("LastName", "Ongeldige input");
+            }
+        }
+        public string LastNameError
+        {
+            get => this._lastNameError;
+            set
+            {
+                this._lastNameError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+        public DateTime Birthdate
+        {
+            get => this._birthdate;
+            set
+            {
+                this._birthdate = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.BirthdateError = string.Empty;
+                this.RemoveErrorFromDictionary("Birthdate");
+                if (this.ValidateBirthday(value))
+                {
+                    return;
+                }
+                
+                this.BirthdateError = "Ongeldige input";
+                this.AddErrorToDictionary("Birthdate", "Ongeldige input");
+            }
+        }
+        public string BirthdateError
+        {
+            get => this._birthdateError;
+            set
+            {
+                this._birthdateError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+        public string PhoneNumber
+        {
+            get => this._phoneNumber;
+            set
+            {
+                this._phoneNumber = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.PhoneNumberError = string.Empty;
+                this.RemoveErrorFromDictionary("PhoneNumber");
+                if (this.ValidatePhoneNumber(value))
+                {
+                    return;
+                }
+                
+                this.PhoneNumberError = "Ongeldige input";
+                this.AddErrorToDictionary("PhoneNumber", "Ongeldige input");
+            }
+        }
+        public string PhoneNumberError
+        {
+            get => this._phoneNumberError;
+            set
+            {
+                this._phoneNumberError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+        public string StreetName
+        {
+            get => this._streetName;
+            set
+            {
+                this._streetName = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.StreetNameError = string.Empty;
+                this.RemoveErrorFromDictionary("StreetName");
+                if (this.CheckInputIsGiven(value))
+                {
+                    return;
+                }
+                
+                this.StreetNameError = "Ongeldige input";
+                this.AddErrorToDictionary("StreetName", "Ongeldige input");
+            }
+        }
+        public string StreetNameError
+        {
+            get => this._streetNameError;
+            set
+            {
+                this._streetNameError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+        public string PostalCode
+        {
+            get => this._postalCode;
+            set
+            {
+                this._postalCode = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.PostalCodeError = string.Empty;
+                this.RemoveErrorFromDictionary("PostalCode");
+                if (this.ValidatePostalCode(value))
+                {
+                    return;
+                }
+                
+                this.PostalCodeError = "Ongeldige input";
+                this.AddErrorToDictionary("PostalCode", "Ongeldige input");
+            }
+        }
+        public string PostalCodeError
+        {
+            get => this._postalCodeError;
+            set
+            {
+                this._postalCodeError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+        public string PlaceName
+        {
+            get => this._placeName;
+            set
+            {
+                this._placeName = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.PlaceNameError = string.Empty;
+                this.RemoveErrorFromDictionary("PlaceName");
+                if (CheckInputIsGiven(value))
+                {
+                    return;
+                }
+                
+                this.PlaceNameError = "Ongeldige input";
+                this.AddErrorToDictionary("PlaceName", "Ongeldige input");
+            }
+        }
+        public string PlaceNameError
+        {
+            get => this._placeNameError;
+            set
+            {
+                this._placeNameError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+        public string EmailAddress
+        {
+            get => this._emailAddress;
+            set
+            {
+                this._emailAddress = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.EmailAddressError = string.Empty;
+                this.RemoveErrorFromDictionary("EmailAddress");
+                if (this.ValidateEmailAdress(value))
+                {
+                    return;
+                }
+                
+                this.EmailAddressError = "Ongeldige input";
+                this.AddErrorToDictionary("EmailAddress", "Ongeldige input");
+            }
+        }
+        public string EmailAddressError
+        {
+            get => this._emailAddressError;
+            set
+            {
+                this._emailAddressError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+        public string AmountOfGuests
+        {
+            get => this._amountOfGuests;
+            set
+            {
+                this._amountOfGuests = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.AmountOfGuestsError = string.Empty;
+                this.RemoveErrorFromDictionary("AmountOfGuests");
+                if (int.TryParse(value, out int x))
+                {
+                    return;
+                }
+                
+                this.AmountOfGuestsError = "Ongeldige input";
+                this.AddErrorToDictionary("AmountOfGuests", "Ongeldige input");
+            }
+        }
+        public string AmountOfGuestsError
+        {
+            get => this._amountOfGuestsError;
+            set
+            {
+                this._amountOfGuestsError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+        #endregion
+
+        #region Events
+
+        public static event EventHandler<ReservationEventArgs> ReservationConfirmedEvent;
+
+        #endregion
+
         public ReservationCustomerFormViewModel()
         {
+            this._errorDictionary = new Dictionary<string, string>
+            {
+                {"FirstName", ""},
+                {"LastName", ""},
+                {"Birthdate", ""},
+                {"PhoneNumber", ""},
+                {"StreetName", ""},
+                {"PostalCode", ""},
+                {"PlaceName", ""},
+                {"EmailAddress", ""},
+                {"AmountOfGuests", ""},
+            };
             
+            ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
         }
         
+        private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
+        {
+            this._campingPlaceId = args.CampingPlaceId;
+            this._checkInDatetime = args.CheckInDatetime;
+            this._checkOutDatetime = args.CheckOutDatetime;
+        }
+
+        #region Input validation
+        private void RemoveErrorFromDictionary(string key)
+        {
+            if (!this._errorDictionary.ContainsKey(key))
+            {
+                return;
+            }
+
+            this._errorDictionary.Remove(key);
+        }
+
+        private void AddErrorToDictionary(string key, string value)
+        {
+            if (this._errorDictionary.ContainsKey(key))
+            {
+                return;
+            }
+            
+            this._errorDictionary.Add(key, value);
+        }
+        
+        private bool CheckInputIsGiven(string input)
+        {
+            return (!string.IsNullOrEmpty(input) && input.Length != 0);
+        }
+        // TODO: Birthday validation implementeren
+        private bool ValidateBirthday(DateTime input)
+        {
+            this._birthdate = input;
+            this.RemoveErrorFromDictionary("birthdate");
+            return true;
+        }
+        // TODO: Phone number validation implementeren
+        private bool ValidatePhoneNumber(string input)
+        {
+            this._phoneNumber = input;
+            this.RemoveErrorFromDictionary("phoneNumber");
+            return true;
+        }
+        // TODO: Postalcode validation implementeren
+        private bool ValidatePostalCode(string input)
+        {
+            this._postalCode = input;
+            this.RemoveErrorFromDictionary("postalCode");
+            return true;
+        }
+        // TODO: Email adress validation implementeren
+        private bool ValidateEmailAdress(string input)
+        {
+            this._emailAddress = input;
+            this.RemoveErrorFromDictionary("emailAdress");
+            return true;
+        }
+        #endregion
+
+        #region Commands
+        private void ExecuteCustomerDataReservation()
+        {
+            //TODO: Insert with transaction
+            Address addressModel = new Address(this.StreetName, this.PostalCode, this.PlaceName);
+            var address = addressModel.FirstOrInsert();
+
+            // TODO: Need to new Account() later on...
+            var lastCustomer = (new CampingCustomer()).SelectLast();
+
+            ReservationDuration reservationDuration = new ReservationDuration(
+                this._checkInDatetime.ToShortDateString(), 
+                this._checkOutDatetime.ToShortDateString()
+            );
+            
+            reservationDuration.Insert();
+            var fetchNewestReservationDuration = reservationDuration.SelectLast();
+
+            CampingPlace campingPlaceModel = new CampingPlace();
+            CampingPlace campingPlace = campingPlaceModel.Select(this._campingPlaceId);
+            Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, campingPlace, fetchNewestReservationDuration);
+            reservation.Insert();
+            
+            ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(reservation.SelectLast()));
+        }
+        private bool CanExecuteCustomerDataReservation()
+        {
+            return !this._errorDictionary.Any();
+        }
+
+        public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerDataReservation, CanExecuteCustomerDataReservation);
+        #endregion
     }
 }

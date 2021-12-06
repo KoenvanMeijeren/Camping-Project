@@ -35,8 +35,8 @@ namespace Model
             this.Id = successId ? numericId : -1;
             this.CheckInDatetime = successCheckInDate ? dateCheckIn : DateTime.MinValue;
             this.CheckOutDatetime = successCheckOUtDate ? dateCheckOut : DateTime.MinValue;
-            this.CheckInDate = this.CheckInDatetime.ToShortDateString();
-            this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
+            this.CheckInDate = this.CheckInDatetime.ToString("yyyy-MM-dd hh:mm:ss");
+            this.CheckOutDate = this.CheckOutDatetime.ToString("yyyy-MM-dd hh:mm:ss");
         }
 
         protected override string Table()
@@ -65,8 +65,8 @@ namespace Model
             }
 
             dictionary.TryGetValue("ReservationDurationID", out string id);
-            dictionary.TryGetValue("ReservationDurationCheckInDateTime", out string checkInDateTime);
-            dictionary.TryGetValue("ReservationDurationCheckOutDateTime", out string checkOutDateTime);
+            dictionary.TryGetValue("ReservationDurationCheckInDatetime", out string checkInDateTime);
+            dictionary.TryGetValue("ReservationDurationCheckOutDatetime", out string checkOutDateTime);
 
             return new ReservationDuration(id, checkInDateTime, checkOutDateTime);
         }

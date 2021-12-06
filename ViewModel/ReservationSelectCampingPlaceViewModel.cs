@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace ViewModel
 {
-    public class CampingPlacesCollectionViewModel : ObservableObject
+    public class ReservationSelectCampingPlaceViewModel : ObservableObject
     {
         #region Fields
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
@@ -25,7 +25,7 @@ namespace ViewModel
         private CampingPlace _selectedCampingPlace;
         
         private ObservableCollection<CampingPlace> _campingPlaces;
-        public static event EventHandler<ReservationEventArgs> ReserveEvent;
+        public static event EventHandler<ReservationDurationEventArgs> ReserveEvent;
         
         private DateTime _checkOutDate;
         private DateTime _checkInDate;
@@ -168,16 +168,18 @@ namespace ViewModel
 
         #region View construction
         
-        public CampingPlacesCollectionViewModel()
+        public ReservationSelectCampingPlaceViewModel()
         {
-            this.CampingPlaceTypes = new ObservableCollection<string>();
-            this.CampingPlaceTypes.Add("Alle");
-            this.CampingPlaceTypes.Add("Bungalow");
-            this.CampingPlaceTypes.Add("Camper");
-            this.CampingPlaceTypes.Add("Caravan");
-            this.CampingPlaceTypes.Add("Chalet");
-            this.CampingPlaceTypes.Add("Tent");
-            
+            this.CampingPlaceTypes = new ObservableCollection<string>
+            {
+                "Alle",
+                "Bungalow",
+                "Camper",
+                "Caravan",
+                "Chalet",
+                "Tent"
+            };
+
             this.CampingPlaces = new ObservableCollection<CampingPlace>(this.GetCampingPlaces());
             
             this.SelectedPlaceType = SelectAll;
@@ -223,7 +225,7 @@ namespace ViewModel
         #region Commands
         private void ExecuteStartReservation()
         {
-            ReserveEvent?.Invoke(this, new ReservationEventArgs(this.SelectedCampingPlace, this.CheckInDate, this.CheckOutDate));
+            ReserveEvent?.Invoke(this, new ReservationDurationEventArgs(this.SelectedCampingPlace, this.CheckInDate, this.CheckOutDate));
         }
 
         private bool CanExecuteStartReservation()

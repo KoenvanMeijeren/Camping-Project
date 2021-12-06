@@ -18,6 +18,13 @@ namespace ViewModel
             {
                 this.Reservations.Add(new ReservationViewModel(reservation));
             }
+            
+            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+        }
+
+        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
+        {
+            this.Reservations.Add(new ReservationViewModel(args.Reservation));
         }
     }
 

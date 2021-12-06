@@ -135,7 +135,7 @@ namespace Model
             CampingPlaceType campingPlaceType = new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
             CampingPlace campingPlace = new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
             Account account = new Account(accountId, username, password, int.Parse(rights));
-            CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, email, phoneNumber, firstName, lastName);
+            CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, phoneNumber, firstName, lastName);
             ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
             return new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
