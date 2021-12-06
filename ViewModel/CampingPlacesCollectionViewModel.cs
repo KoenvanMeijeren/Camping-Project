@@ -242,21 +242,30 @@ namespace ViewModel
             return this._campingPlaceModel.Select();
         }
 
-        public virtual IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData, DateTime checkInDate, DateTime checkOutDate)
+        public virtual IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> campingPlaceList, DateTime checkInDate, DateTime checkOutDate)
         {
-            Reservation reservationModel = new Reservation();
+            //Reservation reservationModel = new Reservation();
+            //var reservations = reservationModel.Select();
 
-            var reservations = reservationModel.Select();
+            var reservations = GetReservationModel();
+
+            //removes reserved campingplaces from the list
             foreach (Reservation reservation in reservations)
             {
                 ReservationDuration reservationDuration = reservation.Duration;
-                if (reservationDuration.CheckInDatetime.Date < checkOutDate.Date && checkInDate.Date < reservationDuration.CheckOutDatetime.Date)
+                if (reservationDuration.CheckInDatetime.Date <= checkOutDate.Date && checkInDate.Date <= reservationDuration.CheckOutDatetime.Date)
                 {
-                    viewData = viewData.Where(campingPlace => campingPlace.Id != reservation.CampingPlace.Id).ToList();
+                    campingPlaceList = campingPlaceList.Where(campingPlace => campingPlace.Id != reservation.CampingPlace.Id).ToList();
                 }
             }
 
-            return viewData;
+            return campingPlaceList;
+        }
+
+        public virtual IEnumerable<Reservation> GetReservationModel()
+        {
+            Reservation reservationModel = new Reservation();
+            return reservationModel.Select();
         }
 
         #endregion
