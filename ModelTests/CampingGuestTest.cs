@@ -20,11 +20,11 @@ namespace ModelTests
         [Test]
         public void TestCampingGuestConstructorIncorrect()
         {
-            CampingGuest campingGuest = new CampingGuest(null, null, null, "19-10-21");
+            CampingGuest campingGuest = new CampingGuest(null, null, null, null);
             Assert.AreEqual(campingGuest.Id, -1);
             Assert.AreEqual(campingGuest.FirstName, null);
             Assert.AreEqual(campingGuest.LastName, null);
-            Assert.AreEqual(campingGuest.Birthdate, DateTime.Parse("19/10/21"));
+            Assert.AreEqual(campingGuest.Birthdate, DateTime.MinValue);
         }
     }
 }

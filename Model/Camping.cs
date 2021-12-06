@@ -20,7 +20,9 @@ namespace Model
         
         public Camping(string id, string name, Address address, CampingOwner campingOwner)
         {
-            this.Id = int.Parse(id);
+            bool success = int.TryParse(id, out int idNumeric);
+            
+            this.Id = success ? idNumeric : -1;
             this.Name = name;
             this.Address = address;
             this.CampingOwner = campingOwner;
@@ -56,7 +58,7 @@ namespace Model
             dictionary.TryGetValue("CampingName", out string name);
 
             dictionary.TryGetValue("AccountID", out string accountId);
-            dictionary.TryGetValue("AccountUsername", out string username);
+            dictionary.TryGetValue("AccountEmail", out string email);
             dictionary.TryGetValue("AccountPassword", out string password);
             dictionary.TryGetValue("AccountRights", out string rights);
 
@@ -68,7 +70,7 @@ namespace Model
             dictionary.TryGetValue("CampingOwnerID", out string campingOwnerId);
             dictionary.TryGetValue("CampingOwnerName", out string campingOwnerName);
 
-            Account account = new Account(accountId, username, password, int.Parse(rights));
+            Account account = new Account(accountId, email, password, rights);
             Address address = new Address(addressId, street, postalCode, place);
             CampingOwner campingOwner = new CampingOwner(account, campingOwnerId, campingOwnerName);
 

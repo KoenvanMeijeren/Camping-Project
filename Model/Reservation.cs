@@ -28,8 +28,11 @@ namespace Model
         
         public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
         {
-            this.Id = int.Parse(id);
-            this.NumberOfPeople = int.Parse(numberOfPeople);
+            bool successId = int.TryParse(id, out int numericId);
+            bool successPeople = int.TryParse(numberOfPeople, out int numericPeople);
+
+            this.Id = successId ? numericId : -1;
+            this.NumberOfPeople = successPeople ? numericPeople : 0;
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.Duration = duration;
@@ -39,8 +42,19 @@ namespace Model
 
         public float CalculateTotalPrice()
         {
+            if (this.Duration == null && this.CampingPlace == null)
+            {
+                return 0;
+            }
+            
+            int days = 0;
+            if (this.Duration == null)
+            {
+                return this.CampingPlace.TotalPrice * days;
+            }
+            
             var timeSpan = this.Duration.CheckOutDatetime.Subtract(this.Duration.CheckInDatetime);
-            int days = timeSpan.Days;
+            days = timeSpan.Days;
 
             return this.CampingPlace.TotalPrice * days;
         }
@@ -103,12 +117,11 @@ namespace Model
             dictionary.TryGetValue("AddressPlace", out string place);
 
             dictionary.TryGetValue("AccountID", out string accountId);
-            dictionary.TryGetValue("AccountUsername", out string username);
+            dictionary.TryGetValue("AccountEmail", out string email);
             dictionary.TryGetValue("AccountPassword", out string password);
             dictionary.TryGetValue("AccountRights", out string rights);
 
             dictionary.TryGetValue("CampingCustomerBirthdate", out string birthdate);
-            dictionary.TryGetValue("CampingCustomerEmail", out string email);
             dictionary.TryGetValue("CampingCustomerPhoneNumber", out string phoneNumber);
             dictionary.TryGetValue("CampingCustomerFirstName", out string firstName);
             dictionary.TryGetValue("CampingCustomerLastName", out string lastName);
@@ -120,8 +133,8 @@ namespace Model
             Accommodation accommodation = new Accommodation(accommodationId, prefix, name);
             CampingPlaceType campingPlaceType = new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
             CampingPlace campingPlace = new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
-            Account account = new Account(accountId, username, password, int.Parse(rights));
-            CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, email, phoneNumber, firstName, lastName);
+            Account account = new Account(accountId, email, password, rights);
+            CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, phoneNumber, firstName, lastName);
             ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
             return new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);

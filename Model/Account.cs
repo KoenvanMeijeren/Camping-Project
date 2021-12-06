@@ -3,29 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SystemCore;
 
 namespace Model
 {
+    public enum Rights
+    {
+        Customer,
+        Admin
+    }
+
     public class Account : ModelBase<Account>
     {
-        public string Username { get; private set; }
+        public string Email { get; private set; }
         public string Password { get; private set; }
-        public int Rights { get; private set; }
+        public Rights Rights { get; private set; }
 
         public Account()
         {
         }
 
-        public Account(string username, string password, int rights) : this ("-1", username, password, rights)
+        public Account(string email, string password, string rights) : this ("-1", email, password, rights)
         {
         }
 
-        public Account(string id, string username, string password, int rights)
+        public Account(string id, string email, string password, string rights)
         {
-            this.Id = int.Parse(id);
-            this.Username = username;
+            bool successId = int.TryParse(id, out int idNumeric);
+            bool successRights = int.TryParse(rights, out int rightsNumeric);
+            
+            this.Id = successId ? idNumeric : -1;
+            this.Email = email;
             this.Password = password;
-            this.Rights = rights;
+
+            this.Rights = Rights.Customer;
+            if (successRights && rightsNumeric == 1)
+            {
+                this.Rights = Rights.Admin;
+            }
         }
 
         protected override string Table()
@@ -38,13 +53,18 @@ namespace Model
             return "AccountID";
         }
 
-        public bool Update(string username, string password, int rights)
+        public bool Update(string email, string password, int rights)
         {
-            this.Username = username;
+            this.Email = email;
             this.Password = password;
-            this.Rights = rights;
 
-            return base.Update(Account.ToDictionary(username, password, rights));
+            this.Rights = Rights.Customer;
+            if (rights == 1)
+            {
+                this.Rights = Rights.Admin;
+            }
+
+            return base.Update(Account.ToDictionary(email, password, rights));
         }
 
         protected override Account ToModel(Dictionary<string, string> dictionary)
@@ -55,28 +75,35 @@ namespace Model
             }
 
             dictionary.TryGetValue("AccountID", out string id);
-            dictionary.TryGetValue("AccountUsername", out string username);
+            dictionary.TryGetValue("AccountEmail", out string email);
             dictionary.TryGetValue("AccountPassword", out string password);
             dictionary.TryGetValue("AccountRights", out string rights);
 
-            return new Account(id, username, password, int.Parse(rights));
+            return new Account(id, email, password, rights);
         }
 
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Account.ToDictionary(this.Username, this.Password, this.Rights);
+            return Account.ToDictionary(this.Email, this.Password, (int)this.Rights);
         }
 
-        private static Dictionary<string, string> ToDictionary(string username, string password, int rights)
+        private static Dictionary<string, string> ToDictionary(string email, string password, int rights)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"AccountUsername", username},
+                {"AccountUsername", email},
                 {"AccountPassword", password},
                 {"AccountRights", rights.ToString()}
             };
 
             return dictionary;
+        }
+
+        public Account SelectByEmail(string email)
+        {
+            Query query = new Query(this.BaseQuery() + " WHERE AccountEmail = @AccountEmail");
+            query.AddParameter("AccountEmail", email);
+            return this.ToModel(query.SelectFirst());
         }
     }
 }

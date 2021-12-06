@@ -9,7 +9,7 @@ namespace ModelTests
         [Test]
         public void TestReservationCampingGuestConstructorCorrect()
         {
-            Account account = new Account("1", "admin", "nimda", 1);
+            Account account = new Account("1", "admin", "nimda",  "1");
             CampingGuest campingGuest = new CampingGuest("1", "testName", "19/10/21");
 
             Accommodation accommodation = new Accommodation("1", "testPrefix", "testName");
@@ -17,7 +17,7 @@ namespace ModelTests
             CampingPlace campingPlace = new CampingPlace("1", "1", "1", "1", campingPlaceType);
 
             Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
-            CampingCustomer campingCustomer = new CampingCustomer("1", account, address, "19/10/12", "testEmail", "testPhoneNumber", "testFirstName", "testLastName");
+            CampingCustomer campingCustomer = new CampingCustomer("1", account, address, "19/10/12", "testPhoneNumber", "testFirstName", "testLastName");
 
             ReservationDuration reservationDuration = new ReservationDuration("1", "19/10/21", "20/10/21");
             Reservation reservation = new Reservation("1", "1", campingCustomer, campingPlace, reservationDuration);
@@ -31,7 +31,7 @@ namespace ModelTests
         [Test]
         public void TestReservationCampingGuestConstructorIncorrect()
         {
-            ReservationCampingGuest reservationCampingGuest = new ReservationCampingGuest(null, null);
+            ReservationCampingGuest reservationCampingGuest = new ReservationCampingGuest(null, null, null);
             Assert.AreEqual(reservationCampingGuest.Id, -1);
             Assert.AreEqual(reservationCampingGuest.CampingGuest, null);
             Assert.AreEqual(reservationCampingGuest.Reservation, null);

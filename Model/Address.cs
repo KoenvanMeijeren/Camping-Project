@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SystemCore;
 
 namespace Model
 {
@@ -22,9 +23,9 @@ namespace Model
         
         public Address(string id, string address, string postalCode, string place)
         {
-            bool successFul = int.TryParse(id, out int idNumeric);
-
-            this.Id = successFul ? idNumeric : -1;
+            bool success = int.TryParse(id, out int idNumeric);
+            
+            this.Id = success ? idNumeric : -1;
             this.Street = address;
             this.PostalCode = postalCode;
             this.Place = place;
@@ -38,6 +39,38 @@ namespace Model
         protected override string PrimaryKey()
         {
             return "AddressID";
+        }
+
+        /// <summary>
+        /// Fetches Address with given parameters, if address already exists in database
+        /// </summary>
+        /// <param name="address">given address</param>
+        /// <param name="postalCode">given postalcode</param>
+        /// <returns>Address object</returns>
+        private Address SelectByParameters(string address, string postalCode)
+        {
+            Query query = new Query("SELECT * FROM Address WHERE Address = @Address AND AddressPostalCode = @AddressPostalCode");
+            query.AddParameter("Address", address);
+            query.AddParameter("AddressPostalCode", postalCode);
+            var result = query.SelectFirst();
+
+            return result != null ? this.ToModel(result) : null;
+        }
+
+        /// <summary>
+        /// Returns Address object based on if it already exists in database. If it doesn't exist it creates one and returns that one
+        /// </summary>
+        /// <returns>Address object</returns>
+        public Address FirstOrInsert()
+        {
+            var result = this.SelectByParameters(this.Street, this.PostalCode);
+            if (result != null)
+            {
+                return result;
+            }
+
+            this.Insert();
+            return this.SelectByParameters(this.Street, this.PostalCode);
         }
 
         public bool Update(string address, string postalCode, string place)

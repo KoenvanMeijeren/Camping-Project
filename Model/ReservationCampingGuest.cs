@@ -23,7 +23,9 @@ namespace Model
         
         public ReservationCampingGuest(string id, Reservation reservation, CampingGuest campingGuest)
         {
-            this.Id = int.Parse(id);
+            bool successId = int.TryParse(id, out int numericId);
+            
+            this.Id = successId ? numericId : -1;
             this.Reservation = reservation;
             this.CampingGuest = campingGuest;
         }

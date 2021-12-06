@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SystemCore;
 
 namespace Model
 {
@@ -18,7 +19,9 @@ namespace Model
 
         public CampingOwner(string id, Account account, string firstName, string lastName)
         {
-            this.Id = int.Parse(id);
+            bool success = int.TryParse(id, out int numericId);
+
+            this.Id = success ? numericId : -1;
             this.Account = account;
             this.FirstName = firstName;
             this.LastName = lastName;
@@ -53,14 +56,14 @@ namespace Model
             dictionary.TryGetValue("CampingOwnerID", out string id);
 
             dictionary.TryGetValue("AccountID", out string accountId);
-            dictionary.TryGetValue("AccountUsername", out string username);
+            dictionary.TryGetValue("AccountEmail", out string email);
             dictionary.TryGetValue("AccountPassword", out string password);
             dictionary.TryGetValue("AccountRights", out string rights);
 
             dictionary.TryGetValue("CampingOwnerFirstName", out string firstName);
             dictionary.TryGetValue("CampingOwnerLastName", out string lastName);
 
-            Account account = new Account(accountId, username, password, int.Parse(rights));
+            Account account = new Account(accountId, email, password, rights);
 
 
             return new CampingOwner(id, account, firstName, lastName);
@@ -81,6 +84,21 @@ namespace Model
             };
 
             return dictionary;
+        }
+
+        protected override string BaseQuery()
+        {
+            string query = base.BaseQuery();
+            query += " INNER JOIN Account AC ON BT.CampingOwnerAccountID = AC.AccountID";
+
+            return query;
+        }
+
+        public CampingOwner SelectByAccount(Account account)
+        {
+            Query query = new Query(this.BaseQuery() + " WHERE CampingOwnerAccountID = @AccountID");
+            query.AddParameter("AccountID", account.Id);
+            return this.ToModel(query.SelectFirst());
         }
     }
 }
