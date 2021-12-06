@@ -75,7 +75,7 @@ namespace Model
             
             query.Execute();
 
-            return query.SuccessFullyExecuted();
+            return query.IsSuccessFullyExecuted();
         }
 
         public virtual bool Update(Dictionary<string, string> dictionary)
@@ -97,7 +97,7 @@ namespace Model
             
             query.Execute();
 
-            return query.SuccessFullyExecuted();
+            return query.IsSuccessFullyExecuted();
         }
         
         public virtual bool Delete()
@@ -107,7 +107,7 @@ namespace Model
             
             query.Execute();
 
-            return query.SuccessFullyExecuted();
+            return query.IsSuccessFullyExecuted();
         }
         
         protected abstract T ToModel(Dictionary<string, string> dictionary);
