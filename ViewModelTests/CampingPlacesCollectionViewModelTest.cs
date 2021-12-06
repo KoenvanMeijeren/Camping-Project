@@ -28,12 +28,12 @@ namespace ViewModelTests
             CheckoutDate = DateTime.Today.AddDays(3);
 
             campingPlaceList = new List<CampingPlace>();
-            campingPlaceList.Add(new CampingPlace("1", "80", "0", new CampingPlaceType("5", "40", new Accommodation("CA", "Caravan"))));
-            campingPlaceList.Add(new CampingPlace("1", "80", "30", new CampingPlaceType("2", "80", new Accommodation("CH", "Chalet"))));
-            campingPlaceList.Add(new CampingPlace("1", "80", "30", new CampingPlaceType("10", "80", new Accommodation("CH", "Chalet"))));
-            campingPlaceList.Add(new CampingPlace("1", "80", "10", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper"))));
-            campingPlaceList.Add(new CampingPlace("1", "80", "10", new CampingPlaceType("1", "50", new Accommodation("CA", "Camper"))));
-            campingPlaceList.Add(new CampingPlace("1", "80", "0", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper"))));
+            campingPlaceList.Add(new CampingPlace("3", "1", "80", "0", new CampingPlaceType("5", "40", new Accommodation("CA", "Caravan"))));
+            campingPlaceList.Add(new CampingPlace("4", "1", "80", "30", new CampingPlaceType("2", "80", new Accommodation("CH", "Chalet"))));
+            campingPlaceList.Add(new CampingPlace("5", "1", "80", "30", new CampingPlaceType("10", "80", new Accommodation("CH", "Chalet"))));
+            campingPlaceList.Add(new CampingPlace("6", "1", "80", "10", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper"))));
+            campingPlaceList.Add(new CampingPlace("7", "1", "80", "10", new CampingPlaceType("1", "50", new Accommodation("CA", "Camper"))));
+            campingPlaceList.Add(new CampingPlace("8", "1", "80", "0", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper"))));
             
             testCampingPlace_One = new CampingPlace("1", "1", "80", "0", new CampingPlaceType("2", "10", new Accommodation("TE", "Tent")));
             campingPlaceList.Add(testCampingPlace_One);
@@ -120,7 +120,7 @@ namespace ViewModelTests
         {
             List<Reservation> mockListReservations = new List<Reservation>();
             CampingCustomer testCampingCustomer = new CampingCustomer();
-            ReservationDuration testReservationDuration = new ReservationDuration(CheckinDate.ToString(), CheckoutDate.ToString());
+            ReservationDuration testReservationDuration = new ReservationDuration("-1", CheckinDate.ToString(), CheckoutDate.ToString());
 
             mockListReservations.Add(new Reservation("2", testCampingCustomer, testCampingPlace_One, testReservationDuration));
             mockListReservations.Add(new Reservation("2", testCampingCustomer, testCampingPlace_Two, testReservationDuration));

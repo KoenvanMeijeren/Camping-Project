@@ -268,8 +268,7 @@ namespace ViewModel
             return reservationModel.Select();
         }
 
-        #endregion
-        
+        #endregion    
     }
 }
 
