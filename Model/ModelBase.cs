@@ -16,6 +16,10 @@ namespace Model
         
         protected abstract string PrimaryKey();
         
+        /// <summary>
+        /// Selects all records from table.
+        /// </summary>
+        /// <returns></returns>
         public virtual IEnumerable<T> Select()
         {
             Query query = new Query(this.BaseQuery());
@@ -30,7 +34,12 @@ namespace Model
             return this.Collection;
         }
         
-        public virtual T Select(int id)
+        /// <summary>
+        /// Selects one record by id from table.
+        /// </summary>
+        /// <param name="id">Numeric value used as identifier of row.</param>
+        /// <returns>The selected model.</returns>
+        public virtual T SelectById(int id)
         {
             Query query = new Query(this.SelectQuery());
             query.AddParameter(this.PrimaryKey(), id.ToString());
