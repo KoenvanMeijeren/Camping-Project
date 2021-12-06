@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+      <PackageReference Include="Moq" Version="4.16.1" />
     </ItemGroup>
 
     <ItemGroup>
