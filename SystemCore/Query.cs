@@ -51,19 +51,29 @@ namespace SystemCore
             }
             
             List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
-            
-            DatabaseConnector.Open();
-            this._sqlCommand.Connection = DatabaseConnector.GetConnection();
-            
-            using SqlDataReader reader = this._sqlCommand.ExecuteReader();
-            while (reader.Read())
+
+            try
             {
-                list.Add(this.DataRecordToDictionary(reader));
+                DatabaseConnector.Open();
+                this._sqlCommand.Connection = DatabaseConnector.GetConnection();
+
+                using SqlDataReader reader = this._sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(this.DataRecordToDictionary(reader));
+                }
+
+                DatabaseConnector.Close();
+
+                this._success = true;
             }
-
-            DatabaseConnector.Close();
-
-            this._success = true;
+            catch (Exception exception)
+            {
+                this._success = false;
+                
+                SystemError.Handle(exception);
+            }
+            
 
             return list;
         }
@@ -79,27 +89,38 @@ namespace SystemCore
                 this._success = false;
                 SystemError.Handle(new ArgumentException("SQL query must contain a SELECT query in order to execute this method."));
             }
-            
-            DatabaseConnector.Open();
-            this._sqlCommand.Connection = DatabaseConnector.GetConnection();
-            
-            using SqlDataReader reader = this._sqlCommand.ExecuteReader();
-            if (reader == null)
-            {
-                return null;
-            }
-            
-            bool hasData = reader.Read();
-            if (!hasData)
-            {
-                return null;
-            }
-            
-            Dictionary<string, string> dictionary = this.DataRecordToDictionary(reader);
-            
-            DatabaseConnector.Close();
 
-            this._success = true;
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+
+            try
+            {
+                DatabaseConnector.Open();
+                this._sqlCommand.Connection = DatabaseConnector.GetConnection();
+            
+                using SqlDataReader reader = this._sqlCommand.ExecuteReader();
+                if (reader == null)
+                {
+                    return null;
+                }
+            
+                bool hasData = reader.Read();
+                if (!hasData)
+                {
+                    return null;
+                }
+            
+                dictionary = this.DataRecordToDictionary(reader);
+            
+                DatabaseConnector.Close();
+
+                this._success = true;
+            }
+            catch (Exception exception)
+            {
+                this._success = false;
+                
+                SystemError.Handle(exception);
+            }
             
             return dictionary;
         }
@@ -109,14 +130,23 @@ namespace SystemCore
         /// </summary>
         public void Execute()
         {
-            DatabaseConnector.Open();
+            try
+            {
+                DatabaseConnector.Open();
 
-            this._sqlCommand.Connection = DatabaseConnector.GetConnection();
-            var updatedRows = this._sqlCommand.ExecuteNonQuery();
-            
-            DatabaseConnector.Close();
+                this._sqlCommand.Connection = DatabaseConnector.GetConnection();
+                var updatedRows = this._sqlCommand.ExecuteNonQuery();
 
-            this._success = updatedRows > 0;
+                DatabaseConnector.Close();
+
+                this._success = updatedRows > 0;
+            }
+            catch (Exception exception)
+            {
+                this._success = false;
+                
+                SystemError.Handle(exception);
+            }
         }
 
         /// <summary>
@@ -157,8 +187,8 @@ namespace SystemCore
                     "double" => dataRecord.GetDouble(delta).ToString(CultureInfo.InvariantCulture),
                     "decimal" => dataRecord.GetDecimal(delta).ToString(CultureInfo.InvariantCulture),
                     "bool" => dataRecord.GetBoolean(delta).ToString(),
-                    "date" => dataRecord.GetDateTime(delta).ToString(),
-                    "datetime" => dataRecord.GetDateTime(delta).ToString(),
+                    "date" => dataRecord.GetDateTime(delta).ToString(CultureInfo.InvariantCulture),
+                    "datetime" => dataRecord.GetDateTime(delta).ToString(CultureInfo.InvariantCulture),
                     _ => throw new InvalidEnumArgumentException(
                         $"The data type: {dataType} is not supported yet to read data from database records.")
                 };

@@ -49,14 +49,16 @@ namespace Model
         {
             Dictionary<string, string> dictionary = this.ToDictionary();
             StringBuilder values = new StringBuilder();
+            StringBuilder columns = new StringBuilder();
             
             string lastKey = dictionary.Last().Key;
             foreach (var key in dictionary.Select(keyValuePair => keyValuePair.Key))
             {
-                values.Append(key.Equals(lastKey) ? $"@{key}" : $"@{key},");
+                columns.Append(key.Equals(lastKey) ? $"{key}" : $"{key}, ");
+                values.Append(key.Equals(lastKey) ? $"@{key}" : $"@{key}, ");
             }
             
-            Query query = new Query($"INSERT INTO {this.Table()} VALUES ({values})");
+            Query query = new Query($"INSERT INTO {this.Table()} ({columns}) VALUES ({values})");
             foreach (KeyValuePair<string,string> keyValuePair in dictionary)
             {
                 query.AddParameter(keyValuePair.Key, keyValuePair.Value);
@@ -74,7 +76,7 @@ namespace Model
             string lastKey = dictionary.Last().Key;
             foreach (var key in dictionary.Select(keyValuePair => keyValuePair.Key))
             {
-                values.Append(key.Equals(lastKey) ? $"{key} = @{key}" : $"{key} = @{key},");
+                values.Append(key.Equals(lastKey) ? $"{key} = @{key}" : $"{key} = @{key}, ");
             }
             
             Query query = new Query($"UPDATE {this.Table()} SET {values} WHERE {this.PrimaryKey()} = @{this.PrimaryKey()}");

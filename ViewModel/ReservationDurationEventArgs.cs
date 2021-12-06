@@ -3,24 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model;
 
 namespace ViewModel
 {
-
-    public class ReservationConfirmedEventArgs : EventArgs
+    public class ReservationDurationEventArgs : EventArgs
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public int CampingPlaceId { get; set; }
         public DateTime CheckInDatetime { get; set; }
         public DateTime CheckOutDatetime { get; set; }
 
-        public ReservationConfirmedEventArgs(string firstName, string lastName, DateTime checkInDatetime, DateTime checkOutDatetime)
+        public ReservationDurationEventArgs(CampingPlace campingPlace, DateTime checkInDatetime, DateTime checkOutDatetime)
         {
-            this.FirstName = firstName;
-            this.LastName = lastName;
+            this.CampingPlaceId = campingPlace.Id;
             this.CheckInDatetime = checkInDatetime;
             this.CheckOutDatetime = checkOutDatetime;
         }
-
     }
 }

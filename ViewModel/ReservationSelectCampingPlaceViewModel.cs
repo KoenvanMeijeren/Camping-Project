@@ -12,7 +12,7 @@ using System.Windows.Input;
 
 namespace ViewModel
 {
-    public class CampingPlacesCollectionViewModel : ObservableObject
+    public class ReservationSelectCampingPlaceViewModel : ObservableObject
     {
         #region Fields
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
@@ -25,7 +25,7 @@ namespace ViewModel
         private CampingPlace _selectedCampingPlace;
         
         private ObservableCollection<CampingPlace> _campingPlaces;
-        public static event EventHandler<ReservationEventArgs> ReserveEvent;
+        public static event EventHandler<ReservationDurationEventArgs> ReserveEvent;
         
         private DateTime _checkOutDate;
         private DateTime _checkInDate;
@@ -168,16 +168,18 @@ namespace ViewModel
 
         #region View construction
         
-        public CampingPlacesCollectionViewModel()
+        public ReservationSelectCampingPlaceViewModel()
         {
-            this.CampingPlaceTypes = new ObservableCollection<string>();
-            this.CampingPlaceTypes.Add("Alle");
-            this.CampingPlaceTypes.Add("Bungalow");
-            this.CampingPlaceTypes.Add("Camper");
-            this.CampingPlaceTypes.Add("Caravan");
-            this.CampingPlaceTypes.Add("Chalet");
-            this.CampingPlaceTypes.Add("Tent");
-            
+            this.CampingPlaceTypes = new ObservableCollection<string>
+            {
+                "Alle",
+                "Bungalow",
+                "Camper",
+                "Caravan",
+                "Chalet",
+                "Tent"
+            };
+
             this.CampingPlaces = new ObservableCollection<CampingPlace>(this.GetCampingPlaces());
             
             this.SelectedPlaceType = SelectAll;
@@ -193,10 +195,7 @@ namespace ViewModel
             var selectedCampingPlaceType = this._selectedCampingPlaceType;
 
             var campingPlaceItems  = this.GetCampingPlaces();
-            if (this.CheckInDate != null && this.CheckOutDate != null)
-            {
-                campingPlaceItems = this.ToFilteredOnReservedCampingPlaces(campingPlaceItems, CheckInDate, CheckOutDate);
-            }
+            campingPlaceItems = this.ToFilteredOnReservedCampingPlaces(campingPlaceItems, CheckInDate, CheckOutDate);
 
             if (!selectedCampingPlaceType.Equals(SelectAll))
             {
@@ -226,12 +225,12 @@ namespace ViewModel
         #region Commands
         private void ExecuteStartReservation()
         {
-            ReserveEvent?.Invoke(this, new ReservationEventArgs(this.SelectedCampingPlace, this.CheckInDate, this.CheckOutDate));
+            ReserveEvent?.Invoke(this, new ReservationDurationEventArgs(this.SelectedCampingPlace, this.CheckInDate, this.CheckOutDate));
         }
 
         private bool CanExecuteStartReservation()
         {
-            return true;
+            return this.SelectedCampingPlace != null;
         }
 
         public ICommand StartReservation => new RelayCommand(ExecuteStartReservation, CanExecuteStartReservation);
@@ -245,7 +244,7 @@ namespace ViewModel
             return this._campingPlaceModel.Select();
         }
 
-        private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData, DateTime checkinDate, DateTime checkoutDate)
+        private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData, DateTime checkInDate, DateTime checkOutDate)
         {
             Reservation reservationModel = new Reservation();
 
@@ -253,9 +252,9 @@ namespace ViewModel
             foreach (Reservation reservation in reservations)
             {
                 ReservationDuration reservationDuration = reservation.Duration;
-                if (reservationDuration.CheckInDatetime.Date < checkoutDate.Date && checkinDate.Date < reservationDuration.CheckOutDatetime.Date)
+                if (reservationDuration.CheckInDatetime.Date < checkOutDate.Date && checkInDate.Date < reservationDuration.CheckOutDatetime.Date)
                 {
-                    viewData = viewData.Where(campingPlaceViewData => campingPlaceViewData.Id != reservation.CampingPlace.Id).ToList();
+                    viewData = viewData.Where(campingPlace => campingPlace.Id != reservation.CampingPlace.Id).ToList();
                 }
             }
 

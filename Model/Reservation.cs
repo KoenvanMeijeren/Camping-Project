@@ -28,8 +28,11 @@ namespace Model
         
         public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
         {
-            this.Id = int.Parse(id);
-            this.NumberOfPeople = int.Parse(numberOfPeople);
+            bool successId = int.TryParse(id, out int numericId);
+            bool successPeople = int.TryParse(numberOfPeople, out int numericPeople);
+
+            this.Id = successId ? numericId : -1;
+            this.NumberOfPeople = successPeople ? numericPeople : 0;
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.Duration = duration;
@@ -39,8 +42,19 @@ namespace Model
 
         public float CalculateTotalPrice()
         {
+            if (this.Duration == null && this.CampingPlace == null)
+            {
+                return 0;
+            }
+            
+            int days = 0;
+            if (this.Duration == null)
+            {
+                return this.CampingPlace.TotalPrice * days;
+            }
+            
             var timeSpan = this.Duration.CheckOutDatetime.Subtract(this.Duration.CheckInDatetime);
-            int days = timeSpan.Days;
+            days = timeSpan.Days;
 
             return this.CampingPlace.TotalPrice * days;
         }

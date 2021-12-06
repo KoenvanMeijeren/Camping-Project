@@ -18,7 +18,9 @@ namespace Model
         
         public Accommodation(string id, string prefix, string name)
         {
-            this.Id = int.Parse(id);
+            bool success = int.TryParse(id, out int idNumeric);
+            
+            this.Id = success ? idNumeric : -1;
             this.Prefix = prefix;
             this.Name = name;
         }
