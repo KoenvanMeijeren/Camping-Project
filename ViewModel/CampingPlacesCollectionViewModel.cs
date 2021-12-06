@@ -171,15 +171,13 @@ namespace ViewModel
         public CampingPlacesCollectionViewModel()
         {
             this.CampingPlaceTypes = new ObservableCollection<string>();
-            this.CampingPlaceTypes.Add("Alle");
-            this.CampingPlaceTypes.Add("Bungalow");
-            this.CampingPlaceTypes.Add("Camper");
-            this.CampingPlaceTypes.Add("Caravan");
-            this.CampingPlaceTypes.Add("Chalet");
-            this.CampingPlaceTypes.Add("Tent");
-            
+            //Loop through rows in Accommodation table
+            foreach (var accommodationDatabaseRow in new Accommodation().Select())
+            {
+                this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);
+            }
+
             this.CampingPlaces = new ObservableCollection<CampingPlace>(this.GetCampingPlaces());
-            
             this.SelectedPlaceType = SelectAll;
             this.CheckInDate = DateTime.Today;
             this.CheckOutDate = DateTime.Today.AddDays(1);
