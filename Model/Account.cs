@@ -36,10 +36,10 @@ namespace Model
             this.Email = email;
             this.Password = password;
 
-            this.Rights = Rights.Admin;
-            if (successRights && rightsNumeric == 0)
+            this.Rights = Rights.Customer;
+            if (successRights && rightsNumeric == 1)
             {
-                this.Rights = Rights.Customer;
+                this.Rights = Rights.Admin;
             }
         }
 
@@ -58,10 +58,10 @@ namespace Model
             this.Email = email;
             this.Password = password;
 
-            this.Rights = Rights.Admin;
-            if (rights == 0)
+            this.Rights = Rights.Customer;
+            if (rights == 1)
             {
-                this.Rights = Rights.Customer;
+                this.Rights = Rights.Admin;
             }
 
             return base.Update(Account.ToDictionary(email, password, rights));

@@ -9,7 +9,7 @@ namespace ViewModel
 {
     public class SignUpEventArgs : EventArgs
     {
-        public Account Account { get; set; }
+        public Account Account { get; private set; }
 
         public SignUpEventArgs(Account account)
         {
