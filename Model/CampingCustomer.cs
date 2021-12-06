@@ -102,13 +102,17 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"CampingCustomerAccountID", account.Id.ToString()},
                 {"CampingCustomerAddressID", address.Id.ToString()},
                 {"CampingCustomerBirthdate", birthdate.ToString(CultureInfo.InvariantCulture)},
                 {"CampingCustomerPhoneNumber", phoneNumber},
                 {"CampingCustomerFirstName", firstName},
                 {"CampingCustomerLastName", lastName}
             };
+
+            if (account != null)
+            {
+                dictionary.Add("CampingCustomerAccountID", account.Id.ToString());
+            }
 
             return dictionary;
         }

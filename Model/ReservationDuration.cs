@@ -15,6 +15,8 @@ namespace Model
         
         public string CheckInDate { get; private set; }
         public string CheckOutDate { get; private set; }
+        public string CheckInDateDatabaseFormat { get; private set; }
+        public string CheckOutDateDatabaseFormat { get; private set; }
 
         public ReservationDuration()
         {
@@ -35,8 +37,10 @@ namespace Model
             this.Id = successId ? numericId : -1;
             this.CheckInDatetime = successCheckInDate ? dateCheckIn : DateTime.MinValue;
             this.CheckOutDatetime = successCheckOUtDate ? dateCheckOut : DateTime.MinValue;
-            this.CheckInDate = this.CheckInDatetime.ToString("yyyy-MM-dd hh:mm:ss");
-            this.CheckOutDate = this.CheckOutDatetime.ToString("yyyy-MM-dd hh:mm:ss");
+            this.CheckInDate = this.CheckInDatetime.ToShortDateString();
+            this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
+            this.CheckInDateDatabaseFormat = this.CheckInDatetime.ToString("yyyy-MM-dd hh:mm:ss");
+            this.CheckOutDateDatabaseFormat = this.CheckOutDatetime.ToString("yyyy-MM-dd hh:mm:ss");
         }
 
         protected override string Table()
@@ -51,8 +55,8 @@ namespace Model
 
         public bool Update(string checkInDate, string checkOutDate)
         {
-            this.CheckInDate = checkInDate;
-            this.CheckOutDate = checkOutDate;
+            this.CheckInDateDatabaseFormat = checkInDate;
+            this.CheckOutDateDatabaseFormat = checkOutDate;
 
             return base.Update(ReservationDuration.ToDictionary(checkInDate, checkOutDate));
         }
@@ -72,7 +76,7 @@ namespace Model
         }
         protected override Dictionary<string, string> ToDictionary()
         {
-            return ReservationDuration.ToDictionary(this.CheckInDate, this.CheckOutDate);
+            return ReservationDuration.ToDictionary(this.CheckInDateDatabaseFormat, this.CheckOutDateDatabaseFormat);
         }
 
         private static Dictionary<string, string> ToDictionary(string checkInDate, string checkOutDate)
