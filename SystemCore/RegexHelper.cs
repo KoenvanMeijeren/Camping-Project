@@ -2,7 +2,7 @@
 
 namespace SystemCore
 {
-    public static class RegexHelper
+    public class RegexHelper
     {
         public static bool IsEmailValid(string email)
         {
