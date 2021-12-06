@@ -17,8 +17,8 @@
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="77,104,77,104" CornerRadius="15,15,15,15" Background="White" />
 
         <Label Content="Uw gegevens" HorizontalAlignment="Left" Margin="94,116,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
-        <Label Content="Voornaam" HorizontalAlignment="Left" Margin="94,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Name="CustomerFirstName" Text="{Binding FirstName, Mode='TwoWay'}" BorderThickness="3" Height="24"  Width="149" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="95,195,0,0">
+        <Label Content="Voornaam*" HorizontalAlignment="Left" Margin="94,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <TextBox Name="CustomerFirstName" Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="149" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="95,195,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -29,8 +29,8 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Achternaam" HorizontalAlignment="Left" Margin="265,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Name="CustomerLastName" Text="{Binding LastName, Mode='TwoWay'}" BorderThickness="3" Height="24"  Width="145" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,196,0,0">
+        <Label Content="Achternaam*" HorizontalAlignment="Left" Margin="265,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <TextBox Name="CustomerLastName" Text="{Binding LastName, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="145" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,196,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -41,11 +41,11 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Geboortedatum" HorizontalAlignment="Left" Margin="94,258,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <DatePicker Height="28" HorizontalAlignment="Left" SelectedDate="{Binding Birthdate, Mode=TwoWay}" Margin="94,289,0,0" Name="CustomerBirthDate" VerticalAlignment="Top" Width="244" />
+        <Label Content="Geboortedatum*" HorizontalAlignment="Left" Margin="94,258,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <DatePicker Height="28" HorizontalAlignment="Left" SelectedDate="{Binding Birthdate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="94,289,0,0" Name="CustomerBirthDate" VerticalAlignment="Top" Width="244" />
 
-        <Label Content="Emailadres" HorizontalAlignment="Left" Margin="465,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Name="CustomerMailadres" Text="{Binding EmailAddress, Mode='TwoWay'}" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,195,0,0">
+        <Label Content="Email*" HorizontalAlignment="Left" Margin="465,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
+        <TextBox Name="CustomerMailadres" Text="{Binding EmailAddress, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,195,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -56,8 +56,8 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Telefoonnummer" HorizontalAlignment="Left" Margin="465,262,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Name="CustomerPhonenumber" Text="{Binding PhoneNumber, Mode='TwoWay'}" BorderThickness="3" Height="24"  Width="233" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,293,0,0">
+        <Label Content="Telefoon*" HorizontalAlignment="Left" Margin="465,262,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Name="CustomerPhonenumber" Text="{Binding PhoneNumber, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="233" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,293,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -68,8 +68,8 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Adres" HorizontalAlignment="Left" Margin="95,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Name="CustomerAddress" Text="{Binding StreetName, Mode='TwoWay'}" BorderThickness="3" Height="24"  Width="233" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,367,0,0" RenderTransformOrigin="0.5,0.5">
+        <Label Content="Adres*" HorizontalAlignment="Left" Margin="95,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Name="CustomerAddress" Text="{Binding StreetName, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="233" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,367,0,0" RenderTransformOrigin="0.5,0.5">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -88,8 +88,8 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Aantal gasten" HorizontalAlignment="Left" Margin="465,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Name="CustomerGuestAmount" Text="{Binding AmountOfGuests, Mode='TwoWay'}" BorderThickness="3" Height="24"  Width="233" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,367,0,0" RenderTransformOrigin="0.5,0.5">
+        <Label Content="Aantal gasten*" HorizontalAlignment="Left" Margin="465,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Name="CustomerGuestAmount" Text="{Binding AmountOfGuests, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="233" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,367,0,0" RenderTransformOrigin="0.5,0.5">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -108,8 +108,8 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Postcode" HorizontalAlignment="Left" Margin="94,419,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Name="CustomerPostalcode" Text="{Binding PostalCode, Mode='TwoWay'}" BorderThickness="3" Height="24"  Width="178" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,442,0,0">
+        <Label Content="Postcode*" HorizontalAlignment="Left" Margin="94,419,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Name="CustomerPostalcode" Text="{Binding PostalCode, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="178" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,442,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
@@ -120,8 +120,8 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Plaatsnaam" HorizontalAlignment="Left" Margin="295,416,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Name="CustomerPlacename" Text="{Binding PlaceName, Mode='TwoWay'}" BorderThickness="3" Height="24"  Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="295,442,0,0">
+        <Label Content="Plaatsnaam*" HorizontalAlignment="Left" Margin="295,416,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
+        <TextBox Name="CustomerPlacename" Text="{Binding PlaceName, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="295,442,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
