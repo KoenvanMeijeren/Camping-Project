@@ -7,7 +7,7 @@ namespace SystemCoreTests
     public class DateTimeParserTests
     {
         [Test]
-        public void TestTryParseFromStringDate()
+        public void TestTryParseFromDatabaseDateString()
         {
             Assert.AreEqual(new DateTime(2021, 12, 26), DateTimeParser.TryParse("12/26/2021 12:00:00"));
             Assert.AreEqual(new DateTime(2021, 12, 28), DateTimeParser.TryParse("12/28/2021 12:00:00"));
@@ -20,6 +20,22 @@ namespace SystemCoreTests
             
             Assert.AreEqual(new DateTime(2022, 1, 1), DateTimeParser.TryParse("01/01/2022 12:00:00"));
             Assert.AreEqual(new DateTime(2022, 1, 4), DateTimeParser.TryParse("01/04/2022 12:00:00"));
+        }
+        
+        [Test]
+        public void TestTryParseFromInputDateString()
+        {
+            Assert.AreEqual(new DateTime(2021, 12, 26), DateTimeParser.TryParse("26-12-2021 12:00:00"));
+            Assert.AreEqual(new DateTime(2021, 12, 28), DateTimeParser.TryParse("28-12-2021 12:00:00"));
+            
+            Assert.AreEqual(new DateTime(2021, 12, 1), DateTimeParser.TryParse("01-12-2021 12:00:00"));
+            Assert.AreEqual(new DateTime(2021, 12, 4), DateTimeParser.TryParse("04-12-2021 12:00:00"));
+
+            Assert.AreEqual(new DateTime(2022, 3, 1), DateTimeParser.TryParse("01-03-2022 12:00:00"));
+            Assert.AreEqual(new DateTime(2022, 3, 4), DateTimeParser.TryParse("04-03-2022 12:00:00"));
+            
+            Assert.AreEqual(new DateTime(2022, 1, 1), DateTimeParser.TryParse("01-01-2022 12:00:00"));
+            Assert.AreEqual(new DateTime(2022, 1, 4), DateTimeParser.TryParse("04-01-2022 12:00:00"));
         }
 
         [Test]
