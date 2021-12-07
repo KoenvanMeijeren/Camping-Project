@@ -9,13 +9,13 @@ namespace ViewModel
 {
     public class ReservationDurationEventArgs : EventArgs
     {
-        public int CampingPlaceId { get; private set; }
+        public CampingPlace CampingPlace { get; private set; }
 
         public ReservationDuration ReservationDuration { get; private set; }
 
         public ReservationDurationEventArgs(CampingPlace campingPlace, ReservationDuration reservationDuration)
         {
-            this.CampingPlaceId = campingPlace.Id;
+            this.CampingPlace = campingPlace;
             this.ReservationDuration = reservationDuration;
         }
     }

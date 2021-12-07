@@ -25,7 +25,7 @@
 
         <Label Content="Startdatum*&#xD;&#xA;" HorizontalAlignment="Left" Margin="40,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="30"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,147,30,37" CornerRadius="15,15,15,15" Background="White">
-            <ListView ItemsSource="{Binding CampingPlaces}" Width="700" Height="400"  Margin="23,48,23,73" Background="White" FontFamily="Century Gothic" FontWeight="Bold" >
+            <ListView SelectedItem="{Binding SelectedCampingPlace}" ItemsSource="{Binding CampingPlaces}" Width="700" Height="400"  Margin="23,48,23,73" Background="White" FontFamily="Century Gothic" FontWeight="Bold" >
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Id}" />
@@ -52,9 +52,7 @@
         <TextBox Text="{Binding MaxNightPrice, Mode='TwoWay', UpdateSourceTrigger='PropertyChanged'}" HorizontalAlignment="Left" Height="21" Margin="679,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="90" />
         <Label Content="Min&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="634,66,0,0" Height="25"/>
         <Label Content="Max&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="634,92,0,0" Height="25"/>
-        <Label Content="Locatie:" HorizontalAlignment="Left" Margin="491,547,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
 
         <Button Command="{Binding StartReservation}" Content="Reserveer" Margin="676,547,54,59"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
-        <ComboBox SelectedItem="{Binding SelectedCampingPlace}" ItemsSource="{Binding CampingPlaces}" Margin="572,547,157,59" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White" />
     </Grid>
 </Page>
