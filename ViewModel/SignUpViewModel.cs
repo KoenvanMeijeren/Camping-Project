@@ -82,6 +82,17 @@ namespace ViewModel
         public static event EventHandler<SignUpEventArgs> SignUpEvent;
         #endregion
 
+        #region Input
+
+        private void ResetInput()
+        {
+            this.Email = "";
+            this.Password = "";
+            this.SignUpError = "";
+        }
+
+        #endregion
+        
         #region Commands
         private void ExecuteSignUp()
         {
@@ -95,6 +106,7 @@ namespace ViewModel
             }
 
             SignUpEvent?.Invoke(this, new SignUpEventArgs(account));
+            this.ResetInput();
         }
 
         private bool CanExecuteSignUp()
