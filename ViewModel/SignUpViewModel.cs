@@ -35,6 +35,10 @@ namespace ViewModel
                 if (!CheckEmail(this._email))
                 {
                     this.SignUpError = "Ongeldig emailadres";
+                } 
+                else
+                {
+                    this.SignUpError = "";
                 }
             }
         }
@@ -52,9 +56,13 @@ namespace ViewModel
                 this._password = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
-                if (!string.IsNullOrEmpty(this._password))
+                if (string.IsNullOrEmpty(this._password))
                 {
                     this.SignUpError = "Wachtwoord is verplicht";
+                }
+                else
+                {
+                    this.SignUpError = "";
                 }
             }
         }
