@@ -34,7 +34,7 @@ namespace Visualization
             this._testInputPage = new TestInputPage();
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
 
