@@ -33,9 +33,10 @@ namespace ViewModel
                 this._email = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
+                this.SignUpError = "";
                 if (!RegexHelper.IsEmailValid(this._email))
                 {
-                    this.SignUpError = "Ongeldig emailadres";
+                    this.SignUpError = "Ongeldig email";
                 }
             }
         }
@@ -53,9 +54,10 @@ namespace ViewModel
                 this._password = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
-                if (!string.IsNullOrEmpty(this._password))
+                this.SignUpError = "";
+                if (!Validation.IsInputFilled(this._password))
                 {
-                    this.SignUpError = "Wachtwoord is verplicht";
+                    this.SignUpError = "Ongeldig wachtwoord";
                 }
             }
         }
@@ -97,7 +99,7 @@ namespace ViewModel
 
         private bool CanExecuteSignUp()
         {
-            return !string.IsNullOrEmpty(this.Email)  && !string.IsNullOrEmpty(this.Password);
+            return RegexHelper.IsEmailValid(this.Email) && Validation.IsInputFilled(this.Password);
         }
 
         public ICommand SignUp => new RelayCommand(ExecuteSignUp, CanExecuteSignUp);
