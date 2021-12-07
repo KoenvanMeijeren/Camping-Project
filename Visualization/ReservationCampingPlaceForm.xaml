@@ -20,7 +20,7 @@
         </Border>
         <Label Content="Verblijf" HorizontalAlignment="Left" Margin="389,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="29,29,644,506" CornerRadius="15,15,15,15" Background="White">
-            <DatePicker SelectedDate="{Binding Path=CheckInDate, Mode=TwoWay, TargetNullValue={x:Static system:DateTime.Now}}" Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch" />
+            <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static system:DateTime.Today}}" SelectedDate="{Binding Path=CheckInDate, Mode=TwoWay, TargetNullValue={x:Static system:DateTime.Now}}" Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch" />
         </Border>
 
         <Label Content="Startdatum*&#xD;&#xA;" HorizontalAlignment="Left" Margin="40,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="30"/>
@@ -41,7 +41,7 @@
 
         <Label Content="Beschikbare verblijven" HorizontalAlignment="Left" Margin="46,159,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="198,29,475,506" CornerRadius="15,15,15,15" Background="White">
-            <DatePicker SelectedDate="{Binding Path=CheckOutDate, Mode=TwoWay, TargetNullValue={x:Static system:DateTime.Now}}" Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
+            <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static system:DateTime.Today}}" SelectedDate="{Binding Path=CheckOutDate, Mode=TwoWay, TargetNullValue={x:Static system:DateTime.Now}}" Margin="16,50,10,26" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
         </Border>
 
         <Label Content="Einddatum*&#xD;&#xA;" HorizontalAlignment="Left" Margin="209,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="30"/>
