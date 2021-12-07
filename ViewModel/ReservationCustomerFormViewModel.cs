@@ -47,7 +47,8 @@ namespace ViewModel
             _amountOfGuests,
             _amountOfGuestsError;
         
-        private DateTime _birthdate, _checkInDatetime, _checkOutDatetime;
+        private DateTime _birthdate;
+        private ReservationDuration _reservationDuration;
         
         private int _campingPlaceId;
         
@@ -343,8 +344,7 @@ namespace ViewModel
         private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
         {
             this._campingPlaceId = args.CampingPlaceId;
-            this._checkInDatetime = args.CheckInDatetime;
-            this._checkOutDatetime = args.CheckOutDatetime;
+            this._reservationDuration = args.ReservationDuration;
         }
 
         #region Input validation
@@ -405,17 +405,9 @@ namespace ViewModel
             customer.SelectById(1);
             var lastCustomer = customer.SelectLast();
 
-            ReservationDuration reservationDuration = new ReservationDuration(
-                this._checkInDatetime.ToShortDateString(), 
-                this._checkOutDatetime.ToShortDateString()
-            );
-            
-            reservationDuration.Insert();
-            var fetchNewestReservationDuration = reservationDuration.SelectLast();
-
             CampingPlace campingPlaceModel = new CampingPlace();
             CampingPlace campingPlace = campingPlaceModel.SelectById(this._campingPlaceId);
-            Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, campingPlace, fetchNewestReservationDuration);
+            Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, campingPlace, this._reservationDuration);
             reservation.Insert();
             
             ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(reservation.SelectLast()));
