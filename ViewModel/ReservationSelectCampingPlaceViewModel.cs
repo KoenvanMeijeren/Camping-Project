@@ -237,7 +237,11 @@ namespace ViewModel
         #region Commands
         private void ExecuteStartReservation()
         {
-            ReserveEvent?.Invoke(this, new ReservationDurationEventArgs(this.SelectedCampingPlace, this.CheckInDate, this.CheckOutDate));
+            ReservationDuration reservationDuration = new ReservationDuration(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
+            reservationDuration.Insert();
+            var lastReservationDuration = reservationDuration.SelectLast();
+            
+            ReserveEvent?.Invoke(this, new ReservationDurationEventArgs(this.SelectedCampingPlace, lastReservationDuration));
             this.ResetInput();
         }
 

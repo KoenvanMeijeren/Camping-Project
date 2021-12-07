@@ -9,15 +9,14 @@ namespace ViewModel
 {
     public class ReservationDurationEventArgs : EventArgs
     {
-        public int CampingPlaceId { get; set; }
-        public DateTime CheckInDatetime { get; set; }
-        public DateTime CheckOutDatetime { get; set; }
+        public int CampingPlaceId { get; private set; }
 
-        public ReservationDurationEventArgs(CampingPlace campingPlace, DateTime checkInDatetime, DateTime checkOutDatetime)
+        public ReservationDuration ReservationDuration { get; private set; }
+
+        public ReservationDurationEventArgs(CampingPlace campingPlace, ReservationDuration reservationDuration)
         {
             this.CampingPlaceId = campingPlace.Id;
-            this.CheckInDatetime = checkInDatetime;
-            this.CheckOutDatetime = checkOutDatetime;
+            this.ReservationDuration = reservationDuration;
         }
     }
 }

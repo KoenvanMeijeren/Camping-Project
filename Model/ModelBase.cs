@@ -180,7 +180,7 @@ namespace Model
         /// <returns>The query for getting the last record from table.</returns>
         protected virtual string SelectLastQuery()
         {
-            return $"{this.BaseSelectQuery()} ORDER BY {this.PrimaryKey} ASC";
+            return $"{this.BaseSelectQuery()} ORDER BY {this.PrimaryKey} DESC";
         }
 
     }
