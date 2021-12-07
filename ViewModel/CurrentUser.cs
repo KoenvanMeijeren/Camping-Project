@@ -19,7 +19,7 @@ namespace ViewModel
         {
             Account = account;
 
-            switch (Account.AccountRights)
+            switch (Account.Rights)
             {
                 case AccountRights.Customer:
                     Account = account;

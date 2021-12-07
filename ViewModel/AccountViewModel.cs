@@ -15,7 +15,7 @@ namespace ViewModel
     public class AccountViewModel : ObservableObject
     {
         private string _name , _birthdate, _street, _address, _mail, _phoneNumber;
-        private Account CurrentAccount;
+        private Account _currentAccount;
 
         #region properties
         public string Name
@@ -118,11 +118,11 @@ namespace ViewModel
             CurrentUser.CurrentUserSetEvent += OnCurrentUserSetEvent;
         }
 
-        public void OnCurrentUserSetEvent(object sender, EventArgs e)
+        private void OnCurrentUserSetEvent(object sender, EventArgs e)
         {
-            this.CurrentAccount = CurrentUser.Account;
+            this._currentAccount = CurrentUser.Account;
 
-            if (CurrentAccount.Rights == Rights.Admin)
+            if (_currentAccount.Rights == AccountRights.Admin)
             {
                 this.Name = CurrentUser.CampingOwner.FirstName + " " + CurrentUser.CampingOwner.LastName;
                 this.Mail = CurrentUser.CampingOwner.Account.Email;
@@ -153,7 +153,7 @@ namespace ViewModel
             this.Street = "";
             this.Address = "";
 
-            SignOutEvent?.Invoke(null, new EventArgs());
+            SignOutEvent?.Invoke(this, EventArgs.Empty);
         }
     }
 }
