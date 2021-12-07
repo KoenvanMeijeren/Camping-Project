@@ -30,7 +30,7 @@
                         </TransformGroup>
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <DataGrid x:Name="CustomerReservationTableX" ItemsSource="{Binding CustomerReservationTable}" Width="auto" CanUserAddRows="false" CanUserDeleteRows="False" IsReadOnly="True" MouseDown="ClickedReservationCustomerRow"/>
+                <DataGrid x:Name="CustomerReservationTableX" ItemsSource="{Binding CustomerReservationTable}" Width="auto" CanUserAddRows="false" CanUserDeleteRows="False" IsReadOnly="True" />
             </StackPanel>
         </Border>
 

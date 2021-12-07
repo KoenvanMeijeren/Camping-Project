@@ -15,7 +15,39 @@ namespace ViewModel
         private int _customerID = 107;
         public List<Reservation> Reservations { get; private set; } = new List<Reservation>();
         public Dictionary<string, string> ReservationLabels { get; private set; } = new Dictionary<string, string>();
-        private Reservation _currentSelectedReservation;
+        private Reservation _currentSelectedReservationGet;
+        public Reservation CurrentSelectedReservation
+        {
+            get
+            {
+                return _currentSelectedReservationGet;
+            }
+            set
+            {
+                this._currentSelectedReservationGet = value;
+                this.DisplayNewReservationValues(value.Id);
+            }
+        }
+        private DataTable _customerReservationGuestTable;
+        public DataTable CustomerReservationGuestTable
+        {
+            get { return _customerReservationGuestTable; }
+            set
+            {
+                _customerReservationGuestTable = value;
+                OnPropertyChanged("CustomerReservationTable");
+            }
+        }
+        private DataTable _customerReservationTable;
+        public DataTable CustomerReservationTable
+        {
+            get { return _customerReservationTable; }
+            set
+            {
+                _customerReservationTable = value;
+                OnPropertyChanged("CustomerReservationTable");
+            }
+        }
 
         #region Properties
         private string _infoStartDate = "Begindatum: ";
@@ -116,31 +148,6 @@ namespace ViewModel
             this.Reservations = reservationModel.GetCustomersReservations(_customerID);
             this.ReservationLabels = this.GenerateReservationLabels();
             this.DisplayNewReservationValues(107);
-            FillCustomerReservationTable();
-            FillCustomerReservationGuestsTable();
-
-        }
-
-        private DataTable _customerReservationGuestTable;
-        public DataTable CustomerReservationGuestTable
-        {
-            get { return _customerReservationGuestTable; }
-            set
-            {
-                _customerReservationGuestTable = value;
-                OnPropertyChanged("CustomerReservationTable");
-            }
-        }
-
-        private DataTable _customerReservationTable;
-        public DataTable CustomerReservationTable
-        {
-            get { return _customerReservationTable; }
-            set
-            {
-                _customerReservationTable = value;
-                OnPropertyChanged("CustomerReservationTable");
-            }
         }
 
         /// <summary>
@@ -179,7 +186,7 @@ namespace ViewModel
         public Dictionary<string, string> GenerateReservationLabels()
         {
             Dictionary<string, string> dictionary = new();
-            foreach(var item in this.Reservations)
+            foreach (var item in this.Reservations)
             {
                 dictionary.Add(item.Id.ToString(), $"{item.CampingPlace.Type.Accommodation.Name} | {item.Duration.CheckInDate} - {item.Duration.CheckOutDate}");
             }
@@ -192,10 +199,14 @@ namespace ViewModel
         /// <param name="id"></param>
         public void DisplayNewReservationValues(int id)
         {
+            // Finds reservation with corresponding id (makes it unnecessary to do another databasecall)
             foreach (var item in this.Reservations)
                 if (item.Id == id)
                     this.DisplayNewReservationInfoData(item);
-                    return;
+
+            this.FillCustomerReservationTable();
+            this.FillCustomerReservationGuestsTable();
+            return;
         }
 
         /// <summary>

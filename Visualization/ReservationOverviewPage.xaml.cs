@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Data;
 using System.Windows.Controls;
+using ViewModel;
+using Model;
 
 namespace Visualization
 {
@@ -10,6 +12,8 @@ namespace Visualization
     /// </summary>
     public partial class ReservationOverviewPage : Page
     {
+        public static event EventHandler<ReservationEventArgs> ReservationSelected;
+
         public ReservationOverviewPage()
         {
             this.InitializeComponent();
@@ -24,8 +28,8 @@ namespace Visualization
         {
             DataRowView rowview = CustomerReservationTableX.SelectedItem as DataRowView;
             string id = rowview.Row[0].ToString();
-
-            Console.WriteLine(id);
+            Reservation reservationModel = new Reservation();
+            Reservation reservation = reservationModel.SelectById(Int32.Parse(id));
         }
     }
 }
