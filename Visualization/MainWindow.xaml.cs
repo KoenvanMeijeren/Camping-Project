@@ -39,6 +39,9 @@ namespace Visualization
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
 
             AccountButton.Visibility = Visibility.Collapsed;
+            
+            // Sets the dashboard as the active menu.
+            this.DashboardButtonClick(this, null);
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
