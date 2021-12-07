@@ -64,7 +64,7 @@ namespace ViewModel
 
                 this.FirstNameError = string.Empty;
                 this.RemoveErrorFromDictionary("FirstName");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -93,7 +93,7 @@ namespace ViewModel
                 
                 this.LastNameError = string.Empty;
                 this.RemoveErrorFromDictionary("LastName");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -151,7 +151,7 @@ namespace ViewModel
                 
                 this.PhoneNumberError = string.Empty;
                 this.RemoveErrorFromDictionary("PhoneNumber");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -180,7 +180,7 @@ namespace ViewModel
                 
                 this.StreetNameError = string.Empty;
                 this.RemoveErrorFromDictionary("StreetName");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -209,7 +209,7 @@ namespace ViewModel
                 
                 this.PostalCodeError = string.Empty;
                 this.RemoveErrorFromDictionary("PostalCode");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -238,7 +238,7 @@ namespace ViewModel
                 
                 this.PlaceNameError = string.Empty;
                 this.RemoveErrorFromDictionary("PlaceName");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -296,7 +296,7 @@ namespace ViewModel
                 
                 this.AmountOfGuestsError = string.Empty;
                 this.RemoveErrorFromDictionary("AmountOfGuests");
-                if (this.IsInputFilled(this._amountOfGuests) || !int.TryParse(value, out int x))
+                if (Validation.IsInputFilled(this._amountOfGuests) || !int.TryParse(value, out int x))
                 {
                     return;
                 }
@@ -366,11 +366,6 @@ namespace ViewModel
             }
             
             this._errorDictionary.Add(key, value);
-        }
-        
-        private bool IsInputFilled(string input)
-        {
-            return (!string.IsNullOrEmpty(input) && input.Length != 0);
         }
         #endregion
 
