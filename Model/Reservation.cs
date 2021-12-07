@@ -72,6 +72,25 @@ namespace Model
             return this.CampingPlace.TotalPrice * days;
         }
 
+        /// <summary>
+        /// Returns all the reservation of the given customer id.
+        /// </summary>
+        /// <param name="customerId">ID of customer</param>
+        /// <returns>Database records of given customer's reservations</returns>
+        public List<Reservation> GetCustomersReservations(int customerId)
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId");
+            query.AddParameter("customerId", customerId);
+
+            List<Reservation> reservations = new List<Reservation>();
+            foreach(var item in query.Select())
+            {
+                reservations.Add(this.ToModel(item));
+            }
+
+            return reservations;
+        }
+
         /// <inheritdoc/>
         public override IEnumerable<Reservation> Select()
         {

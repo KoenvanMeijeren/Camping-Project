@@ -18,6 +18,7 @@ namespace Visualization
         private readonly SignUpPage _signUpPage;
         private readonly TestInputPage _testInputPage;
         private readonly TestPage _testPage;
+        private readonly ReservationOverviewPage _reservationOverviewPage;
 
         public MainWindow()
         {
@@ -31,6 +32,7 @@ namespace Visualization
             this._signUpPage = new SignUpPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
+            this._reservationOverviewPage = new ReservationOverviewPage();
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
@@ -88,7 +90,7 @@ namespace Visualization
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
 
-            this.MainFrame.Content = this._testPage.Content;
+            this.MainFrame.Content = this._reservationOverviewPage.Content;
         }
         
         private void TestInputClick(object sender, RoutedEventArgs e)
@@ -129,7 +131,5 @@ namespace Visualization
             CurrentUser.SetCurrentUser(args.Account);
             this.MainFrame.Content = this._accountPage.Content;
         }
-
-        
     }
 }

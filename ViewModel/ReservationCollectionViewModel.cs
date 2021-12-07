@@ -36,6 +36,5 @@ namespace ViewModel
         {
             this.Reservation = reservation;
         }
-        
     }
 }
