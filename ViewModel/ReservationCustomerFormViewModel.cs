@@ -402,15 +402,15 @@ namespace ViewModel
             var customer = new CampingCustomer(null, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName,
                 this.LastName);
             customer.Insert();
-            customer.SelectById(1);
             var lastCustomer = customer.SelectLast();
 
             CampingPlace campingPlaceModel = new CampingPlace();
             CampingPlace campingPlace = campingPlaceModel.SelectById(this._campingPlaceId);
             Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, campingPlace, this._reservationDuration);
             reservation.Insert();
+            var lastReservation = reservation.SelectLast();
             
-            ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(reservation.SelectLast()));
+            ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
             this.ResetInput();
         }
         private bool CanExecuteCustomerDataReservation()
