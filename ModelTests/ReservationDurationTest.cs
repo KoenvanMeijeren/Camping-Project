@@ -10,10 +10,10 @@ namespace ModelTests
         [Test]
         public void TestReservationDurationConstructorCorrect()
         {
-            ReservationDuration reservationDuration = new ReservationDuration("12", "19/10/21", "20/10/21");
+            ReservationDuration reservationDuration = new ReservationDuration("12", "2021-12-26 12:00:00", "2021-12-28 12:00:00");
             Assert.AreEqual(reservationDuration.Id, 12);
-            Assert.AreEqual(reservationDuration.CheckInDatetime, DateTime.Parse("19/10/21"));
-            Assert.AreEqual(reservationDuration.CheckOutDatetime, DateTime.Parse("20/10/21"));
+            Assert.AreEqual("", reservationDuration.CheckInDatetime.ToShortDateString());
+            Assert.AreEqual("", reservationDuration.CheckOutDatetime.ToShortDateString());
             Assert.AreEqual(reservationDuration.CheckInDateDatabaseFormat, DateTime.Parse("19/10/21").ToShortDateString());
             Assert.AreEqual(reservationDuration.CheckOutDateDatabaseFormat, DateTime.Parse("20/10/21").ToShortDateString());
         }
