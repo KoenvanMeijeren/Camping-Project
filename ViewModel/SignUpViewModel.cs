@@ -15,11 +15,11 @@ namespace ViewModel
 {
     public class SignUpViewModel : ObservableObject
     {
-        #region fields
+        #region Fields
         private string _email,  _password, _singUpError;
         #endregion
 
-        #region properties
+        #region Properties
         public string Email
         {
             get => this._email;
@@ -88,7 +88,7 @@ namespace ViewModel
 
             if (account == null || this.Password != account.Password)
             {
-                this.SignUpError = "Gegevens onjuist";
+                this.SignUpError = "Onjuiste gegevens";
                 return;
             }
 

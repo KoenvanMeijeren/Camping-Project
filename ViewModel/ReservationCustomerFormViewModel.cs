@@ -20,26 +20,35 @@ namespace ViewModel
 
         private readonly Dictionary<string, string> _errorDictionary;
 
-        private string _firstName;
-        private string _firstNameError;
-        private string _lastName;
-        private string _lastNameError;
-        private DateTime _birthdate;
-        private string _birthdateError;
-        private string _phoneNumber;
-        private string _phoneNumberError;
-        private string _streetName;
-        private string _streetNameError;
-        private string _postalCode;
-        private string _postalCodeError;
-        private string _placeName;
-        private string _placeNameError;
-        private string _emailAddress;
-        private string _emailAddressError;
-        private string _amountOfGuests;
-        private string _amountOfGuestsError;
-        private DateTime _checkInDatetime;
-        private DateTime _checkOutDatetime;
+        private string 
+            _firstName,
+            _firstNameError,
+            
+            _lastName,
+            _lastNameError,
+            
+            _birthdateError,
+            
+            _phoneNumber,
+            _phoneNumberError,
+            
+            _streetName,
+            _streetNameError,
+            
+            _postalCode,
+            _postalCodeError,
+            
+            _placeName,
+            _placeNameError,
+            
+            _emailAddress,
+            _emailAddressError,
+            
+            _amountOfGuests,
+            _amountOfGuestsError;
+        
+        private DateTime _birthdate, _checkInDatetime, _checkOutDatetime;
+        
         private int _campingPlaceId;
         
         #endregion
