@@ -170,7 +170,7 @@ namespace Model
         /// <returns>The query for getting one record from table by ID.</returns>
         protected virtual string SelectQuery()
         {
-            return $"{this.BaseSelectQuery()} WHERE BT.{this.PrimaryKey} = @{this.PrimaryKey}";
+            return $"{this.BaseSelectQuery()} WHERE {this.PrimaryKey} = @{this.PrimaryKey}";
         }
         
         /// <summary>
@@ -180,7 +180,7 @@ namespace Model
         /// <returns>The query for getting the last record from table.</returns>
         protected virtual string SelectLastQuery()
         {
-            return $"{this.BaseSelectQuery()} ORDER BY BT.{this.PrimaryKey} DESC";
+            return $"{this.BaseSelectQuery()} ORDER BY {this.PrimaryKey} DESC";
         }
 
     }
