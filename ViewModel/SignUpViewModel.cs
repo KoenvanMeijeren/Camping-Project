@@ -59,6 +59,10 @@ namespace ViewModel
                 {
                     this.SignUpError = "Ongeldig wachtwoord";
                 }
+                else
+                {
+                    this.SignUpError = "";
+                }
             }
         }
 
