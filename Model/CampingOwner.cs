@@ -3,13 +3,21 @@ using SystemCore;
 
 namespace Model
 {
+    /// <inheritdoc/>
     public class CampingOwner : ModelBase<CampingOwner>
     {
+        public const string
+            TableName = "CampingOwner",
+            ColumnId = "CampingOwnerID",
+            ColumnAccount = "CampingOwnerAccountID",
+            ColumnFirstName = "CampingOwnerFirstName",
+            ColumnLastName = "CampingOwnerLastName";
+        
         public Account Account { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
 
-        public CampingOwner()
+        public CampingOwner(): base(TableName, ColumnId)
         {
         }
 
@@ -17,7 +25,7 @@ namespace Model
         {
         }
 
-        public CampingOwner(string id, Account account, string firstName, string lastName)
+        public CampingOwner(string id, Account account, string firstName, string lastName): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int numericId);
 
@@ -25,16 +33,6 @@ namespace Model
             this.Account = account;
             this.FirstName = firstName;
             this.LastName = lastName;
-        }
-
-        protected override string Table()
-        {
-            return "CampingOwner";
-        }
-
-        protected override string PrimaryKey()
-        {
-            return "CampingOwnerID";
         }
 
         public bool Update(Account account, string firstName, string lastName)
@@ -46,6 +44,7 @@ namespace Model
             return base.Update(CampingOwner.ToDictionary(account, firstName, lastName));
         }
 
+        /// <inheritdoc/>
         protected override CampingOwner ToModel(Dictionary<string, string> dictionary)
         {
             if (dictionary == null)
@@ -53,22 +52,21 @@ namespace Model
                 return null;
             }
 
-            dictionary.TryGetValue("CampingOwnerID", out string id);
+            dictionary.TryGetValue(ColumnId, out string id);
+            dictionary.TryGetValue(ColumnFirstName, out string firstName);
+            dictionary.TryGetValue(ColumnLastName, out string lastName);
 
-            dictionary.TryGetValue("AccountID", out string accountId);
-            dictionary.TryGetValue("AccountEmail", out string email);
-            dictionary.TryGetValue("AccountPassword", out string password);
-            dictionary.TryGetValue("AccountRights", out string rights);
-
-            dictionary.TryGetValue("CampingOwnerFirstName", out string firstName);
-            dictionary.TryGetValue("CampingOwnerLastName", out string lastName);
+            dictionary.TryGetValue(Account.ColumnId, out string accountId);
+            dictionary.TryGetValue(Account.ColumnEmail, out string email);
+            dictionary.TryGetValue(Account.ColumnPassword, out string password);
+            dictionary.TryGetValue(Account.ColumnRights, out string rights);
 
             Account account = new Account(accountId, email, password, rights);
-
 
             return new CampingOwner(id, account, firstName, lastName);
         }
 
+        /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
             return CampingOwner.ToDictionary(this.Account, this.FirstName, this.LastName);
@@ -78,25 +76,26 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"CampingCustomerAccountID", account.Id.ToString()},
-                {"CampingOwnerFirstName", firstName},
-                {"CampingOwnerLastName", lastName}
+                {ColumnAccount, account.Id.ToString()},
+                {ColumnFirstName, firstName},
+                {ColumnLastName, lastName}
             };
 
             return dictionary;
         }
 
-        protected override string BaseQuery()
+        /// <inheritdoc/>
+        protected override string BaseSelectQuery()
         {
-            string query = base.BaseQuery();
-            query += " INNER JOIN Account AC ON BT.CampingOwnerAccountID = AC.AccountID";
+            string query = base.BaseSelectQuery();
+            query += $" INNER JOIN {Account.TableName} AC ON BT.{ColumnAccount} = AC.{Account.ColumnId}";
 
             return query;
         }
 
         public CampingOwner SelectByAccount(Account account)
         {
-            Query query = new Query(this.BaseQuery() + " WHERE CampingOwnerAccountID = @AccountID");
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnAccount} = @AccountID");
             query.AddParameter("AccountID", account.Id);
             return this.ToModel(query.SelectFirst());
         }

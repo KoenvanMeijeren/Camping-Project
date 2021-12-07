@@ -8,8 +8,19 @@ using SystemCore;
 
 namespace Model
 {
+    /// <inheritdoc/>
     public class CampingCustomer : ModelBase<CampingCustomer>
     {
+        public const string
+            TableName = "CampingCustomer",
+            ColumnId = "CampingCustomerID",
+            ColumnAccount = "CampingCustomerAccountID",
+            ColumnAddress = "CampingCustomerAddressID",
+            ColumnFirstName = "CampingCustomerFirstName",
+            ColumnLastName = "CampingCustomerLastName",
+            ColumnBirthdate = "CampingCustomerBirthdate",
+            ColumnPhoneNumber = "CampingCustomerPhoneNumber";
+        
         public Account Account { get; private set; }
         public Address Address { get; private set; }
         public DateTime Birthdate { get; private set; }
@@ -17,17 +28,17 @@ namespace Model
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         
-        public CampingCustomer()
+        public CampingCustomer(): base(TableName, ColumnId)
         {
             
         }
 
-        public CampingCustomer(Account account, Address address, string birtdate, string phoneNumber, string firstName, string lastName): this("-1", account, address, birtdate, phoneNumber, firstName, lastName)
+        public CampingCustomer(Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName): this("-1", account, address, birthdate, phoneNumber, firstName, lastName)
         {
 
         }
 
-        public CampingCustomer(string id, Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName)
+        public CampingCustomer(string id, Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int idNumeric);
             bool successDate = DateTime.TryParse(birthdate, out DateTime dateTime);
@@ -39,16 +50,6 @@ namespace Model
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;
-        }
-        
-        protected override string Table()
-        {
-            return "CampingCustomer";
-        }
-
-        protected override string PrimaryKey()
-        {
-            return "CampingCustomerID";
         }
 
         public bool Update(Account account, Address address, DateTime birthdate, string phoneNumber, string firstName, string lastName)
@@ -63,6 +64,7 @@ namespace Model
             return base.Update(CampingCustomer.ToDictionary(account, address, birthdate, phoneNumber, firstName, lastName));
         }
 
+        /// <inheritdoc/>
         protected override CampingCustomer ToModel(Dictionary<string, string> dictionary)
         {
             if (dictionary == null)
@@ -70,22 +72,21 @@ namespace Model
                 return null;
             }
             
-            dictionary.TryGetValue("CampingCustomerID", out string id);
+            dictionary.TryGetValue(ColumnId, out string id);
+            dictionary.TryGetValue(ColumnBirthdate, out string birthdate);
+            dictionary.TryGetValue(ColumnPhoneNumber, out string phoneNumber);
+            dictionary.TryGetValue(ColumnFirstName, out string firstName);
+            dictionary.TryGetValue(ColumnLastName, out string lastName);
+            
+            dictionary.TryGetValue(Account.ColumnId, out string accountId);
+            dictionary.TryGetValue(Account.ColumnEmail, out string email);
+            dictionary.TryGetValue(Account.ColumnPassword, out string password);
+            dictionary.TryGetValue(Account.ColumnRights, out string rights);
 
-            dictionary.TryGetValue("AccountID", out string accountId);
-            dictionary.TryGetValue("AccountEmail", out string email);
-            dictionary.TryGetValue("AccountPassword", out string password);
-            dictionary.TryGetValue("AccountRights", out string rights);
-
-            dictionary.TryGetValue("AddressID", out string addressId);
-            dictionary.TryGetValue("Address", out string street);
-            dictionary.TryGetValue("AddressPostalCode", out string postalCode);
-            dictionary.TryGetValue("AddressPlace", out string place);
-
-            dictionary.TryGetValue("CampingCustomerBirthdate", out string birthdate);
-            dictionary.TryGetValue("CampingCustomerPhoneNumber", out string phoneNumber);
-            dictionary.TryGetValue("CampingCustomerFirstName", out string firstName);
-            dictionary.TryGetValue("CampingCustomerLastName", out string lastName);
+            dictionary.TryGetValue(Address.ColumnId, out string addressId);
+            dictionary.TryGetValue(Address.ColumnAddress, out string street);
+            dictionary.TryGetValue(Address.ColumnPostalCode, out string postalCode);
+            dictionary.TryGetValue(Address.ColumnPlace, out string place);
 
             Account account = new Account(accountId, email, password, rights);
             Address address = new Address(addressId, street, postalCode, place);
@@ -93,6 +94,7 @@ namespace Model
             return new CampingCustomer(id, account, address, birthdate, phoneNumber, firstName, lastName);
         }
 
+        /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
             return CampingCustomer.ToDictionary(this.Account, this.Address, this.Birthdate, this.PhoneNumber, this.FirstName, this.LastName);
@@ -102,29 +104,34 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"CampingCustomerAccountID", account.Id.ToString()},
-                {"CampingCustomerAddressID", address.Id.ToString()},
-                {"CampingCustomerBirthdate", birthdate.ToString(CultureInfo.InvariantCulture)},
-                {"CampingCustomerPhoneNumber", phoneNumber},
-                {"CampingCustomerFirstName", firstName},
-                {"CampingCustomerLastName", lastName}
+                {ColumnId, address.Id.ToString()},
+                {ColumnBirthdate, birthdate.ToString(CultureInfo.InvariantCulture)},
+                {ColumnPhoneNumber, phoneNumber},
+                {ColumnFirstName, firstName},
+                {ColumnLastName, lastName}
             };
+
+            if (account != null)
+            {
+                dictionary.Add(ColumnAccount, account.Id.ToString());
+            }
 
             return dictionary;
         }
 
-        protected override string BaseQuery()
+        /// <inheritdoc/>
+        protected override string BaseSelectQuery()
         {
-            string query = base.BaseQuery();
-            query += " INNER JOIN Address A ON BT.CampingCustomerAddressID = A.AddressID";
-            query += " INNER JOIN Account AC ON BT.CampingCustomerAccountID = AC.AccountID";
+            string query = base.BaseSelectQuery();
+            query += $" INNER JOIN {Address.TableName} A ON BT.{ColumnAddress} = A.{Address.ColumnId}";
+            query += $" INNER JOIN {Account.TableName} AC ON BT.{ColumnAccount} = AC.{Account.ColumnId}";
 
             return query;
         }
 
         public CampingCustomer SelectByAccount(Account account)
         {
-            Query query = new Query(this.BaseQuery() + " WHERE CampingCustomerAccountID = @AccountID");
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnAccount} = @AccountID");
             query.AddParameter("AccountID", account.Id);
             return this.ToModel(query.SelectFirst());
         }

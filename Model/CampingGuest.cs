@@ -6,13 +6,21 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+    /// <inheritdoc/>
     public class CampingGuest : ModelBase<CampingGuest>
     {
+        public const string
+            TableName = "CampingGuest",
+            ColumnId = "CampingGuestID",
+            ColumnBirthdate = "CampingGuestBirthdate",
+            ColumnFirstName = "CampingGuestFirstName",
+            ColumnLastName = "CampingGuestLastName";
+        
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public DateTime Birthdate { get; private set; }
 
-        public CampingGuest()
+        public CampingGuest(): base(TableName, ColumnId)
         {
         }
 
@@ -20,7 +28,7 @@ namespace Model
         {
         }
 
-        public CampingGuest(string id, string firstName, string lastName, string birthdate)
+        public CampingGuest(string id, string firstName, string lastName, string birthdate): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int numericId);
             bool successDate = DateTime.TryParse(birthdate, out DateTime dateTime);
@@ -29,16 +37,6 @@ namespace Model
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Birthdate = successDate ? dateTime : DateTime.MinValue;
-        }
-
-        protected override string Table()
-        {
-            return "CampingGuest";
-        }
-
-        protected override string PrimaryKey()
-        {
-            return "CampingGuestID";
         }
 
         public bool Update(string firstName, string lastName, DateTime birthdate)
@@ -50,6 +48,7 @@ namespace Model
             return base.Update(CampingGuest.ToDictionary(firstName, lastName, birthdate));
         }
 
+        /// <inheritdoc/>
         protected override CampingGuest ToModel(Dictionary<string, string> dictionary)
         {
             if (dictionary == null)
@@ -57,14 +56,15 @@ namespace Model
                 return null;
             }
 
-            dictionary.TryGetValue("CampingID", out string id);
-            dictionary.TryGetValue("CampingGuestFirstName", out string firstName);
-            dictionary.TryGetValue("CampingGuestLastName", out string lastName);
-            dictionary.TryGetValue("CampingGuestBirthdate", out string birthdate);
+            dictionary.TryGetValue(ColumnId, out string id);
+            dictionary.TryGetValue(ColumnFirstName, out string firstName);
+            dictionary.TryGetValue(ColumnLastName, out string lastName);
+            dictionary.TryGetValue(ColumnBirthdate, out string birthdate);
 
             return new CampingGuest(id, firstName, lastName, birthdate);
         }
 
+        /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
             return CampingGuest.ToDictionary(this.FirstName, this.LastName, this.Birthdate);
@@ -74,9 +74,9 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"CampingGuestFirstName", firstName},
-                {"CampingGuestLastName", lastName},
-                {"CampingGuestBirthdate", birthdate.ToShortDateString()}
+                {ColumnFirstName, firstName},
+                {ColumnLastName, lastName},
+                {ColumnBirthdate, birthdate.ToShortDateString()}
             };
 
             return dictionary;

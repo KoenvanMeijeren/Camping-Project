@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
+using SystemCore;
 
 namespace ViewModel
 {
@@ -54,7 +55,7 @@ namespace ViewModel
 
                 this.FirstNameError = string.Empty;
                 this.RemoveErrorFromDictionary("FirstName");
-                if (this.CheckInputIsGiven(value))
+                if (this.IsInputFilled(value))
                 {
                     return;
                 }
@@ -83,7 +84,7 @@ namespace ViewModel
                 
                 this.LastNameError = string.Empty;
                 this.RemoveErrorFromDictionary("LastName");
-                if (this.CheckInputIsGiven(value))
+                if (this.IsInputFilled(value))
                 {
                     return;
                 }
@@ -112,7 +113,7 @@ namespace ViewModel
                 
                 this.BirthdateError = string.Empty;
                 this.RemoveErrorFromDictionary("Birthdate");
-                if (this.ValidateBirthday(value))
+                if (!this._birthdate.Equals(DateTime.MinValue))
                 {
                     return;
                 }
@@ -141,7 +142,7 @@ namespace ViewModel
                 
                 this.PhoneNumberError = string.Empty;
                 this.RemoveErrorFromDictionary("PhoneNumber");
-                if (this.ValidatePhoneNumber(value))
+                if (this.IsInputFilled(value))
                 {
                     return;
                 }
@@ -170,13 +171,13 @@ namespace ViewModel
                 
                 this.StreetNameError = string.Empty;
                 this.RemoveErrorFromDictionary("StreetName");
-                if (this.CheckInputIsGiven(value))
+                if (this.IsInputFilled(value))
                 {
                     return;
                 }
                 
-                this.StreetNameError = "Ongeldige input";
-                this.AddErrorToDictionary("StreetName", "Ongeldige input");
+                this.StreetNameError = "Ongeldige straat";
+                this.AddErrorToDictionary("StreetName", "Ongeldige straat");
             }
         }
         public string StreetNameError
@@ -199,13 +200,13 @@ namespace ViewModel
                 
                 this.PostalCodeError = string.Empty;
                 this.RemoveErrorFromDictionary("PostalCode");
-                if (this.ValidatePostalCode(value))
+                if (this.IsInputFilled(value))
                 {
                     return;
                 }
                 
-                this.PostalCodeError = "Ongeldige input";
-                this.AddErrorToDictionary("PostalCode", "Ongeldige input");
+                this.PostalCodeError = "Ongeldige postcode";
+                this.AddErrorToDictionary("PostalCode", "Ongeldige postcode");
             }
         }
         public string PostalCodeError
@@ -228,13 +229,13 @@ namespace ViewModel
                 
                 this.PlaceNameError = string.Empty;
                 this.RemoveErrorFromDictionary("PlaceName");
-                if (CheckInputIsGiven(value))
+                if (this.IsInputFilled(value))
                 {
                     return;
                 }
                 
-                this.PlaceNameError = "Ongeldige input";
-                this.AddErrorToDictionary("PlaceName", "Ongeldige input");
+                this.PlaceNameError = "Ongeldige plaats";
+                this.AddErrorToDictionary("PlaceName", "Ongeldige plaats");
             }
         }
         public string PlaceNameError
@@ -257,13 +258,13 @@ namespace ViewModel
                 
                 this.EmailAddressError = string.Empty;
                 this.RemoveErrorFromDictionary("EmailAddress");
-                if (this.ValidateEmailAdress(value))
+                if (RegexHelper.IsEmailValid(value))
                 {
                     return;
                 }
                 
-                this.EmailAddressError = "Ongeldige input";
-                this.AddErrorToDictionary("EmailAddress", "Ongeldige input");
+                this.EmailAddressError = "Ongeldige email";
+                this.AddErrorToDictionary("EmailAddress", "Ongeldige email");
             }
         }
         public string EmailAddressError
@@ -286,13 +287,13 @@ namespace ViewModel
                 
                 this.AmountOfGuestsError = string.Empty;
                 this.RemoveErrorFromDictionary("AmountOfGuests");
-                if (int.TryParse(value, out int x))
+                if (this.IsInputFilled(this._amountOfGuests) || !int.TryParse(value, out int x))
                 {
                     return;
                 }
                 
-                this.AmountOfGuestsError = "Ongeldige input";
-                this.AddErrorToDictionary("AmountOfGuests", "Ongeldige input");
+                this.AmountOfGuestsError = "Ongeldige aantal gasten";
+                this.AddErrorToDictionary("AmountOfGuests", "Ongeldige aantal gasten");
             }
         }
         public string AmountOfGuestsError
@@ -358,37 +359,9 @@ namespace ViewModel
             this._errorDictionary.Add(key, value);
         }
         
-        private bool CheckInputIsGiven(string input)
+        private bool IsInputFilled(string input)
         {
             return (!string.IsNullOrEmpty(input) && input.Length != 0);
-        }
-        // TODO: Birthday validation implementeren
-        private bool ValidateBirthday(DateTime input)
-        {
-            this._birthdate = input;
-            this.RemoveErrorFromDictionary("birthdate");
-            return true;
-        }
-        // TODO: Phone number validation implementeren
-        private bool ValidatePhoneNumber(string input)
-        {
-            this._phoneNumber = input;
-            this.RemoveErrorFromDictionary("phoneNumber");
-            return true;
-        }
-        // TODO: Postalcode validation implementeren
-        private bool ValidatePostalCode(string input)
-        {
-            this._postalCode = input;
-            this.RemoveErrorFromDictionary("postalCode");
-            return true;
-        }
-        // TODO: Email adress validation implementeren
-        private bool ValidateEmailAdress(string input)
-        {
-            this._emailAddress = input;
-            this.RemoveErrorFromDictionary("emailAdress");
-            return true;
         }
         #endregion
 
@@ -399,8 +372,11 @@ namespace ViewModel
             Address addressModel = new Address(this.StreetName, this.PostalCode, this.PlaceName);
             var address = addressModel.FirstOrInsert();
 
-            // TODO: Need to new Account() later on...
-            var lastCustomer = (new CampingCustomer()).SelectLast();
+            var customer = new CampingCustomer(null, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName,
+                this.LastName);
+            customer.Insert();
+            customer.SelectById(1);
+            var lastCustomer = customer.SelectLast();
 
             ReservationDuration reservationDuration = new ReservationDuration(
                 this._checkInDatetime.ToShortDateString(), 
@@ -411,7 +387,7 @@ namespace ViewModel
             var fetchNewestReservationDuration = reservationDuration.SelectLast();
 
             CampingPlace campingPlaceModel = new CampingPlace();
-            CampingPlace campingPlace = campingPlaceModel.Select(this._campingPlaceId);
+            CampingPlace campingPlace = campingPlaceModel.SelectById(this._campingPlaceId);
             Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, campingPlace, fetchNewestReservationDuration);
             reservation.Insert();
             

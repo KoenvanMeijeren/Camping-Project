@@ -171,8 +171,9 @@ namespace ViewModel
         public ReservationSelectCampingPlaceViewModel()
         {
             this.CampingPlaceTypes = new ObservableCollection<string>();
-            this.CampingPlaceTypes.Add("Alle");
+            
             //Loop through rows in Accommodation table
+            this.CampingPlaceTypes.Add(SelectAll);
             foreach (var accommodationDatabaseRow in new Accommodation().Select())
             {
                 this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);

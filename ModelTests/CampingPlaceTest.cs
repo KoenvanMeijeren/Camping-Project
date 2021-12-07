@@ -18,7 +18,6 @@ namespace ModelTests
             Assert.AreEqual(campingPlace.TotalPrice, 2.0);
             Assert.AreEqual(campingPlace.Type, campingPlaceType);
             Assert.AreEqual(campingPlace.Location, "testPrefix-1");
-            Assert.AreEqual(campingPlace.LocationSelect, "testPrefix-1 (1)");
         }
 
         [Test]
@@ -31,7 +30,6 @@ namespace ModelTests
             Assert.AreEqual(campingPlace.TotalPrice, 0);
             Assert.AreEqual(campingPlace.Type, null);
             Assert.AreEqual(campingPlace.GetLocation(), "0");
-            Assert.AreEqual(campingPlace.GetLocationSelect(), "0 (-1)");
         }
     }
 }

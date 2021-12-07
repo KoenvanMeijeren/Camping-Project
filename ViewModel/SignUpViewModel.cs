@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using SystemCore;
 
 namespace ViewModel
 {
@@ -32,7 +33,7 @@ namespace ViewModel
                 this._email = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
-                if (!CheckEmail(this._email))
+                if (!RegexHelper.IsEmailValid(this._email))
                 {
                     this.SignUpError = "Ongeldig emailadres";
                 }
@@ -101,11 +102,5 @@ namespace ViewModel
 
         public ICommand SignUp => new RelayCommand(ExecuteSignUp, CanExecuteSignUp);
         #endregion
-
-        private static bool CheckEmail(string email)
-        {
-            var regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase);//student@mail.nl
-            return regex.IsMatch(email.Trim());
-        }
     }
 }

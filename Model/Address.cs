@@ -3,15 +3,23 @@ using SystemCore;
 
 namespace Model
 {
+    /// <inheritdoc/>
     public class Address : ModelBase<Address>
     {
+        public const string
+            TableName = "Address",
+            ColumnId = "AddressID",
+            ColumnAddress = "Address",
+            ColumnPostalCode = "AddressPostalCode",
+            ColumnPlace = "AddressPlace";
+        
         public string Street { get; private set; }
         
         public string PostalCode { get; private set; }
         
         public string Place { get; private set; }
 
-        public Address()
+        public Address(): base(TableName, ColumnId)
         {
             
         }
@@ -21,7 +29,7 @@ namespace Model
             
         }
         
-        public Address(string id, string address, string postalCode, string place)
+        public Address(string id, string address, string postalCode, string place): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int idNumeric);
             
@@ -29,16 +37,6 @@ namespace Model
             this.Street = address;
             this.PostalCode = postalCode;
             this.Place = place;
-        }
-
-        protected override string Table()
-        {
-            return "Address";
-        }
-
-        protected override string PrimaryKey()
-        {
-            return "AddressID";
         }
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace Model
         /// <returns>Address object</returns>
         private Address SelectByParameters(string address, string postalCode)
         {
-            Query query = new Query("SELECT * FROM Address WHERE Address = @Address AND AddressPostalCode = @AddressPostalCode");
+            Query query = new Query($"{this.BaseSelectQuery()} WHERE {ColumnAddress} = @Address AND {ColumnPostalCode} = @AddressPostalCode");
             query.AddParameter("Address", address);
             query.AddParameter("AddressPostalCode", postalCode);
             var result = query.SelectFirst();
@@ -78,6 +76,7 @@ namespace Model
             return base.Update(Address.ToDictionary(address, postalCode, place));
         }
 
+        /// <inheritdoc/>
         protected override Address ToModel(Dictionary<string, string> dictionary)
         {
             if (dictionary == null)
@@ -85,14 +84,15 @@ namespace Model
                 return null;
             }
             
-            dictionary.TryGetValue("AddressID", out string id);
-            dictionary.TryGetValue("Address", out string address);
-            dictionary.TryGetValue("AddressPostalCode", out string postalCode);
-            dictionary.TryGetValue("AddressPlace", out string place);
+            dictionary.TryGetValue(ColumnId, out string id);
+            dictionary.TryGetValue(ColumnAddress, out string address);
+            dictionary.TryGetValue(ColumnPostalCode, out string postalCode);
+            dictionary.TryGetValue(ColumnPlace, out string place);
 
             return new Address(id, address, postalCode, place);
         }
 
+        /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
             return Address.ToDictionary(this.Street, this.PostalCode, this.PostalCode);
@@ -102,9 +102,9 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"Address", address},
-                {"AddressPostalCode", postalCode},
-                {"AddressPlace", place}
+                {ColumnAddress, address},
+                {ColumnPostalCode, postalCode},
+                {ColumnPlace, place}
             };
 
             return dictionary;

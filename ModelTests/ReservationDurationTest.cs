@@ -14,8 +14,8 @@ namespace ModelTests
             Assert.AreEqual(reservationDuration.Id, 12);
             Assert.AreEqual(reservationDuration.CheckInDatetime, DateTime.Parse("19/10/21"));
             Assert.AreEqual(reservationDuration.CheckOutDatetime, DateTime.Parse("20/10/21"));
-            Assert.AreEqual(reservationDuration.CheckInDate, DateTime.Parse("19/10/21").ToShortDateString());
-            Assert.AreEqual(reservationDuration.CheckOutDate, DateTime.Parse("20/10/21").ToShortDateString());
+            Assert.AreEqual(reservationDuration.CheckInDateDatabaseFormat, DateTime.Parse("19/10/21").ToShortDateString());
+            Assert.AreEqual(reservationDuration.CheckOutDateDatabaseFormat, DateTime.Parse("20/10/21").ToShortDateString());
         }
 
         [Test]

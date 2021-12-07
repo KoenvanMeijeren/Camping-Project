@@ -8,8 +8,17 @@ using SystemCore;
 
 namespace Model
 {
+    /// <inheritdoc/>
     public class Reservation : ModelBase<Reservation>
     {
+        public const string
+            TableName = "Reservation",
+            ColumnId = "ReservationID",
+            ColumnPlace = "ReservationCampingPlaceID",
+            ColumnCustomer = "ReservationCampingCustomerID",
+            ColumnPeople = "ReservationNumberOfPeople",
+            ColumnDuration = "ReservationDurationID";
+        
         public int NumberOfPeople { get; private set; }
         public CampingCustomer CampingCustomer { get; private set; }
         public CampingPlace CampingPlace { get; private set; }
@@ -17,7 +26,7 @@ namespace Model
         public float TotalPrice { get; private set; }
         public string TotalPriceString { get; private set; }
 
-        public Reservation()
+        public Reservation(): base(TableName, ColumnId)
         {
         }
         
@@ -26,7 +35,7 @@ namespace Model
         {
         }
         
-        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration): base(TableName, ColumnId)
         {
             bool successId = int.TryParse(id, out int numericId);
             bool successPeople = int.TryParse(numberOfPeople, out int numericPeople);
@@ -40,6 +49,10 @@ namespace Model
             this.TotalPriceString = $"€{this.TotalPrice}";
         }
 
+        /// <summary>
+        /// Calculates the total price of the reservation, inclusive all nights.
+        /// </summary>
+        /// <returns>The total price of the reservation.</returns>
         public float CalculateTotalPrice()
         {
             if (this.Duration == null && this.CampingPlace == null)
@@ -58,20 +71,11 @@ namespace Model
 
             return this.CampingPlace.TotalPrice * days;
         }
-        
-        protected override string Table()
-        {
-            return "Reservation";
-        }
 
-        protected override string PrimaryKey()
-        {
-            return "ReservationID";
-        }
-
+        /// <inheritdoc/>
         public override IEnumerable<Reservation> Select()
         {
-            Query query = new Query(this.BaseQuery());
+            Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ReservationDuration.ColumnCheckInDate}");
             var items = query.Select();
             foreach (Dictionary<string, string> dictionary in items)
             {
@@ -86,6 +90,7 @@ namespace Model
             return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
         }
 
+        /// <inheritdoc/>
         protected override Reservation ToModel(Dictionary<string, string> dictionary)
         {
             if (dictionary == null)
@@ -93,41 +98,41 @@ namespace Model
                 return null;
             }
 
-            dictionary.TryGetValue("ReservationID", out string reservationId);
-            dictionary.TryGetValue("ReservationCampingPlaceID", out string campingPlaceId);
-            dictionary.TryGetValue("ReservationNumberOfPeople", out string peopleCount);
-            dictionary.TryGetValue("ReservationCampingCustomerID", out string campingCustomerId);
-            dictionary.TryGetValue("ReservationDurationID", out string durationId);
+            dictionary.TryGetValue(ColumnId, out string reservationId);
+            dictionary.TryGetValue(ColumnPlace, out string campingPlaceId);
+            dictionary.TryGetValue(ColumnPeople, out string peopleCount);
+            dictionary.TryGetValue(ColumnCustomer, out string campingCustomerId);
+            dictionary.TryGetValue(ColumnDuration, out string durationId);
             
-            dictionary.TryGetValue("CampingPlaceTypeID", out string campingPlaceTypeId);
-            dictionary.TryGetValue("CampingPlaceTypeGuestLimit", out string guestLimit);
-            dictionary.TryGetValue("CampingPlaceTypeStandardNightPrice", out string standardNightPrice);
+            dictionary.TryGetValue(CampingPlaceType.ColumnId, out string campingPlaceTypeId);
+            dictionary.TryGetValue(CampingPlaceType.ColumnGuestLimit, out string guestLimit);
+            dictionary.TryGetValue(CampingPlaceType.ColumnNightPrice, out string standardNightPrice);
             
-            dictionary.TryGetValue("AccommodationID", out string accommodationId);
-            dictionary.TryGetValue("AccommodationPrefix", out string prefix);
-            dictionary.TryGetValue("AccommodationName", out string name);
+            dictionary.TryGetValue(Accommodation.ColumnId, out string accommodationId);
+            dictionary.TryGetValue(Accommodation.ColumnPrefix, out string prefix);
+            dictionary.TryGetValue(Accommodation.ColumnName, out string name);
             
-            dictionary.TryGetValue("CampingPlaceNumber", out string placeNumber);
-            dictionary.TryGetValue("CampingPlaceSurface", out string surface);
-            dictionary.TryGetValue("CampingPlaceExtraNightPrice", out string extraNightPrice);
+            dictionary.TryGetValue(CampingPlace.ColumnId, out string placeNumber);
+            dictionary.TryGetValue(CampingPlace.ColumnSurface, out string surface);
+            dictionary.TryGetValue(CampingPlace.ColumnExtraNightPrice, out string extraNightPrice);
             
-            dictionary.TryGetValue("AddressID", out string addressId);
-            dictionary.TryGetValue("Address", out string address);
-            dictionary.TryGetValue("AddressPostalcode", out string postalCode);
-            dictionary.TryGetValue("AddressPlace", out string place);
+            dictionary.TryGetValue(Address.ColumnId, out string addressId);
+            dictionary.TryGetValue(Address.ColumnAddress, out string address);
+            dictionary.TryGetValue(Address.ColumnPostalCode, out string postalCode);
+            dictionary.TryGetValue(Address.ColumnPlace, out string place);
 
-            dictionary.TryGetValue("AccountID", out string accountId);
-            dictionary.TryGetValue("AccountEmail", out string email);
-            dictionary.TryGetValue("AccountPassword", out string password);
-            dictionary.TryGetValue("AccountRights", out string rights);
+            dictionary.TryGetValue(Account.ColumnId, out string accountId);
+            dictionary.TryGetValue(Account.ColumnEmail, out string email);
+            dictionary.TryGetValue(Account.ColumnPassword, out string password);
+            dictionary.TryGetValue(Account.ColumnRights, out string rights);
 
-            dictionary.TryGetValue("CampingCustomerBirthdate", out string birthdate);
-            dictionary.TryGetValue("CampingCustomerPhoneNumber", out string phoneNumber);
-            dictionary.TryGetValue("CampingCustomerFirstName", out string firstName);
-            dictionary.TryGetValue("CampingCustomerLastName", out string lastName);
+            dictionary.TryGetValue(CampingCustomer.ColumnBirthdate, out string birthdate);
+            dictionary.TryGetValue(CampingCustomer.ColumnPhoneNumber, out string phoneNumber);
+            dictionary.TryGetValue(CampingCustomer.ColumnFirstName, out string firstName);
+            dictionary.TryGetValue(CampingCustomer.ColumnLastName, out string lastName);
             
-            dictionary.TryGetValue("ReservationDurationCheckInDatetime", out string checkInDateTime);
-            dictionary.TryGetValue("ReservationDurationCheckOutDatetime", out string checkOutDateTime);
+            dictionary.TryGetValue(ReservationDuration.ColumnCheckInDate, out string checkInDateTime);
+            dictionary.TryGetValue(ReservationDuration.ColumnCheckOutDate, out string checkOutDateTime);
 
             Address customerAddress = new Address(addressId, address, postalCode, place);
             Accommodation accommodation = new Accommodation(accommodationId, prefix, name);
@@ -140,6 +145,7 @@ namespace Model
             return new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
         }
         
+        /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
             return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration);
@@ -149,25 +155,26 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"ReservationNumberOfPeople", numberOfPeople},
-                {"ReservationCampingCustomerID", campingCustomer.Id.ToString()},
-                {"ReservationCampingPlaceID", campingPlace.Id.ToString()},
-                {"ReservationDurationID", duration.Id.ToString()}
+                {ColumnPeople, numberOfPeople},
+                {ColumnCustomer, campingCustomer.Id.ToString()},
+                {ColumnPlace, campingPlace.Id.ToString()},
+                {ColumnDuration, duration.Id.ToString()}
             };
 
             return dictionary;
         }
         
-        protected override string BaseQuery()
+        /// <inheritdoc/>
+        protected override string BaseSelectQuery()
         {
-            string query = "SELECT * FROM Reservation R ";
-            query += " INNER JOIN CampingPlace CP ON CP.CampingPlaceID = R.ReservationCampingPlaceID ";
-            query += " INNER JOIN CampingPlaceType CPT ON CPT.CampingPlaceTypeID = CP.CampingPlaceTypeID ";
-            query += " INNER JOIN Accommodation AM ON AM.AccommodationID = CPT.CampingPlaceTypeAccommodationID ";
-            query += " INNER JOIN CampingCustomer CC ON CC.CampingCustomerID = R.ReservationCampingCustomerID ";
-            query += " INNER JOIN Account AC on CC.CampingCustomerAccountID = AC.AccountID";
-            query += " INNER JOIN Address CCA ON CCA.AddressID = CC.CampingCustomerAddressID ";
-            query += " INNER JOIN ReservationDuration RD ON RD.ReservationDurationID = R.ReservationDurationID ";
+            string query = $"SELECT * FROM {TableName} R ";
+            query += $" INNER JOIN {CampingPlace.TableName} CP ON CP.{CampingPlace.ColumnId} = R.{ColumnPlace} ";
+            query += $" INNER JOIN {CampingPlaceType.TableName} CPT ON CPT.{CampingPlaceType.ColumnId} = CP.{CampingPlace.ColumnType} ";
+            query += $" INNER JOIN {Accommodation.TableName} AM ON AM.{Accommodation.ColumnId} = CPT.{CampingPlaceType.ColumnAccommodation} ";
+            query += $" INNER JOIN {CampingCustomer.TableName} CC ON CC.{CampingCustomer.ColumnId} = R.{ColumnCustomer} ";
+            query += $" INNER JOIN {Account.TableName} AC on CC.{CampingCustomer.ColumnAccount} = AC.{Account.ColumnId}";
+            query += $" INNER JOIN {Address.TableName} CCA ON CCA.{Address.ColumnId} = CC.{CampingCustomer.ColumnAddress} ";
+            query += $" INNER JOIN {ReservationDuration.TableName} RD ON RD.{ReservationDuration.ColumnId} = R.{ColumnDuration} ";
 
             return query;
         }

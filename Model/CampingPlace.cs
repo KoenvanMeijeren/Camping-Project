@@ -7,17 +7,25 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+    /// <inheritdoc/>
     public class CampingPlace : ModelBase<CampingPlace>
     {
+        public const string
+            TableName = "CampingPlace",
+            ColumnId = "CampingPlaceID",
+            ColumnType = "CampingPlaceTypeID",
+            ColumnNumber = "CampingPlaceNumber",
+            ColumnSurface = "CampingPlaceSurface",
+            ColumnExtraNightPrice = "CampingPlaceExtraNightPrice";
+        
         public int Number { get; private set; }
         public float Surface { get; private set; }
         public float ExtraNightPrice { get; private set; }
         public string Location { get; private set; }
-        public string LocationSelect { get; private set; }
         public float TotalPrice { get; private set; }
         public CampingPlaceType Type { get; private set; }
 
-        public CampingPlace()
+        public CampingPlace(): base(TableName, ColumnId)
         {
         }
         
@@ -25,7 +33,7 @@ namespace Model
         {
         }
         
-        public CampingPlace(string id, string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType)
+        public CampingPlace(string id, string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType): base(TableName, ColumnId)
         {
             bool successId = int.TryParse(id, out int numericId);
             bool successNumber = int.TryParse(id, out int numericNumber);
@@ -44,33 +52,22 @@ namespace Model
             this.ExtraNightPrice = successExtraNightPrice ? numericExtraNightPrice : 0;
             this.Type = campingPlaceType;
             this.Location = this.GetLocation();
-            this.LocationSelect = this.GetLocationSelect();
             this.TotalPrice = this.ExtraNightPrice + standardNightPrice;
         }
 
+        /// <summary>
+        /// Gets the location of this camping place.
+        /// </summary>
+        /// <returns>The location build on camping place number and accommodation prefix.</returns>
         public string GetLocation()
         {
             return this.Type == null ? this.Number.ToString() : $"{this.Type.Accommodation.Prefix}-{this.Number}";
         }
 
-        public string GetLocationSelect()
-        {
-            return $"{this.GetLocation()} ({this.Id})";
-        }
-
+        /// <inheritdoc/>
         public override string ToString()
         {
             return this.GetLocation();
-        }
-
-        protected override string Table()
-        {
-            return "CampingPlace";
-        }
-
-        protected override string PrimaryKey()
-        {
-            return "CampingPlaceID";
         }
 
         public bool Update(int number, float surface, float extraNightPrice, CampingPlaceType campingPlaceType)
@@ -83,18 +80,21 @@ namespace Model
             return base.Update(CampingPlace.ToDictionary(number, surface, extraNightPrice, campingPlaceType));
         }
 
+        /// <inheritdoc/>
         protected override CampingPlace ToModel(Dictionary<string, string> dictionary)
         {
-            dictionary.TryGetValue("CampingPlaceID", out string campingPlaceId);
-            dictionary.TryGetValue("CampingPlaceTypeID", out string campingPlaceTypeId);
-            dictionary.TryGetValue("CampingPlaceTypeAccommodationID", out string accommodationId);
-            dictionary.TryGetValue("AccommodationPrefix", out string prefix);
-            dictionary.TryGetValue("AccommodationName", out string accommodationName);
-            dictionary.TryGetValue("CampingPlaceTypeGuestLimit", out string guestLimit);
-            dictionary.TryGetValue("CampingPlaceTypeStandardNightPrice", out string standardNightPrice);
-            dictionary.TryGetValue("CampingPlaceNumber", out string placeNumber);
-            dictionary.TryGetValue("CampingPlaceSurface", out string surface);
-            dictionary.TryGetValue("CampingPlaceExtraNightPrice", out string extraNightPrice);
+            dictionary.TryGetValue(ColumnId, out string campingPlaceId);
+            dictionary.TryGetValue(ColumnType, out string campingPlaceTypeId);
+            dictionary.TryGetValue(ColumnNumber, out string placeNumber);
+            dictionary.TryGetValue(ColumnSurface, out string surface);
+            dictionary.TryGetValue(ColumnExtraNightPrice, out string extraNightPrice);
+            
+            dictionary.TryGetValue(Accommodation.ColumnId, out string accommodationId);
+            dictionary.TryGetValue(Accommodation.ColumnPrefix, out string prefix);
+            dictionary.TryGetValue(Accommodation.ColumnName, out string accommodationName);
+            
+            dictionary.TryGetValue(CampingPlaceType.ColumnGuestLimit, out string guestLimit);
+            dictionary.TryGetValue(CampingPlaceType.ColumnNightPrice, out string standardNightPrice);
 
             Accommodation accommodation = new Accommodation(accommodationId, prefix, accommodationName);
             CampingPlaceType campingPlaceType = new CampingPlaceType(campingPlaceTypeId, guestLimit, standardNightPrice, accommodation);
@@ -102,6 +102,7 @@ namespace Model
             return new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
         }
 
+        /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
             return CampingPlace.ToDictionary(this.Number, this.Surface, this.ExtraNightPrice, this.Type);
@@ -111,20 +112,21 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"CampingPlaceTypeID", campingPlaceType.Id.ToString()},
-                {"CampingPlaceNumber", number.ToString()},
-                {"CampingPlaceSurface", surface.ToString(CultureInfo.InvariantCulture)},
-                {"CampingPlaceExtraNightPrice", extraNightPrice.ToString(CultureInfo.InvariantCulture)}
+                {ColumnType, campingPlaceType.Id.ToString()},
+                {ColumnNumber, number.ToString()},
+                {ColumnSurface, surface.ToString(CultureInfo.InvariantCulture)},
+                {ColumnExtraNightPrice, extraNightPrice.ToString(CultureInfo.InvariantCulture)}
             };
 
             return dictionary;
         }
         
-        protected override string BaseQuery()
+        /// <inheritdoc/>
+        protected override string BaseSelectQuery()
         {
-            string query = base.BaseQuery();
-            query += " INNER JOIN CampingPlaceType CPT ON CPT.CampingPlaceTypeID = BT.CampingPlaceTypeID";
-            query += " INNER JOIN Accommodation ACM ON ACM.AccommodationID = CPT.CampingPlaceTypeAccommodationID";
+            string query = base.BaseSelectQuery();
+            query += $" INNER JOIN {CampingPlaceType.TableName} CPT ON CPT.{CampingPlaceType.ColumnId} = BT.{ColumnType}";
+            query += $" INNER JOIN {Accommodation.TableName} ACM ON ACM.{Accommodation.ColumnId} = CPT.{CampingPlaceType.ColumnAccommodation}";
 
             return query;
         }
