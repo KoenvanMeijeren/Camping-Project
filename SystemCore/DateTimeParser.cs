@@ -36,6 +36,13 @@ namespace SystemCore
                 DateTimeStyles.None, 
                 out dateObject);
 
+            if (success)
+            {
+                return dateObject;
+            }
+            
+            success = DateTime.TryParse(date, out dateObject);
+
             return success ? dateObject : DateTime.MinValue;
         }
         

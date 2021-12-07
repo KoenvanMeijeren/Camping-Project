@@ -36,6 +36,10 @@ namespace SystemCoreTests
             
             Assert.AreEqual(new DateTime(2022, 1, 1), DateTimeParser.TryParse("01-01-2022 12:00:00"));
             Assert.AreEqual(new DateTime(2022, 1, 4), DateTimeParser.TryParse("04-01-2022 12:00:00"));
+
+            Assert.AreEqual(new DateTime(2022, 1, 3), DateTimeParser.TryParse("3-1-2022 00:00:00"));
+            Assert.AreEqual(new DateTime(2022, 1, 4), DateTimeParser.TryParse("4-1-2022 00:00:00"));
+            Assert.AreEqual(new DateTime(2022, 1, 10), DateTimeParser.TryParse("10-1-2022 00:00:00"));
         }
 
         [Test]
