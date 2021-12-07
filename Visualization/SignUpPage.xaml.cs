@@ -35,7 +35,7 @@ namespace Visualization
                 return;
             }
 
-            ((dynamic)this.DataContext).Password = ((PasswordBox)sender).Password;
+            ((SignUpViewModel)this.DataContext).Password = ((PasswordBox)sender).Password;
         }
     }
 }

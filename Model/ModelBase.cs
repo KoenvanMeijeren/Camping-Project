@@ -9,9 +9,9 @@ namespace Model
     /// <summary>
     /// Provides a base model for interacting with database tables. Provides all behavior for interacting with database
     /// tables, such as selecting, inserting, updating and deleting. Further more it provides behavior for rendering a
-    /// database record to a model and vica versa.
+    /// database record to a model and vice versa.
     /// </summary>
-    /// <typeparam name="T">A model class, representing a database table.</typeparam>
+    /// <typeparam name="T">A model class, representing a record within a database table.</typeparam>
     public abstract class ModelBase<T> : IModel
     {
         public int Id { get; protected init; }
