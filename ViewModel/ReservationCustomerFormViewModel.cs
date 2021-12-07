@@ -338,7 +338,7 @@ namespace ViewModel
                 {"AmountOfGuests", ""},
             };
             
-            ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
         }
         
         private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
