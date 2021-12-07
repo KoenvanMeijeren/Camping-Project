@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 using ViewModel;
 
@@ -35,6 +36,7 @@ namespace Visualization
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
@@ -127,9 +129,17 @@ namespace Visualization
         private void OnSignUpEvent(object sender, SignUpEventArgs args)
         {
             CurrentUser.SetCurrentUser(args.Account);
+            this.SignUpButton.Content = "Account";
             this.MainFrame.Content = this._accountPage.Content;
         }
 
-        
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            CurrentUser.EmptyCurrentUser();
+            this.SignUpButton.Content = "Aanmelden";
+            this.MainFrame.Content = this._signUpPage.Content;
+        }
+
+
     }
 }

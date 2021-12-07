@@ -10,8 +10,10 @@ namespace ViewModel
     public static class CurrentUser
     {
         public static Account Account { get; private set; }
-        private static CampingCustomer _campingCustomer;
-        private static CampingOwner _campingOwner;
+        public static CampingCustomer CampingCustomer;
+        public static CampingOwner CampingOwner;
+
+        public static event EventHandler CurrentUserSetEvent;
 
         public static void SetCurrentUser(Account account)
         {
@@ -21,15 +23,24 @@ namespace ViewModel
             {
                 case AccountRights.Customer:
                     Account = account;
-                    _campingCustomer = new CampingCustomer();
-                    _campingCustomer = _campingCustomer.SelectByAccount(account);
+                    CampingCustomer = new CampingCustomer();
+                    CampingCustomer = CampingCustomer.SelectByAccount(account);
                     break;
                 case AccountRights.Admin:
                     Account = account;
-                    _campingOwner = new CampingOwner();
-                    _campingOwner = _campingOwner.SelectByAccount(account);
+                    CampingOwner = new CampingOwner();
+                    CampingOwner = CampingOwner.SelectByAccount(account);
                     break;
             }
+
+            CurrentUserSetEvent?.Invoke(null, new EventArgs());
+        }
+
+        public static void EmptyCurrentUser()
+        {
+            Account = null;
+            CampingCustomer = null;
+            CampingOwner = null;
         }
     }
 }
