@@ -367,6 +367,29 @@ namespace ViewModel
             
             this._errorDictionary.Add(key, value);
         }
+
+        private void ResetInput()
+        {
+            this.FirstName = "";
+            this.FirstNameError = "";
+            this.LastName = "";
+            this.LastNameError = "";
+            this.Birthdate = DateTime.MinValue;
+            this.BirthdateError = "";
+            this.EmailAddress = "";
+            this.EmailAddressError = "";
+            this.PhoneNumber = "";
+            this.PhoneNumberError = "";
+            this.StreetName = "";
+            this.StreetNameError = "";
+            this.AmountOfGuests = "";
+            this.AmountOfGuestsError = "";
+            this.PlaceName = "";
+            this.PlaceNameError = "";
+            this.PostalCode = "";
+            this.PostalCodeError = "";
+            this._errorDictionary.Clear();
+        }
         #endregion
 
         #region Commands
@@ -396,6 +419,7 @@ namespace ViewModel
             reservation.Insert();
             
             ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(reservation.SelectLast()));
+            this.ResetInput();
         }
         private bool CanExecuteCustomerDataReservation()
         {

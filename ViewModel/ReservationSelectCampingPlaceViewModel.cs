@@ -220,10 +220,25 @@ namespace ViewModel
         
         #endregion
 
+        #region Input
+
+        private void ResetInput()
+        {
+            this.SelectedPlaceType = SelectAll;
+            this.SelectedCampingPlace = null;
+            this.CheckInDate = DateTime.Today;
+            this.CheckOutDate = DateTime.Today.AddDays(1);
+            this.MinNightPrice = "";
+            this.MaxNightPrice = "";
+        }
+
+        #endregion
+        
         #region Commands
         private void ExecuteStartReservation()
         {
             ReserveEvent?.Invoke(this, new ReservationDurationEventArgs(this.SelectedCampingPlace, this.CheckInDate, this.CheckOutDate));
+            this.ResetInput();
         }
 
         private bool CanExecuteStartReservation()
