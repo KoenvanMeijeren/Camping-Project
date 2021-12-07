@@ -18,6 +18,7 @@ namespace Visualization
         private readonly SignUpPage _signUpPage;
         private readonly TestInputPage _testInputPage;
         private readonly TestPage _testPage;
+        private readonly ReservationUpdateDeletePage _manageReservationPage;
 
         public MainWindow()
         {
@@ -31,10 +32,12 @@ namespace Visualization
             this._signUpPage = new SignUpPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
+            this._manageReservationPage = new ReservationUpdateDeletePage();
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
+            ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
@@ -130,6 +133,9 @@ namespace Visualization
             this.MainFrame.Content = this._accountPage.Content;
         }
 
-        
+        private void OnManageReservationEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._manageReservationPage.Content;
+        }
     }
 }

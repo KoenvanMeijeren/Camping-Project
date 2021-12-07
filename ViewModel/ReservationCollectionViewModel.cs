@@ -1,13 +1,35 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 
 namespace ViewModel
 {
-    public class ReservationCollectionViewModel
+    public class ReservationCollectionViewModel : ObservableObject
     {
         public ObservableCollection<ReservationViewModel> Reservations { get; private set; }
+        public static event EventHandler<ReservationEventArgs> ManageReservationEvent;
+        private ReservationViewModel _selectedReservation;
+        public ReservationViewModel SelectedReservation
+        {
+            get
+            {
+                return _selectedReservation;
+            }
+            set
+            {
+                if (Equals(value, this._selectedReservation))
+                {
+                    return;
+                }
+
+                this._selectedReservation = value;
+                ManageReservationEvent?.Invoke(this,  new ReservationEventArgs(_selectedReservation.Reservation));
+            }
+        }
+
 
         public ReservationCollectionViewModel()
         {
@@ -26,7 +48,10 @@ namespace ViewModel
         {
             this.Reservations.Add(new ReservationViewModel(args.Reservation));
         }
+
     }
+
+    
 
     public class ReservationViewModel
     {
@@ -36,6 +61,33 @@ namespace ViewModel
         {
             this.Reservation = reservation;
         }
-        
+
+        #region Commands
+        public void ExecuteUpdateReservation()
+        {
+            Console.WriteLine(Reservation.Id);
+        }
+
+        public bool CanExecuteUpdateReservation()
+        {
+            return false;
+        }
+
+        public ICommand UpdateReservation => new RelayCommand(ExecuteUpdateReservation, CanExecuteUpdateReservation);
+
+
+        public void ExecuteDeleteReservation()
+        {
+
+        }
+
+        public bool CanExecuteDeleteReservation()
+        {
+            return false;
+        }
+        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation, CanExecuteDeleteReservation);
+
+
+        #endregion
     }
 }

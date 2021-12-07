@@ -19,15 +19,29 @@
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="23,24,23,37" CornerRadius="15,15,15,15" Background="White"/>
         <Label Content="Reserveringen" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Width="728" Height="36" BorderThickness="0,0,0,2" BorderBrush="Black"/>
 
-        <ListView ItemsSource="{Binding Reservations}" Width="700" Height="400" Margin="10,50,10,95" >
+        <ListView ItemsSource="{Binding Reservations}" Width="700" Height="400" Margin="10,50,10,95" SelectedItem="{Binding SelectedReservation}" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Reservation.Id}" />
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Reservation.Id}" />
                     <GridViewColumn Header="Camping verblijf" Width="100" DisplayMemberBinding="{Binding Reservation.CampingPlace.Location}" />
                     <GridViewColumn Header="Klantnummer" Width="100" DisplayMemberBinding="{Binding Reservation.CampingCustomer.Id}" />
-                    <GridViewColumn Header="Begindatum" Width="150" DisplayMemberBinding="{Binding Reservation.Duration.CheckInDate}" />
-                    <GridViewColumn Header="Einddatum" Width="150" DisplayMemberBinding="{Binding Reservation.Duration.CheckOutDate}" />
+                    <GridViewColumn Header="Begindatum" Width="90" DisplayMemberBinding="{Binding Reservation.Duration.CheckInDate}" />
+                    <GridViewColumn Header="Einddatum" Width="90" DisplayMemberBinding="{Binding Reservation.Duration.CheckOutDate}" />
                     <GridViewColumn Header="Totaalprijs" Width="100" DisplayMemberBinding="{Binding Reservation.TotalPriceString}" />
+                    <GridViewColumn Header="Bijwerken" Width="85">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Bijwerken" Command="{Binding UpdateReservation}"  IsEnabled="True"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Verwijderen" Width="85">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Verwijder" Command="{Binding DeleteReservation}" IsEnabled="True"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
