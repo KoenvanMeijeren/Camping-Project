@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
@@ -24,7 +25,16 @@ namespace ViewModel
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
         {
-            this.Reservations.Add(new ReservationViewModel(args.Reservation));
+            while (this.Reservations.Any())
+            {
+                this.Reservations.RemoveAt(0);
+            }
+            
+            var reservationModel = new Reservation();
+            foreach (var reservation in reservationModel.Select())
+            {
+                this.Reservations.Add(new ReservationViewModel(reservation));
+            }
         }
     }
 
