@@ -26,10 +26,10 @@ namespace Visualization
 
         public void ClickedReservationCustomerRow(object sender, EventArgs e)
         {
-            DataRowView rowview = CustomerReservationTableX.SelectedItem as DataRowView;
-            string id = rowview.Row[0].ToString();
-            Reservation reservationModel = new Reservation();
-            Reservation reservation = reservationModel.SelectById(Int32.Parse(id));
+            // DataRowView rowview = CustomerReservationTableX.SelectedItem as DataRowView;
+            // string id = rowview.Row[0].ToString();
+            // Reservation reservationModel = new Reservation();
+            // Reservation reservation = reservationModel.SelectById(Int32.Parse(id));
         }
     }
 }

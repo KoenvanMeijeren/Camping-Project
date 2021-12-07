@@ -30,7 +30,16 @@
                         </TransformGroup>
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <DataGrid x:Name="CustomerReservationTableX" ItemsSource="{Binding CustomerReservationTable}" Width="auto" CanUserAddRows="false" CanUserDeleteRows="False" IsReadOnly="True" />
+                <!-- <DataGrid x:Name="CustomerReservationTableX" SelectedItem="{Binding CurrentSelectedReservation}" ItemsSource="{Binding CustomerReservationTable}" Width="auto" CanUserAddRows="false" CanUserDeleteRows="False" IsReadOnly="True" /> -->
+                
+                <ListView SelectedItem="{Binding SelectedReservation}" ItemsSource="{Binding ReservationsCollection}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}" />
+                            <GridViewColumn Header="Verblijf" Width="100" DisplayMemberBinding="{Binding CampingPlace.Type.Accommodation.Name}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </StackPanel>
         </Border>
 

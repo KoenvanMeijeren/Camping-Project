@@ -2,6 +2,8 @@
 using Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -48,6 +50,9 @@ namespace ViewModel
                 OnPropertyChanged("CustomerReservationTable");
             }
         }
+
+        private ObservableCollection<Reservation> _reservationsCollection;
+        private Reservation _selectedReservation;
 
         #region Properties
         private string _infoStartDate = "Begindatum: ";
@@ -140,6 +145,38 @@ namespace ViewModel
                 this._InfoTotalPrice = "Totaalprijs: €" + value;
             }
         }
+
+        public ObservableCollection<Reservation> ReservationsCollection
+        {
+            get => this._reservationsCollection;
+            set
+            {
+                if (Equals(value, this._reservationsCollection))
+                {
+                    return;
+                }
+                
+                this._reservationsCollection = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+        
+        public Reservation SelectedReservation
+        {
+            get => this._selectedReservation;
+            set
+            {
+                if (Equals(value, this._selectedReservation))
+                {
+                    return;
+                }
+                
+                this._selectedReservation = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                this.DisplayNewReservationInfoData(this._selectedReservation);
+            }
+        }
         #endregion
 
         public ReservationOverviewViewModel()
@@ -148,6 +185,8 @@ namespace ViewModel
             this.Reservations = reservationModel.GetCustomersReservations(_customerID);
             this.ReservationLabels = this.GenerateReservationLabels();
             this.DisplayNewReservationValues(107);
+
+            this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
         }
 
         /// <summary>
