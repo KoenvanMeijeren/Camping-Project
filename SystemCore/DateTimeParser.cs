@@ -3,11 +3,19 @@ using System.Globalization;
 
 namespace SystemCore
 {
-    public class DateTimeParser
+    /// <summary>
+    /// Provides a date time parser for parsing date times.
+    /// </summary>
+    public static class DateTimeParser
     {
         public const string DatabaseDateTimeFormatString = "MM/dd/yyyy hh:mm:00";
         
-        public static DateTime Parse(string date)
+        /// <summary>
+        /// Parses a datetime string from database format to datetime object.
+        /// </summary>
+        /// <param name="date">The date in database format</param>
+        /// <returns>The datetime object or datetime object with min value in case of invalid date.w</returns>
+        public static DateTime ParseFromDatabaseFormat(string date)
         {
             bool success = DateTime.TryParseExact(date, 
                 DatabaseDateTimeFormatString, 

@@ -17,14 +17,14 @@ namespace ViewModel
         {
             Account = account;
 
-            switch (Account.Rights)
+            switch (Account.AccountRights)
             {
-                case Rights.Customer:
+                case AccountRights.Customer:
                     Account = account;
                     _campingCustomer = new CampingCustomer();
                     _campingCustomer = _campingCustomer.SelectByAccount(account);
                     break;
-                case Rights.Admin:
+                case AccountRights.Admin:
                     Account = account;
                     _campingOwner = new CampingOwner();
                     _campingOwner = _campingOwner.SelectByAccount(account);

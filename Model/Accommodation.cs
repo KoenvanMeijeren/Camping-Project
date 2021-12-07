@@ -2,12 +2,19 @@ using System.Collections.Generic;
 
 namespace Model
 {
+    /// <inheritdoc/>
     public class Accommodation : ModelBase<Accommodation>
     {
+        public const string 
+            TableName = "Accommodation",
+            ColumnId = "AccommodationID", 
+            ColumnName = "AccommodationName", 
+            ColumnPrefix = "AccommodationPrefix";
+        
         public string Prefix { get; private set; }
         public string Name { get; private set; }
 
-        public Accommodation()
+        public Accommodation(): base(TableName, ColumnId)
         {
             
         }
@@ -16,7 +23,7 @@ namespace Model
         {
         }
         
-        public Accommodation(string id, string prefix, string name)
+        public Accommodation(string id, string prefix, string name): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int idNumeric);
             
@@ -25,21 +32,12 @@ namespace Model
             this.Name = name;
         }
 
-        protected override string Table()
-        {
-            return "Accommodation";
-        }
-
-        protected override string PrimaryKey()
-        {
-            return "AccommodationID";
-        }
-
         public bool Update(string prefix, string name)
         {
             return base.Update(Accommodation.ToDictionary(prefix, name));
         }
 
+        /// <inheritdoc/>
         protected override Accommodation ToModel(Dictionary<string, string> dictionary)
         {
             if (dictionary == null)
@@ -47,13 +45,14 @@ namespace Model
                 return null;
             }
             
-            dictionary.TryGetValue("AccommodationID", out string id);
-            dictionary.TryGetValue("AccommodationPrefix", out string prefix);
-            dictionary.TryGetValue("AccommodationName", out string name);
+            dictionary.TryGetValue(ColumnId, out string id);
+            dictionary.TryGetValue(ColumnPrefix, out string prefix);
+            dictionary.TryGetValue(ColumnName, out string name);
 
             return new Accommodation(id, prefix, name);
         }
         
+        /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
             return Accommodation.ToDictionary(this.Prefix, this.Name);
@@ -63,8 +62,8 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"AccommodationPrefix", prefix},
-                {"AccommodationName", name}
+                {ColumnPrefix, prefix},
+                {ColumnName, name}
             };
 
             return dictionary;

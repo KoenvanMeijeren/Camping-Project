@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 
 namespace Model
 {
+    /// <inheritdoc/>
     public class ReservationCampingGuest : ModelBase<ReservationCampingGuest>
     {
+        public const string
+            TableName = "ReservationCampingGuest",
+            ColumnId = "ReservationCampingGuestID",
+            ColumnReservation = "ReservationID",
+            ColumnGuest = "CampingGuestID";
+        
         public Reservation Reservation { get; private set; }
         public CampingGuest CampingGuest { get; private set; }
 
-        public ReservationCampingGuest()
+        public ReservationCampingGuest(): base(TableName, ColumnId)
         {
 
         }
@@ -21,23 +28,13 @@ namespace Model
 
         }
         
-        public ReservationCampingGuest(string id, Reservation reservation, CampingGuest campingGuest)
+        public ReservationCampingGuest(string id, Reservation reservation, CampingGuest campingGuest): base(TableName, ColumnId)
         {
             bool successId = int.TryParse(id, out int numericId);
             
             this.Id = successId ? numericId : -1;
             this.Reservation = reservation;
             this.CampingGuest = campingGuest;
-        }
-
-        protected override string Table()
-        {
-            return "ReservationCampingGuest";
-        }
-
-        protected override string PrimaryKey()
-        {
-            return "ReservationCampingGuestID";
         }
 
         public bool Update(Reservation reservation, CampingGuest campingGuest)
@@ -48,6 +45,7 @@ namespace Model
             return base.Update(ReservationCampingGuest.ToDictionary(reservation, campingGuest));
         }
 
+        /// <inheritdoc/>
         protected override ReservationCampingGuest ToModel(Dictionary<string, string> dictionary)
         {
             if(dictionary == null)
@@ -55,15 +53,17 @@ namespace Model
                 return null;
             }
 
-            dictionary.TryGetValue("ReservationCampingGuestID", out string reservationCampingGuestId);
-            dictionary.TryGetValue("ReservationID", out string reservationId);
-            dictionary.TryGetValue("ReservationCampingPlaceID", out string campingPlaceID);
-            dictionary.TryGetValue("ReservationNumberOfPeople", out string numberOfPeople);
-            dictionary.TryGetValue("ReservationCampingCustomerID", out string campingCustomerId);
-            dictionary.TryGetValue("ReservationDurationID", out string reservationDurationId);
-            dictionary.TryGetValue("CampingGuestID", out string campingGuestId);
-            dictionary.TryGetValue("CampingGuestName", out string campingGuestName);
-            dictionary.TryGetValue("Birthdate", out string birthdate);
+            dictionary.TryGetValue(ColumnId, out string reservationCampingGuestId);
+            dictionary.TryGetValue(ColumnReservation, out string reservationId);
+            dictionary.TryGetValue(Reservation.ColumnPlace, out string campingPlaceID);
+            dictionary.TryGetValue(Reservation.ColumnPeople, out string numberOfPeople);
+            dictionary.TryGetValue(Reservation.ColumnCustomer, out string campingCustomerId);
+            dictionary.TryGetValue(Reservation.ColumnDuration, out string reservationDurationId);
+            
+            dictionary.TryGetValue(ColumnGuest, out string campingGuestId);
+            dictionary.TryGetValue(CampingGuest.ColumnFirstName, out string firstName);
+            dictionary.TryGetValue(CampingGuest.ColumnLastName, out string lastName);
+            dictionary.TryGetValue(CampingGuest.ColumnBirthdate, out string birthdate);
 
 /*
             Reservation reservation = new Reservation(reservationId);
@@ -73,6 +73,8 @@ namespace Model
 
             return null;
         }
+        
+        /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
             return ReservationCampingGuest.ToDictionary(this.Reservation, this.CampingGuest);
@@ -82,18 +84,19 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                { "ReservationID", reservation.Id.ToString()},
-                { "CampingGuestID", campingGuest.Id.ToString()}
+                {ColumnReservation, reservation.Id.ToString()},
+                {ColumnGuest, campingGuest.Id.ToString()}
             };
 
             return dictionary;
         }
 
-        protected override string BaseQuery()
+        /// <inheritdoc/>
+        protected override string BaseSelectQuery()
         {
-            string query = base.BaseQuery();
-            query += " INNER JOIN Reservation RE ON BT.ReservationID = RE.ReservationID";
-            query += " INNER JOIN CampingGuest CG ON BT.CampingGuestID = CG.CampingGuestID";
+            string query = base.BaseSelectQuery();
+            query += $" INNER JOIN {Reservation.TableName} RE ON BT.{ColumnReservation} = RE.{Reservation.ColumnId}";
+            query += $" INNER JOIN {CampingGuest.TableName} CG ON BT.{ColumnGuest} = CG.{CampingGuest.ColumnId}";
 
             return query;
         }

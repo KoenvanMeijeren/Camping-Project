@@ -14,7 +14,7 @@ namespace ModelTests
             Assert.AreEqual(-1, account.Id);
             Assert.AreEqual("test", account.Email);
             Assert.AreEqual("nimda", account.Password);
-            Assert.AreEqual(1, account.Rights);
+            Assert.AreEqual(1, account.AccountRights);
         }
 
 
@@ -25,7 +25,7 @@ namespace ModelTests
             Assert.AreEqual(-1, account.Id);
             Assert.AreEqual(null, account.Email);
             Assert.AreEqual(null, account.Password);
-            Assert.AreEqual(0, account.Rights);
+            Assert.AreEqual(0, account.AccountRights);
         }
     }
 }
