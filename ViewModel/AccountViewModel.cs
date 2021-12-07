@@ -122,7 +122,7 @@ namespace ViewModel
         {
             this._currentAccount = CurrentUser.Account;
 
-            if (_currentAccount.Rights == AccountRights.Admin)
+            if (this._currentAccount.Rights == AccountRights.Admin)
             {
                 this.Name = CurrentUser.CampingOwner.FirstName + " " + CurrentUser.CampingOwner.LastName;
                 this.Mail = CurrentUser.CampingOwner.Account.Email;

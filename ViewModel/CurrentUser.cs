@@ -38,9 +38,9 @@ namespace ViewModel
 
         public static void EmptyCurrentUser()
         {
-            Account = null;
-            CampingCustomer = null;
-            CampingOwner = null;
+            CurrentUser.Account = null;
+            CurrentUser.CampingCustomer = null;
+            CurrentUser.CampingOwner = null;
         }
     }
 }
