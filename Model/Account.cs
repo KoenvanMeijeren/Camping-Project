@@ -28,7 +28,7 @@ namespace Model
         
         public string Email { get; private set; }
         public string Password { get; private set; }
-        public AccountRights AccountRights { get; private set; }
+        public AccountRights Rights { get; private set; }
 
         public Account(): base(TableName, ColumnId)
         {
@@ -47,10 +47,10 @@ namespace Model
             this.Email = email;
             this.Password = password;
 
-            this.AccountRights = AccountRights.Customer;
+            this.Rights = AccountRights.Customer;
             if (successRights && rightsNumeric == (int) AccountRights.Admin)
             {
-                this.AccountRights = AccountRights.Admin;
+                this.Rights = AccountRights.Admin;
             }
         }
 
@@ -59,10 +59,10 @@ namespace Model
             this.Email = email;
             this.Password = password;
 
-            this.AccountRights = AccountRights.Customer;
+            this.Rights = AccountRights.Customer;
             if (rights == (int) AccountRights.Admin)
             {
-                this.AccountRights = AccountRights.Admin;
+                this.Rights = AccountRights.Admin;
             }
 
             return base.Update(Account.ToDictionary(email, password, rights));
@@ -87,7 +87,7 @@ namespace Model
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Account.ToDictionary(this.Email, this.Password, (int) this.AccountRights);
+            return Account.ToDictionary(this.Email, this.Password, (int) this.Rights);
         }
 
         private static Dictionary<string, string> ToDictionary(string email, string password, int rights)

@@ -20,9 +20,11 @@ namespace Model
         
         public int Number { get; private set; }
         public float Surface { get; private set; }
+        public string SurfaceReadable { get; private set; }
         public float ExtraNightPrice { get; private set; }
         public string Location { get; private set; }
         public float TotalPrice { get; private set; }
+        public string TotalPriceReadable { get; private set; }
         public CampingPlaceType Type { get; private set; }
 
         public CampingPlace(): base(TableName, ColumnId)
@@ -53,6 +55,8 @@ namespace Model
             this.Type = campingPlaceType;
             this.Location = this.GetLocation();
             this.TotalPrice = this.ExtraNightPrice + standardNightPrice;
+            this.TotalPriceReadable = $"€ {this.TotalPrice}";
+            this.SurfaceReadable = $"{this.Surface} m3";
         }
 
         /// <summary>

@@ -104,7 +104,7 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {ColumnId, address.Id.ToString()},
+                {ColumnAddress, address.Id.ToString()},
                 {ColumnBirthdate, birthdate.ToString(CultureInfo.InvariantCulture)},
                 {ColumnPhoneNumber, phoneNumber},
                 {ColumnFirstName, firstName},
@@ -124,7 +124,7 @@ namespace Model
         {
             string query = base.BaseSelectQuery();
             query += $" INNER JOIN {Address.TableName} A ON BT.{ColumnAddress} = A.{Address.ColumnId}";
-            query += $" INNER JOIN {Account.TableName} AC ON BT.{ColumnAccount} = AC.{Account.ColumnId}";
+            query += $" LEFT JOIN {Account.TableName} AC ON BT.{ColumnAccount} = AC.{Account.ColumnId}";
 
             return query;
         }

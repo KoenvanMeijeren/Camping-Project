@@ -22,6 +22,7 @@ namespace Model
         
         public string CheckInDate { get; private set; }
         public string CheckOutDate { get; private set; }
+        
         public string CheckInDateDatabaseFormat { get; private set; }
         public string CheckOutDateDatabaseFormat { get; private set; }
 
@@ -40,12 +41,14 @@ namespace Model
             bool successId = int.TryParse(id, out int numericId);
 
             this.Id = successId ? numericId : -1;
-            this.CheckInDatetime = DateTimeParser.ParseFromDatabaseFormat(checkInDate);
-            this.CheckOutDatetime = DateTimeParser.ParseFromDatabaseFormat(checkOutDate);
+            this.CheckInDatetime = DateTimeParser.TryParse(checkInDate);
+            this.CheckOutDatetime = DateTimeParser.TryParse(checkOutDate);
+            
             this.CheckInDate = this.CheckInDatetime.ToShortDateString();
             this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
-            this.CheckInDateDatabaseFormat = checkInDate;
-            this.CheckOutDateDatabaseFormat = checkOutDate;
+            
+            this.CheckInDateDatabaseFormat = DateTimeParser.TryParseToDatabaseFormat(this.CheckInDatetime);
+            this.CheckOutDateDatabaseFormat = DateTimeParser.TryParseToDatabaseFormat(this.CheckOutDatetime);
         }
 
         public bool Update(string checkInDate, string checkOutDate)
