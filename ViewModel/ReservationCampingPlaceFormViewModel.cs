@@ -8,11 +8,12 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Input;
 
 namespace ViewModel
 {
-    public class ReservationSelectCampingPlaceViewModel : ObservableObject
+    public class ReservationCampingPlaceFormViewModel : ObservableObject
     {
         #region Fields
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
@@ -80,9 +81,13 @@ namespace ViewModel
                     return;
                 }
 
+                int daysDifference = this._checkOutDate.Subtract(this._checkInDate).Days;
+                
                 this._checkInDate = value;
                 this.SetOverview();
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
             }
         }
 
@@ -168,7 +173,7 @@ namespace ViewModel
 
         #region View construction
         
-        public ReservationSelectCampingPlaceViewModel()
+        public ReservationCampingPlaceFormViewModel()
         {
             this.CampingPlaceTypes = new ObservableCollection<string>();
             
@@ -220,10 +225,32 @@ namespace ViewModel
         
         #endregion
 
+        #region Input
+
+        private void ResetInput()
+        {
+            this.SelectedPlaceType = SelectAll;
+            this.SelectedCampingPlace = null;
+            this.CheckInDate = DateTime.Today;
+            this.CheckOutDate = DateTime.Today.AddDays(1);
+            this.MinNightPrice = "";
+            this.MaxNightPrice = "";
+        }
+
+        #endregion
+        
         #region Commands
         private void ExecuteStartReservation()
         {
-            ReserveEvent?.Invoke(this, new ReservationDurationEventArgs(this.SelectedCampingPlace, this.CheckInDate, this.CheckOutDate));
+            ReservationDuration reservationDuration = new ReservationDuration(
+                this.CheckInDate.ToString(CultureInfo.InvariantCulture), 
+                this.CheckOutDate.ToString(CultureInfo.InvariantCulture)
+            );
+            reservationDuration.Insert();
+            var lastReservationDuration = reservationDuration.SelectLast();
+            
+            ReserveEvent?.Invoke(this, new ReservationDurationEventArgs(this.SelectedCampingPlace, lastReservationDuration));
+            this.ResetInput();
         }
 
         private bool CanExecuteStartReservation()
