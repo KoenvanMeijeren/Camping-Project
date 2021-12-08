@@ -209,7 +209,7 @@ namespace ViewModel
             
             if (int.TryParse(this.Guests, out int guests))
             {
-                reservationItems = reservationItems.Where(reservation => reservation.CampingPlace.Type.GuestLimit >= guests).ToList();
+                reservationItems = reservationItems.Where(reservation => reservation.NumberOfPeople >= guests).ToList();
             }
             
             foreach (var reservation in reservationItems)
