@@ -12,7 +12,7 @@ namespace ViewModelTests
 {
     public class CampingPlacesCollectionViewModelTest
     {
-        private Mock<CampingPlacesCollectionViewModel> CampingPlacesMock;
+        private Mock<ReservationCampingPlaceFormViewModel> CampingPlacesMock;
         private List<CampingPlace> campingPlaceList;
         private DateTime CheckinDate;
         private DateTime CheckoutDate;
@@ -23,7 +23,7 @@ namespace ViewModelTests
         [SetUp]
         public void Setup()
         {
-            CampingPlacesMock = new Mock<CampingPlacesCollectionViewModel>();
+            CampingPlacesMock = new Mock<ReservationCampingPlaceFormViewModel>();
             CheckinDate = DateTime.Today.AddDays(1);
             CheckoutDate = DateTime.Today.AddDays(3);
 
@@ -42,7 +42,7 @@ namespace ViewModelTests
 
             //IEnumerable<CampingPlace> campingPlaceNumerable = campingPlaceList;
             CampingPlacesMock.Setup(x => x.GetCampingPlaces()).Returns(campingPlaceList);
-            CampingPlacesMock.Object.SelectedPlaceType = "Alle";
+            CampingPlacesMock.Object.SelectedCampingPlaceType = ReservationCampingPlaceFormViewModel.SelectAll;
             CampingPlacesMock.Object.MinNightPrice = "0";
             CampingPlacesMock.Object.MaxNightPrice = "2000";
             CampingPlacesMock.Object.CheckInDate = DateTime.Today;
@@ -58,7 +58,7 @@ namespace ViewModelTests
             string expectedSelectedPlaceType = "Alle";
 
 
-            Assert.AreEqual(CampingPlacesMock.Object.SelectedPlaceType, expectedSelectedPlaceType);
+            Assert.AreEqual(CampingPlacesMock.Object.SelectedCampingPlaceType, expectedSelectedPlaceType);
             Assert.IsTrue(CampingPlacesMock.Object.CampingPlaceTypes.Count() > 0);
             Assert.IsTrue(mockListFilterOnDate.Count() > 0);
             Assert.IsTrue(mockListGetCampingPlaces.Count() > 0);
@@ -71,19 +71,19 @@ namespace ViewModelTests
         [Test]
         public void TestFilterCampingPlaceType()
         {
-            CampingPlacesMock.Object.SelectedPlaceType = "Caravan";
+            CampingPlacesMock.Object.SelectedCampingPlaceType = "Caravan";
             Assert.IsTrue(CampingPlacesMock.Object.CampingPlaces.Count() == 1);
 
-            CampingPlacesMock.Object.SelectedPlaceType = "Chalet";
+            CampingPlacesMock.Object.SelectedCampingPlaceType = "Chalet";
             Assert.IsTrue(CampingPlacesMock.Object.CampingPlaces.Count() == 2);
 
-            CampingPlacesMock.Object.SelectedPlaceType = "Camper";
+            CampingPlacesMock.Object.SelectedCampingPlaceType = "Camper";
             Assert.IsTrue(CampingPlacesMock.Object.CampingPlaces.Count() == 3);
 
-            CampingPlacesMock.Object.SelectedPlaceType = "Tent";
+            CampingPlacesMock.Object.SelectedCampingPlaceType = "Tent";
             Assert.IsTrue(CampingPlacesMock.Object.CampingPlaces.Count() == 1);
 
-            CampingPlacesMock.Object.SelectedPlaceType = "Bungalow";
+            CampingPlacesMock.Object.SelectedCampingPlaceType = "Bungalow";
             Assert.IsTrue(CampingPlacesMock.Object.CampingPlaces.Count() == 1);
         }
 
