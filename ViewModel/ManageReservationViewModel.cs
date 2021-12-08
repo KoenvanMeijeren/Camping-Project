@@ -155,27 +155,6 @@ namespace ViewModel
         }
 
         #region Command
-
-       /* private void ExecuteUpdateReservation()
-        {
-            var result = MessageBox.Show("Weet u zeker dat u de reservering wil aanpassen?", "Reservering bijwerken", MessageBoxButton.YesNo);
-            if (result != MessageBoxResult.Yes)
-            {
-                return;
-            }
-            
-            ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
-            Reservation updatedReservationObject =new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
-            
-            bool succesfullyUpdated = updatedReservationObject.Update(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);                
-            bool durationsuccesfullyupdated = updatedReservationDuraton.Update(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
-                
-            if (succesfullyUpdated && durationsuccesfullyupdated)
-            {
-                MessageBox.Show("Reservering is aangepast!", "Reservering is bijgewerkt", System.Windows.MessageBoxButton.OK);
-            }
-        }*/
-
         private bool CanExecuteUpdateReservation()
         {
             return true;
@@ -198,10 +177,14 @@ namespace ViewModel
             bool succesfullyUpdated = updatedReservationObject.Update(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
             bool durationsuccesfullyupdated = updatedReservationDuraton.Update(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
 
-            if (succesfullyUpdated && durationsuccesfullyupdated)
+            string context = "Reservering is aangepast!";
+            string caption = "Reservering is bijgwerkt";
+            if (succesfullyUpdated || durationsuccesfullyupdated)
             {
-                MessageBox.Show("Reservering is aangepast!", "Reservering is bijgewerkt", System.Windows.MessageBoxButton.OK);
+                context = "Reservering is door vage omstandigheden niet goed aangepast";
+                caption = "Reservering is mogelijk bijgewerkt";
             }
+            MessageBox.Show(context, caption, System.Windows.MessageBoxButton.OK);
 
         }
 
@@ -222,7 +205,26 @@ namespace ViewModel
 
         private void ExecuteDeleteReservation()
         {
-            //FromReservationBackToDashboardEvent?.Invoke(this, new ReservationEventArgs(_reservation));
+            var result = MessageBox.Show("Weet u zeker dat u deze reservering wil verwijderen?", "Reservering verwijderen", MessageBoxButton.YesNo);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            ReservationDuration deletedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
+            Reservation deletedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, deletedReservationDuraton);
+
+            bool succesfullDeleted = deletedReservationDuraton.Delete();
+            bool durationsuccesfullydeleted = deletedReservationObject.Delete();
+
+            string context = "Reservering is verwijderd!";
+            string caption = "Succesvol verwijderd";
+            if (succesfullDeleted || durationsuccesfullydeleted)
+            {
+                context = "Reservering is door vage omstandigheden niet goed verwijderd";
+                caption = "Reservering is mogelijk geheel verwijderd";
+            }
+            MessageBox.Show(context, caption, System.Windows.MessageBoxButton.OK);
         }
 
         private bool CanExecuteDeleteReservation()

@@ -9,13 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelTests", "ModelTests\ModelTests.csproj", "{85A02BEA-DCA0-4EB5-A193-7DD70B0F11E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemCore", "SystemCore\SystemCore.csproj", "{52035C9C-200B-4251-BB64-67EEE7C425DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemCore", "SystemCore\SystemCore.csproj", "{52035C9C-200B-4251-BB64-67EEE7C425DB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{25982CD9-4BAC-4FDB-8392-753FA8367335}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{25982CD9-4BAC-4FDB-8392-753FA8367335}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModelTests", "ViewModelTests\ViewModelTests.csproj", "{3B7A4F40-60F4-461A-8AC6-2E37B63EC6E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModelTests", "ViewModelTests\ViewModelTests.csproj", "{3B7A4F40-60F4-461A-8AC6-2E37B63EC6E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemCoreTests", "SystemCoreTests\SystemCoreTests.csproj", "{EF621655-96E9-4814-9373-CFB89D7114BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemCoreTests", "SystemCoreTests\SystemCoreTests.csproj", "{EF621655-96E9-4814-9373-CFB89D7114BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

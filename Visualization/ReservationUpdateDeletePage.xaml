@@ -16,7 +16,7 @@
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="23,24,23,37" CornerRadius="15,15,15,15" Background="White">
             <DatePicker SelectedDate="{Binding Path=CheckOutDate, Mode=TwoWay}" Margin="160,414,488,119" Name="CheckOutDate" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
         </Border>
-        <Button Content ="Verwijder" Margin="72,531,617,69" Background="Red" Foreground="white" FontSize="16" FontFamily="Century gothic" RenderTransformOrigin="0.5,0.5">
+        <Button Content ="Verwijder" Command="{Binding DeleteReservation}" Margin="72,531,617,69" Background="Red" Foreground="white" FontSize="16" FontFamily="Century gothic" RenderTransformOrigin="0.5,0.5">
             <Button.Resources>
                 <Style TargetType = "{x:Type Border}" >
                     <Setter Property="CornerRadius" Value="5"/>
