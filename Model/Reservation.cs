@@ -90,6 +90,12 @@ namespace Model
             return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
         }
 
+        public int CreateUpdateStatement(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        {
+            //sqlcommand toevoegen
+            return base.CreateCommitUpdateStatement(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
+        }
+
         /// <inheritdoc/>
         protected override Reservation ToModel(Dictionary<string, string> dictionary)
         {

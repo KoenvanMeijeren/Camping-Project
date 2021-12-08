@@ -51,6 +51,13 @@ namespace Model
             return base.Update(ReservationDuration.ToDictionary(this.CheckInDateDatabaseFormat, this.CheckOutDateDatabaseFormat));
         }
 
+        public int CreateUpdateStatement(string checkInDate, string checkOutDate)
+        {
+            this.ParseInputDates(checkInDate, checkOutDate);
+
+            return base.CreateCommitUpdateStatement(ReservationDuration.ToDictionary(this.CheckInDateDatabaseFormat, this.CheckOutDateDatabaseFormat));
+        }
+
         private void ParseInputDates(string checkInDate, string checkOutDate)
         {
             this.CheckInDatetime = DateTimeParser.TryParse(checkInDate);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
+using SystemCore;
 
 namespace ViewModel
 {
@@ -153,18 +155,7 @@ namespace ViewModel
 
         #region Command
 
-    /*    private void ExecuteReverseReservationmanagement()
-        {
-           
-        }
-        private bool CanExecuteReverseReservationmanagement()
-        {
-            return true;
-        }
-        public ICommand BackToDashboard => new RelayCommand(ExecuteReverseReservationmanagement, CanExecuteReverseReservationmanagement);*/
-
-
-        private void ExecuteUpdateReservation()
+       /* private void ExecuteUpdateReservation()
         {
             var result = MessageBox.Show("Weet u zeker dat u de reservering wil aanpassen?", "Reservering bijwerken", MessageBoxButton.YesNo);
             if (result != MessageBoxResult.Yes)
@@ -182,7 +173,7 @@ namespace ViewModel
             {
                 MessageBox.Show("Reservering is aangepast!", "Reservering is bijgewerkt", System.Windows.MessageBoxButton.OK);
             }
-        }
+        }*/
 
         private bool CanExecuteUpdateReservation()
         {
@@ -190,5 +181,85 @@ namespace ViewModel
         }
         public ICommand UpdateReservation => new RelayCommand(ExecuteUpdateReservation, CanExecuteUpdateReservation);
         #endregion
+
+
+        private void ExecuteUpdateReservation()
+        {
+            /* 
+
+              ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
+              Reservation updatedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
+
+              bool succesfullyUpdated = updatedReservationObject.Update(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
+              bool durationsuccesfullyupdated = updatedReservationDuraton.Update(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
+
+              if (succesfullyUpdated && durationsuccesfullyupdated)
+              {
+                  MessageBox.Show("Reservering is aangepast!", "Reservering is bijgewerkt", System.Windows.MessageBoxButton.OK);
+              }*/
+
+            var result = MessageBox.Show("Weet u zeker dat u de reservering wil aanpassen?", "Reservering bijwerken", MessageBoxButton.YesNo);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            DatabaseConnector.Open();
+            using (SqlConnection connection = DatabaseConnector.GetConnection())
+            {               
+                SqlCommand command = connection.CreateCommand();
+                SqlTransaction transaction;
+
+                // Start a local transaction.
+                transaction = connection.BeginTransaction("UpdateReservationTransaction");
+
+                // Must assign both transaction object and connection
+                // to Command object for a pending local transaction
+                command.Connection = connection;
+                command.Transaction = transaction;
+
+                ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
+                Reservation updatedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
+                try
+                {
+                    Query updateReservationQuery= updatedReservationObject.CreateUpdateStatement(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
+                    command.CommandText = updateReservationQuery.getQueryStatement();
+                    //command.Parameters.AddWithValue();
+                    command.ExecuteNonQuery();
+                    //"UPDATE Reservation SET ReservationNumberOfPeople = @ReservationNumberOfPeople, ReservationCampingCustomerID = @ReservationCampingCustomerID, ReservationCampingPlaceID = @ReservationCampingPlaceID, ReservationDurationID = @ReservationDurationID WHERE ReservationID = @ReservationID"
+
+                    Query updateReservationDuration = updatedReservationDuraton.CreateUpdateStatement(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
+                    command.CommandText = updateReservationDuration.ToString();
+                    command.ExecuteNonQuery();
+
+                    // Attempt to commit the transaction.
+                    transaction.Commit();
+                    
+                    MessageBox.Show("Reservering is aangepast!", "Reservering is bijgewerkt", System.Windows.MessageBoxButton.OK);
+                    
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Commit Exception Type: {0}", ex.GetType());
+                    Console.WriteLine("  Message: {0}", ex.Message);
+
+                    // Attempt to roll back the transaction.
+                    try
+                    {
+                        transaction.Rollback();
+                    }
+                    catch (Exception ex2)
+                    {
+                        //catch a closed connection.
+                        Console.WriteLine("Rollback Exception Type: {0}", ex2.GetType());
+                        Console.WriteLine("  Message: {0}", ex2.Message);
+                    }
+                }
+            }
+
+           
+
+        }
+
     }
 }
