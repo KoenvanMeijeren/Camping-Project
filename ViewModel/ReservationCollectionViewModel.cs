@@ -10,6 +10,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
+using System.Collections.Generic;
 
 namespace ViewModel
 {
@@ -233,12 +234,13 @@ namespace ViewModel
             pdfWriter.PageEvent = pageEvents;
             document.Open();
 
-            foreach (var reservation in reservationModel.Select())
+            foreach (var reservation in this.Reservations)
             {
-                document.Add(new Paragraph(" "));
-                float[] columnWidths = { 3, 5, 5, 8, 8, 5, 6 };
+                float[] columnWidths = { 3, 5, 8, 8, 8, 5, 6 };
                 PdfPTable reservationTable = new PdfPTable(columnWidths);
 
+                document.Add(new Paragraph("\n"));
+                document.Add(new Paragraph("\n"));
                 reservationTable.AddCell("ID");
                 reservationTable.AddCell("Camping plaats");
                 reservationTable.AddCell("Naam");
@@ -247,14 +249,15 @@ namespace ViewModel
                 reservationTable.AddCell("Prijs");
                 reservationTable.AddCell("Aanwezig");
 
-                reservationTable.AddCell(reservation.Id.ToString());
-                reservationTable.AddCell(reservation.CampingPlace.ToString());
-                reservationTable.AddCell(reservation.CampingCustomer.FirstName.ToString() + " " + reservation.CampingCustomer.LastName.ToString());
-                reservationTable.AddCell(reservation.Duration.CheckInDate.ToString());
-                reservationTable.AddCell(reservation.Duration.CheckOutDate.ToString());
-                reservationTable.AddCell(" €" + reservation.TotalPrice.ToString());
+                reservationTable.AddCell(reservation.Reservation.Id.ToString());
+                reservationTable.AddCell(reservation.Reservation.CampingPlace.ToString());
+                reservationTable.AddCell(reservation.Reservation.CampingCustomer.FirstName.ToString() + " " + reservation.Reservation.CampingCustomer.LastName.ToString());
+                reservationTable.AddCell(reservation.Reservation.Duration.CheckInDate.ToString());
+                reservationTable.AddCell(reservation.Reservation.Duration.CheckOutDate.ToString());
+                reservationTable.AddCell(" €" + reservation.Reservation.TotalPrice.ToString());
                 reservationTable.AddCell(" ");
 
+                document.Add(new Paragraph("\n"));
                 document.Add(reservationTable);
 
                 

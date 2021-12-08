@@ -32,7 +32,7 @@ namespace ViewModel
             _templates.Add(templateTop);
 
             int pageN = writer.CurrentPageNumber;
-            string pageFooter = "Pagina " + pageN.ToString() + " van de ";
+            string pageFooter = "\nPagina " + pageN.ToString() + " van de ";
             string pageHeader = "Reserveringsoverzicht: " + results.Name;
             Image image = Image.GetInstance(".\\Images\\caravan-solid.png");
             image.SetAbsolutePosition(36, 800);
