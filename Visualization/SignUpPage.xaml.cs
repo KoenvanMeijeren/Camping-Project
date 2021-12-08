@@ -1,9 +1,7 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,13 +17,13 @@ using ViewModel;
 namespace Visualization
 {
     /// <summary>
-    /// Interaction logic for SignUpPage.xaml
+    /// Interaction logic for RegisterPage.xaml
     /// </summary>
-    public partial class SignUpPage : Page
+    public partial class RegisterPage : Page
     {
-        public SignUpPage()
+        public RegisterPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void PasswordTextChanged(object sender, RoutedEventArgs e)
@@ -35,7 +33,7 @@ namespace Visualization
                 return;
             }
 
-            ((SignUpViewModel)this.DataContext).Password = ((PasswordBox)sender).Password;
+            ((RegisterViewModel)this.DataContext).Password = ((PasswordBox)sender).Password;
         }
     }
 }

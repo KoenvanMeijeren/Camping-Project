@@ -138,7 +138,7 @@ namespace Visualization
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
 
-        private void OnSignUpEvent(object sender, SignUpEventArgs args)
+        private void OnSignUpEvent(object sender, AccountEventArgs args)
         {
             SignUpButton.Visibility = Visibility.Collapsed;
             AccountButton.Visibility = Visibility.Visible;
