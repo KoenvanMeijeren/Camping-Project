@@ -15,10 +15,7 @@ namespace ViewModel
         private ReservationViewModel _selectedReservation;
         public ReservationViewModel SelectedReservation
         {
-            get
-            {
-                return _selectedReservation;
-            }
+            get => _selectedReservation;
             set
             {
                 if (Equals(value, this._selectedReservation))
@@ -27,7 +24,7 @@ namespace ViewModel
                 }
 
                 this._selectedReservation = value;
-                ManageReservationEvent?.Invoke(this,  new ReservationEventArgs(_selectedReservation.Reservation));
+                ManageReservationEvent?.Invoke(this,  new ReservationEventArgs(this._selectedReservation.Reservation));
             }
         }
 

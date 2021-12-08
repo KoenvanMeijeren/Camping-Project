@@ -166,25 +166,23 @@ namespace ViewModel
 
         private void ExecuteUpdateReservation()
         {
-            var result = MessageBox.Show("Weet u zeker dat u de reservering wil aanpassen?", "Reservering bijwerken", System.Windows.MessageBoxButton.YesNo);
-            if (result == MessageBoxResult.Yes)
+            var result = MessageBox.Show("Weet u zeker dat u de reservering wil aanpassen?", "Reservering bijwerken", MessageBoxButton.YesNo);
+            if (result != MessageBoxResult.Yes)
             {
-                ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
-                Reservation updatedReservationObject =new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
+                return;
+            }
+            
+            ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
+            Reservation updatedReservationObject =new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
+            
+            bool succesfullyUpdated = updatedReservationObject.Update(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);                
+            bool durationsuccesfullyupdated = updatedReservationDuraton.Update(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
                 
-                //in 1x moet het gecommict worden
-                    
-                bool succesfullyUpdated = updatedReservationObject.Update(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);                
-                bool durationsuccesfullyupdated = updatedReservationDuraton.Update(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
-                
-                if (succesfullyUpdated && durationsuccesfullyupdated)
-                {
-                    MessageBox.Show("Reservering is aangepast!", "Reservering is bijgewerkt", System.Windows.MessageBoxButton.OK);
-                }
-            }            
+            if (succesfullyUpdated && durationsuccesfullyupdated)
+            {
+                MessageBox.Show("Reservering is aangepast!", "Reservering is bijgewerkt", System.Windows.MessageBoxButton.OK);
+            }
         }
-
-
 
         private bool CanExecuteUpdateReservation()
         {

@@ -41,6 +41,18 @@ namespace Model
             bool successId = int.TryParse(id, out int numericId);
 
             this.Id = successId ? numericId : -1;
+            this.ParseInputDates(checkInDate, checkOutDate);
+        }
+
+        public bool Update(string checkInDate, string checkOutDate)
+        {
+            this.ParseInputDates(checkInDate, checkOutDate);
+            
+            return base.Update(ReservationDuration.ToDictionary(this.CheckInDateDatabaseFormat, this.CheckOutDateDatabaseFormat));
+        }
+
+        private void ParseInputDates(string checkInDate, string checkOutDate)
+        {
             this.CheckInDatetime = DateTimeParser.TryParse(checkInDate);
             this.CheckOutDatetime = DateTimeParser.TryParse(checkOutDate);
             
@@ -49,14 +61,6 @@ namespace Model
             
             this.CheckInDateDatabaseFormat = DateTimeParser.TryParseToDatabaseFormat(this.CheckInDatetime);
             this.CheckOutDateDatabaseFormat = DateTimeParser.TryParseToDatabaseFormat(this.CheckOutDatetime);
-        }
-
-        public bool Update(string checkInDate, string checkOutDate)
-        {
-            this.CheckInDateDatabaseFormat = checkInDate;
-            this.CheckOutDateDatabaseFormat = checkOutDate;
-
-            return base.Update(ReservationDuration.ToDictionary(checkInDate, checkOutDate));
         }
 
         /// <inheritdoc/>
