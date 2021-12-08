@@ -91,12 +91,7 @@ namespace ViewModel
 
             document.Close();
 
-
-            var prs = new ProcessStartInfo("C:\\Program Files\\Internet Explorer\\iexplore.exe")
-            {
-                Arguments = "C:\\Users\\Henk\\Downloads\\Reserveringen Overzicht.pdf"
-            };
-            Process.Start(prs);
+            Process.Start("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", "file:///" + appData + "\\Downloads\\Reserveringen%20Overzicht.pdf");
         }
 
         public ICommand CreatePdf => new RelayCommand(ExecuteCreatePdf);
