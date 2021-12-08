@@ -31,5 +31,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button x:Name="CreatePdf" Command="{Binding CreatePdf}" Content="Maak PDF" Height="30" Width="100" Margin="612,512,47,41"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
     </Grid>
 </Page>

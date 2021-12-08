@@ -20,7 +20,7 @@ namespace SystemCore
             {
                 throw exception;
             }
-
+            return;
             MessageBox.Show(
                 "Er ging iets fout tijdens het uitvoeren van deze applictie, probeer het alstublieft opnieuw of neem contact op met de beheerders.", 
                 "Foutmelding",
