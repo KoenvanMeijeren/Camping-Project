@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SystemCore;
 
 namespace Model
 {
@@ -35,6 +36,27 @@ namespace Model
             this.Id = successId ? numericId : -1;
             this.Reservation = reservation;
             this.CampingGuest = campingGuest;
+        }
+
+        /// <summary>
+        /// Returns all the guests from given reservation.
+        /// </summary>
+        /// <param name="reservation">Reservation</param>
+        /// <returns>List of ReservationCampingGuests</returns>
+        public List<CampingGuest> GetReservationGuests(Reservation reservation)
+        {
+            Query query = new Query($"SELECT * FROM {ReservationCampingGuest.TableName} INNER JOIN CampingGuest ON ReservationCampingGuest.CampingGuestID = CampingGuest.CampingGuestID WHERE ReservationCampingGuest.ReservationID = @reservationId");
+/*            Query query = new Query($"SELECT * FROM CG.{TableName} INNER JOIN RCG.{ReservationCampingGuest.TableName} CG.{ColumnId} = RCG.{ReservationCampingGuest.ColumnGuest} WHERE {ReservationCampingGuest.ColumnReservation} = @reservationId");
+*/            query.AddParameter("reservationId", reservation.Id);
+            var QueryResults = query.Select();
+
+            List<CampingGuest> campingGuests = new List<CampingGuest>();
+            CampingGuest campingGuestModel = new CampingGuest();
+            foreach (var item in query.Select())
+            {
+            }
+
+            return campingGuests;
         }
 
         public bool Update(Reservation reservation, CampingGuest campingGuest)

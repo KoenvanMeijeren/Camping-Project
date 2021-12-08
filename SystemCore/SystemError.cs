@@ -15,18 +15,22 @@ namespace SystemCore
         /// <param name="message">The message.</param>
         public static void Handle(Exception exception, string message = null)
         {
+            return;
             var success = bool.TryParse(ConfigReader.GetSetting("debug"), out bool debug);
             if (success && debug)
             {
                 throw exception;
             }
 
+            if (1 == 2)
+            {
             MessageBox.Show(
                 "Er ging iets fout tijdens het uitvoeren van deze applictie, probeer het alstublieft opnieuw of neem contact op met de beheerders.", 
                 "Foutmelding",
                 MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.None
             );
             Environment.Exit(-1);
+            }
         }
     }
 }

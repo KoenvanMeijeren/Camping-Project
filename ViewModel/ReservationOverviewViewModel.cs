@@ -53,6 +53,7 @@ namespace ViewModel
 
         private ObservableCollection<Reservation> _reservationsCollection;
         private Reservation _selectedReservation;
+        private ObservableCollection<CampingGuest> _campingGuestCollection;
 
         #region Properties
         private string _infoStartDate = "Begindatum: ";
@@ -160,7 +161,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-        
         public Reservation SelectedReservation
         {
             get => this._selectedReservation;
@@ -174,7 +174,23 @@ namespace ViewModel
                 this._selectedReservation = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
+                this.DisplayNewCustomerGuestData(this._selectedReservation);
                 this.DisplayNewReservationInfoData(this._selectedReservation);
+            }
+        }
+
+        public ObservableCollection<CampingGuest> CampingGuestCollection
+        {
+            get => _campingGuestCollection;
+            set
+            {
+                if (Equals(value, _campingGuestCollection))
+                {
+                    return;
+                }
+
+                _campingGuestCollection = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
         #endregion
@@ -183,53 +199,14 @@ namespace ViewModel
         {
             Reservation reservationModel = new Reservation();
             this.Reservations = reservationModel.GetCustomersReservations(_customerID);
-            this.ReservationLabels = this.GenerateReservationLabels();
-            this.DisplayNewReservationValues(107);
-
             this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
-        }
 
-        /// <summary>
-        /// Method to fill the customer reservation table
-        /// </summary>
-        public void FillCustomerReservationTable()
-        {
-            _customerReservationTable = new DataTable();
-            _customerReservationTable.Columns.Add("ID");
-            _customerReservationTable.Columns.Add("Duur");
+            ReservationCampingGuest reservationCampingGuestModel = new ReservationCampingGuest();
+            List<List<CampingGuest>> campingGuests = new List<List<CampingGuest>>();
             foreach (var item in this.Reservations)
             {
-                _customerReservationTable.Rows.Add($"{item.Id}", $"{item.Duration.CheckInDate} - {item.Duration.CheckOutDate}");
+                var x = reservationCampingGuestModel.GetReservationGuests(item);
             }
-        }
-
-        /// <summary>
-        /// Method to fill the customer reservation guest table
-        /// </summary>
-        public void FillCustomerReservationGuestsTable()
-        {
-            _customerReservationGuestTable = new DataTable();
-            _customerReservationGuestTable.Columns.Add("Voornaam");
-            _customerReservationGuestTable.Columns.Add("Achternaam");
-            _customerReservationGuestTable.Columns.Add("Geboortedatum");
-            foreach (var item in this.Reservations)
-            {
-                _customerReservationGuestTable.Rows.Add("Voorbeeld", "Voorbeeld", "Voorbeeld");
-            }
-        }
-
-        /// <summary>
-        /// Generates the label names for the reservation overview table.
-        /// </summary>
-        /// <returns>Key, value-pair reservation id and reservation label</returns>
-        public Dictionary<string, string> GenerateReservationLabels()
-        {
-            Dictionary<string, string> dictionary = new();
-            foreach (var item in this.Reservations)
-            {
-                dictionary.Add(item.Id.ToString(), $"{item.CampingPlace.Type.Accommodation.Name} | {item.Duration.CheckInDate} - {item.Duration.CheckOutDate}");
-            }
-            return dictionary;
         }
 
         /// <summary>
@@ -243,8 +220,6 @@ namespace ViewModel
                 if (item.Id == id)
                     this.DisplayNewReservationInfoData(item);
 
-            this.FillCustomerReservationTable();
-            this.FillCustomerReservationGuestsTable();
             return;
         }
 
@@ -261,6 +236,21 @@ namespace ViewModel
             this.InfoSurface = reservation.CampingPlace.Surface.ToString();
             this.InfoLocation = reservation.CampingPlace.Location;
             this.InfoTotalPrice = reservation.TotalPrice.ToString();
+        }
+
+        public void DisplayNewCustomerGuestData(Reservation reservation)
+        {
+            ReservationCampingGuest reservationCampingGuestModel = new();
+            List<CampingGuest> campingGuestList = reservationCampingGuestModel.GetReservationGuests(reservation);
+
+            CampingGuest gast1 = new CampingGuest("test", "test", "2000-19-19");
+            CampingGuest gast2 = new CampingGuest("test", "test", "2000-19-13");
+            CampingGuest gast3 = new CampingGuest("test", "test", "2000-19-14");
+            campingGuestList.Add(gast1);
+            campingGuestList.Add(gast2);
+            campingGuestList.Add(gast3);
+
+            this.CampingGuestCollection = new ObservableCollection<CampingGuest>(campingGuestList);
         }
     }
 }

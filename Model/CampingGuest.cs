@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SystemCore;
 
 namespace Model
 {
@@ -38,6 +39,28 @@ namespace Model
             this.LastName = lastName;
             this.Birthdate = successDate ? dateTime : DateTime.MinValue;
         }
+
+/*        /// <summary>
+        /// Returns all the guests from given reservation.
+        /// </summary>
+        /// <param name="reservation">Reservation</param>
+        /// <returns>List of ReservationCampingGuests</returns>
+        public List<CampingGuest> GetReservationGuests(Reservation reservation)
+        {
+            Query query = new Query($"SELECT * FROM");
+            var x = "SELECT * FROM ReservationCampingGuest INNER JOIN CampingGuest CG on ReservationCampingGuest.CampingGuestID = CG.CampingGuestID WHERE ReservationCampingGuest.ReservationID = 107;";
+            Query query = new Query($"SELECT * FROM CG.{TableName} INNER JOIN RCG.{ReservationCampingGuest.TableName} CG.{ColumnId} = RCG.{ReservationCampingGuest.ColumnGuest} WHERE {ReservationCampingGuest.ColumnReservation} = @reservationId");
+            query.AddParameter("reservationId", reservation.Id);
+            var QueryResults = query.Select();
+
+            List<CampingGuest> campingGuests = new List<CampingGuest>();
+            foreach (var item in query.Select())
+            {
+               *//*campingGuests.Add(this.ToModel(item));*//*
+            }
+
+            return campingGuests;
+        }*/
 
         public bool Update(string firstName, string lastName, DateTime birthdate)
         {
