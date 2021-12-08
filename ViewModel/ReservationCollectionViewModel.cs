@@ -151,10 +151,11 @@ namespace ViewModel
         public ReservationCollectionViewModel()
         {
             this.Reservations = new ObservableCollection<ReservationViewModel>();
-            this.CampingPlaceTypes = new ObservableCollection<string>();
+            this.CampingPlaceTypes = new ObservableCollection<string> {
+                SelectAll
+            };
             
             //Loop through rows in Accommodation table
-            this.CampingPlaceTypes.Add(SelectAll);
             foreach (var accommodationDatabaseRow in this._accommodationModel.Select())
             {
                 this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);
@@ -176,10 +177,7 @@ namespace ViewModel
 
         private void SetOverview()
         {
-            while (this.Reservations.Any())
-            {
-                this.Reservations.RemoveAt(0);
-            }
+            this.Reservations.Clear();
 
             var reservationItems = this._reservationModel.Select();
             if (!this.SelectedCampingPlaceType.Equals(SelectAll))

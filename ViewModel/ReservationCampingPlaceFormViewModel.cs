@@ -189,16 +189,18 @@ namespace ViewModel
         
         public ReservationCampingPlaceFormViewModel()
         {
-            this.CampingPlaceTypes = new ObservableCollection<string>();
-            
+            this.CampingPlaces = new ObservableCollection<CampingPlace>();
+            this.CampingPlaceTypes = new ObservableCollection<string> {
+                SelectAll
+                
+            };
+
             //Loop through rows in Accommodation table
-            this.CampingPlaceTypes.Add(SelectAll);
             foreach (var accommodationDatabaseRow in new Accommodation().Select())
             {
                 this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);
             }
 
-            this.CampingPlaces = new ObservableCollection<CampingPlace>(this.GetCampingPlaces());
             this.SelectedPlaceType = SelectAll;
             this.CheckInDate = DateTime.Today;
             this.CheckOutDate = DateTime.Today.AddDays(1);
@@ -218,7 +220,6 @@ namespace ViewModel
             {
                 campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.Type.Accommodation.Name.Equals(selectedCampingPlaceType)).ToList();
             }
-
 
             if (int.TryParse(this.MinNightPrice, out int min))
             {
