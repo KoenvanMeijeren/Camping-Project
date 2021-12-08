@@ -59,10 +59,6 @@ namespace ViewModel
                 {
                     this.SignUpError = "Ongeldig wachtwoord";
                 }
-                else
-                {
-                    this.SignUpError = "";
-                }
             }
         }
 
@@ -84,6 +80,7 @@ namespace ViewModel
 
         #region Events
         public static event EventHandler<SignUpEventArgs> SignUpEvent;
+        public static event EventHandler RegisterEvent;
         #endregion
 
         #region Input
@@ -109,6 +106,7 @@ namespace ViewModel
                 return;
             }
 
+            CurrentUser.SetCurrentUser(account);
             SignUpEvent?.Invoke(this, new SignUpEventArgs(account));
             this.ResetInput();
         }
@@ -118,7 +116,13 @@ namespace ViewModel
             return RegexHelper.IsEmailValid(this.Email) && Validation.IsInputFilled(this.Password);
         }
 
+        private void ExecuteRegister()
+        {
+            RegisterEvent?.Invoke(this, new EventArgs());
+        }
+
         public ICommand SignUp => new RelayCommand(ExecuteSignUp, CanExecuteSignUp);
+        public ICommand Register => new RelayCommand(ExecuteRegister);
         #endregion
     }
 }

@@ -153,6 +153,7 @@ namespace ViewModel
             this.Street = "";
             this.Address = "";
 
+            CurrentUser.EmptyCurrentUser();
             SignOutEvent?.Invoke(this, EventArgs.Empty);
         }
     }

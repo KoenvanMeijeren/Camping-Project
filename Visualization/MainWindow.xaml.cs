@@ -17,6 +17,7 @@ namespace Visualization
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
         private readonly AccountPage _accountPage;
         private readonly SignUpPage _signUpPage;
+        private readonly RegisterPage _registerPage;
         private readonly TestInputPage _testInputPage;
         private readonly TestPage _testPage;
 
@@ -30,6 +31,7 @@ namespace Visualization
             this._reservationConfirmedPage = new ReservationConfirmedPage();
             this._accountPage = new AccountPage();
             this._signUpPage = new SignUpPage();
+            this._registerPage = new RegisterPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
 
@@ -37,6 +39,7 @@ namespace Visualization
             ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+            SignUpViewModel.RegisterEvent += this.OnRegisterEvent;
 
             AccountButton.Visibility = Visibility.Collapsed;
         }
@@ -134,8 +137,6 @@ namespace Visualization
 
         private void OnSignUpEvent(object sender, SignUpEventArgs args)
         {
-            CurrentUser.SetCurrentUser(args.Account);
-
             SignUpButton.Visibility = Visibility.Collapsed;
             AccountButton.Visibility = Visibility.Visible;
 
@@ -144,14 +145,17 @@ namespace Visualization
 
         private void OnSignOutEvent(object sender, EventArgs e)
         {
-            CurrentUser.EmptyCurrentUser();
-
             SignUpButton.Visibility = Visibility.Visible;
             AccountButton.Visibility = Visibility.Collapsed;
 
             this.MainFrame.Content = this._signUpPage.Content;
         }
 
-        
+        private void OnRegisterEvent(object sender, EventArgs e)
+        {
+            this.MainFrame.Content = this._registerPage.Content;
+        }
+
+
     }
 }
