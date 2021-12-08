@@ -22,11 +22,12 @@
         <ListView ItemsSource="{Binding Reservations}" Width="700" Height="400" Margin="10,50,10,95" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Reservation.Id}" />
-                    <GridViewColumn Header="Camping verblijf" Width="100" DisplayMemberBinding="{Binding Reservation.CampingPlace.Location}" />
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Reservation.Id}" />
+                    <GridViewColumn Header="Verblijf" Width="100" DisplayMemberBinding="{Binding Reservation.CampingPlace.Location}" />
                     <GridViewColumn Header="Klantnummer" Width="100" DisplayMemberBinding="{Binding Reservation.CampingCustomer.Id}" />
-                    <GridViewColumn Header="Begindatum" Width="150" DisplayMemberBinding="{Binding Reservation.Duration.CheckInDate}" />
-                    <GridViewColumn Header="Einddatum" Width="150" DisplayMemberBinding="{Binding Reservation.Duration.CheckOutDate}" />
+                    <GridViewColumn Header="Personen" Width="100" DisplayMemberBinding="{Binding Reservation.NumberOfPeople}" />
+                    <GridViewColumn Header="Begindatum" Width="100" DisplayMemberBinding="{Binding Reservation.Duration.CheckInDate}" />
+                    <GridViewColumn Header="Einddatum" Width="100" DisplayMemberBinding="{Binding Reservation.Duration.CheckOutDate}" />
                     <GridViewColumn Header="Totaalprijs" Width="100" DisplayMemberBinding="{Binding Reservation.TotalPriceString}" />
                 </GridView>
             </ListView.View>
