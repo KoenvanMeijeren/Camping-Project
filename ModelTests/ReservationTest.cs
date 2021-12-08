@@ -17,7 +17,7 @@ namespace ModelTests
             Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
             CampingCustomer campingCustomer = new CampingCustomer("1", account, address, "19/10/12", "testPhoneNumber", "testFirstName", "testLastName");
 
-            ReservationDuration reservationDuration = new ReservationDuration("1", "19/10/21", "20/10/21");
+            ReservationDuration reservationDuration = new ReservationDuration("1", "12/26/2021 12:00:00", "12/28/2021 12:00:00");
             Reservation reservation = new Reservation("1", "1", campingCustomer, campingPlace, reservationDuration);
 
             Assert.AreEqual(reservation.Id, 1);
@@ -54,10 +54,10 @@ namespace ModelTests
             Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
             CampingCustomer campingCustomer = new CampingCustomer("1", account, address, "19/10/12", "testPhoneNumber", "testFirstName", "testLastName");
 
-            ReservationDuration reservationDuration = new ReservationDuration("1", "19/10/21", "20/10/21");
+            ReservationDuration reservationDuration = new ReservationDuration("1", "12/26/2021 12:00:00", "12/28/2021 12:00:00");
             Reservation reservation = new Reservation("1", campingCustomer, campingPlace, reservationDuration);
 
-            Assert.AreEqual(reservation.CalculateTotalPrice(), reservation.CampingPlace.TotalPrice * 1);
+            Assert.AreEqual(reservation.CampingPlace.TotalPrice * 2, reservation.CalculateTotalPrice());
         }
 
 

@@ -20,27 +20,39 @@ namespace ViewModel
 
         private readonly Dictionary<string, string> _errorDictionary;
 
-        private string _firstName;
-        private string _firstNameError;
-        private string _lastName;
-        private string _lastNameError;
+        private string 
+            _firstName,
+            _firstNameError,
+            
+            _lastName,
+            _lastNameError,
+            
+            _birthdateError,
+            
+            _phoneNumber,
+            _phoneNumberError,
+            
+            _streetName,
+            _streetNameError,
+            
+            _postalCode,
+            _postalCodeError,
+            
+            _placeName,
+            _placeNameError,
+            
+            _emailAddress,
+            _emailAddressError,
+            
+            _amountOfGuests,
+            _amountOfGuestsError,
+            
+            _selectedCampingPlace;
+        
         private DateTime _birthdate;
-        private string _birthdateError;
-        private string _phoneNumber;
-        private string _phoneNumberError;
-        private string _streetName;
-        private string _streetNameError;
-        private string _postalCode;
-        private string _postalCodeError;
-        private string _placeName;
-        private string _placeNameError;
-        private string _emailAddress;
-        private string _emailAddressError;
-        private string _amountOfGuests;
-        private string _amountOfGuestsError;
-        private DateTime _checkInDatetime;
-        private DateTime _checkOutDatetime;
-        private int _campingPlaceId;
+        private ReservationDuration _reservationDuration;
+        
+        private CampingPlace _campingPlace;
         
         #endregion
 
@@ -55,7 +67,7 @@ namespace ViewModel
 
                 this.FirstNameError = string.Empty;
                 this.RemoveErrorFromDictionary("FirstName");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -84,7 +96,7 @@ namespace ViewModel
                 
                 this.LastNameError = string.Empty;
                 this.RemoveErrorFromDictionary("LastName");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -142,7 +154,7 @@ namespace ViewModel
                 
                 this.PhoneNumberError = string.Empty;
                 this.RemoveErrorFromDictionary("PhoneNumber");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -171,7 +183,7 @@ namespace ViewModel
                 
                 this.StreetNameError = string.Empty;
                 this.RemoveErrorFromDictionary("StreetName");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -200,7 +212,7 @@ namespace ViewModel
                 
                 this.PostalCodeError = string.Empty;
                 this.RemoveErrorFromDictionary("PostalCode");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -229,7 +241,7 @@ namespace ViewModel
                 
                 this.PlaceNameError = string.Empty;
                 this.RemoveErrorFromDictionary("PlaceName");
-                if (this.IsInputFilled(value))
+                if (Validation.IsInputFilled(value))
                 {
                     return;
                 }
@@ -287,7 +299,7 @@ namespace ViewModel
                 
                 this.AmountOfGuestsError = string.Empty;
                 this.RemoveErrorFromDictionary("AmountOfGuests");
-                if (this.IsInputFilled(this._amountOfGuests) || !int.TryParse(value, out int x))
+                if (Validation.IsInputFilled(this._amountOfGuests) || !int.TryParse(value, out int x))
                 {
                     return;
                 }
@@ -302,6 +314,26 @@ namespace ViewModel
             set
             {
                 this._amountOfGuestsError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+        
+        public CampingPlace CampingPlace
+        {
+            get => this._campingPlace;
+            set
+            {
+                this._campingPlace = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+        
+        public string SelectedCampingPlace
+        {
+            get => this._selectedCampingPlace;
+            set
+            {
+                this._selectedCampingPlace = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -328,14 +360,15 @@ namespace ViewModel
                 {"AmountOfGuests", ""},
             };
             
-            ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
         }
         
         private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
         {
-            this._campingPlaceId = args.CampingPlaceId;
-            this._checkInDatetime = args.CheckInDatetime;
-            this._checkOutDatetime = args.CheckOutDatetime;
+            this._reservationDuration = args.ReservationDuration;
+            this.CampingPlace = args.CampingPlace;
+            
+            this.SelectedCampingPlace = $"Reservering van {this._reservationDuration.CheckInDate} tot {this._reservationDuration.CheckOutDate} in verblijf {this._campingPlace.Location}";
         }
 
         #region Input validation
@@ -358,10 +391,28 @@ namespace ViewModel
             
             this._errorDictionary.Add(key, value);
         }
-        
-        private bool IsInputFilled(string input)
+
+        private void ResetInput()
         {
-            return (!string.IsNullOrEmpty(input) && input.Length != 0);
+            this.FirstName = "";
+            this.FirstNameError = "";
+            this.LastName = "";
+            this.LastNameError = "";
+            this.Birthdate = DateTime.MinValue;
+            this.BirthdateError = "";
+            this.EmailAddress = "";
+            this.EmailAddressError = "";
+            this.PhoneNumber = "";
+            this.PhoneNumberError = "";
+            this.StreetName = "";
+            this.StreetNameError = "";
+            this.AmountOfGuests = "";
+            this.AmountOfGuestsError = "";
+            this.PlaceName = "";
+            this.PlaceNameError = "";
+            this.PostalCode = "";
+            this.PostalCodeError = "";
+            this._errorDictionary.Clear();
         }
         #endregion
 
@@ -375,23 +426,14 @@ namespace ViewModel
             var customer = new CampingCustomer(null, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName,
                 this.LastName);
             customer.Insert();
-            customer.SelectById(1);
             var lastCustomer = customer.SelectLast();
 
-            ReservationDuration reservationDuration = new ReservationDuration(
-                this._checkInDatetime.ToShortDateString(), 
-                this._checkOutDatetime.ToShortDateString()
-            );
-            
-            reservationDuration.Insert();
-            var fetchNewestReservationDuration = reservationDuration.SelectLast();
-
-            CampingPlace campingPlaceModel = new CampingPlace();
-            CampingPlace campingPlace = campingPlaceModel.SelectById(this._campingPlaceId);
-            Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, campingPlace, fetchNewestReservationDuration);
+            Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, this.CampingPlace, this._reservationDuration);
             reservation.Insert();
+            var lastReservation = reservation.SelectLast();
             
-            ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(reservation.SelectLast()));
+            ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
+            this.ResetInput();
         }
         private bool CanExecuteCustomerDataReservation()
         {

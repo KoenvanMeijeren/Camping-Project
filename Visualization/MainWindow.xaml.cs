@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 using ViewModel;
 
@@ -33,8 +34,14 @@ namespace Visualization
             this._testInputPage = new TestInputPage();
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+
+            AccountButton.Visibility = Visibility.Collapsed;
+            
+            // Sets the dashboard as the active menu.
+            this.DashboardButtonClick(this, null);
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
@@ -113,6 +120,10 @@ namespace Visualization
             this.MainFrame.Content = this._signUpPage.Content;
         }
 
+        private void AccountButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._accountPage.Content;
+        }
 
         private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
         {
@@ -127,7 +138,21 @@ namespace Visualization
         private void OnSignUpEvent(object sender, SignUpEventArgs args)
         {
             CurrentUser.SetCurrentUser(args.Account);
+
+            SignUpButton.Visibility = Visibility.Collapsed;
+            AccountButton.Visibility = Visibility.Visible;
+
             this.MainFrame.Content = this._accountPage.Content;
+        }
+
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            CurrentUser.EmptyCurrentUser();
+
+            SignUpButton.Visibility = Visibility.Visible;
+            AccountButton.Visibility = Visibility.Collapsed;
+
+            this.MainFrame.Content = this._signUpPage.Content;
         }
 
         

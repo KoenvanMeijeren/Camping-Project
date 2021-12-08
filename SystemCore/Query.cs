@@ -173,7 +173,7 @@ namespace SystemCore
             {
                 string dataType = dataRecord.GetDataTypeName(delta);
                 string column = dataRecord.GetName(delta);
-                if (dictionary.ContainsKey(column))
+                if (dictionary.ContainsKey(column) || dataRecord.IsDBNull(delta))
                 {
                     continue;
                 }
