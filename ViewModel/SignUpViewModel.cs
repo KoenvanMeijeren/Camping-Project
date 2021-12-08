@@ -308,22 +308,24 @@ namespace ViewModel
 
         private void ExecuteRegister()
         {
-            Account account = new Account(this.Email, this.Password, "0");
-            if (account.SelectByEmail(this.Email) != null)
+            Account accountModel = new Account(this.Email, this.Password, AccountRights.Customer.ToString());
+            if (accountModel.SelectByEmail(this.Email) != null)
             {
                 this.RegisterError = "Er bestaat al een account met dit email";
                 return; 
             }
-            account.Insert();
+            
+            accountModel.Insert();
+            var insertedAccount = accountModel.SelectByEmail(this.Email);
 
-            Address address = new Address(this.StreetName + " " + this.StreetNumber, this.Postalcode, this.Place);
-            address = address.FirstOrInsert();
+            Address addressModel = new Address(this.StreetName + " " + this.StreetNumber, this.Postalcode, this.Place);
+            var address = addressModel.FirstOrInsert();
 
-            CampingCustomer campingCustomer = new CampingCustomer(account.SelectByEmail(this.Email), address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName, this.LastName);
+            CampingCustomer campingCustomer = new CampingCustomer(insertedAccount, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName, this.LastName);
             campingCustomer.Insert();
-
-            CurrentUser.SetCurrentUser(account);
-            SignUpEvent?.Invoke(this, new AccountEventArgs(account));
+            
+            CurrentUser.SetCurrentUser(insertedAccount);
+            SignUpEvent?.Invoke(this, new AccountEventArgs(insertedAccount));
             this.ResetInput();
         }
 
