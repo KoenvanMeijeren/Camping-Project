@@ -128,33 +128,6 @@ namespace Model
             return query.IsSuccessFullyExecuted();
         }
 
-        /// <summary>
-        /// Creates a commit for a transaction with give parameters.
-        /// </summary>
-        /// <returns>query update statement</returns>
-        public virtual int CreateUpdateCommit(Dictionary<string, string> dictionary, SqlCommand command)
-        {
-            StringBuilder values = new StringBuilder();
-
-            string lastKey = dictionary.Last().Key;
-            foreach (var key in dictionary.Select(keyValuePair => keyValuePair.Key))
-            {
-                values.Append(key.Equals(lastKey) ? $"{key} = @{key}" : $"{key} = @{key}, ");
-            }
-
-            Query query = new Query($"UPDATE {this.Table} SET {values} WHERE {this.PrimaryKey} = @{this.PrimaryKey}");
-           
-
-            command.CommandText= query.getQueryStatement();
-            command.Parameters.AddWithValue(this.PrimaryKey, this.Id);
-            foreach (KeyValuePair<string, string> keyValuePair in dictionary)
-            {
-                command.Parameters.Add(keyValuePair.Value);
-            }
-            var isSuccesfullyExcecuted = command.ExecuteNonQuery();
-
-            return isSuccesfullyExcecuted;
-        }
 
         /// <summary>
         /// Deletes one record from the database table.

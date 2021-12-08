@@ -52,12 +52,6 @@ namespace Model
             return base.Update(ReservationDuration.ToDictionary(this.CheckInDateDatabaseFormat, this.CheckOutDateDatabaseFormat));
         }
 
-        public int CreateUpdateCommit(string checkInDate, string checkOutDate, SqlCommand command)
-        {
-            this.ParseInputDates(checkInDate, checkOutDate);
-
-            return base.CreateUpdateCommit(ReservationDuration.ToDictionary(this.CheckInDateDatabaseFormat, this.CheckOutDateDatabaseFormat),command);
-        }
 
         private void ParseInputDates(string checkInDate, string checkOutDate)
         {
@@ -98,6 +92,23 @@ namespace Model
             {
                 {ColumnCheckInDate, checkInDate},
                 {ColumnCheckOutDate, checkOutDate}
+            };
+
+            return dictionary;
+        }
+
+        /// <summary>
+        /// Creates a dictionary with The object ReservationDuration as value
+        /// </summary>
+        /// <param name="checkInDate">check in date</param>
+        /// <param name="checkOutDate">check out date</param>
+        /// <returns></returns>
+        private static Dictionary<string, DateTime> ToDictionaryDateTime(DateTime checkindate, DateTime checkoutdate)
+        {
+            Dictionary<string, DateTime> dictionary = new Dictionary<string, DateTime>
+            {
+                {ColumnCheckInDate,checkindate},
+                {ColumnCheckOutDate, checkoutdate}
             };
 
             return dictionary;

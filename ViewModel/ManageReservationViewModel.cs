@@ -186,77 +186,25 @@ namespace ViewModel
 
         private void ExecuteUpdateReservation()
         {
-            /* 
-
-              ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
-              Reservation updatedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
-
-              bool succesfullyUpdated = updatedReservationObject.Update(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
-              bool durationsuccesfullyupdated = updatedReservationDuraton.Update(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
-
-              if (succesfullyUpdated && durationsuccesfullyupdated)
-              {
-                  MessageBox.Show("Reservering is aangepast!", "Reservering is bijgewerkt", System.Windows.MessageBoxButton.OK);
-              }*/
-
             var result = MessageBox.Show("Weet u zeker dat u de reservering wil aanpassen?", "Reservering bijwerken", MessageBoxButton.YesNo);
             if (result != MessageBoxResult.Yes)
             {
                 return;
             }
 
-            DatabaseConnector.Open();
-            using (SqlConnection connection = DatabaseConnector.GetConnection())
-            {               
-                SqlCommand command = connection.CreateCommand();
-                SqlTransaction transaction;
+            ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
+            Reservation updatedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
 
-                // Start a local transaction.
-                transaction = connection.BeginTransaction("UpdateReservationTransaction");
+            bool succesfullyUpdated = updatedReservationObject.Update(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
+            bool durationsuccesfullyupdated = updatedReservationDuraton.Update(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
 
-                // Must assign both transaction object and connection
-                // to Command object for a pending local transaction
-                command.Connection = connection;
-                command.Transaction = transaction;
-
-                ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
-                Reservation updatedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
-                try
-                {
-                    var hasSuccesfullyCommitedReservation= updatedReservationObject.CreateUpdateCommit(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton, command);
-
-                    var hasSuccesfullyCommitedReservationDuration = updatedReservationDuraton.CreateUpdateCommit(this.CheckInDate.ToString(), this.CheckOutDate.ToString(), command);
-     
-
-                    // Attempt to commit the transaction.
-                    transaction.Commit();
-                    
-                    MessageBox.Show("Reservering is aangepast!", "Reservering is bijgewerkt", System.Windows.MessageBoxButton.OK);
-                    
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Commit Exception Type: {0}", ex.GetType());
-                    Console.WriteLine("  Message: {0}", ex.Message);
-
-                    // Attempt to roll back the transaction.
-                    try
-                    {
-                       
-                        transaction.Rollback();
-                    }
-                    catch (Exception ex2)
-                    {
-                        //catch a closed connection.
-                        Console.WriteLine("Rollback Exception Type: {0}", ex2.GetType());
-                        Console.WriteLine("  Message: {0}", ex2.Message);
-                    }
-                }
+            if (succesfullyUpdated && durationsuccesfullyupdated)
+            {
+                MessageBox.Show("Reservering is aangepast!", "Reservering is bijgewerkt", System.Windows.MessageBoxButton.OK);
             }
 
-           
-
         }
+
 
         private void ExecuteGoToDashBoard()
         {
@@ -265,9 +213,24 @@ namespace ViewModel
 
         private bool CanExecuteGoToDashboard()
         {
+            //Is it possible to check this execution?
             return true;
         }
         public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
+
+
+
+        private void ExecuteDeleteReservation()
+        {
+            //FromReservationBackToDashboardEvent?.Invoke(this, new ReservationEventArgs(_reservation));
+        }
+
+        private bool CanExecuteDeleteReservation()
+        {
+            //Is it possible to check this execution?
+            return true;
+        }
+        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation, CanExecuteDeleteReservation);
 
     }
 }
