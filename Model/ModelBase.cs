@@ -132,7 +132,7 @@ namespace Model
         /// Creates a commit for a transaction with give parameters.
         /// </summary>
         /// <returns>query update statement</returns>
-        public virtual int CreateCommitUpdateStatement(Dictionary<string, string> dictionary, SqlCommand command)
+        public virtual int CreateUpdateCommit(Dictionary<string, string> dictionary, SqlCommand command)
         {
             StringBuilder values = new StringBuilder();
 

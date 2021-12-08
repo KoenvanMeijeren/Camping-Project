@@ -222,15 +222,10 @@ namespace ViewModel
                 Reservation updatedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
                 try
                 {
-                    Query updateReservationQuery= updatedReservationObject.CreateUpdateStatement(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
-                    command.CommandText = updateReservationQuery.getQueryStatement();
-                    //command.Parameters.AddWithValue();
-                    command.ExecuteNonQuery();
-                    //"UPDATE Reservation SET ReservationNumberOfPeople = @ReservationNumberOfPeople, ReservationCampingCustomerID = @ReservationCampingCustomerID, ReservationCampingPlaceID = @ReservationCampingPlaceID, ReservationDurationID = @ReservationDurationID WHERE ReservationID = @ReservationID"
+                    var hasSuccesfullyCommitedReservation= updatedReservationObject.CreateUpdateCommit(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton, command);
 
-                    Query updateReservationDuration = updatedReservationDuraton.CreateUpdateStatement(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
-                    command.CommandText = updateReservationDuration.ToString();
-                    command.ExecuteNonQuery();
+                    var hasSuccesfullyCommitedReservationDuration = updatedReservationDuraton.CreateUpdateCommit(this.CheckInDate.ToString(), this.CheckOutDate.ToString(), command);
+     
 
                     // Attempt to commit the transaction.
                     transaction.Commit();
@@ -246,6 +241,7 @@ namespace ViewModel
                     // Attempt to roll back the transaction.
                     try
                     {
+                       
                         transaction.Rollback();
                     }
                     catch (Exception ex2)

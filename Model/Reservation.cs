@@ -90,10 +90,9 @@ namespace Model
             return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
         }
 
-        public int CreateUpdateStatement(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        public int CreateUpdateCommit(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, SqlCommand command)
         {
-            //sqlcommand toevoegen
-            return base.CreateCommitUpdateStatement(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
+            return base.CreateUpdateCommit(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration), command);
         }
 
         /// <inheritdoc/>

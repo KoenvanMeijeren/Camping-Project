@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -51,11 +52,11 @@ namespace Model
             return base.Update(ReservationDuration.ToDictionary(this.CheckInDateDatabaseFormat, this.CheckOutDateDatabaseFormat));
         }
 
-        public int CreateUpdateStatement(string checkInDate, string checkOutDate)
+        public int CreateUpdateCommit(string checkInDate, string checkOutDate, SqlCommand command)
         {
             this.ParseInputDates(checkInDate, checkOutDate);
 
-            return base.CreateCommitUpdateStatement(ReservationDuration.ToDictionary(this.CheckInDateDatabaseFormat, this.CheckOutDateDatabaseFormat));
+            return base.CreateUpdateCommit(ReservationDuration.ToDictionary(this.CheckInDateDatabaseFormat, this.CheckOutDateDatabaseFormat),command);
         }
 
         private void ParseInputDates(string checkInDate, string checkOutDate)
