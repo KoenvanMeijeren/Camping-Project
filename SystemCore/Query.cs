@@ -39,7 +39,7 @@ namespace SystemCore
         }
         
         /// <summary>
-        /// Selects rows from SqlCommand. 
+        /// Selects rows from database table. 
         /// </summary>
         /// <returns>List with chosen rows</returns>
         public IEnumerable<Dictionary<string, string>> Select()
@@ -79,7 +79,7 @@ namespace SystemCore
         }
 
         /// <summary>
-        /// Select first row from SqlCommand.
+        /// Select first row from database table.
         /// </summary>
         /// <returns>Dictionary with first row from the SELECT statement</returns>
         public Dictionary<string, string> SelectFirst()
@@ -126,7 +126,7 @@ namespace SystemCore
         }
 
         /// <summary>
-        /// Executes the SqlCommand.
+        /// Executes the SqlCommand and saves the success status.
         /// </summary>
         public void Execute()
         {
@@ -150,16 +150,19 @@ namespace SystemCore
         }
 
         /// <summary>
-        /// Checks succes.
+        /// Determines if the query has been successfully executed.
         /// </summary>
-        /// <returns>Succes status</returns>
-        public bool SuccessFullyExecuted()
+        /// <returns>Whether the query was successful or not.</returns>
+        public bool IsSuccessFullyExecuted()
         {
             return this._success;
         }
         
         /// <summary>
-        /// Inserts DataRecord items in a Dictionary.
+        /// Inserts DataRecord items in a Dictionary. Renders all kind of data types to one single data type, we do this
+        /// because this makes it easy for us to use the most common data type, string, and we only have to cast the
+        /// less common data types, such as int or bool. If we do not do this, then we have to save it as an object type
+        /// and we have to cast every single the corresponding data type every time we use it.
         /// </summary>
         /// <returns>Filled Dictionary</returns>
         private Dictionary<string, string> DataRecordToDictionary(IDataRecord dataRecord)
@@ -170,7 +173,7 @@ namespace SystemCore
             {
                 string dataType = dataRecord.GetDataTypeName(delta);
                 string column = dataRecord.GetName(delta);
-                if (dictionary.ContainsKey(column))
+                if (dictionary.ContainsKey(column) || dataRecord.IsDBNull(delta))
                 {
                     continue;
                 }

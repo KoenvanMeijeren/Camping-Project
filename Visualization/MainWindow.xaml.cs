@@ -1,20 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using SystemCore;
-using Model;
 using ViewModel;
 
 namespace Visualization
@@ -29,6 +15,8 @@ namespace Visualization
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
+        private readonly AccountPage _accountPage;
+        private readonly SignUpPage _signUpPage;
         private readonly TestInputPage _testInputPage;
         private readonly TestPage _testPage;
 
@@ -40,11 +28,20 @@ namespace Visualization
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
+            this._accountPage = new AccountPage();
+            this._signUpPage = new SignUpPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
 
-            ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            CampingPlacesCollectionViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
+            SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+
+            AccountButton.Visibility = Visibility.Collapsed;
+            
+            // Sets the dashboard as the active menu.
+            this.DashboardButtonClick(this, null);
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
@@ -118,20 +115,46 @@ namespace Visualization
             this.MainFrame.Content = this._testInputPage.Content;
         }
 
-
-        private void OnReserveEvent(object sender, ReservationEventArgs args)
+        private void SignUpButtonClick(object sender, RoutedEventArgs e)
         {
-            this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceId;
-            this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;
-            this._reservationCustomerForm.CheckOutDatetime = args.CheckOutDatetime;
+            this.MainFrame.Content = this._signUpPage.Content;
+        }
 
+        private void AccountButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._accountPage.Content;
+        }
+
+        private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
+        {
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
         {
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
 
+        private void OnSignUpEvent(object sender, SignUpEventArgs args)
+        {
+            CurrentUser.SetCurrentUser(args.Account);
+
+            SignUpButton.Visibility = Visibility.Collapsed;
+            AccountButton.Visibility = Visibility.Visible;
+
+            this.MainFrame.Content = this._accountPage.Content;
+        }
+
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            CurrentUser.EmptyCurrentUser();
+
+            SignUpButton.Visibility = Visibility.Visible;
+            AccountButton.Visibility = Visibility.Collapsed;
+
+            this.MainFrame.Content = this._signUpPage.Content;
+        }
+
+        
     }
 }

@@ -8,15 +8,25 @@ using SystemCore;
 
 namespace Model
 {
+    /// <inheritdoc/>
     public class ReservationDuration : ModelBase<ReservationDuration>
     {
+        public const string
+            TableName = "ReservationDuration",
+            ColumnId = "ReservationDurationID",
+            ColumnCheckInDate = "ReservationDurationCheckInDatetime",
+            ColumnCheckOutDate = "ReservationDurationCheckOutDatetime";
+        
         public DateTime CheckInDatetime { get; private set; }
         public DateTime CheckOutDatetime { get; private set; }
         
         public string CheckInDate { get; private set; }
         public string CheckOutDate { get; private set; }
+        
+        public string CheckInDateDatabaseFormat { get; private set; }
+        public string CheckOutDateDatabaseFormat { get; private set; }
 
-        public ReservationDuration()
+        public ReservationDuration(): base(TableName, ColumnId)
         {
 
         }
@@ -26,33 +36,30 @@ namespace Model
 
         }
 
-        public ReservationDuration(string id, string checkInDate, string checkOutDate)
+        public ReservationDuration(string id, string checkInDate, string checkOutDate): base(TableName, ColumnId)
         {
-            this.Id = int.Parse(id);
-            this.CheckInDatetime = DateTime.Parse(checkInDate);
-            this.CheckOutDatetime = DateTime.Parse(checkOutDate);
+            bool successId = int.TryParse(id, out int numericId);
+
+            this.Id = successId ? numericId : -1;
+            this.CheckInDatetime = DateTimeParser.TryParse(checkInDate);
+            this.CheckOutDatetime = DateTimeParser.TryParse(checkOutDate);
+            
             this.CheckInDate = this.CheckInDatetime.ToShortDateString();
             this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
-        }
-
-        protected override string Table()
-        {
-            return "ReservationDuration";
-        }
-
-        protected override string PrimaryKey()
-        {
-            return "ReservationDurationID";
+            
+            this.CheckInDateDatabaseFormat = DateTimeParser.TryParseToDatabaseFormat(this.CheckInDatetime);
+            this.CheckOutDateDatabaseFormat = DateTimeParser.TryParseToDatabaseFormat(this.CheckOutDatetime);
         }
 
         public bool Update(string checkInDate, string checkOutDate)
         {
-            this.CheckInDate = checkInDate;
-            this.CheckOutDate = checkOutDate;
+            this.CheckInDateDatabaseFormat = checkInDate;
+            this.CheckOutDateDatabaseFormat = checkOutDate;
 
             return base.Update(ReservationDuration.ToDictionary(checkInDate, checkOutDate));
         }
 
+        /// <inheritdoc/>
         protected override ReservationDuration ToModel(Dictionary<string, string> dictionary)
         {
             if(dictionary == null)
@@ -60,23 +67,25 @@ namespace Model
                 return null;
             }
 
-            dictionary.TryGetValue("ReservationDurationID", out string id);
-            dictionary.TryGetValue("ReservationDurationCheckInDateTime", out string checkInDateTime);
-            dictionary.TryGetValue("ReservationDurationCheckOutDateTime", out string checkOutDateTime);
+            dictionary.TryGetValue(ColumnId, out string id);
+            dictionary.TryGetValue(ColumnCheckInDate, out string checkInDateTime);
+            dictionary.TryGetValue(ColumnCheckOutDate, out string checkOutDateTime);
 
             return new ReservationDuration(id, checkInDateTime, checkOutDateTime);
         }
+        
+        /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return ReservationDuration.ToDictionary(this.CheckInDate, this.CheckOutDate);
+            return ReservationDuration.ToDictionary(this.CheckInDateDatabaseFormat, this.CheckOutDateDatabaseFormat);
         }
 
         private static Dictionary<string, string> ToDictionary(string checkInDate, string checkOutDate)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"ReservationDurationCheckInDateTime", checkInDate},
-                {"ReservationDurationCheckOutDateTime", checkOutDate}
+                {ColumnCheckInDate, checkInDate},
+                {ColumnCheckOutDate, checkOutDate}
             };
 
             return dictionary;

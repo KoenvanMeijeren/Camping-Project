@@ -10,23 +10,21 @@ namespace ModelTests
         [Test]
         public void TestReservationDurationConstructorCorrect()
         {
-            ReservationDuration reservationDuration = new ReservationDuration("1", "19/10/21", "20/10/21");
-            Assert.AreEqual(reservationDuration.Id, 1);
-            Assert.AreEqual(reservationDuration.CheckInDatetime, DateTime.Parse("19/10/21"));
-            Assert.AreEqual(reservationDuration.CheckOutDatetime, DateTime.Parse("20/10/21"));
-            Assert.AreEqual(reservationDuration.CheckInDate, DateTime.Parse("19/10/21").ToShortDateString());
-            Assert.AreEqual(reservationDuration.CheckOutDate, DateTime.Parse("20/10/21").ToShortDateString());
+            ReservationDuration reservationDuration = new ReservationDuration("12", "12/26/2021 12:00:00", "12/28/2021 12:00:00");
+            Assert.AreEqual(reservationDuration.Id, 12);
+            Assert.AreEqual("26-12-2021", reservationDuration.CheckInDatetime.ToShortDateString());
+            Assert.AreEqual("28-12-2021", reservationDuration.CheckOutDatetime.ToShortDateString());
+            Assert.AreEqual("12-26-2021 12:00:00", reservationDuration.CheckInDateDatabaseFormat);
+            Assert.AreEqual("12-28-2021 12:00:00", reservationDuration.CheckOutDateDatabaseFormat);
         }
 
         [Test]
         public void TestReservationDurationConstructorIncorrect()
         {
-            ReservationDuration reservationDuration = new ReservationDuration("19/10/21", "20/10/21");
+            ReservationDuration reservationDuration = new ReservationDuration(null, null, null);
             Assert.AreEqual(reservationDuration.Id, -1);
-            Assert.AreEqual(reservationDuration.CheckInDatetime, DateTime.Parse("19/10/21"));
-            Assert.AreEqual(reservationDuration.CheckOutDatetime, DateTime.Parse("20/10/21"));
-            Assert.AreEqual(reservationDuration.CheckInDate, DateTime.Parse("19/10/21").ToShortDateString());
-            Assert.AreEqual(reservationDuration.CheckOutDate, DateTime.Parse("20/10/21").ToShortDateString());
+            Assert.AreEqual(reservationDuration.CheckInDatetime, DateTime.MinValue);
+            Assert.AreEqual(reservationDuration.CheckOutDatetime, DateTime.MinValue);
         }
     }
 }

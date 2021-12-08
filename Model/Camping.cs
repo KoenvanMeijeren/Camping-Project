@@ -2,14 +2,22 @@ using System.Collections.Generic;
 
 namespace Model
 {
+    /// <inheritdoc/>
     public class Camping : ModelBase<Camping>
     {
+        public const string
+            TableName = "Camping",
+            ColumnId = "CampingID",
+            ColumnName = "CampingName",
+            ColumnAddress = "CampingAddressID",
+            ColumnCampingOwner = "CampingOwnerID";
+        
         public string Name { get; private set; }
         
         public Address Address { get; private set; }
         public CampingOwner CampingOwner { get; private set; }
 
-        public Camping()
+        public Camping(): base(TableName, ColumnId)
         {
             
         }
@@ -18,22 +26,14 @@ namespace Model
         {
         }
         
-        public Camping(string id, string name, Address address, CampingOwner campingOwner)
+        public Camping(string id, string name, Address address, CampingOwner campingOwner): base(TableName, ColumnId)
         {
-            this.Id = int.Parse(id);
+            bool success = int.TryParse(id, out int idNumeric);
+            
+            this.Id = success ? idNumeric : -1;
             this.Name = name;
             this.Address = address;
             this.CampingOwner = campingOwner;
-        }
-        
-        protected override string Table()
-        {
-            return "Camping";
-        }
-
-        protected override string PrimaryKey()
-        {
-            return "CampingID";
         }
 
         public bool Update(string name, Address address, CampingOwner campingOwner)
@@ -45,6 +45,7 @@ namespace Model
             return base.Update(Camping.ToDictionary(name, address, campingOwner));
         }
 
+        /// <inheritdoc/>
         protected override Camping ToModel(Dictionary<string, string> dictionary)
         {
             if (dictionary == null)
@@ -52,29 +53,30 @@ namespace Model
                 return null;
             }
             
-            dictionary.TryGetValue("CampingID", out string id);
-            dictionary.TryGetValue("CampingName", out string name);
+            dictionary.TryGetValue(ColumnId, out string id);
+            dictionary.TryGetValue(ColumnName, out string name);
 
-            dictionary.TryGetValue("AccountID", out string accountId);
-            dictionary.TryGetValue("AccountUsername", out string username);
-            dictionary.TryGetValue("AccountPassword", out string password);
-            dictionary.TryGetValue("AccountRights", out string rights);
+            dictionary.TryGetValue(Account.ColumnId, out string accountId);
+            dictionary.TryGetValue(Account.ColumnEmail, out string email);
+            dictionary.TryGetValue(Account.ColumnPassword, out string password);
+            dictionary.TryGetValue(Account.ColumnRights, out string rights);
 
-            dictionary.TryGetValue("CampingAddressID", out string addressId);
-            dictionary.TryGetValue("CampingAddress", out string street);
-            dictionary.TryGetValue("CampingPostalCode", out string postalCode);
-            dictionary.TryGetValue("CampingPlace", out string place);
+            dictionary.TryGetValue(Address.ColumnId, out string addressId);
+            dictionary.TryGetValue(Address.ColumnAddress, out string street);
+            dictionary.TryGetValue(Address.ColumnPostalCode, out string postalCode);
+            dictionary.TryGetValue(Address.ColumnPlace, out string place);
 
             dictionary.TryGetValue("CampingOwnerID", out string campingOwnerId);
             dictionary.TryGetValue("CampingOwnerName", out string campingOwnerName);
 
-            Account account = new Account(accountId, username, password, int.Parse(rights));
+            Account account = new Account(accountId, email, password, rights);
             Address address = new Address(addressId, street, postalCode, place);
             CampingOwner campingOwner = new CampingOwner(account, campingOwnerId, campingOwnerName);
 
             return new Camping(id, name, address, campingOwner);
         }
 
+        /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
             return Camping.ToDictionary(this.Name, this.Address, this.CampingOwner);
@@ -84,20 +86,20 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {"CampingName", name},
-                {"CampingAddressID", address.Id.ToString()},
-                {"CampingOwnerID", campingOwner.Id.ToString()}
+                {ColumnName, name},
+                {ColumnAddress, address.Id.ToString()},
+                {ColumnCampingOwner, campingOwner.Id.ToString()}
             };
 
             return dictionary;
         }
 
-        protected override string BaseQuery()
+        protected override string BaseSelectQuery()
         {
-            string query = base.BaseQuery();
-            query += " INNER JOIN CampingOwner CO ON BT.CampingOwnerID = CO.CampingOwnerID";
-            query += " INNER JOIN Address A ON BT.CampingAddressID = A.AddressID";
-            query += " INNER JOIN Account AC on CO.CampingOwnerAccountID = AC.AccountID";
+            string query = base.BaseSelectQuery();
+            query += $" INNER JOIN {CampingOwner.TableName} CO ON BT.{ColumnCampingOwner} = CO.{CampingOwner.ColumnId}";
+            query += $" INNER JOIN {Address.TableName} A ON BT.{ColumnAddress} = A.{Address.ColumnId}";
+            query += $" INNER JOIN {Account.TableName} AC on CO.{CampingOwner.ColumnAccount} = AC.{Account.ColumnId}";
 
             return query;
         }
