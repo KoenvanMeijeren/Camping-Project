@@ -77,6 +77,7 @@ namespace Model
         {
             Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ReservationDuration.ColumnCheckInDate}");
             var items = query.Select();
+            this.Collection = new List<Reservation>();
             foreach (Dictionary<string, string> dictionary in items)
             {
                 this.Collection.Add(this.ToModel(dictionary));
