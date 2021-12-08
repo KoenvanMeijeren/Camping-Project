@@ -23,7 +23,7 @@ namespace ViewModel
             _streetNumber, 
             _postalCode, 
             _place, 
-            _phonenumber,
+            _phoneNumber,
             _email, 
             _password, 
             _registerError;
@@ -181,25 +181,25 @@ namespace ViewModel
             }
         }
 
-        public string Phonenumber
+        public string PhoneNumber
         {
-            get => this._phonenumber;
+            get => this._phoneNumber;
             set
             {
-                if (value == this._phonenumber)
+                if (value == this._phoneNumber)
                 {
                     return;
                 }
 
-                this._phonenumber = value;
+                this._phoneNumber = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.RegisterError = "";
-                if (!Validation.IsInputFilled(_phonenumber))
+                if (!Validation.IsInputFilled(_phoneNumber))
                 {
                     this.RegisterError = "Telefoonnummer is een verplicht veld";
                 }
-                else if (!Validation.IsNumber(_phonenumber))
+                else if (!Validation.IsNumber(_phoneNumber))
                 {
                     this.RegisterError = "Ongeldig telefoonnummer";
                 }
@@ -300,7 +300,7 @@ namespace ViewModel
             this.StreetNumber = "";
             this.Postalcode = "";
             this.Place = "";
-            this.Phonenumber = "";
+            this.PhoneNumber = "";
             this.Email = "";
             this.Password = "";
             this.RegisterError = "";
@@ -319,7 +319,7 @@ namespace ViewModel
             Address address = new Address(this.StreetName + " " + this.StreetNumber, this.Postalcode, this.Place);
             address = address.FirstOrInsert();
 
-            CampingCustomer campingCustomer = new CampingCustomer(account.SelectByEmail(this.Email), address, this.Birthdate.ToShortDateString(), this.Phonenumber, this.FirstName, this.LastName);
+            CampingCustomer campingCustomer = new CampingCustomer(account.SelectByEmail(this.Email), address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName, this.LastName);
             campingCustomer.Insert();
 
             CurrentUser.SetCurrentUser(account);
@@ -337,9 +337,9 @@ namespace ViewModel
                     Validation.IsInputFilled(_postalCode) &&
                     RegexHelper.IsPostalcodeValid(_postalCode) &&
                     Validation.IsInputFilled(_place) &&
-                    Validation.IsInputFilled(_phonenumber) &&
-                    Validation.IsNumber(_phonenumber) &&
-                    Validation.IsNumber(_phonenumber) &&
+                    Validation.IsInputFilled(_phoneNumber) &&
+                    Validation.IsNumber(_phoneNumber) &&
+                    Validation.IsNumber(_phoneNumber) &&
                     Validation.IsInputFilled(_email) &&
                     RegexHelper.IsEmailValid(_email) &&
                     Validation.IsInputFilled(this._password);
