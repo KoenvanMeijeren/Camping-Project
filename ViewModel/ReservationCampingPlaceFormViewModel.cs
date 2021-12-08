@@ -20,19 +20,16 @@ namespace ViewModel
         
         private const string SelectAll = "Alle";
 
-        private readonly ObservableCollection<string> _campingPlaceTypes;
-        private string _selectedCampingPlaceType;
-        
-        private CampingPlace _selectedCampingPlace;
-        
         private ObservableCollection<CampingPlace> _campingPlaces;
+        
+        private readonly ObservableCollection<string> _campingPlaceTypes;
+        private CampingPlace _selectedCampingPlace;
+
+        private DateTime _checkOutDate, _checkInDate;
+        private string _minNightPrice, _maxNightPrice, _selectedCampingPlaceType, _guests;
+
         public static event EventHandler<ReservationDurationEventArgs> ReserveEvent;
         
-        private DateTime _checkOutDate;
-        private DateTime _checkInDate;
-        private string _minNightPrice;
-        private string _maxNightPrice;
-
         #endregion
         
         #region Properties
@@ -53,6 +50,23 @@ namespace ViewModel
             }
         }
 
+        public string Guests
+        {
+            get => this._guests;
+            set
+            {
+                if (Equals(value, this._guests))
+                {
+                    return;
+                }
+
+                this._guests = value;
+                this.SetOverview();
+
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+        
         public string MaxNightPrice
         {
             get => this._maxNightPrice;
@@ -214,6 +228,11 @@ namespace ViewModel
             if (int.TryParse(this.MaxNightPrice, out int max))
             {
                 campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.TotalPrice <= max).ToList();
+            }
+            
+            if (int.TryParse(this.Guests, out int guests))
+            {
+                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.Type.GuestLimit >= guests).ToList();
             }
 
             // Sets the camping places on the screen.
