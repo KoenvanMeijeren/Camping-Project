@@ -36,12 +36,15 @@ namespace Visualization
             this._testInputPage = new TestInputPage();
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            ReservationSelectCampingPlaceViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             SignUpViewModel.RegisterEvent += this.OnRegisterEvent;
 
             AccountButton.Visibility = Visibility.Collapsed;
+            
+            // Sets the dashboard as the active menu.
+            this.DashboardButtonClick(this, null);
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
