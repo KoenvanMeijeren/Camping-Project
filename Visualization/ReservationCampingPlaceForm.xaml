@@ -37,7 +37,7 @@
                         <GridViewColumn Header="Locatie" Width="100" DisplayMemberBinding="{Binding Location}" />
                         <GridViewColumn Header="Aantal personen" Width="150" DisplayMemberBinding="{Binding Type.GuestLimit}" />
                         <GridViewColumn Header="Oppervlakte" Width="150" DisplayMemberBinding="{Binding SurfaceReadable}" />
-                        <GridViewColumn Header="Totaalprijs" Width="100" DisplayMemberBinding="{Binding TotalPriceReadable}" />
+                        <GridViewColumn Header="Dagtarief" Width="100" DisplayMemberBinding="{Binding TotalPriceReadable}" />
                     </GridView>
                 </ListView.View>
             </ListView>
