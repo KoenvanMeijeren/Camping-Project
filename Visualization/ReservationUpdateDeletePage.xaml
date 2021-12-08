@@ -44,7 +44,7 @@
         <ComboBox Name="CampingPlaceTextbox" SelectedItem="{Binding SelectedCampingPlace}" ItemsSource="{Binding CampingPlaces}" HorizontalAlignment="Left" Height="20" Margin="188,255,0,0" VerticalAlignment="Top" Width="206" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black"/>
 
         <DatePicker SelectedDate="{Binding Path=CheckInDate, Mode=TwoWay}" Margin="188,380,488,214" Name="CheckInDate" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
-        <Button Content ="Terug" Margin="48,92,638,500" Background="black" Foreground="white" FontSize="16" FontFamily="Century gothic">
+        <Button Content ="Terug" Command="{Binding GoBackToDashboard}"  Margin="48,92,638,500" Background="black" Foreground="white" FontSize="16" FontFamily="Century gothic">
             <Button.Resources>
                 <Style TargetType = "Border" >
                     <Setter Property="CornerRadius" Value="5"/>

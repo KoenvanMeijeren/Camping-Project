@@ -40,7 +40,9 @@ namespace Visualization
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
-            
+            ManageReservationViewModel.FromReservationBackToDashboardEvent += this.OnBackToDashboardEvent;
+
+
             AccountButton.Visibility = Visibility.Collapsed;
             
             // Sets the dashboard as the active menu.
@@ -163,6 +165,9 @@ namespace Visualization
             this.MainFrame.Content = this._manageReservationPage.Content;
         }
 
-        
+        private void OnBackToDashboardEvent(object sender, ReservationEventArgs args)
+        {
+            this.DashboardButtonClick(sender, new RoutedEventArgs());
+        }
     }
 }

@@ -149,7 +149,7 @@ namespace Model
             command.Parameters.AddWithValue(this.PrimaryKey, this.Id);
             foreach (KeyValuePair<string, string> keyValuePair in dictionary)
             {
-                command.Parameters.AddWithValue(keyValuePair.Key, keyValuePair.Value);
+                command.Parameters.Add(keyValuePair.Value);
             }
             var isSuccesfullyExcecuted = command.ExecuteNonQuery();
 

@@ -17,6 +17,7 @@ namespace ViewModel
 {
     public class ManageReservationViewModel : ObservableObject
     {
+        public static event EventHandler<ReservationEventArgs> FromReservationBackToDashboardEvent;
         private const string SelectAll = "Alle";
         private Reservation _reservation;
         private string _numberOfPeople;
@@ -256,6 +257,17 @@ namespace ViewModel
            
 
         }
+
+        private void ExecuteGoToDashBoard()
+        {
+            FromReservationBackToDashboardEvent?.Invoke(this, new ReservationEventArgs(_reservation));
+        }
+
+        private bool CanExecuteGoToDashboard()
+        {
+            return true;
+        }
+        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
 
     }
 }
