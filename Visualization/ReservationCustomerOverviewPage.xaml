@@ -13,7 +13,7 @@
         </Style>
     </Page.Resources>
     <Page.DataContext>
-        <viewModel:ReservationOverviewViewModel />
+        <viewModel:ReservationCustomerOverviewViewModel />
     </Page.DataContext>
 
     <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
-    public class ReservationOverviewViewModel : ObservableObject
+    public class ReservationCustomerOverviewViewModel : ObservableObject
     {
         // TODO: Change this to session variable
         private int _customerID = 107;
@@ -20,10 +20,7 @@ namespace ViewModel
         private Reservation _currentSelectedReservationGet;
         public Reservation CurrentSelectedReservation
         {
-            get
-            {
-                return _currentSelectedReservationGet;
-            }
+            get => _currentSelectedReservationGet;
             set
             {
                 this._currentSelectedReservationGet = value;
@@ -195,7 +192,7 @@ namespace ViewModel
         }
         #endregion
 
-        public ReservationOverviewViewModel()
+        public ReservationCustomerOverviewViewModel()
         {
             Reservation reservationModel = new Reservation();
             this.Reservations = reservationModel.GetCustomersReservations(_customerID);
