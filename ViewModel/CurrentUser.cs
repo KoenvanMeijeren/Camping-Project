@@ -33,7 +33,7 @@ namespace ViewModel
                     break;
             }
 
-            CurrentUserSetEvent?.Invoke(null, new EventArgs());
+            CurrentUserSetEvent?.Invoke(null, EventArgs.Empty);
         }
 
         public static void EmptyCurrentUser()
