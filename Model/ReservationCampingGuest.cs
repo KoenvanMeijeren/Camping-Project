@@ -43,7 +43,7 @@ namespace Model
         /// </summary>
         /// <param name="reservation">The reservation.</param>
         /// <returns>The camping guests.</returns>
-        public IEnumerable<ReservationCampingGuest> SelectByReservation(Reservation reservation)
+        public List<ReservationCampingGuest> SelectByReservation(Reservation reservation)
         {
             Query query = new Query(this.BaseSelectQuery() + $" WHERE BT.{ColumnReservation} = @{ColumnReservation}");
             query.AddParameter(ColumnReservation, reservation.Id);

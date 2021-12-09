@@ -239,10 +239,10 @@ namespace ViewModel
                 document.Add(new Paragraph("\n"));
                 document.Add(new Paragraph("\n"));
                 reservationTable.AddCell("ID");
-                reservationTable.AddCell("Camping plaats");
-                reservationTable.AddCell("Naam");
-                reservationTable.AddCell("Checkin-datum");
-                reservationTable.AddCell("Checkout-datum");
+                reservationTable.AddCell("Verblijf");
+                reservationTable.AddCell("Klantnaam");
+                reservationTable.AddCell("Begindatum");
+                reservationTable.AddCell("Einddatum");
                 reservationTable.AddCell("Prijs");
                 reservationTable.AddCell("Aanwezig");
 
@@ -257,23 +257,24 @@ namespace ViewModel
                 document.Add(new Paragraph("\n"));
                 document.Add(reservationTable);
 
-                
                 //Should be used for the CampingGuest table
-                foreach (var reservationGuest in reservation.CampingGuests)
+                var campingGuests = reservation.Reservation.CampingGuests;
+                if (!campingGuests.Any())
                 {
-                    PdfPTable campingGuestTable = new PdfPTable(3);
-
-                    campingGuestTable.AddCell("ID");
-                    campingGuestTable.AddCell("Naam");
-                    campingGuestTable.AddCell("Geboortedatum");
-
-                    campingGuestTable.AddCell(reservationGuest.CampingGuest.Id.ToString());
-                    campingGuestTable.AddCell(reservationGuest.CampingGuest.FirstName.ToString() + " " + reservationGuest.CampingGuest.LastName.ToString());
-                    campingGuestTable.AddCell(reservationGuest.CampingGuest.Birthdate.ToShortDateString());
-
-                    document.Add(campingGuestTable);
-
+                    continue;
                 }
+                
+                PdfPTable campingGuestTable = new PdfPTable(3);
+
+                campingGuestTable.AddCell("Gastnaam");
+                campingGuestTable.AddCell("Geboortedatum");
+                foreach (var reservationGuest in campingGuests)
+                {
+                    campingGuestTable.AddCell(reservationGuest.CampingGuest.FirstName + " " + reservationGuest.CampingGuest.LastName);
+                    campingGuestTable.AddCell(reservationGuest.CampingGuest.Birthdate.ToShortDateString());
+                }
+                
+                document.Add(campingGuestTable);
             }
 
             document.Close();
