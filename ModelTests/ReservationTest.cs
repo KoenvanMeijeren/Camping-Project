@@ -18,7 +18,7 @@ namespace ModelTests
             CampingCustomer campingCustomer = new CampingCustomer("1", account, address, "19/10/12", "testPhoneNumber", "testFirstName", "testLastName");
 
             ReservationDuration reservationDuration = new ReservationDuration("1", "12/26/2021 12:00:00", "12/28/2021 12:00:00");
-            Reservation reservation = new Reservation("1", "1", campingCustomer, campingPlace, reservationDuration);
+            Reservation reservation = new Reservation("1", "1", campingCustomer, campingPlace, reservationDuration, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False);
 
             Assert.AreEqual(reservation.Id, 1);
             Assert.AreEqual(reservation.NumberOfPeople, 1);

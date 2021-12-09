@@ -48,7 +48,7 @@ namespace Model
         }
         
         public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, 
-            ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid) : this("-1", numberOfPeople, campingCustomer, campingPlace, duration, reservationDeleted, reservationPaid, reservationRestitutionPaid)
+            ReservationDuration duration) : this("-1", numberOfPeople, campingCustomer, campingPlace, duration, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False)
         {
         }
         
