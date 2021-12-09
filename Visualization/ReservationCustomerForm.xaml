@@ -47,7 +47,7 @@
         <DatePicker Height="28" HorizontalAlignment="Left" SelectedDate="{Binding Birthdate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="94,289,0,0" Name="CustomerBirthDate" VerticalAlignment="Top" Width="244" />
 
         <Label Content="Email*" HorizontalAlignment="Left" Margin="465,170,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13"/>
-        <TextBox Name="CustomerMailadres" Text="{Binding EmailAddress, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,195,0,0">
+        <TextBox IsReadOnly="{Binding EmailEnabled}" Text="{Binding EmailAddress, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="194" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,195,0,0">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
                     <GradientStop Color="White" Offset="0"/>
