@@ -43,15 +43,36 @@ namespace Model
 
         public List<ReservationCampingGuest> CampingGuests { get; private set; }
 
+        /// <summary>
+        /// Constructs this object for accessing the select methods.
+        /// </summary>
         public Reservation(): base(TableName, ColumnId)
         {
         }
         
+        /// <summary>
+        /// Constructs the object for inserting it in the database.
+        /// </summary>
+        /// <param name="numberOfPeople">The number of people.</param>
+        /// <param name="campingCustomer">The camping customer.</param>
+        /// <param name="campingPlace">The camping place.</param>
+        /// <param name="duration">The duration.</param>
         public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, 
             ReservationDuration duration) : this("-1", numberOfPeople, campingCustomer, campingPlace, duration, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False)
         {
         }
         
+        /// <summary>
+        /// Constructs the object for updating and deleting it in the database.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="numberOfPeople">The number of people.</param>
+        /// <param name="campingCustomer">The camping customer.</param>
+        /// <param name="campingPlace">The camping place.</param>
+        /// <param name="duration">The duration.</param>
+        /// <param name="reservationDeleted">If it has been deleted.</param>
+        /// <param name="reservationPaid">If it has been paid.</param>
+        /// <param name="reservationRestitutionPaid">If restitution has been paid.</param>
         public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid) : base(TableName, ColumnId)
         {
             bool successId = int.TryParse(id, out int numericId);
@@ -125,9 +146,22 @@ namespace Model
             return this.Collection;
         }
 
+        public bool Update()
+        {
+            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration);
+        }
+        
         public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
         {
-            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
+            bool durationUpdated = duration.Update();
+            
+            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration)) && durationUpdated;
+        }
+
+        /// <inheritdoc/>
+        public override bool Delete()
+        {
+            return base.Delete() && this.Duration.Delete();
         }
 
         /// <inheritdoc/>

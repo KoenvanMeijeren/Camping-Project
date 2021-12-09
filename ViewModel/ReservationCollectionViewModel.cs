@@ -25,6 +25,25 @@ namespace ViewModel
 
         private readonly ObservableCollection<string> _campingPlaceTypes;
         public ObservableCollection<ReservationViewModel> Reservations { get; private set; }
+        public static event EventHandler<ReservationEventArgs> ManageReservationEvent;
+        
+        private ReservationViewModel _selectedReservation;
+        public ReservationViewModel SelectedReservation
+        {
+            get => _selectedReservation;
+            set
+            {
+                if (value == null || Equals(value, this._selectedReservation))
+                {
+                    return;
+                }
+
+                this._selectedReservation = value;
+                ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation.Reservation));
+            }
+        }
+
+
         
         private DateTime _checkOutDate, _checkInDate;
         private string _minTotalPrice, _maxTotalPrice, _selectedCampingPlaceType, _guests;
@@ -174,6 +193,7 @@ namespace ViewModel
             this.CheckOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ManageReservationViewModel.UpdateReservationCollection += OnReservationConfirmedEvent;
         }
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
@@ -221,6 +241,8 @@ namespace ViewModel
                 this.Reservations.Add(new ReservationViewModel(reservation));
             }
         }
+
+    
 
         private void ExecuteCreatePdf()
         {
@@ -276,6 +298,8 @@ namespace ViewModel
                 
                 document.Add(campingGuestTable);
             }
+
+    
 
             document.Close();
 

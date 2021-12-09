@@ -20,6 +20,7 @@ namespace Visualization
         private readonly SignUpPage _signUpPage;
         private readonly TestInputPage _testInputPage;
         private readonly TestPage _testPage;
+        private readonly ReservationUpdateDeletePage _manageReservationPage;
         private readonly ReservationOverviewPage _reservationOverviewPage;
 
         public MainWindow()
@@ -35,6 +36,7 @@ namespace Visualization
             this._signUpPage = new SignUpPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
+            this._manageReservationPage = new ReservationUpdateDeletePage();
             this._reservationOverviewPage = new ReservationOverviewPage();
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
@@ -43,6 +45,9 @@ namespace Visualization
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             SignInViewModel.SignInEvent += this.OnSignInEvent;
             SignInViewModel.SignUpFormEvent += this.OnSignUpFormEvent;
+            ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
+            ManageReservationViewModel.FromReservationBackToDashboardEvent += this.OnBackToDashboardEvent;
+
 
             AccountButton.Visibility = Visibility.Collapsed;
             
@@ -167,7 +172,15 @@ namespace Visualization
         {
             this.MainFrame.Content = this._signUpPage.Content;
         }
+        
+        private void OnManageReservationEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._manageReservationPage.Content;
+        }
 
-
+        private void OnBackToDashboardEvent(object sender, ReservationEventArgs args)
+        {
+            this.DashboardButtonClick(sender, new RoutedEventArgs());
+        }
     }
 }
