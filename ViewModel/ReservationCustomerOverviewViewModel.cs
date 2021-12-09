@@ -185,8 +185,19 @@ namespace ViewModel
         #endregion
 
         #region Delete reservation
-        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation);
+        /// <summary>
+        /// Check if user can delete the reservation
+        /// </summary>
+        /// <returns>Boolean value of result</returns>
+        private bool CanExecuteDeleteReservation()
+        {
+            return this._selectedReservation != null;
+        }
+        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation, CanExecuteDeleteReservation);
 
+        /// <summary>
+        /// Executes the reservation delete process
+        /// </summary>
         private void ExecuteDeleteReservation()
         {
             // Check if reservation has passed
@@ -200,7 +211,7 @@ namespace ViewModel
             string restitionValue = checkIfReservationIsWithinOneWeek ? (this._selectedReservation.TotalPrice / 2).ToString(CultureInfo.InvariantCulture) : this._selectedReservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
 
             // Confirmation box
-            MessageBoxResult messageBoxResult = MessageBox.Show($"Weet je zeker dat je de reservering wil annuleren? Het restitutiebedrag bedraagt: {restitionValue}", "Reservering verwijderen", MessageBoxButton.YesNo);
+            MessageBoxResult messageBoxResult = MessageBox.Show($"Weet je zeker dat je de reservering wil annuleren? Het restitutiebedrag bedraagt: €{restitionValue},-", "Reservering verwijderen", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 // Checks if update was succesful
@@ -209,7 +220,7 @@ namespace ViewModel
                     this.Reservations.Remove(_selectedReservation);
                     this.ReservationsCollection.Remove(_selectedReservation);
 
-                    MessageBox.Show($"Reservering geannuleerd. Het restitutiebedrag van €{restitionValue} wordt binnen vijf dagen op uw rekening gestort.", "Restitutie", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show($"Reservering geannuleerd. Het restitutiebedrag van €{restitionValue},- wordt binnen vijf werkdagen op uw rekening gestort.", "Restitutie", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     // Check if there are still reservations left
                     if (this.Reservations.Count > 0)
