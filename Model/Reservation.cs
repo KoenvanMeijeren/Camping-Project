@@ -25,6 +25,8 @@ namespace Model
         public ReservationDuration Duration { get; private set; }
         public float TotalPrice { get; private set; }
         public string TotalPriceString { get; private set; }
+        
+        public IEnumerable<ReservationCampingGuest> CampingGuests { get; private set; }
 
         public Reservation(): base(TableName, ColumnId)
         {
@@ -162,7 +164,12 @@ namespace Model
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, phoneNumber, firstName, lastName);
             ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
-            return new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
+            Reservation reservation = new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
+            
+            ReservationCampingGuest reservationCampingGuestModel = new ReservationCampingGuest();
+            reservation.CampingGuests = reservationCampingGuestModel.SelectByReservation(reservation);
+
+            return reservation;
         }
         
         /// <inheritdoc/>

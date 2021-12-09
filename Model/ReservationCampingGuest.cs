@@ -38,6 +38,25 @@ namespace Model
             this.CampingGuest = campingGuest;
         }
 
+        /// <summary>
+        /// Selects all camping guests by the given reservation.
+        /// </summary>
+        /// <param name="reservation">The reservation.</param>
+        /// <returns>The camping guests.</returns>
+        public IEnumerable<ReservationCampingGuest> SelectByReservation(Reservation reservation)
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE BT.{ColumnReservation} = @{ColumnReservation}");
+            query.AddParameter(ColumnReservation, reservation.Id);
+         
+            this.Collection = new List<ReservationCampingGuest>();
+            foreach (var reservationCampingGuest in query.Select())
+            {
+                this.Collection.Add(this.ToModel(reservationCampingGuest));
+            }
+            
+            return this.Collection;
+        }
+
         public bool Update(Reservation reservation, CampingGuest campingGuest)
         {
             this.Reservation = reservation;
