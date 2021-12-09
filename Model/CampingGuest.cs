@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SystemCore;
 
 namespace Model
 {
@@ -19,6 +20,7 @@ namespace Model
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public DateTime Birthdate { get; private set; }
+        public string BirthdateReadable { get; private set; }
 
         public CampingGuest(): base(TableName, ColumnId)
         {
@@ -37,6 +39,7 @@ namespace Model
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Birthdate = successDate ? dateTime : DateTime.MinValue;
+            this.BirthdateReadable = this.Birthdate.ToShortDateString();
         }
 
         public bool Update(string firstName, string lastName, DateTime birthdate)

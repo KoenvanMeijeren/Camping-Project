@@ -142,11 +142,38 @@ namespace ViewModel
 
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
 
-           
+
+            filterAvailableCampingPlaces();
+        }
+
+        private void filterAvailableCampingPlaces()
+        {
             /*foreach (var campingPlace in new CampingPlace().Select())
             {
                 this.CampingPlaces.Add(campingPlace.GetLocation());
             }*/
+
+            foreach (var campingPlace in ToFilteredOnReservedCampingPlaces(new CampingPlace().Select()))
+            {
+                this.CampingPlaces.Add(campingPlace.GetLocation());
+            }
+        }
+
+        private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData)
+        {
+            Reservation reservationModel = new Reservation();
+
+            var reservations = reservationModel.Select();
+            foreach (Reservation reservation in reservations)
+            {
+                ReservationDuration reservationDuration = reservation.Duration;
+                if (reservationDuration.CheckInDatetime.Date < this.CheckOutDate.Date && this.CheckInDate.Date < reservationDuration.CheckOutDatetime.Date)
+                {
+                    viewData = viewData.Where(campingPlace => campingPlace.Id != reservation.CampingPlace.Id).ToList();
+                }
+            }
+
+            return viewData;
         }
 
         private IEnumerable<CampingPlace> GetCampingPlaces()
