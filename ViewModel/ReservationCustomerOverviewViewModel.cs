@@ -123,7 +123,7 @@ namespace ViewModel
         public ReservationCustomerOverviewViewModel()
         {
             Reservation reservationModel = new Reservation();
-            this.Reservations = reservationModel.GetCustomersReservations(_customerID);
+            this.Reservations = reservationModel.GetCustomersReservations(this._customerID);
             this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
         }
 
@@ -131,7 +131,7 @@ namespace ViewModel
         /// Replaces the values of the reservation info in the reservation overview
         /// </summary>
         /// <param name="reservation">Reservation object of the selected reservation</param>
-        public void DisplayNewReservationInfoData(Reservation reservation)
+        private void DisplayNewReservationInfoData(Reservation reservation)
         {
             this.InfoStartDate = reservation.Duration.CheckInDate;
             this.InfoEndDate = reservation.Duration.CheckOutDate;
@@ -142,9 +142,8 @@ namespace ViewModel
             this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
         }
 
-        public void DisplayNewCustomerGuestData(Reservation reservation)
+        private void DisplayNewCustomerGuestData(Reservation reservation)
         {
-            ReservationCampingGuest reservationCampingGuestModel = new();
             List<CampingGuest> campingGuestList = new List<CampingGuest>();
 
             CampingGuest gast1 = new CampingGuest("test", "test", "2000-19-19");
