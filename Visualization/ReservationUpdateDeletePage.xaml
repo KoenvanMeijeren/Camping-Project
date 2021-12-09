@@ -36,7 +36,6 @@
         <Label Content="Aantal personen" Margin="61,193,599,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" />
         <Label Content="Camping plek" Margin="55,250,613,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" />
         <Label Content="Verblijftermijn" Margin="56,352,623,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" />
-        <Label Content="Aantal gasten" Margin="516,119,138,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" />
         <Label Content="Locatie" Margin="534,197,282,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" Height="33" />
         <Label Content="{Binding PageTitle}" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Width="728" Height="36" BorderThickness="0,0,0,2" BorderBrush="Black"/>
 
