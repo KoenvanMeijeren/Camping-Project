@@ -124,12 +124,6 @@ namespace ViewModel
             Reservation reservationModel = new Reservation();
             this.Reservations = reservationModel.GetCustomersReservations(_customerID);
             this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
-
-            ReservationCampingGuest reservationCampingGuestModel = new ReservationCampingGuest();
-            foreach (var item in this.Reservations)
-            {
-                var x = reservationCampingGuestModel.GetReservationGuests(item);
-            }
         }
 
         /// <summary>
@@ -150,7 +144,7 @@ namespace ViewModel
         public void DisplayNewCustomerGuestData(Reservation reservation)
         {
             ReservationCampingGuest reservationCampingGuestModel = new();
-            List<CampingGuest> campingGuestList = reservationCampingGuestModel.GetReservationGuests(reservation);
+            List<CampingGuest> campingGuestList = new List<CampingGuest>();
 
             CampingGuest gast1 = new CampingGuest("test", "test", "2000-19-19");
             CampingGuest gast2 = new CampingGuest("test", "test", "2000-19-13");

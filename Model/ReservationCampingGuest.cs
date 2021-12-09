@@ -38,24 +38,6 @@ namespace Model
             this.CampingGuest = campingGuest;
         }
 
-        /// <summary>
-        /// Returns all the guests from given reservation.
-        /// </summary>
-        /// <param name="reservation">Reservation</param>
-        /// <returns>List of ReservationCampingGuests</returns>
-        public List<CampingGuest> GetReservationGuests(Reservation reservation)
-        {
-            Query query = new Query($"SELECT * FROM {ReservationCampingGuest.TableName} INNER JOIN CampingGuest ON ReservationCampingGuest.CampingGuestID = CampingGuest.CampingGuestID WHERE ReservationCampingGuest.ReservationID = @reservationId");
-            query.AddParameter("reservationId", reservation.Id);
-
-            List<CampingGuest> campingGuests = new List<CampingGuest>();
-            foreach (var item in query.Select())
-            {
-            }
-
-            return campingGuests;
-        }
-
         public bool Update(Reservation reservation, CampingGuest campingGuest)
         {
             this.Reservation = reservation;
