@@ -215,12 +215,14 @@ namespace ViewModel
             string caption = "Reservering is bijgwerkt";
             if (!succesfullyUpdated || !durationsuccesfullyupdated)
             {
-                context = "Reservering is door vage omstandigheden niet goed aangepast";
+                context = "Reservering is door omstandigheden niet volledig aangepast";
                 caption = "Reservering is mogelijk bijgewerkt";
             }
             
             MessageBox.Show(context, caption, System.Windows.MessageBoxButton.OK);
-            //update page
+
+            //update page?
+            ExecuteGoToDashBoard();
         }
         private bool CanExecuteUpdateReservation()
         {
@@ -260,27 +262,37 @@ namespace ViewModel
             ReservationDuration deletedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
             Reservation deletedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, deletedReservationDuraton);
             
-            bool campingGuestsSuccesfullyDeleted = false;
-            foreach (ReservationCampingGuest guest in this._reservation.CampingGuests)
+            bool campingGuestsHasBeenSuccesfullyDeleted = true;
+            if (this._reservation.CampingGuests.Count > 0)
             {
-                ReservationCampingGuest deletedCampingGuest = new ReservationCampingGuest(this._reservation, new CampingGuest(guest.CampingGuest.FirstName, guest.CampingGuest.LastName, guest.CampingGuest.BirthdateReadable) );
-                campingGuestsSuccesfullyDeleted = deletedCampingGuest.DeleteReservationCampingGuestConnection();
-            }
-            
+                foreach (ReservationCampingGuest guest in this._reservation.CampingGuests)
+                {
+                    ReservationCampingGuest deletedCampingGuest = new ReservationCampingGuest(this._reservation, new CampingGuest(guest.CampingGuest.FirstName, guest.CampingGuest.LastName, guest.CampingGuest.BirthdateReadable));
+                    
+                    bool campingGuestHasbeenDeleted = deletedCampingGuest.DeleteReservationCampingGuestRelation();
 
+                    //checks if any campingguest hasn't been deleted
+                    if (!campingGuestHasbeenDeleted)
+                    {
+                        campingGuestsHasBeenSuccesfullyDeleted = false;
+                    }
+                }
+            }
            
+ 
             bool durationSuccesfullydeleted = deletedReservationObject.Delete();
             bool succesfullDeleted = deletedReservationDuraton.Delete();
 
             string context = "Reservering is verwijderd!";
             string caption = "Succesvol verwijderd";
 
-            if (!succesfullDeleted || !durationSuccesfullydeleted || !campingGuestsSuccesfullyDeleted)
+            if (!succesfullDeleted || !durationSuccesfullydeleted || !campingGuestsHasBeenSuccesfullyDeleted)
             {
-                context = "Reservering is door vage omstandigheden niet goed verwijderd";
+                context = "Reservering is door omstandigheden niet volledig verwijderd";
                 caption = "Reservering is mogelijk geheel verwijderd";
             }
             MessageBox.Show(context, caption, System.Windows.MessageBoxButton.OK);
+            ExecuteGoToDashBoard();
         }
 
         private bool CanExecuteDeleteReservation()

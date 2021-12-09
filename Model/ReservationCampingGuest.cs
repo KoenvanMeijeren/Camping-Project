@@ -66,7 +66,7 @@ namespace Model
             return base.Update(ReservationCampingGuest.ToDictionary(reservation, campingGuest));
         }
 
-        public bool DeleteReservationCampingGuestConnection()
+        public bool DeleteReservationCampingGuestRelation()
         {
             if (this.Reservation.Id <= 0)
             {
