@@ -14,15 +14,12 @@ namespace SystemCore
         /// <param name="exception">The exception</param>
         public static void Handle(Exception exception)
         {
-            return;
             var success = bool.TryParse(ConfigReader.GetSetting("debug"), out bool debug);
             if (success && debug)
             {
                 throw exception;
             }
 
-            if (1 == 2)
-            {
             MessageBox.Show(
                 "Er ging iets fout tijdens het uitvoeren van deze applictie, probeer het alstublieft opnieuw of neem contact op met de beheerders.", 
                 "Foutmelding",
@@ -30,6 +27,5 @@ namespace SystemCore
             );
             Environment.Exit(-1);
             }
-        }
     }
 }
