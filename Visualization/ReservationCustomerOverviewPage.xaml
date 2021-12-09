@@ -54,7 +54,7 @@
                         </TransformGroup>
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <Label Content="{Binding InfoID}" Margin="0, 5, 0, 0"/>
+                <Label Content="{Binding InfoId}" Margin="0, 5, 0, 0"/>
                 <Label Content="{Binding InfoStartDate}"/>
                 <Label Content="{Binding InfoEndDate}"/>
                 <Label Content="{Binding InfoAmountOfGuests}"/>

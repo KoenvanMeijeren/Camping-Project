@@ -25,11 +25,11 @@ namespace ViewModel
         private ObservableCollection<ReservationCampingGuest> _campingGuestCollection;
 
         #region Properties
-        private string _infoID = "ID: ";
-        public string InfoID
+        private string _infoId = "ID: ";
+        public string InfoId
         {
-            get => _infoID;
-            set => this._infoID = "ID: " + value;
+            get => _infoId;
+            set => this._infoId = "ID: " + value;
         }
 
         private string _infoStartDate = "Begindatum: ";
@@ -172,7 +172,7 @@ namespace ViewModel
         {
             if (reservation != null)
             {
-                this.InfoID = reservation.Id.ToString();
+                this.InfoId = reservation.Id.ToString();
                 this.InfoStartDate = reservation.Duration.CheckInDate;
                 this.InfoEndDate = reservation.Duration.CheckOutDate;
                 // Amount of guests + customer
@@ -183,7 +183,7 @@ namespace ViewModel
                 this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
             } else
             {
-                this.InfoID = "";
+                this.InfoId = "";
                 this.InfoStartDate = "";
                 this.InfoEndDate = "";
                 this.InfoAmountOfGuests = "";
@@ -222,34 +222,35 @@ namespace ViewModel
         private void ExecuteDeleteReservation()
         {
             // Check if reservation has passed
-            if (DateTime.Today >= Convert.ToDateTime(_selectedReservation.Duration.CheckInDate))
+            if (DateTime.Today >= Convert.ToDateTime(this._selectedReservation.Duration.CheckInDate))
             {
                 MessageBox.Show("Reserveringen van vandaag of eerder kunnen niet meer worden verwijderd.", "Reservering verwijderen ", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             
-            bool checkIfReservationIsWithinOneWeek = DateTime.Today.AddMonths(+1) >= Convert.ToDateTime(_selectedReservation.Duration.CheckInDate);
-            string restitionValue = checkIfReservationIsWithinOneWeek ? (this._selectedReservation.TotalPrice / 2).ToString(CultureInfo.InvariantCulture) : this._selectedReservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
+            bool checkIfReservationIsWithinOneWeek = DateTime.Today.AddMonths(+1) >= Convert.ToDateTime(this._selectedReservation.Duration.CheckInDate);
+            string restitutionValue = checkIfReservationIsWithinOneWeek ? (this._selectedReservation.TotalPrice / 2).ToString(CultureInfo.InvariantCulture) : this._selectedReservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
 
             // Confirmation box
-            MessageBoxResult messageBoxResult = MessageBox.Show($"Weet je zeker dat je de reservering wil annuleren? Het restitutiebedrag bedraagt: €{restitionValue},-", "Reservering verwijderen", MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.Yes)
+            MessageBoxResult messageBoxResult = MessageBox.Show($"Weet je zeker dat je de reservering wil annuleren? Het restitutiebedrag bedraagt: €{restitutionValue},-", "Reservering verwijderen", MessageBoxButton.YesNo);
+            if (messageBoxResult != MessageBoxResult.Yes)
             {
-                // Checks if update was succesful
-                if (_selectedReservation.Update(_selectedReservation.CampingGuests.Count.ToString(), _selectedReservation.CampingCustomer, _selectedReservation.CampingPlace, _selectedReservation.Duration, ReservationColumnStatus.True, ReservationColumnStatus.False, ReservationColumnStatus.False))
-                {
-                    this.Reservations.Remove(_selectedReservation);
-                    this.ReservationsCollection.Remove(_selectedReservation);
-
-                    MessageBox.Show($"Reservering geannuleerd. Het restitutiebedrag van €{restitionValue},- wordt binnen vijf werkdagen op uw rekening gestort.", "Restitutie", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    // Check if there are still reservations left
-                    if (this.Reservations.Count > 0)
-                    {
-                        this.SelectedReservation = this.Reservations.First();
-                    }
-                }
+                return;
             }
+            
+            // Checks if update was successful.
+            if (!this._selectedReservation.Update(this._selectedReservation.CampingGuests.Count.ToString(),
+                    this._selectedReservation.CampingCustomer, this._selectedReservation.CampingPlace,
+                    this._selectedReservation.Duration, ReservationColumnStatus.True,
+                    this._selectedReservation.ReservationPaid,
+                    this._selectedReservation.ReservationRestitutionPaid))
+            {
+                return;
+            }
+            
+            this.ReservationsCollection.Remove(this._selectedReservation);
+
+            MessageBox.Show($"Reservering geannuleerd. Het restitutiebedrag van €{restitutionValue},- wordt binnen vijf werkdagen op uw rekening gestort.", "Restitutie", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         #endregion
     }
