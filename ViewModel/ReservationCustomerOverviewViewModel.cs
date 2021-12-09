@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -136,9 +137,9 @@ namespace ViewModel
             this.InfoEndDate = reservation.Duration.CheckOutDate;
             this.InfoAmountOfGuests = reservation.NumberOfPeople.ToString();
             this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
-            this.InfoSurface = reservation.CampingPlace.Surface.ToString();
+            this.InfoSurface = reservation.CampingPlace.Surface.ToString(CultureInfo.InvariantCulture);
             this.InfoLocation = reservation.CampingPlace.Location;
-            this.InfoTotalPrice = reservation.TotalPrice.ToString();
+            this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
         }
 
         public void DisplayNewCustomerGuestData(Reservation reservation)
