@@ -428,6 +428,11 @@ namespace ViewModel
 
         private void FillInputWithCustomerData(CampingCustomer campingCustomer)
         {
+            if (campingCustomer == null)
+            {
+                return;
+            }
+
             this.FirstName = campingCustomer.FirstName;
             this.LastName = campingCustomer.LastName;
             this.Birthdate = campingCustomer.Birthdate;
