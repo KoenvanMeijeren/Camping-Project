@@ -125,9 +125,22 @@ namespace Model
             return this.Collection;
         }
 
+        public bool Update()
+        {
+            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration);
+        }
+        
         public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
         {
-            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
+            bool durationUpdated = duration.Update();
+            
+            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration)) && durationUpdated;
+        }
+
+        /// <inheritdoc/>
+        public override bool Delete()
+        {
+            return base.Delete() && this.Duration.Delete();
         }
 
         /// <inheritdoc/>

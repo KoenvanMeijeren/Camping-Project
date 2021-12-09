@@ -66,20 +66,6 @@ namespace Model
             return base.Update(ReservationCampingGuest.ToDictionary(reservation, campingGuest));
         }
 
-        public bool DeleteReservationCampingGuestRelation()
-        {
-            if (this.Reservation.Id <= 0)
-            {
-                return false;
-            }
-
-            Query query = new Query($"DELETE FROM {TableName} WHERE {ColumnReservation} = @{ColumnReservation}");
-            query.AddParameter(ColumnReservation, this.Reservation.Id);
-            query.Execute();
-
-            return query.IsSuccessFullyExecuted();
-        }
-
         /// <inheritdoc/>
         protected override ReservationCampingGuest ToModel(Dictionary<string, string> dictionary)
         {

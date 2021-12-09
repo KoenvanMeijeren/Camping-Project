@@ -205,21 +205,20 @@ namespace ViewModel
                 return;
             }
 
-            ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
-            Reservation updatedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, updatedReservationDuraton);
+            ReservationDuration reservationDuration = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
+            Reservation reservation = new Reservation(this._reservation.Id.ToString(), this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, reservationDuration, this._reservation.ReservationDeleted, this._reservation.ReservationPaid, this._reservation.ReservationRestitutionPaid);
 
-            bool succesfullyUpdated = updatedReservationObject.Update(this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, updatedReservationDuraton);
-            bool durationsuccesfullyupdated = updatedReservationDuraton.Update(this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
+            bool reservationUpdated = reservation.Update();
 
             string context = "Reservering is aangepast!";
             string caption = "Reservering is bijgwerkt";
-            if (!succesfullyUpdated || !durationsuccesfullyupdated)
+            if (!reservationUpdated)
             {
                 context = "Reservering is door omstandigheden niet volledig aangepast";
                 caption = "Reservering is mogelijk bijgewerkt";
             }
             
-            MessageBox.Show(context, caption, System.Windows.MessageBoxButton.OK);
+            MessageBox.Show(context, caption, MessageBoxButton.OK);
 
             //update page?
             ExecuteGoToDashBoard();
@@ -259,40 +258,35 @@ namespace ViewModel
                 return;
             }
 
-            ReservationDuration deletedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
-            Reservation deletedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, deletedReservationDuraton);
             
-            bool campingGuestsHasBeenSuccesfullyDeleted = true;
+            bool campingGuestsDeleted = true;
             if (this._reservation.CampingGuests.Count > 0)
             {
-                foreach (ReservationCampingGuest guest in this._reservation.CampingGuests)
+                foreach (var reservationCampingGuest in this._reservation.CampingGuests)
                 {
-                    ReservationCampingGuest deletedCampingGuest = new ReservationCampingGuest(this._reservation, new CampingGuest(guest.CampingGuest.FirstName, guest.CampingGuest.LastName, guest.CampingGuest.BirthdateReadable));
-                    
-                    bool campingGuestHasbeenDeleted = deletedCampingGuest.DeleteReservationCampingGuestRelation();
+                    bool campingGuestDeleted = reservationCampingGuest.Delete();
 
-                    //checks if any campingguest hasn't been deleted
-                    if (!campingGuestHasbeenDeleted)
+                    //checks if any camping guest hasn't been deleted
+                    if (!campingGuestDeleted)
                     {
-                        campingGuestsHasBeenSuccesfullyDeleted = false;
+                        campingGuestsDeleted = false;
                     }
                 }
             }
-           
- 
-            bool durationSuccesfullydeleted = deletedReservationObject.Delete();
-            bool succesfullDeleted = deletedReservationDuraton.Delete();
+
+            bool reservationDeleted = this._reservation.Delete();
 
             string context = "Reservering is verwijderd!";
             string caption = "Succesvol verwijderd";
 
-            if (!succesfullDeleted || !durationSuccesfullydeleted || !campingGuestsHasBeenSuccesfullyDeleted)
+            if (!reservationDeleted || !campingGuestsDeleted)
             {
                 context = "Reservering is door omstandigheden niet volledig verwijderd";
                 caption = "Reservering is mogelijk geheel verwijderd";
             }
-            MessageBox.Show(context, caption, System.Windows.MessageBoxButton.OK);
-            ExecuteGoToDashBoard();
+            MessageBox.Show(context, caption, MessageBoxButton.OK);
+            
+            this.ExecuteGoToDashBoard();
         }
 
         private bool CanExecuteDeleteReservation()

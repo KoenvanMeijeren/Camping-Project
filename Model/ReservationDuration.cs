@@ -44,6 +44,11 @@ namespace Model
             this.Id = successId ? numericId : -1;
             this.ParseInputDates(checkInDate, checkOutDate);
         }
+        
+        public bool Update()
+        {
+            return this.Update(this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
+        }
 
         public bool Update(string checkInDate, string checkOutDate)
         {
