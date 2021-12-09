@@ -81,7 +81,7 @@ namespace Model
         /// <returns>Database records of given customer's reservations</returns>
         public List<Reservation> GetCustomersReservations(int customerId)
         {
-            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId");
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId ORDER BY {ReservationDuration.ColumnCheckInDate} ");
             query.AddParameter("customerId", customerId);
 
             List<Reservation> reservations = new List<Reservation>();
