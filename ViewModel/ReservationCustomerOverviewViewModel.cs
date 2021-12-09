@@ -1,4 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ViewModel
 {
@@ -120,14 +122,19 @@ namespace ViewModel
         }
         #endregion
 
+        #region Overview
         public ReservationCustomerOverviewViewModel()
         {
             Reservation reservationModel = new Reservation();
             this.Reservations = reservationModel.GetCustomersReservations(this._customerID);
-            this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
-            this.SelectedReservation = this.Reservations.First();
+            this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations.Where(x => x.ReservationDeleted == ReservationColumnStatus.False).ToList());
 
-            Console.WriteLine(this.Reservations);
+            // Check if there are reservations for customer
+            if (this.Reservations.Count > 0) 
+            {
+                this.SelectedReservation = this.Reservations.First();
+               /* DE-ACTIVATE THIS BUTTON IN CASE NO RESERVATIONs this.DeleteReservationButton.IsEnabled = false; */
+            }
         }
 
         /// <summary>
@@ -149,5 +156,16 @@ namespace ViewModel
         {
             this.CampingGuestCollection = new ObservableCollection<ReservationCampingGuest>(reservation.CampingGuests);
         }
+        #endregion
+
+        #region Delete reservation
+        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation);
+
+        private void ExecuteDeleteReservation()
+        {
+            _selectedReservation.Update(_selectedReservation.CampingGuests.Count.ToString(), _selectedReservation.CampingCustomer, _selectedReservation.CampingPlace, _selectedReservation.Duration, ReservationColumnStatus.True, ReservationColumnStatus.False, ReservationColumnStatus.False);
+        }
+        #endregion
+
     }
 }

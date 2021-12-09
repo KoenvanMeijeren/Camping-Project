@@ -125,9 +125,9 @@ namespace Model
             return this.Collection;
         }
 
-        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid)
         {
-            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
+            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration, reservationDeleted, reservationPaid, reservationRestitutionPaid));
         }
 
         /// <inheritdoc/>
@@ -196,17 +196,20 @@ namespace Model
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration);
+            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid);
         }
 
-        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 {ColumnPeople, numberOfPeople},
                 {ColumnCustomer, campingCustomer.Id.ToString()},
                 {ColumnPlace, campingPlace.Id.ToString()},
-                {ColumnDuration, duration.Id.ToString()}
+                {ColumnDuration, duration.Id.ToString()},
+                {columnDeleted, Convert.ToInt32(reservationDeleted).ToString()},
+                {columnPaid, Convert.ToInt32(reservationPaid).ToString()},
+                {columnRestitutionPaid, Convert.ToInt32(reservationRestitutionPaid).ToString()}
             };
 
             return dictionary;

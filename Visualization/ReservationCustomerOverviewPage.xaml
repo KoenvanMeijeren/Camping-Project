@@ -78,5 +78,6 @@
                 </ListView>
             </StackPanel>
         </Border>
+        <Button Name="DeleteReservationButton" Command="{Binding DeleteReservation}" IsEnabled="True" Content="Reservering verwijderen" Margin="301,464,42,140" Background="#D12F2C" Foreground="White" BorderThickness="0" FontFamily="Century Gothic"/>
     </Grid>
 </Page>
