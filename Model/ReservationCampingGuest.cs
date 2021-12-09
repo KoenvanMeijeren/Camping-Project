@@ -79,7 +79,10 @@ namespace Model
             dictionary.TryGetValue(Reservation.ColumnPeople, out string numberOfPeople);
             dictionary.TryGetValue(Reservation.ColumnCustomer, out string campingCustomerId);
             dictionary.TryGetValue(Reservation.ColumnDuration, out string reservationDurationId);
-            
+            dictionary.TryGetValue(Reservation.columnDeleted, out string reservationDeleted);
+            dictionary.TryGetValue(Reservation.columnPaid, out string reservationPaid);
+            dictionary.TryGetValue(Reservation.columnRestitutionPaid, out string reservationRestitutionPaid);
+
             dictionary.TryGetValue(ColumnGuest, out string campingGuestId);
             dictionary.TryGetValue(CampingGuest.ColumnFirstName, out string guestFirstName);
             dictionary.TryGetValue(CampingGuest.ColumnLastName, out string guestLastName);
@@ -123,7 +126,7 @@ namespace Model
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, customerBirthdate, customerPhoneNumber, customerFirstName, customerLastName);
             ReservationDuration reservationDuration = new ReservationDuration(reservationDurationId, checkInDateTime, checkOutDateTime);
 
-            Reservation reservation = new Reservation(reservationId, numberOfPeople, campingCustomer, campingPlace, reservationDuration);
+            Reservation reservation = new Reservation(reservationId, numberOfPeople, campingCustomer, campingPlace, reservationDuration, (ReservationColumnStatus)Int32.Parse(reservationDeleted), (ReservationColumnStatus)Int32.Parse(reservationPaid), (ReservationColumnStatus)Int32.Parse(reservationRestitutionPaid));
             CampingGuest campingGuest = new CampingGuest(campingGuestId, guestFirstName, guestLastName, guestBirthdate);
 
             return new ReservationCampingGuest(reservationCampingGuestId, reservation, campingGuest);

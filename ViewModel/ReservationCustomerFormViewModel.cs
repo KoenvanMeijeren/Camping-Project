@@ -428,7 +428,7 @@ namespace ViewModel
             customer.Insert();
             var lastCustomer = customer.SelectLast();
 
-            Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, this.CampingPlace, this._reservationDuration);
+            Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, this.CampingPlace, this._reservationDuration, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False);
             reservation.Insert();
             var lastReservation = reservation.SelectLast();
             
