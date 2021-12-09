@@ -65,11 +65,11 @@ namespace ViewModel
             set => this._infoLocation = "Locatie: " + value;
         }
 
-        private string _InfoTotalPrice = "Totaalprijs: ";
+        private string _infoTotalPrice = "Totaalprijs: ";
         public string InfoTotalPrice
         {
-            get => _InfoTotalPrice;
-            set => this._InfoTotalPrice = "Totaalprijs: €" + value;
+            get => _infoTotalPrice;
+            set => this._infoTotalPrice = "Totaalprijs: €" + value;
         }
 
         public ObservableCollection<Reservation> ReservationsCollection
@@ -106,15 +106,15 @@ namespace ViewModel
 
         public ObservableCollection<CampingGuest> CampingGuestCollection
         {
-            get => _campingGuestCollection;
+            get => this._campingGuestCollection;
             set
             {
-                if (Equals(value, _campingGuestCollection))
+                if (Equals(value, this._campingGuestCollection))
                 {
                     return;
                 }
 
-                _campingGuestCollection = value;
+                this._campingGuestCollection = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -125,6 +125,7 @@ namespace ViewModel
             Reservation reservationModel = new Reservation();
             this.Reservations = reservationModel.GetCustomersReservations(this._customerID);
             this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
+            this.SelectedReservation = this.Reservations.First();
         }
 
         /// <summary>
