@@ -259,17 +259,23 @@ namespace ViewModel
 
             ReservationDuration deletedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
             Reservation deletedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, deletedReservationDuraton);
-            ReservationCampingGuest deletedCampingGuest = new ReservationCampingGuest();
+            
+            bool campingGuestsSuccesfullyDeleted = false;
+            foreach (ReservationCampingGuest guest in this._reservation.CampingGuests)
+            {
+                ReservationCampingGuest deletedCampingGuest = new ReservationCampingGuest(this._reservation, new CampingGuest(guest.CampingGuest.FirstName, guest.CampingGuest.LastName, guest.CampingGuest.BirthdateReadable) );
+                campingGuestsSuccesfullyDeleted = deletedCampingGuest.DeleteReservationCampingGuestConnection();
+            }
+            
 
-            //CAMPINGGUEST ISN'T DELETED
-            var campingGuestSuccesfullyDeleted = deletedCampingGuest.DeleteReservationCampingGuestConnection(_reservation.Id);
+           
             bool durationSuccesfullydeleted = deletedReservationObject.Delete();
             bool succesfullDeleted = deletedReservationDuraton.Delete();
 
             string context = "Reservering is verwijderd!";
             string caption = "Succesvol verwijderd";
 
-            if (!succesfullDeleted || !durationSuccesfullydeleted || !campingGuestSuccesfullyDeleted)
+            if (!succesfullDeleted || !durationSuccesfullydeleted || !campingGuestsSuccesfullyDeleted)
             {
                 context = "Reservering is door vage omstandigheden niet goed verwijderd";
                 caption = "Reservering is mogelijk geheel verwijderd";
