@@ -43,7 +43,6 @@ namespace SystemCore
         public static string GetSetting(string setting)
         {
             ConfigReader.Initialize();
-            var config = ConfigReader._configData;
 
             ConfigReader._configData.TryGetValue(setting, out string value);
 

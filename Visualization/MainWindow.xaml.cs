@@ -1,20 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using SystemCore;
-using Model;
 using ViewModel;
 
 namespace Visualization
@@ -29,8 +15,12 @@ namespace Visualization
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
+        private readonly AccountPage _accountPage;
+        private readonly SignInPage _signInPage;
+        private readonly SignUpPage _signUpPage;
         private readonly TestInputPage _testInputPage;
         private readonly TestPage _testPage;
+        private readonly ReservationOverviewPage _reservationOverviewPage;
 
         public MainWindow()
         {
@@ -40,11 +30,24 @@ namespace Visualization
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
+            this._accountPage = new AccountPage();
+            this._signInPage = new SignInPage();
+            this._signUpPage = new SignUpPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
+            this._reservationOverviewPage = new ReservationOverviewPage();
 
-            ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            CampingPlacesCollectionViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
+            SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+            SignInViewModel.SignInEvent += this.OnSignInEvent;
+            SignInViewModel.SignUpFormEvent += this.OnSignUpFormEvent;
+
+            AccountButton.Visibility = Visibility.Collapsed;
+            
+            // Sets the dashboard as the active menu.
+            this.DashboardButtonClick(this, null);
         }
 
         private void DashboardButtonClick(object sender, RoutedEventArgs e)
@@ -55,8 +58,8 @@ namespace Visualization
             this.CampingPitchesButton.Background = Brushes.White;
             this.CampingPitchesButton.Foreground = Brushes.Black;
             
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
@@ -72,8 +75,8 @@ namespace Visualization
             this.DashboardButton.Background = Brushes.White;
             this.DashboardButton.Foreground = Brushes.Black;
             
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
@@ -81,10 +84,10 @@ namespace Visualization
             this.MainFrame.Content = this._campingPlacesCollectionFrame.Content;
         }
         
-        private void TestClick(object sender, RoutedEventArgs e)
+        private void DashboardCustomerButtonClick(object sender, RoutedEventArgs e)
         {
-            this.TestButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.TestButton.Foreground = Brushes.White;
+            this.DashboardCustomerButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
+            this.DashboardCustomerButton.Foreground = Brushes.White;
 
             this.CampingPitchesButton.Background = Brushes.White;
             this.CampingPitchesButton.Foreground = Brushes.Black;
@@ -92,13 +95,13 @@ namespace Visualization
             this.DashboardButton.Background = Brushes.White;
             this.DashboardButton.Foreground = Brushes.Black;
             
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
 
-            this.MainFrame.Content = this._testPage.Content;
+            this.MainFrame.Content = this._reservationOverviewPage.Content;
         }
         
         private void TestInputClick(object sender, RoutedEventArgs e)
@@ -106,8 +109,8 @@ namespace Visualization
             this.TestInputButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
             this.TestInputButton.Foreground = Brushes.White;
 
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.CampingPitchesButton.Background = Brushes.White;
             this.CampingPitchesButton.Foreground = Brushes.Black;
@@ -118,20 +121,53 @@ namespace Visualization
             this.MainFrame.Content = this._testInputPage.Content;
         }
 
-
-        private void OnReserveEvent(object sender, ReservationEventArgs args)
+        private void SignUpButtonClick(object sender, RoutedEventArgs e)
         {
-            this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceId;
-            this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;
-            this._reservationCustomerForm.CheckOutDatetime = args.CheckOutDatetime;
+            this.MainFrame.Content = this._signInPage.Content;
+        }
 
+        private void AccountButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._accountPage.Content;
+        }
+
+        private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
+        {
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
         {
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
+
+        private void OnSignInEvent(object sender, AccountEventArgs args)
+        {
+            SignUpButton.Visibility = Visibility.Collapsed;
+            AccountButton.Visibility = Visibility.Visible;
+
+            this.MainFrame.Content = this._accountPage.Content;
+        }
+
+        private void OnSignUpEvent(object sender, AccountEventArgs args)
+        {
+            this.MainFrame.Content = this._signInPage.Content;
+        }
+
+
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            SignUpButton.Visibility = Visibility.Visible;
+            AccountButton.Visibility = Visibility.Collapsed;
+
+            this.MainFrame.Content = this._signInPage.Content;
+        }
+
+        private void OnSignUpFormEvent(object sender, EventArgs e)
+        {
+            this.MainFrame.Content = this._signUpPage.Content;
+        }
+
 
     }
 }
