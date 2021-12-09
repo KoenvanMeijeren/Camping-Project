@@ -10,6 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ViewModel
@@ -97,12 +98,11 @@ namespace ViewModel
                 {
                     return;
                 }
-                
+
                 this._selectedReservation = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-
-                this.DisplayNewCustomerGuestData(this._selectedReservation);
-                this.DisplayNewReservationInfoData(this._selectedReservation);
+                this.DisplayNewCustomerGuestData(value);
+                this.DisplayNewReservationInfoData(value);
             }
         }
 
@@ -127,10 +127,10 @@ namespace ViewModel
         {
             Reservation reservationModel = new Reservation();
             this.Reservations = reservationModel.GetCustomersReservations(this._customerID);
-            this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations.Where(x => x.ReservationDeleted == ReservationColumnStatus.False).ToList());
+            this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
 
             // Check if there are reservations for customer
-            if (this.Reservations.Count > 0) 
+            if (ReservationsCollection.Count > 0) 
             {
                 this.SelectedReservation = this.Reservations.First();
                /* DE-ACTIVATE THIS BUTTON IN CASE NO RESERVATIONs this.DeleteReservationButton.IsEnabled = false; */
@@ -143,18 +143,38 @@ namespace ViewModel
         /// <param name="reservation">Reservation object of the selected reservation</param>
         private void DisplayNewReservationInfoData(Reservation reservation)
         {
-            this.InfoStartDate = reservation.Duration.CheckInDate;
-            this.InfoEndDate = reservation.Duration.CheckOutDate;
-            this.InfoAmountOfGuests = reservation.NumberOfPeople.ToString();
-            this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
-            this.InfoSurface = reservation.CampingPlace.Surface.ToString(CultureInfo.InvariantCulture);
-            this.InfoLocation = reservation.CampingPlace.Location;
-            this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
+            if (reservation != null)
+            {
+                this.InfoStartDate = reservation.Id.ToString();
+/*                this.InfoStartDate = reservation.Duration.CheckInDate;*/
+                this.InfoEndDate = reservation.Duration.CheckOutDate;
+                this.InfoAmountOfGuests = reservation.NumberOfPeople.ToString();
+                this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
+                this.InfoSurface = reservation.CampingPlace.Surface.ToString(CultureInfo.InvariantCulture);
+                this.InfoLocation = reservation.CampingPlace.Location;
+                this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
+            } else
+            {
+                this.InfoStartDate = "";
+                this.InfoEndDate = "";
+                this.InfoAmountOfGuests = "";
+                this.InfoAccommodationType = "";
+                this.InfoSurface = "";
+                this.InfoLocation = "";
+                this.InfoTotalPrice = "";
+            }
         }
 
         private void DisplayNewCustomerGuestData(Reservation reservation)
         {
-            this.CampingGuestCollection = new ObservableCollection<ReservationCampingGuest>(reservation.CampingGuests);
+            if (reservation != null)
+            {
+                this.CampingGuestCollection = new ObservableCollection<ReservationCampingGuest>(reservation.CampingGuests);
+            } else
+            {
+                this.CampingGuestCollection = new ObservableCollection<ReservationCampingGuest>();
+
+            }
         }
         #endregion
 
@@ -163,7 +183,29 @@ namespace ViewModel
 
         private void ExecuteDeleteReservation()
         {
-            _selectedReservation.Update(_selectedReservation.CampingGuests.Count.ToString(), _selectedReservation.CampingCustomer, _selectedReservation.CampingPlace, _selectedReservation.Duration, ReservationColumnStatus.True, ReservationColumnStatus.False, ReservationColumnStatus.False);
+            // Check if reservation has passed
+            if (DateTime.Today >= Convert.ToDateTime(_selectedReservation.Duration.CheckInDate))
+            {
+                MessageBox.Show("Reserveringen van vandaag of eerder kunnen niet meer worden verwijderd.", "Waarschuwing", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
+            // Confirmation box
+            MessageBoxResult messageBoxResult = MessageBox.Show("Weet je zeker dat je deze reservering wilt verwijderen?", "Reservering verwijderen", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                // Checks if update was succesful
+                if (_selectedReservation.Update(_selectedReservation.CampingGuests.Count.ToString(), _selectedReservation.CampingCustomer, _selectedReservation.CampingPlace, _selectedReservation.Duration, ReservationColumnStatus.True, ReservationColumnStatus.False, ReservationColumnStatus.False))
+                {
+                    this.Reservations.Remove(_selectedReservation);
+                    this.ReservationsCollection.Remove(_selectedReservation);
+                    // Check if there are still reservations left
+                    if (this.Reservations.Count > 0)
+                    {
+                        this.SelectedReservation = this.Reservations.First();
+                    }
+                }
+            }
         }
         #endregion
 

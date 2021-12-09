@@ -99,8 +99,9 @@ namespace Model
         /// <returns>Database records of given customer's reservations</returns>
         public List<Reservation> GetCustomersReservations(int customerId)
         {
-            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId");
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId AND ReservationDeleted = @reservationDeleted");
             query.AddParameter("customerId", customerId);
+            query.AddParameter("ReservationDeleted", Convert.ToInt32(ReservationColumnStatus.False).ToString());
 
             List<Reservation> reservations = new List<Reservation>();
             foreach(var item in query.Select())
