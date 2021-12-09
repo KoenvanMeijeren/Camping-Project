@@ -13,7 +13,7 @@ namespace ViewModel
     {
         private PdfContentByte _contentByte;
         private List<PdfTemplate> _templates;
-        //constructor
+
         public PageEvents()
         {
             this._templates = new List<PdfTemplate>();
@@ -25,11 +25,11 @@ namespace ViewModel
             Camping campingModel = new Camping();
             var results = campingModel.SelectLast();
 
-            _contentByte = writer.DirectContentUnder;
-            PdfTemplate templateBottom = _contentByte.CreateTemplate(50, 50);
-            PdfTemplate templateTop = _contentByte.CreateTemplate(50, 50);
-            _templates.Add(templateBottom);
-            _templates.Add(templateTop);
+            this._contentByte = writer.DirectContentUnder;
+            PdfTemplate templateBottom = this._contentByte.CreateTemplate(50, 50);
+            PdfTemplate templateTop = this._contentByte.CreateTemplate(50, 50);
+            this._templates.Add(templateBottom);
+            this._templates.Add(templateTop);
 
             int pageN = writer.CurrentPageNumber;
             string pageFooter = "\nPagina " + pageN.ToString() + " van de ";
@@ -38,20 +38,20 @@ namespace ViewModel
             image.SetAbsolutePosition(36, 800);
             BaseFont baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
-            _contentByte.BeginText();
-            _contentByte.SetFontAndSize(baseFont, 10);
-            _contentByte.SetTextMatrix(document.RightMargin, document.PageSize.GetBottom(document.BottomMargin));
-            _contentByte.ShowText(pageFooter + "" + (writer.PageNumber));
-            _contentByte.EndText();
-            _contentByte.AddTemplate(templateBottom, document.RightMargin, 100);
+            this._contentByte.BeginText();
+            this._contentByte.SetFontAndSize(baseFont, 10);
+            this._contentByte.SetTextMatrix(document.RightMargin, document.PageSize.GetBottom(document.BottomMargin));
+            this._contentByte.ShowText(pageFooter + "" + (writer.PageNumber));
+            this._contentByte.EndText();
+            this._contentByte.AddTemplate(templateBottom, document.RightMargin, 100);
 
-            _contentByte.BeginText();
-            _contentByte.AddImage(image);
-            _contentByte.SetFontAndSize(baseFont, 20);
-            _contentByte.SetTextMatrix(document.LeftMargin, document.PageSize.GetTop(document.TopMargin));
-            _contentByte.ShowText(pageHeader);
-            _contentByte.EndText();
-            _contentByte.AddTemplate(templateTop, document.LeftMargin, document.PageSize.GetTop(document.TopMargin));
+            this._contentByte.BeginText();
+            this._contentByte.AddImage(image);
+            this._contentByte.SetFontAndSize(baseFont, 20);
+            this._contentByte.SetTextMatrix(document.LeftMargin, document.PageSize.GetTop(document.TopMargin));
+            this._contentByte.ShowText(pageHeader);
+            this._contentByte.EndText();
+            this._contentByte.AddTemplate(templateTop, document.LeftMargin, document.PageSize.GetTop(document.TopMargin));
         }
     }
 }
