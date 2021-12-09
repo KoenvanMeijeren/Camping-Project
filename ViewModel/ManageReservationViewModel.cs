@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,28 +20,26 @@ namespace ViewModel
     {
         public static event EventHandler<ReservationEventArgs> FromReservationBackToDashboardEvent;
         public static event EventHandler<ReservationEventArgs> UpdateReservationCollection;
+        
+        private readonly Reservation _reservationModel = new Reservation();
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
-        private const string SelectAll = "Alle";
+
         private const string PageTitleText = "Bijwerken van reservering ";
 
         private Reservation _reservation;
-        private string _numberOfPeople;
-        private CampingCustomer CampingCustomer;
-        private ObservableCollection<string> _campingPlaces;
-        private CampingPlace SelectedCampingPlaceObject { get; set; }
-        private string _selectedCampingPlace;
-        private DateTime _checkInDate;
-        private DateTime _checkOutDate;
-        private string _pageTitle;
+        private CampingCustomer _campingCustomer;
+        
+        private ObservableCollection<CampingPlace> _campingPlaces;
+        private CampingPlace _selectedCampingPlace;
+        
+        private DateTime _checkInDate, _checkOutDate;
+        private string _pageTitle, _numberOfPeople;
 
 
         #region properties
         public string PageTitle 
         {
-            get
-            {
-                return _pageTitle;
-            }
+            get => _pageTitle;
             set
             {
                 if (Equals(value, this._pageTitle))
@@ -55,10 +54,7 @@ namespace ViewModel
     
         public string NumberOfPeople
         {
-            get
-            {
-                return _numberOfPeople;
-            }
+            get => _numberOfPeople;
             set
             {
                 if (Equals(value, this._numberOfPeople))
@@ -71,12 +67,9 @@ namespace ViewModel
             }
         }
 
-        public ObservableCollection<string> CampingPlaces
+        public ObservableCollection<CampingPlace> CampingPlaces
         {
-            get
-            {
-                return this._campingPlaces;
-            }
+            get => this._campingPlaces;
             set
             {
                 if (Equals(value, this._campingPlaces))
@@ -90,7 +83,7 @@ namespace ViewModel
 
         }
 
-        public string SelectedCampingPlace
+        public CampingPlace SelectedCampingPlace
         {
             get => this._selectedCampingPlace;
             set
@@ -102,7 +95,6 @@ namespace ViewModel
 
                 this._selectedCampingPlace = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                GetSelectedCampingPlaceObject(_selectedCampingPlace);
             }
         }
 
@@ -115,9 +107,11 @@ namespace ViewModel
                 {
                     return;
                 }
+                
                 this._checkInDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                filterAvailableCampingPlaces();
+                
+                this.SetAvailableCampingPlaces();
             }
         }
 
@@ -130,9 +124,11 @@ namespace ViewModel
                 {
                     return;
                 }
+                
                 this._checkOutDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                filterAvailableCampingPlaces();
+                
+                this.SetAvailableCampingPlaces();
             }
         }
 
@@ -140,33 +136,24 @@ namespace ViewModel
 
         public ManageReservationViewModel()
         {
-            this.CampingPlaces = new ObservableCollection<string>();
+            this.CampingPlaces = new ObservableCollection<CampingPlace>(this._campingPlaceModel.Select());
 
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
-           
         }
 
-        private void filterAvailableCampingPlaces()
+        private void SetAvailableCampingPlaces()
         {
-            /*foreach (var campingPlace in new CampingPlace().Select())
-            {
-                this.CampingPlaces.Add(campingPlace.GetLocation());
-            }*/
             this.CampingPlaces.Clear();
 
-            //this.CampingPlaces.Add(this.SelectedCampingPlace);
-            foreach (var campingPlace in ToFilteredOnReservedCampingPlaces(new CampingPlace().Select()))
+            foreach (var campingPlace in this.ToFilteredOnReservedCampingPlaces(this._campingPlaceModel.Select()))
             {
-                this.CampingPlaces.Add(campingPlace.GetLocation());
+                this.CampingPlaces.Add(campingPlace);
             }
-            
         }
 
         private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData)
         {
-            Reservation reservationModel = new Reservation();
-
-            var reservations = reservationModel.Select();
+            var reservations = this._reservationModel.Select();
             foreach (Reservation reservation in reservations)
             {
                 ReservationDuration reservationDuration = reservation.Duration;
@@ -179,38 +166,24 @@ namespace ViewModel
             return viewData;
         }
 
-        private IEnumerable<CampingPlace> GetCampingPlaces()
-        {
-            return this._campingPlaceModel.Select();
-        }
-
-        private void GetSelectedCampingPlaceObject(string campingPlaceInput)
-        {
-            foreach (var campingPlace in new CampingPlace().Select())
-            {
-                if (campingPlace.GetLocation().Equals(campingPlaceInput))
-                {
-                    this.SelectedCampingPlaceObject = campingPlace;
-                }
-            }
-        }
-
         private void OnManageReservationEvent(object sender, ReservationEventArgs args)
         {
-            if(args.Reservation is Reservation r){
-                this._reservation = r;
-                //rest is for data binding
-                this.NumberOfPeople = r.NumberOfPeople.ToString();
-                this.SelectedCampingPlace = r.CampingPlace.GetLocation();
-                this.SelectedCampingPlaceObject = r.CampingPlace;
-                this.CheckInDate = r.Duration.CheckInDatetime;
-                this.CheckOutDate = r.Duration.CheckOutDatetime;
-                this.CampingCustomer = r.CampingCustomer;
-                this.PageTitle = PageTitleText + this._reservation.Id.ToString();
-
-                filterAvailableCampingPlaces();
+            if(args.Reservation == null)
+            {
+                return;
             }
+            
+            this._reservation = args.Reservation;
+            
+            //rest is for data binding
+            this.NumberOfPeople = this._reservation.NumberOfPeople.ToString();
+            this.SelectedCampingPlace = this._reservation.CampingPlace;
+            this.CheckInDate = this._reservation.Duration.CheckInDatetime;
+            this.CheckOutDate = this._reservation.Duration.CheckOutDatetime;
+            this._campingCustomer = this._reservation.CampingCustomer;
+            this.PageTitle = PageTitleText + this._reservation.Id;
 
+            this.SetAvailableCampingPlaces();
         }
 
         #region Command
@@ -226,11 +199,11 @@ namespace ViewModel
                 return;
             }
 
-            ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
-            Reservation updatedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
+            ReservationDuration updatedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
+            Reservation updatedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, updatedReservationDuraton);
 
-            bool succesfullyUpdated = updatedReservationObject.Update(this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, updatedReservationDuraton);
-            bool durationsuccesfullyupdated = updatedReservationDuraton.Update(this.CheckInDate.ToString(), this.CheckOutDate.ToString());
+            bool succesfullyUpdated = updatedReservationObject.Update(this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, updatedReservationDuraton);
+            bool durationsuccesfullyupdated = updatedReservationDuraton.Update(this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
 
             string context = "Reservering is aangepast!";
             string caption = "Reservering is bijgwerkt";
@@ -277,8 +250,8 @@ namespace ViewModel
                 return;
             }
 
-            ReservationDuration deletedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
-            Reservation deletedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, deletedReservationDuraton);
+            ReservationDuration deletedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
+            Reservation deletedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, deletedReservationDuraton);
             ReservationCampingGuest deletedCampingGuest = new ReservationCampingGuest();
 
             //CAMPINGGUEST ISN'T DELETED
