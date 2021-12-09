@@ -39,7 +39,7 @@ namespace Visualization
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
-            SignInViewModel.SignInEvent += this.OnSignUpEvent;
+            SignInViewModel.SignInEvent += this.OnSignInEvent;
             SignInViewModel.SignUpFormEvent += this.OnSignUpFormEvent;
 
             AccountButton.Visibility = Visibility.Collapsed;
@@ -139,13 +139,19 @@ namespace Visualization
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
 
-        private void OnSignUpEvent(object sender, AccountEventArgs args)
+        private void OnSignInEvent(object sender, AccountEventArgs args)
         {
             SignUpButton.Visibility = Visibility.Collapsed;
             AccountButton.Visibility = Visibility.Visible;
 
             this.MainFrame.Content = this._accountPage.Content;
         }
+
+        private void OnSignUpEvent(object sender, AccountEventArgs args)
+        {
+            this.MainFrame.Content = this._signInPage.Content;
+        }
+
 
         private void OnSignOutEvent(object sender, EventArgs e)
         {

@@ -23,7 +23,7 @@ namespace Visualization
     {
         public SignUpPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void PasswordTextChanged(object sender, RoutedEventArgs e)
@@ -34,6 +34,16 @@ namespace Visualization
             }
 
             ((SignUpViewModel)this.DataContext).Password = ((PasswordBox)sender).Password;
+        }
+
+        private void ConfirmPasswordTextChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext == null)
+            {
+                return;
+            }
+
+            ((SignUpViewModel)this.DataContext).ConfirmPassword = ((PasswordBox)sender).Password;
         }
     }
 }

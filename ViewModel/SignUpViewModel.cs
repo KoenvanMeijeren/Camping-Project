@@ -25,7 +25,8 @@ namespace ViewModel
             _place, 
             _phoneNumber,
             _email, 
-            _password, 
+            _password,
+            _confirmPassword,
             _registerError;
 
         private DateTime _birthdate;
@@ -247,11 +248,32 @@ namespace ViewModel
                 this.RegisterError = "";
                 if (!Validation.IsInputFilled(this._password))
                 {
-                    this.RegisterError = "Ongeldig wachtwoord";
+                    this.RegisterError = "Wachtwoord is een verplicht veld";
                 }
-                else
+            }
+        }
+
+        public string ConfirmPassword
+        {
+            get => this._confirmPassword;
+            set
+            {
+                if (value == this._confirmPassword)
                 {
-                    this.RegisterError = "";
+                    return;
+                }
+
+                this._confirmPassword = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                this.RegisterError = "";
+                if (!Validation.IsInputFilled(this._confirmPassword))
+                {
+                    this.RegisterError = "Bevestig wachtwoord is een verplicht veld";
+                }
+                else if (_confirmPassword != _password)
+                {
+                    this.RegisterError = "Wachtwoorden komen niet overeen";
                 }
             }
         }
@@ -303,6 +325,7 @@ namespace ViewModel
             this.PhoneNumber = "";
             this.Email = "";
             this.Password = "";
+            this.ConfirmPassword = "";
             this.RegisterError = "";
         }
 
@@ -344,7 +367,9 @@ namespace ViewModel
                     Validation.IsNumber(_phoneNumber) &&
                     Validation.IsInputFilled(_email) &&
                     RegexHelper.IsEmailValid(_email) &&
-                    Validation.IsInputFilled(this._password);
+                    Validation.IsInputFilled(this._password) &&
+                    Validation.IsInputFilled(this._confirmPassword) &&
+                    _confirmPassword == _password;
         }
 
         public ICommand Register => new RelayCommand(ExecuteRegister, CanExecuteRegister);
