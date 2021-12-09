@@ -150,14 +150,14 @@ namespace Model
 
         public bool Update()
         {
-            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration);
+            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid);
         }
         
-        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid)
         {
             bool durationUpdated = duration.Update();
             
-            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration)) && durationUpdated;
+            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration, reservationDeleted, reservationPaid, reservationRestitutionPaid)) && durationUpdated;
         }
 
         /// <inheritdoc/>
