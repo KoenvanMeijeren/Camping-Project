@@ -126,7 +126,6 @@ namespace ViewModel
             this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
 
             ReservationCampingGuest reservationCampingGuestModel = new ReservationCampingGuest();
-            List<List<CampingGuest>> campingGuests = new List<List<CampingGuest>>();
             foreach (var item in this.Reservations)
             {
                 var x = reservationCampingGuestModel.GetReservationGuests(item);
