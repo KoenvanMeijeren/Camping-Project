@@ -126,6 +126,8 @@ namespace ViewModel
             this.Reservations = reservationModel.GetCustomersReservations(this._customerID);
             this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
             this.SelectedReservation = this.Reservations.First();
+
+            Console.WriteLine(this.Reservations);
         }
 
         /// <summary>

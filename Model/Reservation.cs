@@ -11,7 +11,7 @@ namespace Model
     /// <summary>
     /// Enum used for database columns: ReservationDeleted, ReservationPayed, ReservationRestitutionPayed
     /// </summary>
-    public enum ReservationStatus
+    public enum ReservationColumnStatus
     {
         False = 0,
         True = 1
@@ -26,7 +26,10 @@ namespace Model
             ColumnPlace = "ReservationCampingPlaceID",
             ColumnCustomer = "ReservationCampingCustomerID",
             ColumnPeople = "ReservationNumberOfPeople",
-            ColumnDuration = "ReservationDurationID";
+            ColumnDuration = "ReservationDurationID",
+            columnDeleted = "ReservationDeleted",
+            columnPaid = "ReservationPaid",
+            columnRestitutionPaid = "ReservationRestitutionPaid";
         
         public int NumberOfPeople { get; private set; }
         public CampingCustomer CampingCustomer { get; private set; }
@@ -34,7 +37,10 @@ namespace Model
         public ReservationDuration Duration { get; private set; }
         public float TotalPrice { get; private set; }
         public string TotalPriceString { get; private set; }
-        
+        public ReservationColumnStatus ReservationDeleted { get; private set; }
+        public ReservationColumnStatus ReservationPaid { get; private set; }
+        public ReservationColumnStatus ReservationRestitutionPaid { get; private set; }
+
         public List<ReservationCampingGuest> CampingGuests { get; private set; }
 
         public Reservation(): base(TableName, ColumnId)
@@ -42,11 +48,11 @@ namespace Model
         }
         
         public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, 
-            ReservationDuration duration): this("-1", numberOfPeople, campingCustomer, campingPlace, duration)
+            ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid) : this("-1", numberOfPeople, campingCustomer, campingPlace, duration, reservationDeleted, reservationPaid, reservationRestitutionPaid)
         {
         }
         
-        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration): base(TableName, ColumnId)
+        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid) : base(TableName, ColumnId)
         {
             bool successId = int.TryParse(id, out int numericId);
             bool successPeople = int.TryParse(numberOfPeople, out int numericPeople);
@@ -58,6 +64,9 @@ namespace Model
             this.Duration = duration;
             this.TotalPrice = this.CalculateTotalPrice();
             this.TotalPriceString = $"€{this.TotalPrice}";
+            this.ReservationDeleted = reservationDeleted;
+            this.ReservationPaid = reservationPaid;
+            this.ReservationRestitutionPaid = reservationRestitutionPaid;
         }
 
         /// <summary>
@@ -134,6 +143,9 @@ namespace Model
             dictionary.TryGetValue(ColumnPeople, out string peopleCount);
             dictionary.TryGetValue(ColumnCustomer, out string campingCustomerId);
             dictionary.TryGetValue(ColumnDuration, out string durationId);
+            dictionary.TryGetValue(columnDeleted, out string reservationDeleted);
+            dictionary.TryGetValue(columnPaid, out string reservationPaid);
+            dictionary.TryGetValue(columnRestitutionPaid, out string reservationRestitutionPaid);
             
             dictionary.TryGetValue(CampingPlaceType.ColumnId, out string campingPlaceTypeId);
             dictionary.TryGetValue(CampingPlaceType.ColumnGuestLimit, out string guestLimit);
@@ -173,7 +185,7 @@ namespace Model
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, phoneNumber, firstName, lastName);
             ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
-            Reservation reservation = new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
+            Reservation reservation = new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration, (ReservationColumnStatus)Int32.Parse(reservationDeleted), (ReservationColumnStatus)Int32.Parse(reservationPaid), (ReservationColumnStatus)Int32.Parse(reservationRestitutionPaid));
             
             ReservationCampingGuest reservationCampingGuestModel = new ReservationCampingGuest();
             reservation.CampingGuests = reservationCampingGuestModel.SelectByReservation(reservation);
