@@ -54,8 +54,8 @@ namespace Visualization
             this.CampingPitchesButton.Background = Brushes.White;
             this.CampingPitchesButton.Foreground = Brushes.Black;
             
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
@@ -71,8 +71,8 @@ namespace Visualization
             this.DashboardButton.Background = Brushes.White;
             this.DashboardButton.Foreground = Brushes.Black;
             
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
@@ -80,10 +80,10 @@ namespace Visualization
             this.MainFrame.Content = this._campingPlacesCollectionFrame.Content;
         }
         
-        private void TestClick(object sender, RoutedEventArgs e)
+        private void DashboardCustomerButtonClick(object sender, RoutedEventArgs e)
         {
-            this.TestButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.TestButton.Foreground = Brushes.White;
+            this.DashboardCustomerButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
+            this.DashboardCustomerButton.Foreground = Brushes.White;
 
             this.CampingPitchesButton.Background = Brushes.White;
             this.CampingPitchesButton.Foreground = Brushes.Black;
@@ -91,8 +91,8 @@ namespace Visualization
             this.DashboardButton.Background = Brushes.White;
             this.DashboardButton.Foreground = Brushes.Black;
             
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
@@ -105,8 +105,8 @@ namespace Visualization
             this.TestInputButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
             this.TestInputButton.Foreground = Brushes.White;
 
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.CampingPitchesButton.Background = Brushes.White;
             this.CampingPitchesButton.Foreground = Brushes.Black;
