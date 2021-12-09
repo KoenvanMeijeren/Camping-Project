@@ -249,6 +249,8 @@ namespace ViewModel
             }
             
             this.ReservationsCollection.Remove(this._selectedReservation);
+            
+            this.SelectedReservation = this.ReservationsCollection[0];
 
             MessageBox.Show($"Reservering geannuleerd. Het restitutiebedrag van €{restitutionValue},- wordt binnen vijf werkdagen op uw rekening gestort.", "Restitutie", MessageBoxButton.OK, MessageBoxImage.Information);
         }
