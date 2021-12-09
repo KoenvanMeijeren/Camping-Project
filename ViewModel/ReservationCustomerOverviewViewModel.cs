@@ -1,4 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace ViewModel
 {
@@ -22,6 +25,13 @@ namespace ViewModel
         private ObservableCollection<ReservationCampingGuest> _campingGuestCollection;
 
         #region Properties
+        private string _infoId = "ID: ";
+        public string InfoId
+        {
+            get => _infoId;
+            set => this._infoId = "ID: " + value;
+        }
+
         private string _infoStartDate = "Begindatum: ";
         public string InfoStartDate
         {
@@ -94,11 +104,10 @@ namespace ViewModel
                 {
                     return;
                 }
-                
-                this._selectedReservation = value;
 
-                this.DisplayNewReservationInfoData(this._selectedReservation);
-                this.DisplayNewCustomerGuestData(this._selectedReservation);
+                this._selectedReservation = value;
+                this.DisplayNewCustomerGuestData(value);
+                this.DisplayNewReservationInfoData(value);
                 
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
@@ -120,6 +129,7 @@ namespace ViewModel
         }
         #endregion
 
+        #region Overview
         public ReservationCustomerOverviewViewModel()
         {
             this.ReservationsCollection = new ObservableCollection<Reservation>();
@@ -160,13 +170,28 @@ namespace ViewModel
         /// <param name="reservation">Reservation object of the selected reservation</param>
         private void DisplayNewReservationInfoData(Reservation reservation)
         {
-            this.InfoStartDate = reservation.Duration.CheckInDate;
-            this.InfoEndDate = reservation.Duration.CheckOutDate;
-            this.InfoAmountOfGuests = reservation.NumberOfPeople.ToString();
-            this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
-            this.InfoSurface = reservation.CampingPlace.Surface.ToString(CultureInfo.InvariantCulture);
-            this.InfoLocation = reservation.CampingPlace.Location;
-            this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
+            if (reservation != null)
+            {
+                this.InfoId = reservation.Id.ToString();
+                this.InfoStartDate = reservation.Duration.CheckInDate;
+                this.InfoEndDate = reservation.Duration.CheckOutDate;
+                // Amount of guests + customer
+                this.InfoAmountOfGuests = (reservation.CampingGuests.Count + 1).ToString();
+                this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
+                this.InfoSurface = reservation.CampingPlace.Surface.ToString(CultureInfo.InvariantCulture);
+                this.InfoLocation = reservation.CampingPlace.Location;
+                this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
+            } else
+            {
+                this.InfoId = "";
+                this.InfoStartDate = "";
+                this.InfoEndDate = "";
+                this.InfoAmountOfGuests = "";
+                this.InfoAccommodationType = "";
+                this.InfoSurface = "";
+                this.InfoLocation = "";
+                this.InfoTotalPrice = "";
+            }
         }
 
         private void DisplayNewCustomerGuestData(Reservation reservation)
@@ -178,5 +203,57 @@ namespace ViewModel
                 this.CampingGuestCollection.Add(reservationCampingGuest);
             }
         }
+        #endregion
+
+        #region Delete reservation
+        /// <summary>
+        /// Check if user can delete the reservation
+        /// </summary>
+        /// <returns>Boolean value of result</returns>
+        private bool CanExecuteDeleteReservation()
+        {
+            return this._selectedReservation != null;
+        }
+        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation, CanExecuteDeleteReservation);
+
+        /// <summary>
+        /// Executes the reservation delete process
+        /// </summary>
+        private void ExecuteDeleteReservation()
+        {
+            // Check if reservation has passed
+            if (DateTime.Today >= Convert.ToDateTime(this._selectedReservation.Duration.CheckInDate))
+            {
+                MessageBox.Show("Reserveringen van vandaag of eerder kunnen niet meer worden verwijderd.", "Reservering verwijderen ", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            
+            bool checkIfReservationIsWithinOneWeek = DateTime.Today.AddMonths(+1) >= Convert.ToDateTime(this._selectedReservation.Duration.CheckInDate);
+            string restitutionValue = checkIfReservationIsWithinOneWeek ? (this._selectedReservation.TotalPrice / 2).ToString(CultureInfo.InvariantCulture) : this._selectedReservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
+
+            // Confirmation box
+            MessageBoxResult messageBoxResult = MessageBox.Show($"Weet je zeker dat je de reservering wil annuleren? Het restitutiebedrag bedraagt: €{restitutionValue},-", "Reservering verwijderen", MessageBoxButton.YesNo);
+            if (messageBoxResult != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            
+            // Checks if update was successful.
+            if (!this._selectedReservation.Update(this._selectedReservation.CampingGuests.Count.ToString(),
+                    this._selectedReservation.CampingCustomer, this._selectedReservation.CampingPlace,
+                    this._selectedReservation.Duration, ReservationColumnStatus.True,
+                    this._selectedReservation.ReservationPaid,
+                    this._selectedReservation.ReservationRestitutionPaid))
+            {
+                return;
+            }
+            
+            this.ReservationsCollection.Remove(this._selectedReservation);
+            
+            this.SelectedReservation = this.ReservationsCollection[0];
+
+            MessageBox.Show($"Reservering geannuleerd. Het restitutiebedrag van €{restitutionValue},- wordt binnen vijf werkdagen op uw rekening gestort.", "Restitutie", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        #endregion
     }
 }

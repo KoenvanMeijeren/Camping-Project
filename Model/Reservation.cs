@@ -79,7 +79,8 @@ namespace Model
             bool successPeople = int.TryParse(numberOfPeople, out int numericPeople);
 
             this.Id = successId ? numericId : -1;
-            this.NumberOfPeople = successPeople ? numericPeople : 0;
+            // Add one, else it doesn't include the customer
+            this.NumberOfPeople = (successPeople ? numericPeople : 0) + 1;
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.Duration = duration;
@@ -120,8 +121,9 @@ namespace Model
         /// <returns>Database records of given customer's reservations</returns>
         public List<Reservation> GetCustomersReservations(int customerId)
         {
-            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId ORDER BY {ReservationDuration.ColumnCheckInDate} ");
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId AND {columnDeleted} = @{columnDeleted} ORDER BY {ReservationDuration.ColumnCheckInDate} ");
             query.AddParameter("customerId", customerId);
+            query.AddParameter(columnDeleted, ReservationDeleted == ReservationColumnStatus.True);
 
             List<Reservation> reservations = new List<Reservation>();
             foreach(var item in query.Select())
@@ -148,14 +150,14 @@ namespace Model
 
         public bool Update()
         {
-            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration);
+            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid);
         }
         
-        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid)
         {
             bool durationUpdated = duration.Update();
             
-            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration)) && durationUpdated;
+            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration, reservationDeleted, reservationPaid, reservationRestitutionPaid)) && durationUpdated;
         }
 
         /// <inheritdoc/>
@@ -230,17 +232,20 @@ namespace Model
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration);
+            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid);
         }
 
-        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 {ColumnPeople, numberOfPeople},
                 {ColumnCustomer, campingCustomer.Id.ToString()},
                 {ColumnPlace, campingPlace.Id.ToString()},
-                {ColumnDuration, duration.Id.ToString()}
+                {ColumnDuration, duration.Id.ToString()},
+                {columnDeleted, Convert.ToInt32(reservationDeleted).ToString()},
+                {columnPaid, Convert.ToInt32(reservationPaid).ToString()},
+                {columnRestitutionPaid, Convert.ToInt32(reservationRestitutionPaid).ToString()}
             };
 
             return dictionary;
