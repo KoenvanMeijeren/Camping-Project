@@ -14,10 +14,9 @@ namespace ViewModel
 {
     public class ReservationCustomerOverviewViewModel : ObservableObject
     {
-        // TODO: Change this to session variable
-        private int _customerID = 107;
-        public List<Reservation> Reservations { get; private set; } = new List<Reservation>();
-
+        private int _customerId;
+        private readonly Reservation _reservationModel = new Reservation();
+        
         private ObservableCollection<Reservation> _reservationsCollection;
         private Reservation _selectedReservation;
         private ObservableCollection<ReservationCampingGuest> _campingGuestCollection;
@@ -91,16 +90,17 @@ namespace ViewModel
             get => this._selectedReservation;
             set
             {
-                if (Equals(value, this._selectedReservation))
+                if (Equals(value, this._selectedReservation) || value == null)
                 {
                     return;
                 }
                 
                 this._selectedReservation = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
-                this.DisplayNewCustomerGuestData(this._selectedReservation);
                 this.DisplayNewReservationInfoData(this._selectedReservation);
+                this.DisplayNewCustomerGuestData(this._selectedReservation);
+                
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -122,10 +122,36 @@ namespace ViewModel
 
         public ReservationCustomerOverviewViewModel()
         {
-            Reservation reservationModel = new Reservation();
-            this.Reservations = reservationModel.GetCustomersReservations(this._customerID);
-            this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
-            this.SelectedReservation = this.Reservations.First();
+            this.ReservationsCollection = new ObservableCollection<Reservation>();
+            this.CampingGuestCollection = new ObservableCollection<ReservationCampingGuest>();
+
+            SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
+            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.ReservationCustomerFormViewModelOnReservationConfirmedEvent;
+        }
+
+        private void SignInViewModelOnSignInEvent(object? sender, AccountEventArgs e)
+        {
+            this._customerId = CurrentUser.CampingCustomer != null ? CurrentUser.CampingCustomer.Id : -1;
+            
+            this.ReservationCustomerFormViewModelOnReservationConfirmedEvent(sender, null);
+        }
+
+        private void ReservationCustomerFormViewModelOnReservationConfirmedEvent(object? sender, ReservationEventArgs e)
+        {
+            this.ReservationsCollection.Clear();
+            
+            var reservations = this._reservationModel.GetCustomersReservations(this._customerId);
+            foreach (var reservation in reservations)
+            {
+                this.ReservationsCollection.Add(reservation);
+            }
+
+            if (!this.ReservationsCollection.Any())
+            {
+                return;
+            }
+            
+            this.SelectedReservation = this.ReservationsCollection[0];
         }
 
         /// <summary>
@@ -145,7 +171,12 @@ namespace ViewModel
 
         private void DisplayNewCustomerGuestData(Reservation reservation)
         {
-            this.CampingGuestCollection = new ObservableCollection<ReservationCampingGuest>(reservation.CampingGuests);
+            this.CampingGuestCollection.Clear();
+
+            foreach (var reservationCampingGuest in reservation.CampingGuests)
+            {
+                this.CampingGuestCollection.Add(reservationCampingGuest);
+            }
         }
     }
 }
