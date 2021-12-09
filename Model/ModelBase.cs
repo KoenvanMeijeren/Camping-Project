@@ -62,7 +62,7 @@ namespace Model
 
             return this.ToModel(query.SelectFirst());
         }
-        
+
         /// <summary>
         /// Selects the last record from the database table, this is done by ordering by the primary key column.
         /// </summary>

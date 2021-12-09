@@ -18,7 +18,11 @@ namespace ViewModel
     public class ManageReservationViewModel : ObservableObject
     {
         public static event EventHandler<ReservationEventArgs> FromReservationBackToDashboardEvent;
+        public static event EventHandler<ReservationEventArgs> UpdateReservationCollection;
+        private readonly CampingPlace _campingPlaceModel = new CampingPlace();
         private const string SelectAll = "Alle";
+        private const string PageTitleText = "Bijwerken van reservering ";
+
         private Reservation _reservation;
         private string _numberOfPeople;
         private CampingCustomer CampingCustomer;
@@ -27,10 +31,27 @@ namespace ViewModel
         private string _selectedCampingPlace;
         private DateTime _checkInDate;
         private DateTime _checkOutDate;
+        private string _pageTitle;
 
 
         #region properties
-  
+        public string PageTitle 
+        {
+            get
+            {
+                return _pageTitle;
+            }
+            set
+            {
+                if (Equals(value, this._pageTitle))
+                {
+                    return;
+                }
+
+                this._pageTitle = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
     
         public string NumberOfPeople
         {
@@ -94,7 +115,6 @@ namespace ViewModel
                 {
                     return;
                 }
-
                 this._checkInDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
@@ -109,7 +129,6 @@ namespace ViewModel
                 {
                     return;
                 }
-
                 this._checkOutDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
@@ -122,11 +141,17 @@ namespace ViewModel
             this.CampingPlaces = new ObservableCollection<string>();
 
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
-            
-            foreach (var campingPlace in new CampingPlace().Select())
+
+           
+            /*foreach (var campingPlace in new CampingPlace().Select())
             {
                 this.CampingPlaces.Add(campingPlace.GetLocation());
-            }
+            }*/
+        }
+
+        private IEnumerable<CampingPlace> GetCampingPlaces()
+        {
+            return this._campingPlaceModel.Select();
         }
 
         private void GetSelectedCampingPlaceObject(string campingPlaceInput)
@@ -144,25 +169,23 @@ namespace ViewModel
         {
             if(args.Reservation is Reservation r){
                 this._reservation = r;
+                //rest is for data binding
                 this.NumberOfPeople = r.NumberOfPeople.ToString();
                 this.SelectedCampingPlace = r.CampingPlace.GetLocation();
                 this.SelectedCampingPlaceObject = r.CampingPlace;
                 this.CheckInDate = r.Duration.CheckInDatetime;
                 this.CheckOutDate = r.Duration.CheckOutDatetime;
                 this.CampingCustomer = r.CampingCustomer;
+                this.PageTitle = PageTitleText + this._reservation.Id.ToString();
             }
-          
+
         }
 
         #region Command
-        private bool CanExecuteUpdateReservation()
-        {
-            return true;
-        }
-        public ICommand UpdateReservation => new RelayCommand(ExecuteUpdateReservation, CanExecuteUpdateReservation);
-        #endregion
-
-
+        
+        /// <summary>
+        /// This method updates the selected reservation.
+        /// </summary>
         private void ExecuteUpdateReservation()
         {
             var result = MessageBox.Show("Weet u zeker dat u de reservering wil aanpassen?", "Reservering bijwerken", MessageBoxButton.YesNo);
@@ -187,10 +210,19 @@ namespace ViewModel
             MessageBox.Show(context, caption, System.Windows.MessageBoxButton.OK);
 
         }
+        private bool CanExecuteUpdateReservation()
+        {
+            return true;
+        }
+        public ICommand UpdateReservation => new RelayCommand(ExecuteUpdateReservation, CanExecuteUpdateReservation);
+        
 
-
+        /// <summary>
+        /// This method fires event to go to (an updated) the dashboard page.
+        /// </summary>
         private void ExecuteGoToDashBoard()
         {
+            UpdateReservationCollection?.Invoke(this, new ReservationEventArgs(this._reservation));
             FromReservationBackToDashboardEvent?.Invoke(this, new ReservationEventArgs(_reservation));
         }
 
@@ -202,10 +234,12 @@ namespace ViewModel
         public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
 
 
-
+        /// <summary>
+        /// Deletes the reservation in de Reservationtable, reservationdurationtable and reservationcampingGuesttable
+        /// </summary>
         private void ExecuteDeleteReservation()
         {
-            var result = MessageBox.Show("Weet u zeker dat u deze reservering wil verwijderen?", "Reservering verwijderen", MessageBoxButton.YesNo);
+            var result = MessageBox.Show($"Weet u zeker dat u reservering {this._reservation.Id.ToString()} wil verwijderen?", "Reservering verwijderen", MessageBoxButton.YesNo);
             if (result != MessageBoxResult.Yes)
             {
                 return;
@@ -213,13 +247,17 @@ namespace ViewModel
 
             ReservationDuration deletedReservationDuraton = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(), this.CheckOutDate.ToString());
             Reservation deletedReservationObject = new Reservation(_reservation.Id.ToString(), this.NumberOfPeople, this.CampingCustomer, this.SelectedCampingPlaceObject, deletedReservationDuraton);
+            ReservationCampingGuest deletedCampingGuest = new ReservationCampingGuest();
 
+            //CAMPINGGUEST ISN'T DELETED
+            var campingGuestSuccesfullyDeleted = deletedCampingGuest.DeleteReservationCampingGuestConnection(_reservation.Id);
+            bool durationSuccesfullydeleted = deletedReservationObject.Delete();
             bool succesfullDeleted = deletedReservationDuraton.Delete();
-            bool durationsuccesfullydeleted = deletedReservationObject.Delete();
 
             string context = "Reservering is verwijderd!";
             string caption = "Succesvol verwijderd";
-            if (succesfullDeleted || durationsuccesfullydeleted)
+
+            if (succesfullDeleted || durationSuccesfullydeleted || campingGuestSuccesfullyDeleted)
             {
                 context = "Reservering is door vage omstandigheden niet goed verwijderd";
                 caption = "Reservering is mogelijk geheel verwijderd";
@@ -233,6 +271,10 @@ namespace ViewModel
             return true;
         }
         public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation, CanExecuteDeleteReservation);
+
+        #endregion
+
+
 
     }
 }

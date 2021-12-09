@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SystemCore;
 
 namespace Model
 {
@@ -43,6 +45,20 @@ namespace Model
             this.CampingGuest = campingGuest;
 
             return base.Update(ReservationCampingGuest.ToDictionary(reservation, campingGuest));
+        }
+
+        public bool DeleteReservationCampingGuestConnection(int reservationPrimaryKey)
+        {
+            if (this.PrimaryKey == null || this.PrimaryKey.Length ==0)
+            {
+                return false;
+            }
+
+            Query query = new Query($"DELETE FROM {this.Table} WHERE {ColumnReservation} = @{ColumnReservation}");
+            query.AddParameter(ColumnReservation, reservationPrimaryKey);
+            query.Execute();
+
+            return base.Delete();
         }
 
         /// <inheritdoc/>

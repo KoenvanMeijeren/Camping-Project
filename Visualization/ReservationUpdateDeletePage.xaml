@@ -38,7 +38,7 @@
         <Label Content="Verblijftermijn" Margin="56,352,623,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" />
         <Label Content="Aantal gasten" Margin="516,119,138,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" />
         <Label Content="Locatie" Margin="534,197,282,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" Height="33" />
-        <Label Content="Bijwerken reservering" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Width="728" Height="36" BorderThickness="0,0,0,2" BorderBrush="Black"/>
+        <Label Content="{Binding PageTitle}" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Width="728" Height="36" BorderThickness="0,0,0,2" BorderBrush="Black"/>
 
         <TextBox Name="NumberOfPeopleTextbox" Text="{Binding NumberOfPeople, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" Margin="206,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black"/>
         <ComboBox Name="CampingPlaceTextbox" SelectedItem="{Binding SelectedCampingPlace}" ItemsSource="{Binding CampingPlaces}" HorizontalAlignment="Left" Height="20" Margin="188,255,0,0" VerticalAlignment="Top" Width="206" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black"/>

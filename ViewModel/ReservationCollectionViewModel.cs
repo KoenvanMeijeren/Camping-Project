@@ -12,13 +12,14 @@ namespace ViewModel
     {
         public ObservableCollection<ReservationViewModel> Reservations { get; private set; }
         public static event EventHandler<ReservationEventArgs> ManageReservationEvent;
+        
         private ReservationViewModel _selectedReservation;
         public ReservationViewModel SelectedReservation
         {
             get => _selectedReservation;
             set
             {
-                if (Equals(value, this._selectedReservation))
+                if (value == null || Equals(value, this._selectedReservation))
                 {
                     return;
                 }
@@ -40,6 +41,7 @@ namespace ViewModel
             }
             
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ManageReservationViewModel.UpdateReservationCollection += OnReservationConfirmedEvent;
         }
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
