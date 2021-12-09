@@ -1,0 +1,40 @@
+﻿<Page x:Class="Visualization.ReservationCampingGuestPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Visualization" 
+      xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Selecteer gasten" Height="634.04" Width="820" MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
+    
+    <Page.DataContext>
+        <viewModel:ReservationCampingGuestViewModel/>
+    </Page.DataContext>
+
+    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="58,37,364,92" CornerRadius="15,15,15,15" Background="White">
+            <ListView Height="400" Margin="46,71,46,34" Background="White" FontFamily="Century Gothic" FontWeight="Bold" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Voornaam" Width="100" />
+                        <GridViewColumn Header="Achternaam" Width="100" />
+                        <GridViewColumn Header="Geboortedatum" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Border>
+        <Label Content="Toevoegen campingasten" HorizontalAlignment="Left" Margin="125,53,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="35" Width="264" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="549,37,46,372" CornerRadius="15,15,15,15" Background="White" Height="225" Width="225">
+
+        </Border>
+        <Label Content="Uw gegevens:" HorizontalAlignment="Left" Margin="532,53,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="35" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="549,317,46,92" CornerRadius="15,15,15,15" Background="White" Height="225" Width="225">
+
+        </Border>
+        <Label Content="Reseverings info:" HorizontalAlignment="Left" Margin="532,333,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="35" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button Content="Terug" Height ="30" Margin="58,564,537,40"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding CutomerGuestGoBackReservation, Mode=OneWay}" />
+        <Button Content="Bevestig" Height ="30" Margin="549,569,46,35"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding AddCustomerReservation, Mode=OneWay}" />
+    </Grid>
+</Page>

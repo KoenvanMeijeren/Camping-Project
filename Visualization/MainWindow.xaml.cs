@@ -15,6 +15,7 @@ namespace Visualization
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
+        private readonly ReservationCampingGuestPage _reservationCampingGuestPage;
         private readonly AccountPage _accountPage;
         private readonly SignUpPage _signUpPage;
         private readonly TestInputPage _testInputPage;
@@ -28,11 +29,14 @@ namespace Visualization
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
+            this._reservationCampingGuestPage = new ReservationCampingGuestPage();
             this._accountPage = new AccountPage();
             this._signUpPage = new SignUpPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
 
+            ReservationCampingGuestViewModel.ReservationConfirmEvent += this.OnReservationConfirmEvent;
+            ReservationCampingGuestViewModel.ReservationCancelEvent += this.OnReserveEvent;
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
@@ -132,9 +136,14 @@ namespace Visualization
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
         {
-            this.MainFrame.Content = this._reservationConfirmedPage.Content;
+            //this.MainFrame.Content = this._reservationConfirmedPage.Content;
+            this.MainFrame.Content = this._reservationCampingGuestPage;
         }
 
+        private void OnReservationConfirmEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationConfirmedPage.Content;
+        }
         private void OnSignUpEvent(object sender, SignUpEventArgs args)
         {
             CurrentUser.SetCurrentUser(args.Account);
