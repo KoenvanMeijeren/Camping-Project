@@ -17,9 +17,11 @@ namespace Visualization
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
         private readonly ReservationCampingGuestPage _reservationCampingGuestPage;
         private readonly AccountPage _accountPage;
+        private readonly SignInPage _signInPage;
         private readonly SignUpPage _signUpPage;
         private readonly TestInputPage _testInputPage;
         private readonly TestPage _testPage;
+        private readonly ReservationOverviewPage _reservationOverviewPage;
 
         public MainWindow()
         {
@@ -31,9 +33,11 @@ namespace Visualization
             this._reservationConfirmedPage = new ReservationConfirmedPage();
             this._reservationCampingGuestPage = new ReservationCampingGuestPage();
             this._accountPage = new AccountPage();
+            this._signInPage = new SignInPage();
             this._signUpPage = new SignUpPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
+            this._reservationOverviewPage = new ReservationOverviewPage();
 
             ReservationCampingGuestViewModel.ReservationConfirmEvent += this.OnReservationConfirmEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
@@ -41,6 +45,8 @@ namespace Visualization
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+            SignInViewModel.SignInEvent += this.OnSignInEvent;
+            SignInViewModel.SignUpFormEvent += this.OnSignUpFormEvent;
 
             AccountButton.Visibility = Visibility.Collapsed;
             
@@ -56,8 +62,8 @@ namespace Visualization
             this.CampingPitchesButton.Background = Brushes.White;
             this.CampingPitchesButton.Foreground = Brushes.Black;
             
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
@@ -73,8 +79,8 @@ namespace Visualization
             this.DashboardButton.Background = Brushes.White;
             this.DashboardButton.Foreground = Brushes.Black;
             
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
@@ -82,10 +88,10 @@ namespace Visualization
             this.MainFrame.Content = this._campingPlacesCollectionFrame.Content;
         }
         
-        private void TestClick(object sender, RoutedEventArgs e)
+        private void DashboardCustomerButtonClick(object sender, RoutedEventArgs e)
         {
-            this.TestButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.TestButton.Foreground = Brushes.White;
+            this.DashboardCustomerButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
+            this.DashboardCustomerButton.Foreground = Brushes.White;
 
             this.CampingPitchesButton.Background = Brushes.White;
             this.CampingPitchesButton.Foreground = Brushes.Black;
@@ -93,13 +99,13 @@ namespace Visualization
             this.DashboardButton.Background = Brushes.White;
             this.DashboardButton.Foreground = Brushes.Black;
             
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.TestInputButton.Background = Brushes.White;
             this.TestInputButton.Foreground = Brushes.Black;
 
-            this.MainFrame.Content = this._testPage.Content;
+            this.MainFrame.Content = this._reservationOverviewPage.Content;
         }
         
         private void TestInputClick(object sender, RoutedEventArgs e)
@@ -107,8 +113,8 @@ namespace Visualization
             this.TestInputButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
             this.TestInputButton.Foreground = Brushes.White;
 
-            this.TestButton.Background = Brushes.White;
-            this.TestButton.Foreground = Brushes.Black;
+            this.DashboardCustomerButton.Background = Brushes.White;
+            this.DashboardCustomerButton.Foreground = Brushes.Black;
             
             this.CampingPitchesButton.Background = Brushes.White;
             this.CampingPitchesButton.Foreground = Brushes.Black;
@@ -121,7 +127,7 @@ namespace Visualization
 
         private void SignUpButtonClick(object sender, RoutedEventArgs e)
         {
-            this.MainFrame.Content = this._signUpPage.Content;
+            this.MainFrame.Content = this._signInPage.Content;
         }
 
         private void AccountButtonClick(object sender, RoutedEventArgs e)
@@ -144,26 +150,34 @@ namespace Visualization
         {
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
-        private void OnSignUpEvent(object sender, SignUpEventArgs args)
-        {
-            CurrentUser.SetCurrentUser(args.Account);
 
+        private void OnSignInEvent(object sender, AccountEventArgs args)
+        {
             SignUpButton.Visibility = Visibility.Collapsed;
             AccountButton.Visibility = Visibility.Visible;
 
             this.MainFrame.Content = this._accountPage.Content;
         }
 
+        private void OnSignUpEvent(object sender, AccountEventArgs args)
+        {
+            this.MainFrame.Content = this._signInPage.Content;
+        }
+
+
         private void OnSignOutEvent(object sender, EventArgs e)
         {
-            CurrentUser.EmptyCurrentUser();
-
             SignUpButton.Visibility = Visibility.Visible;
             AccountButton.Visibility = Visibility.Collapsed;
 
+            this.MainFrame.Content = this._signInPage.Content;
+        }
+
+        private void OnSignUpFormEvent(object sender, EventArgs e)
+        {
             this.MainFrame.Content = this._signUpPage.Content;
         }
 
-        
+
     }
 }

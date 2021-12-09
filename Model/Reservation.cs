@@ -25,6 +25,8 @@ namespace Model
         public ReservationDuration Duration { get; private set; }
         public float TotalPrice { get; private set; }
         public string TotalPriceString { get; private set; }
+        
+        public List<ReservationCampingGuest> CampingGuests { get; private set; }
 
         public Reservation(): base(TableName, ColumnId)
         {
@@ -70,6 +72,25 @@ namespace Model
             days = timeSpan.Days;
 
             return this.CampingPlace.TotalPrice * days;
+        }
+
+        /// <summary>
+        /// Returns all the reservation of the given customer id.
+        /// </summary>
+        /// <param name="customerId">ID of customer</param>
+        /// <returns>Database records of given customer's reservations</returns>
+        public List<Reservation> GetCustomersReservations(int customerId)
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId");
+            query.AddParameter("customerId", customerId);
+
+            List<Reservation> reservations = new List<Reservation>();
+            foreach(var item in query.Select())
+            {
+                reservations.Add(this.ToModel(item));
+            }
+
+            return reservations;
         }
 
         /// <inheritdoc/>
@@ -143,7 +164,12 @@ namespace Model
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, phoneNumber, firstName, lastName);
             ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
-            return new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
+            Reservation reservation = new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
+            
+            ReservationCampingGuest reservationCampingGuestModel = new ReservationCampingGuest();
+            reservation.CampingGuests = reservationCampingGuestModel.SelectByReservation(reservation);
+
+            return reservation;
         }
         
         /// <inheritdoc/>
