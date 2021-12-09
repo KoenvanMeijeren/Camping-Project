@@ -39,7 +39,7 @@ namespace ViewModel
                 }
 
                 this._selectedReservation = value;
-                ManageReservationEvent?.Invoke(this,  new ReservationEventArgs(this._selectedReservation.Reservation));
+                ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation.Reservation));
             }
         }
 
@@ -316,33 +316,5 @@ namespace ViewModel
         {
             this.Reservation = reservation;
         }
-
-        #region Commands
-        public void ExecuteUpdateReservation()
-        {
-            Console.WriteLine(Reservation.Id);
-        }
-
-        public bool CanExecuteUpdateReservation()
-        {
-            return false;
-        }
-
-        public ICommand UpdateReservation => new RelayCommand(ExecuteUpdateReservation, CanExecuteUpdateReservation);
-
-
-        public void ExecuteDeleteReservation()
-        {
-
-        }
-
-        public bool CanExecuteDeleteReservation()
-        {
-            return false;
-        }
-        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation, CanExecuteDeleteReservation);
-
-
-        #endregion
     }
 }

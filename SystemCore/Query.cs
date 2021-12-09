@@ -37,11 +37,6 @@ namespace SystemCore
         {
             this._sqlCommand.Parameters.AddWithValue(parameter, value);
         }
-
-        public string getQueryStatement()
-        {
-            return this._sqlCommand.CommandText;
-        }
         
         /// <summary>
         /// Selects rows from database table. 

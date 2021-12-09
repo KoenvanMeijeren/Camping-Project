@@ -102,22 +102,7 @@ namespace Model
             return dictionary;
         }
 
-        /// <summary>
-        /// Creates a dictionary with The object ReservationDuration as value
-        /// </summary>
-        /// <param name="checkInDate">check in date</param>
-        /// <param name="checkOutDate">check out date</param>
-        /// <returns></returns>
-        private static Dictionary<string, DateTime> ToDictionaryDateTime(DateTime checkindate, DateTime checkoutdate)
-        {
-            Dictionary<string, DateTime> dictionary = new Dictionary<string, DateTime>
-            {
-                {ColumnCheckInDate,checkindate},
-                {ColumnCheckOutDate, checkoutdate}
-            };
-
-            return dictionary;
-        }
+   
 
     }
 }
