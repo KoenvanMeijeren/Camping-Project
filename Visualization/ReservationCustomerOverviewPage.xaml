@@ -70,9 +70,9 @@
                 <ListView ItemsSource="{Binding CampingGuestCollection}">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Voornaam" Width="140" DisplayMemberBinding="{Binding FirstName}" />
-                            <GridViewColumn Header="Achternaam" Width="140" DisplayMemberBinding="{Binding LastName}" />
-                            <GridViewColumn Header="Geboortedatum" Width="140" DisplayMemberBinding="{Binding Birthdate}" />
+                            <GridViewColumn Header="Voornaam" Width="140" DisplayMemberBinding="{Binding CampingGuest.FirstName}" />
+                            <GridViewColumn Header="Achternaam" Width="140" DisplayMemberBinding="{Binding CampingGuest.LastName}" />
+                            <GridViewColumn Header="Geboortedatum" Width="140" DisplayMemberBinding="{Binding CampingGuest.BirthdateReadable}" />
                         </GridView>
                     </ListView.View>
                 </ListView>

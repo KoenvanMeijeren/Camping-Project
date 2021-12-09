@@ -20,7 +20,7 @@ namespace ViewModel
 
         private ObservableCollection<Reservation> _reservationsCollection;
         private Reservation _selectedReservation;
-        private ObservableCollection<CampingGuest> _campingGuestCollection;
+        private ObservableCollection<ReservationCampingGuest> _campingGuestCollection;
 
         #region Properties
         private string _infoStartDate = "Begindatum: ";
@@ -104,7 +104,7 @@ namespace ViewModel
             }
         }
 
-        public ObservableCollection<CampingGuest> CampingGuestCollection
+        public ObservableCollection<ReservationCampingGuest> CampingGuestCollection
         {
             get => this._campingGuestCollection;
             set
@@ -145,16 +145,7 @@ namespace ViewModel
 
         private void DisplayNewCustomerGuestData(Reservation reservation)
         {
-            List<CampingGuest> campingGuestList = new List<CampingGuest>();
-
-            CampingGuest gast1 = new CampingGuest("test", "test", "2000-19-19");
-            CampingGuest gast2 = new CampingGuest("test", "test", "2000-19-13");
-            CampingGuest gast3 = new CampingGuest("test", "test", "2000-19-14");
-            campingGuestList.Add(gast1);
-            campingGuestList.Add(gast2);
-            campingGuestList.Add(gast3);
-
-            this.CampingGuestCollection = new ObservableCollection<CampingGuest>(campingGuestList);
+            this.CampingGuestCollection = new ObservableCollection<ReservationCampingGuest>(reservation.CampingGuests);
         }
     }
 }
