@@ -26,6 +26,13 @@ namespace ViewModel
         private ObservableCollection<ReservationCampingGuest> _campingGuestCollection;
 
         #region Properties
+        private string _infoID = "ID: ";
+        public string InfoID
+        {
+            get => _infoID;
+            set => this._infoID = "ID: " + value;
+        }
+
         private string _infoStartDate = "Begindatum: ";
         public string InfoStartDate
         {
@@ -128,7 +135,10 @@ namespace ViewModel
         {
             Reservation reservationModel = new Reservation();
             this.Reservations = reservationModel.GetCustomersReservations(this._customerID);
-            this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations.Where(x => x.ReservationDeleted == ReservationColumnStatus.False));
+
+            // Removes already deleted from list
+            this.Reservations.RemoveAll(item => item.ReservationDeleted == ReservationColumnStatus.True);
+            this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
 
             // Check if there are reservations for customer
             if (ReservationsCollection.Count > 0) 
@@ -146,6 +156,7 @@ namespace ViewModel
         {
             if (reservation != null)
             {
+                this.InfoID = reservation.Id.ToString();
                 this.InfoStartDate = reservation.Duration.CheckInDate;
                 this.InfoEndDate = reservation.Duration.CheckOutDate;
                 // Amount of guests + customer
@@ -156,6 +167,7 @@ namespace ViewModel
                 this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
             } else
             {
+                this.InfoID = "";
                 this.InfoStartDate = "";
                 this.InfoEndDate = "";
                 this.InfoAmountOfGuests = "";
@@ -183,9 +195,12 @@ namespace ViewModel
                 MessageBox.Show("Reserveringen van vandaag of eerder kunnen niet meer worden verwijderd.", "Reservering verwijderen ", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
+            
+            bool checkIfReservationIsWithinOneWeek = DateTime.Today.AddMonths(+1) >= Convert.ToDateTime(_selectedReservation.Duration.CheckInDate);
+            string restitionValue = checkIfReservationIsWithinOneWeek ? (this._selectedReservation.TotalPrice / 2).ToString(CultureInfo.InvariantCulture) : this._selectedReservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
 
             // Confirmation box
-            MessageBoxResult messageBoxResult = MessageBox.Show("Weet je zeker dat je deze reservering wilt verwijderen?", "Reservering verwijderen", MessageBoxButton.YesNo);
+            MessageBoxResult messageBoxResult = MessageBox.Show($"Weet je zeker dat je de reservering wil annuleren? Het restitutiebedrag bedraagt: {restitionValue}", "Reservering verwijderen", MessageBoxButton.YesNo);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
                 // Checks if update was succesful
@@ -193,6 +208,9 @@ namespace ViewModel
                 {
                     this.Reservations.Remove(_selectedReservation);
                     this.ReservationsCollection.Remove(_selectedReservation);
+
+                    MessageBox.Show($"Reservering geannuleerd. Het restitutiebedrag van €{restitionValue} wordt binnen vijf dagen op uw rekening gestort.", "Restitutie", MessageBoxButton.OK, MessageBoxImage.Information);
+
                     // Check if there are still reservations left
                     if (this.Reservations.Count > 0)
                     {
