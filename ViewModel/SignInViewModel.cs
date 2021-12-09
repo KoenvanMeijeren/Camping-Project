@@ -13,7 +13,7 @@ using SystemCore;
 
 namespace ViewModel
 {
-    public class SignUpViewModel : ObservableObject
+    public class SignInViewModel : ObservableObject
     {
         #region Fields
         private string _email,  _password, _singUpError;

@@ -13,7 +13,7 @@ using SystemCore;
 
 namespace ViewModel
 {
-    public class RegisterViewModel : ObservableObject
+    public class SignUpViewModel : ObservableObject
     {
         #region Fields
         private string 
@@ -284,7 +284,7 @@ namespace ViewModel
         #endregion
 
         #region Viewconstruction
-        public RegisterViewModel()
+        public SignUpViewModel()
         {
             this.Birthdate = new DateTime(2000,01,01);
         }

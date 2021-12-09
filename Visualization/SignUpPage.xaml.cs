@@ -19,9 +19,9 @@ namespace Visualization
     /// <summary>
     /// Interaction logic for RegisterPage.xaml
     /// </summary>
-    public partial class RegisterPage : Page
+    public partial class SignUpPage : Page
     {
-        public RegisterPage()
+        public SignUpPage()
         {
             InitializeComponent();
         }
@@ -33,7 +33,7 @@ namespace Visualization
                 return;
             }
 
-            ((RegisterViewModel)this.DataContext).Password = ((PasswordBox)sender).Password;
+            ((SignUpViewModel)this.DataContext).Password = ((PasswordBox)sender).Password;
         }
     }
 }

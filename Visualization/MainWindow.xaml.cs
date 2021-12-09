@@ -16,8 +16,8 @@ namespace Visualization
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
         private readonly AccountPage _accountPage;
+        private readonly SignInPage _signInPage;
         private readonly SignUpPage _signUpPage;
-        private readonly RegisterPage _registerPage;
         private readonly TestInputPage _testInputPage;
         private readonly TestPage _testPage;
 
@@ -30,16 +30,16 @@ namespace Visualization
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
             this._accountPage = new AccountPage();
+            this._signInPage = new SignInPage();
             this._signUpPage = new SignUpPage();
-            this._registerPage = new RegisterPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
-            SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
+            SignInViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
-            SignUpViewModel.RegisterEvent += this.OnRegisterEvent;
+            SignInViewModel.RegisterEvent += this.OnRegisterEvent;
 
             AccountButton.Visibility = Visibility.Collapsed;
             
@@ -120,7 +120,7 @@ namespace Visualization
 
         private void SignUpButtonClick(object sender, RoutedEventArgs e)
         {
-            this.MainFrame.Content = this._signUpPage.Content;
+            this.MainFrame.Content = this._signInPage.Content;
         }
 
         private void AccountButtonClick(object sender, RoutedEventArgs e)
@@ -151,12 +151,12 @@ namespace Visualization
             SignUpButton.Visibility = Visibility.Visible;
             AccountButton.Visibility = Visibility.Collapsed;
 
-            this.MainFrame.Content = this._signUpPage.Content;
+            this.MainFrame.Content = this._signInPage.Content;
         }
 
         private void OnRegisterEvent(object sender, EventArgs e)
         {
-            this.MainFrame.Content = this._registerPage.Content;
+            this.MainFrame.Content = this._signUpPage.Content;
         }
 
 
