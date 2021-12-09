@@ -16,6 +16,7 @@ namespace Visualization
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
         private readonly AccountPage _accountPage;
+        private readonly SignInPage _signInPage;
         private readonly SignUpPage _signUpPage;
         private readonly TestInputPage _testInputPage;
         private readonly TestPage _testPage;
@@ -30,6 +31,7 @@ namespace Visualization
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
             this._accountPage = new AccountPage();
+            this._signInPage = new SignInPage();
             this._signUpPage = new SignUpPage();
             this._testPage = new TestPage();
             this._testInputPage = new TestInputPage();
@@ -39,6 +41,8 @@ namespace Visualization
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+            SignInViewModel.SignInEvent += this.OnSignInEvent;
+            SignInViewModel.SignUpFormEvent += this.OnSignUpFormEvent;
 
             AccountButton.Visibility = Visibility.Collapsed;
             
@@ -119,7 +123,7 @@ namespace Visualization
 
         private void SignUpButtonClick(object sender, RoutedEventArgs e)
         {
-            this.MainFrame.Content = this._signUpPage.Content;
+            this.MainFrame.Content = this._signInPage.Content;
         }
 
         private void AccountButtonClick(object sender, RoutedEventArgs e)
@@ -137,26 +141,33 @@ namespace Visualization
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
 
-        private void OnSignUpEvent(object sender, SignUpEventArgs args)
+        private void OnSignInEvent(object sender, AccountEventArgs args)
         {
-            CurrentUser.SetCurrentUser(args.Account);
-
             SignUpButton.Visibility = Visibility.Collapsed;
             AccountButton.Visibility = Visibility.Visible;
 
             this.MainFrame.Content = this._accountPage.Content;
         }
 
+        private void OnSignUpEvent(object sender, AccountEventArgs args)
+        {
+            this.MainFrame.Content = this._signInPage.Content;
+        }
+
+
         private void OnSignOutEvent(object sender, EventArgs e)
         {
-            CurrentUser.EmptyCurrentUser();
-
             SignUpButton.Visibility = Visibility.Visible;
             AccountButton.Visibility = Visibility.Collapsed;
 
+            this.MainFrame.Content = this._signInPage.Content;
+        }
+
+        private void OnSignUpFormEvent(object sender, EventArgs e)
+        {
             this.MainFrame.Content = this._signUpPage.Content;
         }
 
-        
+
     }
 }
