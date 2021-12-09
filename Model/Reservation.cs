@@ -195,8 +195,7 @@ namespace Model
             query += $" LEFT JOIN {Account.TableName} AC on CC.{CampingCustomer.ColumnAccount} = AC.{Account.ColumnId}";
             query += $" INNER JOIN {Address.TableName} CCA ON CCA.{Address.ColumnId} = CC.{CampingCustomer.ColumnAddress} ";
             query += $" INNER JOIN {ReservationDuration.TableName} RD ON RD.{ReservationDuration.ColumnId} = R.{ColumnDuration} ";
-/*            query += $" INNER JOIN {ReservationCampingGuest.TableName} RCG ON RCG.{ReservationCampingGuest.ColumnReservation} = R.{ColumnId} ";
-*/
+
             return query;
         }
     }
