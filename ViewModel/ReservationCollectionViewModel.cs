@@ -11,6 +11,7 @@ using iTextSharp.text.pdf;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace ViewModel
 {
@@ -223,10 +224,6 @@ namespace ViewModel
 
         private void ExecuteCreatePdf()
         {
-            var reservationModel = new Reservation();
-            var campingGuestModel = new CampingGuest();
-            var reservationCampingGuest = new ReservationCampingGuest();
-
             Document document = new Document(PageSize.A4, 36, 36, 70, 36);
             PageEvents pageEvents = new PageEvents();
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -251,10 +248,10 @@ namespace ViewModel
 
                 reservationTable.AddCell(reservation.Reservation.Id.ToString());
                 reservationTable.AddCell(reservation.Reservation.CampingPlace.ToString());
-                reservationTable.AddCell(reservation.Reservation.CampingCustomer.FirstName.ToString() + " " + reservation.Reservation.CampingCustomer.LastName.ToString());
-                reservationTable.AddCell(reservation.Reservation.Duration.CheckInDate.ToString());
-                reservationTable.AddCell(reservation.Reservation.Duration.CheckOutDate.ToString());
-                reservationTable.AddCell(" €" + reservation.Reservation.TotalPrice.ToString());
+                reservationTable.AddCell(reservation.Reservation.CampingCustomer.FirstName + " " + reservation.Reservation.CampingCustomer.LastName);
+                reservationTable.AddCell(reservation.Reservation.Duration.CheckInDate);
+                reservationTable.AddCell(reservation.Reservation.Duration.CheckOutDate);
+                reservationTable.AddCell(" €" + reservation.Reservation.TotalPrice.ToString(CultureInfo.InvariantCulture));
                 reservationTable.AddCell(" ");
 
                 document.Add(new Paragraph("\n"));
@@ -262,7 +259,7 @@ namespace ViewModel
 
                 
                 //Should be used for the CampingGuest table
-                /*foreach (var reservationGuest in reservationCampingGuest.Select())
+                foreach (var reservationGuest in reservation.CampingGuests)
                 {
                     PdfPTable campingGuestTable = new PdfPTable(3);
 
@@ -276,9 +273,8 @@ namespace ViewModel
 
                     document.Add(campingGuestTable);
 
-                }*/
+                }
             }
-
 
             document.Close();
 
