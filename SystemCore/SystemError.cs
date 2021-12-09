@@ -26,6 +26,6 @@ namespace SystemCore
                 MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.None
             );
             Environment.Exit(-1);
-            }
+        }
     }
 }
