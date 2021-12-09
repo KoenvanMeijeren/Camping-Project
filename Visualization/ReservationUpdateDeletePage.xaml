@@ -14,7 +14,7 @@
 
     <Grid MinWidth="805" MaxWidth="800" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="23,24,23,37" CornerRadius="15,15,15,15" Background="White">
-            <DatePicker SelectedDate="{Binding Path=CheckOutDate, Mode=TwoWay}" Margin="160,414,488,119" Name="CheckOutDate" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
+            <DatePicker SelectedDate="{Binding Path=CheckOutDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="160,414,488,119" Name="CheckOutDate" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
         </Border>
         <Button Content ="Verwijder" Command="{Binding DeleteReservation}" Margin="72,531,617,69" Background="Red" Foreground="white" FontSize="16" FontFamily="Century gothic" RenderTransformOrigin="0.5,0.5">
             <Button.Resources>
@@ -40,10 +40,10 @@
         <Label Content="Locatie" Margin="534,197,282,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" Height="33" />
         <Label Content="{Binding PageTitle}" HorizontalAlignment="Center" Margin="0,42,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Width="728" Height="36" BorderThickness="0,0,0,2" BorderBrush="Black"/>
 
-        <TextBox Name="NumberOfPeopleTextbox" Text="{Binding NumberOfPeople, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" Margin="206,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black"/>
-        <ComboBox Name="CampingPlaceTextbox" SelectedItem="{Binding SelectedCampingPlace}" ItemsSource="{Binding CampingPlaces}" HorizontalAlignment="Left" Height="20" Margin="188,255,0,0" VerticalAlignment="Top" Width="206" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black"/>
+        <TextBox Text="{Binding NumberOfPeople, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="20" Margin="206,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black"/>
+        <ComboBox SelectedItem="{Binding SelectedCampingPlace}" ItemsSource="{Binding CampingPlaces}" HorizontalAlignment="Left" Height="20" Margin="188,255,0,0" VerticalAlignment="Top" Width="206" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black"/>
 
-        <DatePicker SelectedDate="{Binding Path=CheckInDate, Mode=TwoWay}" Margin="188,380,488,214" Name="CheckInDate" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
+        <DatePicker SelectedDate="{Binding Path=CheckInDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="188,380,488,214" Name="CheckInDate" Padding="1,1,1,1" BorderThickness="0,0,0,0" VerticalContentAlignment="Center" FontFamily="Century Gothic" FontWeight="Normal" HorizontalContentAlignment="Stretch"/>
         <Button Content ="Terug" Command="{Binding GoBackToDashboard}"  Margin="48,92,638,500" Background="black" Foreground="white" FontSize="16" FontFamily="Century gothic">
             <Button.Resources>
                 <Style TargetType = "Border" >

@@ -24,8 +24,6 @@ namespace ViewModel
         private readonly Reservation _reservationModel = new Reservation();
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
 
-        private const string PageTitleText = "Bijwerken van reservering ";
-
         private Reservation _reservation;
         private CampingCustomer _campingCustomer;
         
@@ -108,8 +106,12 @@ namespace ViewModel
                     return;
                 }
                 
+                int daysDifference = this._checkOutDate.Subtract(this._checkInDate).Days;
+                
                 this._checkInDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
                 
                 this.SetAvailableCampingPlaces();
             }
@@ -143,12 +145,17 @@ namespace ViewModel
 
         private void SetAvailableCampingPlaces()
         {
+            var selectedCampingPlace = this.SelectedCampingPlace;
+            
             this.CampingPlaces.Clear();
 
+            this.CampingPlaces.Add(selectedCampingPlace);
             foreach (var campingPlace in this.ToFilteredOnReservedCampingPlaces(this._campingPlaceModel.Select()))
             {
                 this.CampingPlaces.Add(campingPlace);
             }
+
+            this.SelectedCampingPlace = selectedCampingPlace;
         }
 
         private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData)
@@ -174,14 +181,13 @@ namespace ViewModel
             }
             
             this._reservation = args.Reservation;
+            this._campingCustomer = this._reservation.CampingCustomer;
             
-            //rest is for data binding
             this.NumberOfPeople = this._reservation.NumberOfPeople.ToString();
             this.SelectedCampingPlace = this._reservation.CampingPlace;
             this.CheckInDate = this._reservation.Duration.CheckInDatetime;
             this.CheckOutDate = this._reservation.Duration.CheckOutDatetime;
-            this._campingCustomer = this._reservation.CampingCustomer;
-            this.PageTitle = PageTitleText + this._reservation.Id;
+            this.PageTitle = "Reservering " + this._reservation.Id + " bijwerken";
 
             this.SetAvailableCampingPlaces();
         }
@@ -207,11 +213,12 @@ namespace ViewModel
 
             string context = "Reservering is aangepast!";
             string caption = "Reservering is bijgwerkt";
-            if (succesfullyUpdated || durationsuccesfullyupdated)
+            if (!succesfullyUpdated || !durationsuccesfullyupdated)
             {
                 context = "Reservering is door vage omstandigheden niet goed aangepast";
                 caption = "Reservering is mogelijk bijgewerkt";
             }
+            
             MessageBox.Show(context, caption, System.Windows.MessageBoxButton.OK);
             //update page
         }
