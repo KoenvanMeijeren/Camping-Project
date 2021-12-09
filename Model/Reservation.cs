@@ -8,6 +8,15 @@ using SystemCore;
 
 namespace Model
 {
+    /// <summary>
+    /// Enum used for database columns: ReservationDeleted, ReservationPayed, ReservationRestitutionPayed
+    /// </summary>
+    public enum ReservationStatus
+    {
+        False = 0,
+        True = 1
+    }
+
     public class Reservation : ModelBase<Reservation>
     {
         public int NumberOfPeople { get; private set; }
@@ -16,17 +25,20 @@ namespace Model
         public ReservationDuration Duration { get; private set; }
         public float TotalPrice { get; private set; }
         public string TotalPriceString { get; private set; }
+        public ReservationStatus ReservationDeleted { get; private set; }
+        public ReservationStatus ReservationPayed { get; private set; }
+        public ReservationStatus ReservationRestitutionPayed { get; private set; }
 
         public Reservation()
         {
         }
         
         public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, 
-            ReservationDuration duration): this("-1", numberOfPeople, campingCustomer, campingPlace, duration)
+            ReservationDuration duration, ReservationStatus reservationDeleted, ReservationStatus reservationPayed, ReservationStatus reservationRestitutionPayed) : this("-1", numberOfPeople, campingCustomer, campingPlace, duration, reservationDeleted, reservationPayed, reservationRestitutionPayed)
         {
         }
         
-        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationStatus reservationDeleted, ReservationStatus reservationPayed, ReservationStatus reservationRestitutionPayed)
         {
             this.Id = int.Parse(id);
             this.NumberOfPeople = int.Parse(numberOfPeople);
@@ -35,6 +47,9 @@ namespace Model
             this.Duration = duration;
             this.TotalPrice = this.CalculateTotalPrice();
             this.TotalPriceString = $"€{this.TotalPrice}";
+            this.ReservationDeleted = reservationDeleted;
+            this.ReservationPayed = reservationPayed;
+            this.ReservationRestitutionPayed = reservationRestitutionPayed;
         }
 
         public float CalculateTotalPrice()
@@ -84,6 +99,9 @@ namespace Model
             dictionary.TryGetValue("ReservationNumberOfPeople", out string peopleCount);
             dictionary.TryGetValue("ReservationCampingCustomerID", out string campingCustomerId);
             dictionary.TryGetValue("ReservationDurationID", out string durationId);
+            dictionary.TryGetValue("ReservationDeleted", out string reservationDeleted);
+            dictionary.TryGetValue("ReservationPayed", out string reservationPayed);
+            dictionary.TryGetValue("ReservationRestitutionPayed", out string reservationRestitutionPayed);
             
             dictionary.TryGetValue("CampingPlaceTypeID", out string campingPlaceTypeId);
             dictionary.TryGetValue("CampingPlaceTypeGuestLimit", out string guestLimit);
@@ -124,7 +142,7 @@ namespace Model
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, email, phoneNumber, firstName, lastName);
             ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
-            return new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
+            return new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration, (ReservationStatus)Int32.Parse(reservationDeleted), (ReservationStatus)Int32.Parse(reservationPayed), (ReservationStatus)Int32.Parse(reservationRestitutionPayed));
         }
         
         protected override Dictionary<string, string> ToDictionary()
