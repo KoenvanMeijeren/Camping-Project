@@ -148,7 +148,8 @@ namespace ViewModel
             {
                 this.InfoStartDate = reservation.Duration.CheckInDate;
                 this.InfoEndDate = reservation.Duration.CheckOutDate;
-                this.InfoAmountOfGuests = reservation.NumberOfPeople.ToString();
+                // Amount of guests + customer
+                this.InfoAmountOfGuests = (reservation.CampingGuests.Count + 1).ToString();
                 this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
                 this.InfoSurface = reservation.CampingPlace.Surface.ToString(CultureInfo.InvariantCulture);
                 this.InfoLocation = reservation.CampingPlace.Location;
