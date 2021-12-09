@@ -31,7 +31,7 @@
             <ListView ItemsSource="{Binding Reservations}" FontFamily="Century Gothic" FontWeight="Bold" Width="700" Margin="30,50,30,81" SelectedItem="{Binding SelectedReservation}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding Reservation.Id}" />
+                        <GridViewColumn Header="ID" Width="75" DisplayMemberBinding="{Binding Reservation.Id}" />
                         <GridViewColumn Header="Verblijf" Width="100" DisplayMemberBinding="{Binding Reservation.CampingPlace.Location}" />
                         <GridViewColumn Header="Klantnummer" Width="100" DisplayMemberBinding="{Binding Reservation.CampingCustomer.Id}" />
                         <GridViewColumn Header="Personen" Width="100" DisplayMemberBinding="{Binding Reservation.NumberOfPeople}" />
