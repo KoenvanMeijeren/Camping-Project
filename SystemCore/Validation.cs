@@ -16,17 +16,7 @@ namespace SystemCore
 
         public static bool IsBirthdateValid(DateTime birthdate)
         {
-            if (birthdate < new DateTime(1900,01,01))
-            {
-                return false;
-            }
-
-            if (birthdate > DateTime.Now)
-            {
-                return false;
-            }
-
-            return true;
+            return !(birthdate < new DateTime(1900, 01, 01)) && !(birthdate > DateTime.Now);
         }
 
         public static bool IsBirthdateAdult(DateTime birthdate)
@@ -38,11 +28,7 @@ namespace SystemCore
             {
                 age--;
             }
-            if (age <= AgeLimit)
-            {
-                return false;
-            }
-            return true;
+            return !(age <= AgeLimit);
         }
     }
 }

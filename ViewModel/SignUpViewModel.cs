@@ -271,7 +271,7 @@ namespace ViewModel
                 {
                     this.RegisterError = "Bevestig wachtwoord is een verplicht veld";
                 }
-                else if (_confirmPassword != _password)
+                else if (!this._confirmPassword.Equals(this._password))
                 {
                     this.RegisterError = "Wachtwoorden komen niet overeen";
                 }
