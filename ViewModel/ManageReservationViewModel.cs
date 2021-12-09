@@ -269,7 +269,7 @@ namespace ViewModel
             string context = "Reservering is verwijderd!";
             string caption = "Succesvol verwijderd";
 
-            if (succesfullDeleted || durationSuccesfullydeleted || campingGuestSuccesfullyDeleted)
+            if (!succesfullDeleted || !durationSuccesfullydeleted || !campingGuestSuccesfullyDeleted)
             {
                 context = "Reservering is door vage omstandigheden niet goed verwijderd";
                 caption = "Reservering is mogelijk geheel verwijderd";
