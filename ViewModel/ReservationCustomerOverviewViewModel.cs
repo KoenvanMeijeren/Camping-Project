@@ -100,9 +100,10 @@ namespace ViewModel
                 }
 
                 this._selectedReservation = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
                 this.DisplayNewCustomerGuestData(value);
                 this.DisplayNewReservationInfoData(value);
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
             }
         }
 
@@ -127,7 +128,7 @@ namespace ViewModel
         {
             Reservation reservationModel = new Reservation();
             this.Reservations = reservationModel.GetCustomersReservations(this._customerID);
-            this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations);
+            this.ReservationsCollection = new ObservableCollection<Reservation>(this.Reservations.Where(x => x.ReservationDeleted == ReservationColumnStatus.False));
 
             // Check if there are reservations for customer
             if (ReservationsCollection.Count > 0) 
@@ -145,8 +146,7 @@ namespace ViewModel
         {
             if (reservation != null)
             {
-                this.InfoStartDate = reservation.Id.ToString();
-/*                this.InfoStartDate = reservation.Duration.CheckInDate;*/
+                this.InfoStartDate = reservation.Duration.CheckInDate;
                 this.InfoEndDate = reservation.Duration.CheckOutDate;
                 this.InfoAmountOfGuests = reservation.NumberOfPeople.ToString();
                 this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
@@ -167,14 +167,7 @@ namespace ViewModel
 
         private void DisplayNewCustomerGuestData(Reservation reservation)
         {
-            if (reservation != null)
-            {
-                this.CampingGuestCollection = new ObservableCollection<ReservationCampingGuest>(reservation.CampingGuests);
-            } else
-            {
-                this.CampingGuestCollection = new ObservableCollection<ReservationCampingGuest>();
-
-            }
+            this.CampingGuestCollection = (reservation != null) ? new ObservableCollection<ReservationCampingGuest>(reservation.CampingGuests) : new ObservableCollection<ReservationCampingGuest>();
         }
         #endregion
 
@@ -186,7 +179,7 @@ namespace ViewModel
             // Check if reservation has passed
             if (DateTime.Today >= Convert.ToDateTime(_selectedReservation.Duration.CheckInDate))
             {
-                MessageBox.Show("Reserveringen van vandaag of eerder kunnen niet meer worden verwijderd.", "Waarschuwing", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show("Reserveringen van vandaag of eerder kunnen niet meer worden verwijderd.", "Reservering verwijderen ", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -208,6 +201,5 @@ namespace ViewModel
             }
         }
         #endregion
-
     }
 }

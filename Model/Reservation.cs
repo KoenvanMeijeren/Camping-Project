@@ -58,7 +58,8 @@ namespace Model
             bool successPeople = int.TryParse(numberOfPeople, out int numericPeople);
 
             this.Id = successId ? numericId : -1;
-            this.NumberOfPeople = successPeople ? numericPeople : 0;
+            // Add one, else it doesn't include the customer
+            this.NumberOfPeople = (successPeople ? numericPeople : 0) + 1;
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.Duration = duration;
@@ -99,9 +100,8 @@ namespace Model
         /// <returns>Database records of given customer's reservations</returns>
         public List<Reservation> GetCustomersReservations(int customerId)
         {
-            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId AND ReservationDeleted = @reservationDeleted");
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId");
             query.AddParameter("customerId", customerId);
-            query.AddParameter("ReservationDeleted", Convert.ToInt32(ReservationColumnStatus.False).ToString());
 
             List<Reservation> reservations = new List<Reservation>();
             foreach(var item in query.Select())
