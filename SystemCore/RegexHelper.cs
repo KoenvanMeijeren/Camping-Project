@@ -14,6 +14,11 @@ namespace SystemCore
         /// <returns>Whether the input is a correct email or not. (E.g. name@site.nl</returns>
         public static bool IsEmailValid(string email)
         {
+            if (email == null)
+            {
+                return false;
+            }
+            
             var regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase);
             return regex.IsMatch(email.Trim());
         }

@@ -96,6 +96,7 @@ namespace Model
         {
             Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ReservationDuration.ColumnCheckInDate}");
             var items = query.Select();
+            this.Collection = new List<Reservation>();
             foreach (Dictionary<string, string> dictionary in items)
             {
                 this.Collection.Add(this.ToModel(dictionary));
@@ -191,7 +192,7 @@ namespace Model
             query += $" INNER JOIN {CampingPlaceType.TableName} CPT ON CPT.{CampingPlaceType.ColumnId} = CP.{CampingPlace.ColumnType} ";
             query += $" INNER JOIN {Accommodation.TableName} AM ON AM.{Accommodation.ColumnId} = CPT.{CampingPlaceType.ColumnAccommodation} ";
             query += $" INNER JOIN {CampingCustomer.TableName} CC ON CC.{CampingCustomer.ColumnId} = R.{ColumnCustomer} ";
-            query += $" INNER JOIN {Account.TableName} AC on CC.{CampingCustomer.ColumnAccount} = AC.{Account.ColumnId}";
+            query += $" LEFT JOIN {Account.TableName} AC on CC.{CampingCustomer.ColumnAccount} = AC.{Account.ColumnId}";
             query += $" INNER JOIN {Address.TableName} CCA ON CCA.{Address.ColumnId} = CC.{CampingCustomer.ColumnAddress} ";
             query += $" INNER JOIN {ReservationDuration.TableName} RD ON RD.{ReservationDuration.ColumnId} = R.{ColumnDuration} ";
 /*            query += $" INNER JOIN {ReservationCampingGuest.TableName} RCG ON RCG.{ReservationCampingGuest.ColumnReservation} = R.{ColumnId} ";
