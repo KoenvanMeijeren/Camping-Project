@@ -13,19 +13,16 @@ namespace ViewModel
     public class ReservationCampingGuestViewModel : ObservableObject
     {
         public static event EventHandler<ReservationEventArgs> ReservationConfirmEvent;
-        public static event EventHandler<ReservationDurationEventArgs> ReservationCancelEvent;
+        public static event EventHandler<ReservationDurationEventArgs> ReservationGoBackEvent;
 
         private void ExecuteCustomerGuestReservation()
         {
-            //TODO: Insert with transaction
-           
-
            ReservationConfirmEvent?.Invoke(this, new ReservationEventArgs(new Reservation()));
         }
 
         private void ExecuteCutomerGuestGoBackReservation()
         {
-            ReservationCancelEvent?.Invoke(this, new ReservationDurationEventArgs(new CampingPlace(), new ReservationDuration()));
+            ReservationGoBackEvent?.Invoke(this, new ReservationDurationEventArgs(new CampingPlace(), new ReservationDuration()));
         }
 
         public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerGuestReservation);
