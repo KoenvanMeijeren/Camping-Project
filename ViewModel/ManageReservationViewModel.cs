@@ -117,6 +117,7 @@ namespace ViewModel
                 }
                 this._checkInDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                filterAvailableCampingPlaces();
             }
         }
 
@@ -131,6 +132,7 @@ namespace ViewModel
                 }
                 this._checkOutDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                filterAvailableCampingPlaces();
             }
         }
 
@@ -141,9 +143,7 @@ namespace ViewModel
             this.CampingPlaces = new ObservableCollection<string>();
 
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
-
-
-            filterAvailableCampingPlaces();
+           
         }
 
         private void filterAvailableCampingPlaces()
@@ -152,11 +152,14 @@ namespace ViewModel
             {
                 this.CampingPlaces.Add(campingPlace.GetLocation());
             }*/
+            this.CampingPlaces.Clear();
 
+            //this.CampingPlaces.Add(this.SelectedCampingPlace);
             foreach (var campingPlace in ToFilteredOnReservedCampingPlaces(new CampingPlace().Select()))
             {
                 this.CampingPlaces.Add(campingPlace.GetLocation());
             }
+            
         }
 
         private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData)
@@ -204,6 +207,8 @@ namespace ViewModel
                 this.CheckOutDate = r.Duration.CheckOutDatetime;
                 this.CampingCustomer = r.CampingCustomer;
                 this.PageTitle = PageTitleText + this._reservation.Id.ToString();
+
+                filterAvailableCampingPlaces();
             }
 
         }
@@ -235,7 +240,7 @@ namespace ViewModel
                 caption = "Reservering is mogelijk bijgewerkt";
             }
             MessageBox.Show(context, caption, System.Windows.MessageBoxButton.OK);
-
+            //update page
         }
         private bool CanExecuteUpdateReservation()
         {
@@ -300,8 +305,6 @@ namespace ViewModel
         public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation, CanExecuteDeleteReservation);
 
         #endregion
-
-
 
     }
 }

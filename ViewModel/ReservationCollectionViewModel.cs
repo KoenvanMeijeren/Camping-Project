@@ -242,7 +242,7 @@ namespace ViewModel
             }
         }
 
-    }
+    
 
         private void ExecuteCreatePdf()
         {

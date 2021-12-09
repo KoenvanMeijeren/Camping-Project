@@ -26,7 +26,7 @@ namespace Model
         public float TotalPrice { get; private set; }
         public string TotalPriceString { get; private set; }
         
-        public List<ReservationCampingGuest> CampingGuests { get; private set; }
+        public List<ReservationCampingGuest> CampingGuests { get; private set;}
 
         public Reservation(): base(TableName, ColumnId)
         {
