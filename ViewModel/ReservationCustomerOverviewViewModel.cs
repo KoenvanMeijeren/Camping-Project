@@ -16,37 +16,6 @@ namespace ViewModel
         // TODO: Change this to session variable
         private int _customerID = 107;
         public List<Reservation> Reservations { get; private set; } = new List<Reservation>();
-        public Dictionary<string, string> ReservationLabels { get; private set; } = new Dictionary<string, string>();
-        private Reservation _currentSelectedReservationGet;
-        public Reservation CurrentSelectedReservation
-        {
-            get => _currentSelectedReservationGet;
-            set
-            {
-                this._currentSelectedReservationGet = value;
-                this.DisplayNewReservationValues(value.Id);
-            }
-        }
-        private DataTable _customerReservationGuestTable;
-        public DataTable CustomerReservationGuestTable
-        {
-            get { return _customerReservationGuestTable; }
-            set
-            {
-                _customerReservationGuestTable = value;
-                OnPropertyChanged("CustomerReservationTable");
-            }
-        }
-        private DataTable _customerReservationTable;
-        public DataTable CustomerReservationTable
-        {
-            get { return _customerReservationTable; }
-            set
-            {
-                _customerReservationTable = value;
-                OnPropertyChanged("CustomerReservationTable");
-            }
-        }
 
         private ObservableCollection<Reservation> _reservationsCollection;
         private Reservation _selectedReservation;
@@ -56,92 +25,50 @@ namespace ViewModel
         private string _infoStartDate = "Begindatum: ";
         public string InfoStartDate
         {
-            get
-            {
-                return _infoStartDate;
-            }
-            set
-            {
-                this._infoStartDate = "Begindatum: " + value;
-            }
+            get => _infoStartDate;
+            set => this._infoStartDate = "Begindatum: " + value;
         }
 
         private string _infoEndDate = "Einddatum: ";
         public string InfoEndDate
         {
-            get
-            {
-                return _infoEndDate;
-            }
-            set
-            {
-                this._infoEndDate = "Einddatum: " + value;
-            }
+            get => _infoEndDate;
+            set => this._infoEndDate = "Einddatum: " + value;
         }
 
         private string _infoAmountOfGuests = "Aantal personen: ";
         public string InfoAmountOfGuests
         {
-            get
-            {
-                return _infoAmountOfGuests;
-            }
-            set
-            {
-                this._infoAmountOfGuests = "Aantal personen: " + value;
-            }
+            get => _infoAmountOfGuests;
+            set => this._infoAmountOfGuests = "Aantal personen: " + value;
         }
 
         private string _infoAccommodationType = "Type: ";
         public string InfoAccommodationType
         {
-            get
-            {
-                return _infoAccommodationType;
-            }
-            set
-            {
-                this._infoAccommodationType = "Type: " + value;
-            }
+            get => _infoAccommodationType;
+            set => this._infoAccommodationType = "Type: " + value;
         }
 
         private string _infoSurface = "Oppervlakte: ";
         public string InfoSurface
         {
-            get
-            {
-                return _infoSurface;
-            }
-            set
-            {
-                this._infoSurface = "Oppervlakte: " + value + "m2";
-            }
+            get => _infoSurface;
+            set => this._infoSurface = "Oppervlakte: " + value + "m2";
         }
 
         private string _infoLocation = "Locatie: ";
         public string InfoLocation
         {
-            get
-            {
-                return _infoLocation;
-            }
-            set
-            {
-                this._infoLocation = "Locatie: " + value;
-            }
+            get => _infoLocation;
+            set => this._infoLocation = "Locatie: " + value;
         }
 
         private string _InfoTotalPrice = "Totaalprijs: ";
         public string InfoTotalPrice
         {
-            get
-            {
-                return _InfoTotalPrice;
-            }
-            set
-            {
-                this._InfoTotalPrice = "Totaalprijs: €" + value;
-            }
+            get => _InfoTotalPrice;
+            set => this._InfoTotalPrice = "Totaalprijs: €" + value;
         }
 
         public ObservableCollection<Reservation> ReservationsCollection
@@ -204,20 +131,6 @@ namespace ViewModel
             {
                 var x = reservationCampingGuestModel.GetReservationGuests(item);
             }
-        }
-
-        /// <summary>
-        /// Function to execute all display changes in reservation overview at once
-        /// </summary>
-        /// <param name="id"></param>
-        public void DisplayNewReservationValues(int id)
-        {
-            // Finds reservation with corresponding id (makes it unnecessary to do another databasecall)
-            foreach (var item in this.Reservations)
-                if (item.Id == id)
-                    this.DisplayNewReservationInfoData(item);
-
-            return;
         }
 
         /// <summary>

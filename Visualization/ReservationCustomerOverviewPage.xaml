@@ -34,7 +34,7 @@
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}" />
-                            <GridViewColumn Header="Verblijf" Width="140" DisplayMemberBinding="{Binding CampingPlace.Type.Accommodation.Name}" />
+                            <GridViewColumn Header="Verblijf" Width="120" DisplayMemberBinding="{Binding CampingPlace.Type.Accommodation.Name}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
