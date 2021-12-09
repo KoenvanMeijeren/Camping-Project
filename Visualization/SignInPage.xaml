@@ -7,10 +7,10 @@
       xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="SignUpPage" Height="634.04" Width="820" MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
+      Title="SignInPage" Height="634.04" Width="820" MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
 
     <Page.DataContext>
-        <viewModel:SignUpViewModel/>
+        <viewModel:SignInViewModel/>
     </Page.DataContext>
     
     <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -21,9 +21,9 @@
         <TextBox Text="{Binding Email, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" x:Name="EmailTextbox" HorizontalAlignment="Center" Height="20" Margin="0,261,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <Label Content="Wachtwoord&#xD;&#xA;&#xA;*" HorizontalAlignment="Left" VerticalAlignment="Center" FontFamily="Century Gothic" FontWeight="Bold" Margin="304,0,0,0" Height="25"/>
         <PasswordBox KeyUp="PasswordTextChanged" x:Name="PasswordTextbox" HorizontalAlignment="Center" Height="20" Margin="0,331,0,0" VerticalAlignment="Top" Width="206" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionOpacity="0" SelectionBrush="Black"/>
-        <Button Command="{Binding SignUp}" Name="SignUpButton" Content="Log in" Margin="307,381,307,221"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
+        <Button Command="{Binding SignIn}" Name="SignUpButton" Content="Log in" Margin="307,381,307,221"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
         <Label Content="Nog geen account?&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="303,426,0,0" Height="25"/>
         <Button Command ="{Binding Register}" Name="RegisterButton" Content="Registreer" Margin="431,428,330,185"  BorderThickness="0,0,0,1" FontFamily="Century Gothic" Background="White" Foreground="Black" Padding="0,0,0,0" FontWeight="Bold" BorderBrush="Black" />
-        <Label Content="{Binding SignUpError}" x:Name="ErrorText"  HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="377,189,0,0" Height="25" Foreground="#FFD00000" HorizontalContentAlignment="Right" Width="141"/>
+        <Label Content="{Binding SignInError}" x:Name="ErrorText"  HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="377,189,0,0" Height="25" Foreground="#FFD00000" HorizontalContentAlignment="Right" Width="141"/>
     </Grid>
 </Page>

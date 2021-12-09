@@ -13,7 +13,7 @@ using SystemCore;
 
 namespace ViewModel
 {
-    public class RegisterViewModel : ObservableObject
+    public class SignUpViewModel : ObservableObject
     {
         #region Fields
         private string 
@@ -290,7 +290,7 @@ namespace ViewModel
         }
         #endregion
 
-        public static event EventHandler<AccountEventArgs> SignUpEvent;
+        public static event EventHandler<AccountEventArgs> SignInEvent;
 
         private void ResetInput()
         {
@@ -325,7 +325,7 @@ namespace ViewModel
             campingCustomer.Insert();
             
             CurrentUser.SetCurrentUser(insertedAccount);
-            SignUpEvent?.Invoke(this, new AccountEventArgs(insertedAccount));
+            SignInEvent?.Invoke(this, new AccountEventArgs(insertedAccount));
             this.ResetInput();
         }
 

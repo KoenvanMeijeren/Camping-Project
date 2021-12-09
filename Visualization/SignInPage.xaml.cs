@@ -21,9 +21,9 @@ namespace Visualization
     /// <summary>
     /// Interaction logic for SignUpPage.xaml
     /// </summary>
-    public partial class SignUpPage : Page
+    public partial class SignInPage : Page
     {
-        public SignUpPage()
+        public SignInPage()
         {
             this.InitializeComponent();
         }

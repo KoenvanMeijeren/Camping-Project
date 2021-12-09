@@ -13,10 +13,10 @@ using SystemCore;
 
 namespace ViewModel
 {
-    public class SignUpViewModel : ObservableObject
+    public class SignInViewModel : ObservableObject
     {
         #region Fields
-        private string _email,  _password, _singUpError;
+        private string _email,  _password, _singInError;
         #endregion
 
         #region Properties
@@ -33,10 +33,10 @@ namespace ViewModel
                 this._email = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
-                this.SignUpError = "";
+                this.SignInError = "";
                 if (!RegexHelper.IsEmailValid(this._email))
                 {
-                    this.SignUpError = "Ongeldig email";
+                    this.SignInError = "Ongeldig email";
                 }
             }
         }
@@ -54,32 +54,32 @@ namespace ViewModel
                 this._password = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
-                this.SignUpError = "";
+                this.SignInError = "";
                 if (!Validation.IsInputFilled(this._password))
                 {
-                    this.SignUpError = "Ongeldig wachtwoord";
+                    this.SignInError = "Ongeldig wachtwoord";
                 }
             }
         }
 
-        public string SignUpError
+        public string SignInError
         {
-            get => this._singUpError;
+            get => this._singInError;
             set
             {
-                if (value == this._singUpError)
+                if (value == this._singInError)
                 {
                     return;
                 }
 
-                this._singUpError = value;
+                this._singInError = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
         #endregion
 
         #region Events
-        public static event EventHandler<AccountEventArgs> SignUpEvent;
+        public static event EventHandler<AccountEventArgs> SignInEvent;
         public static event EventHandler RegisterEvent;
         #endregion
 
@@ -89,20 +89,20 @@ namespace ViewModel
         {
             this.Email = "";
             this.Password = "";
-            this.SignUpError = "";
+            this.SignInError = "";
         }
 
         #endregion
         
         #region Commands
-        private void ExecuteSignUp()
+        private void ExecuteSignIn()
         {
             Account account = new Account();
             account = account.SelectByEmail(this.Email);
 
             if (account == null || this.Password != account.Password)
             {
-                this.SignUpError = "Onjuiste gegevens";
+                this.SignInError = "Onjuiste gegevens";
                 return;
             }
 
@@ -111,7 +111,7 @@ namespace ViewModel
             this.ResetInput();
         }
 
-        private bool CanExecuteSignUp()
+        private bool CanExecuteSignIn()
         {
             return RegexHelper.IsEmailValid(this.Email) && Validation.IsInputFilled(this.Password);
         }
@@ -121,7 +121,7 @@ namespace ViewModel
             RegisterEvent?.Invoke(this, new EventArgs());
         }
 
-        public ICommand SignUp => new RelayCommand(ExecuteSignUp, CanExecuteSignUp);
+        public ICommand SignIn => new RelayCommand(ExecuteSignIn, CanExecuteSignIn);
         public ICommand Register => new RelayCommand(ExecuteRegister);
         #endregion
     }
