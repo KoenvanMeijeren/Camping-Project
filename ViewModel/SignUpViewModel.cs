@@ -290,7 +290,7 @@ namespace ViewModel
         }
         #endregion
 
-        public static event EventHandler<AccountEventArgs> SignInEvent;
+        public static event EventHandler<AccountEventArgs> SignUpEvent;
 
         private void ResetInput()
         {
@@ -325,7 +325,7 @@ namespace ViewModel
             campingCustomer.Insert();
             
             CurrentUser.SetCurrentUser(insertedAccount);
-            SignInEvent?.Invoke(this, new AccountEventArgs(insertedAccount));
+            SignUpViewModel.SignUpEvent?.Invoke(this, new AccountEventArgs(insertedAccount));
             this.ResetInput();
         }
 

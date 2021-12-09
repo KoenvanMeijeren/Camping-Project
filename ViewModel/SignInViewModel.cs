@@ -80,7 +80,11 @@ namespace ViewModel
 
         #region Events
         public static event EventHandler<AccountEventArgs> SignInEvent;
-        public static event EventHandler RegisterEvent;
+        
+        /// <summary>
+        /// Event for displaying the sign up form.
+        /// </summary>
+        public static event EventHandler SignUpFormEvent;
         #endregion
 
         #region Input
@@ -107,7 +111,7 @@ namespace ViewModel
             }
 
             CurrentUser.SetCurrentUser(account);
-            SignUpEvent?.Invoke(this, new AccountEventArgs(account));
+            SignInEvent?.Invoke(this, new AccountEventArgs(account));
             this.ResetInput();
         }
 
@@ -118,7 +122,7 @@ namespace ViewModel
 
         private void ExecuteRegister()
         {
-            RegisterEvent?.Invoke(this, new EventArgs());
+            SignUpFormEvent?.Invoke(this, EventArgs.Empty);
         }
 
         public ICommand SignIn => new RelayCommand(ExecuteSignIn, CanExecuteSignIn);
