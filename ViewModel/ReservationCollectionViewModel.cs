@@ -237,7 +237,6 @@ namespace ViewModel
                 PdfPTable reservationTable = new PdfPTable(columnWidths);
 
                 document.Add(new Paragraph("\n"));
-                document.Add(new Paragraph("\n"));
                 reservationTable.AddCell("ID");
                 reservationTable.AddCell("Verblijf");
                 reservationTable.AddCell("Klantnaam");
@@ -254,7 +253,6 @@ namespace ViewModel
                 reservationTable.AddCell(" €" + reservation.Reservation.TotalPrice.ToString(CultureInfo.InvariantCulture));
                 reservationTable.AddCell(" ");
 
-                document.Add(new Paragraph("\n"));
                 document.Add(reservationTable);
 
                 //Should be used for the CampingGuest table
@@ -264,7 +262,7 @@ namespace ViewModel
                     continue;
                 }
                 
-                PdfPTable campingGuestTable = new PdfPTable(3);
+                PdfPTable campingGuestTable = new PdfPTable(2);
 
                 campingGuestTable.AddCell("Gastnaam");
                 campingGuestTable.AddCell("Geboortedatum");

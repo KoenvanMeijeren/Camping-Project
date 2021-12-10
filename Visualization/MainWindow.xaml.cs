@@ -41,7 +41,7 @@ namespace Visualization
 
             ReservationCampingGuestViewModel.ReservationConfirmEvent += this.OnReservationConfirmEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
-            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationConfirmedEvent;
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
@@ -140,7 +140,7 @@ namespace Visualization
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)
         {
             //this.MainFrame.Content = this._reservationConfirmedPage.Content;
             this.MainFrame.Content = this._reservationCampingGuestPage;

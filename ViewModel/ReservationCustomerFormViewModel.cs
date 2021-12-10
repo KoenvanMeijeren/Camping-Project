@@ -341,6 +341,7 @@ namespace ViewModel
 
         #region Events
 
+        public static event EventHandler<ReservationGuestEventArgs> ReservationGuestEvent;
         public static event EventHandler<ReservationEventArgs> ReservationConfirmedEvent;
 
         #endregion
@@ -425,14 +426,15 @@ namespace ViewModel
 
             var customer = new CampingCustomer(null, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName,
                 this.LastName);
-            customer.Insert();
+            //customer.Insert();
             var lastCustomer = customer.SelectLast();
 
             Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, this.CampingPlace, this._reservationDuration);
-            reservation.Insert();
+            //reservation.Insert();
             var lastReservation = reservation.SelectLast();
-            
-            ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
+
+            //ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
+            ReservationGuestEvent?.Invoke(this, new ReservationGuestEventArgs(address, customer, reservation));
             this.ResetInput();
         }
         private bool CanExecuteCustomerDataReservation()
