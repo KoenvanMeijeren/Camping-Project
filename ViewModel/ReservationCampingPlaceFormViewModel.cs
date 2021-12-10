@@ -223,9 +223,7 @@ namespace ViewModel
                 && (!int.TryParse(this.MaxNightPrice, out int max) || campingPlace.TotalPrice <= max) 
                 && (!int.TryParse(this.Guests, out int guests) || campingPlace.Type.GuestLimit >= guests);
 
-            var campingPlaceItems = 
-                this.ToFilteredOnReservedCampingPlaces(this.GetCampingPlaces(), CheckInDate, CheckOutDate)
-                .Where(CampingPlaceFilter);
+            campingPlaceItems = campingPlaceItems.Where(CampingPlaceFilter);
             foreach (CampingPlace item in campingPlaceItems)
             {
                 this.CampingPlaces.Add(item);
