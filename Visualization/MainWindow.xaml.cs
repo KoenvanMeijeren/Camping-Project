@@ -44,7 +44,7 @@ namespace Visualization
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
             ManageReservationViewModel.FromReservationBackToDashboardEvent += this.OnBackToDashboardEvent;
             
-            // Sets the sign up page as the active menu and hides other menuitems.
+            // Sets the sign up page as the active menu and hides other menu items.
             this.SignInMenuButton.IsChecked = true;
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
@@ -63,7 +63,7 @@ namespace Visualization
 
         private void OnSignInEvent(object sender, AccountEventArgs args)
         {
-            this.MainFrame.Content = this._accountPage.Content;
+            this.OverviewMenuButton_Checked(sender, null);
 
             this.OverviewMenuButton.Visibility = Visibility.Visible;
             this.ReserveMenuButton.Visibility = Visibility.Visible;
@@ -100,6 +100,7 @@ namespace Visualization
 
         private void OverviewMenuButton_Checked(object sender, RoutedEventArgs e)
         {
+            this.OverviewMenuButton.IsChecked = true;
             if (CurrentUser.Account.Rights == Model.AccountRights.Admin)
             {
                 this.MainFrame.Content = this._reservationCollectionFrame;
@@ -136,7 +137,7 @@ namespace Visualization
 
         private void OnBackToDashboardEvent(object sender, ReservationEventArgs args)
         {
-            this.DashboardButtonClick(sender, new RoutedEventArgs());
+            this.OverviewMenuButton_Checked(sender, null);
         }
     }
 }
