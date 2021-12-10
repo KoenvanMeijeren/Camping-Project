@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -331,7 +332,23 @@ namespace ViewModel
 
         private void ExecuteRegister()
         {
-            Account accountModel = new Account(this.Email, this.Password, AccountRights.Customer.ToString());
+            //Create the salt value with a cryptographic PRNG
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+
+            //Create the Rfc2898DeriveBytes and get the hash value
+            var pbkdf2 = new Rfc2898DeriveBytes(this.Password, salt, 100000);
+            byte[] hash = pbkdf2.GetBytes(20);
+
+            //Combine the salt and password bytes for later use
+            byte[] hashBytes = new byte[36];
+            Array.Copy(salt, 0, hashBytes, 0, 16);
+            Array.Copy(hash, 0, hashBytes, 16, 20);
+
+            //Turn the combined salt+hash into a string
+            string savedPasswordHash = Convert.ToBase64String(hashBytes);
+
+            Account accountModel = new Account(this.Email, savedPasswordHash, AccountRights.Customer.ToString());
             if (accountModel.SelectByEmail(this.Email) != null)
             {
                 this.RegisterError = "Er bestaat al een account met dit email";

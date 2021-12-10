@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -97,17 +98,55 @@ namespace ViewModel
         }
 
         #endregion
-        
+
         #region Commands
+        /// <summary>
+        /// Check if string is a Base64 string. Used to check if database password is a base64 string.
+        /// </summary>
+        /// <param name="base64">database account password</param>
+        /// <returns>Boolean value for given question</returns>
+        public  bool IsBase64String(string base64)
+        {
+            Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
+            return Convert.TryFromBase64String(base64, buffer, out int bytesParsed);
+        }
+
         private void ExecuteSignIn()
         {
             Account account = new Account();
             account = account.SelectByEmail(this.Email);
 
-            if (account == null || this.Password != account.Password)
+            if (account == null)
             {
                 this.SignInError = "Onjuiste gegevens";
                 return;
+            }
+
+            if (!IsBase64String(account.Password))
+            {
+                this.SignInError = "Wachtwoord onjuist, neem contact op met de camping";
+                return;
+
+            }
+            // Extract the bytes
+            byte[] hashBytes = Convert.FromBase64String(account.Password);
+
+            // Get the salt
+            byte[] salt = new byte[16];
+            Array.Copy(hashBytes, 0, salt, 0, 16);
+
+            // Compute the hash on the password the user entered
+            var pbkdf2 = new Rfc2898DeriveBytes(this.Password, salt, 100000);
+            byte[] hash = pbkdf2.GetBytes(20);
+
+            // Compare the results
+            for (int i = 0; i < 20; i++)
+            {
+                if (hashBytes[i + 16] != hash[i])
+                {
+                    this.SignInError = "Onjuiste gegevens";
+                    return;
+                }
             }
 
             CurrentUser.SetCurrentUser(account);
