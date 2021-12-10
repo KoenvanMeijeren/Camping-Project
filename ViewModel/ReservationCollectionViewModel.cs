@@ -205,37 +205,15 @@ namespace ViewModel
         {
             this.Reservations.Clear();
 
-            var reservationItems = this._reservationModel.Select();
-            if (!this.SelectedCampingPlaceType.Equals(SelectAll))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)).ToList();
-            }
-            
-            if (int.TryParse(this.MinTotalPrice, out int min))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.TotalPrice >= min).ToList();
-            }
-            
-            if (int.TryParse(this.MaxTotalPrice, out int max))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.TotalPrice <= max).ToList();
-            }
-            
-            if (this.CheckInDate != DateTime.MinValue)
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.Duration.CheckInDatetime >= this.CheckInDate).ToList();
-            }
-            
-            if (this.CheckOutDate != DateTime.MinValue)
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.Duration.CheckOutDatetime <= this.CheckOutDate).ToList();
-            }
-            
-            if (int.TryParse(this.Guests, out int guests))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.NumberOfPeople >= guests).ToList();
-            }
-            
+            bool ReservationsFilter(Reservation reservation) => 
+                (this.SelectedCampingPlaceType.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)) 
+                && (!int.TryParse(this.MinTotalPrice, out int min) || reservation.TotalPrice >= min) 
+                && (!int.TryParse(this.MaxTotalPrice, out int max) || reservation.TotalPrice <= max) 
+                && (this.CheckInDate == DateTime.MinValue || reservation.Duration.CheckInDatetime >= this.CheckInDate)
+                && (this.CheckOutDate == DateTime.MinValue || reservation.Duration.CheckOutDatetime <= this.CheckOutDate)
+                && (!int.TryParse(this.Guests, out int guests) || reservation.NumberOfPeople >= guests);
+
+            var reservationItems = this._reservationModel.Select().Where(ReservationsFilter);
             foreach (var reservation in reservationItems)
             {
                 this.Reservations.Add(new ReservationViewModel(reservation));
