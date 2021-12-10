@@ -20,6 +20,7 @@ namespace Visualization
         private readonly SignUpPage _signUpPage;
         private readonly ReservationUpdateDeletePage _manageReservationPage;
         private readonly ReservationOverviewPage _reservationOverviewPage;
+        private readonly AccountUpdatePage _accountUpdatePage;
 
         public MainWindow()
         {
@@ -34,6 +35,7 @@ namespace Visualization
             this._signUpPage = new SignUpPage();
             this._manageReservationPage = new ReservationUpdateDeletePage();
             this._reservationOverviewPage = new ReservationOverviewPage();
+            this._accountUpdatePage = new AccountUpdatePage();
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
@@ -43,6 +45,9 @@ namespace Visualization
             SignInViewModel.SignUpFormEvent += this.OnSignUpFormEvent;
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
             ManageReservationViewModel.FromReservationBackToDashboardEvent += this.OnBackToDashboardEvent;
+            AccountViewModel.ToAccountUpdatePageEvent += this.OnToAccountUpdatePageEvent;
+            AccountUpdateViewModel.UpdateCancelEvent += this.OnUpdateCancelEvent;
+            AccountUpdateViewModel.UpdateConfirmEvent += this.OnUpdateConfirmEvent;
             
             // Sets the sign up page as the active menu and hides other menu items.
             this.SignInMenuButton.IsChecked = true;
@@ -138,6 +143,21 @@ namespace Visualization
         private void OnBackToDashboardEvent(object sender, ReservationEventArgs args)
         {
             this.OverviewMenuButton_Checked(sender, null);
+        }
+
+        private void OnToAccountUpdatePageEvent(object sender, EventArgs e)
+        {
+            this.MainFrame.Content = this._accountUpdatePage.Content;
+        }
+
+        private void OnUpdateCancelEvent(object sender, EventArgs e)
+        {
+            this.AccountMenuButton_Checked(sender, null);
+        }
+
+        private void OnUpdateConfirmEvent(object sender, EventArgs e)
+        {
+            this.AccountMenuButton_Checked(sender, null);
         }
     }
 }

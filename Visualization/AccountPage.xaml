@@ -13,18 +13,18 @@
     </Page.DataContext>
 
     <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="278,171,278,199" CornerRadius="15,15,15,15" Background="White">
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="278,142,278,228" CornerRadius="15,15,15,15" Background="White">
             <Label Content="Uw Gegevens" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Margin="25,17,0,0"/>
         </Border>
-        <Label Content="{Binding Name}" x:Name="UserNameLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,232,0,0" FontSize="14" Width="210" MaxWidth="210"/>
-        <Label Content="{Binding Mail}" x:Name="UserMailLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,262,0,0" FontSize="14" Width="210" MaxWidth="210"/>
-        <Label Content="{Binding PhoneNumber}" x:Name="UserPhoneNumberLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,292,0,0" FontSize="14" Width="210" MaxWidth="210"/>
-        <Label Content="{Binding Birthdate}" x:Name="UserBirthdateLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" FontSize="14" Width="210" MaxWidth="210" Margin="0,321,0,0"/>
-        <Label Content="{Binding Street}" x:Name="UserStreetLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,352,0,0" FontSize="14" Width="210" MaxWidth="210"/>
-        <Label Content="{Binding Address}" x:Name="UserAdressLabel" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,382,0,0" FontSize="14" Width="210" MaxWidth="210"/>
+        <Label Content="{Binding Name}" x:Name="UserNameLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,203,0,0" FontSize="14" Width="210" MaxWidth="210"/>
+        <Label Content="{Binding Mail}" x:Name="UserMailLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,233,0,0" FontSize="14" Width="210" MaxWidth="210"/>
+        <Label Content="{Binding PhoneNumber}" x:Name="UserPhoneNumberLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,263,0,0" FontSize="14" Width="210" MaxWidth="210"/>
+        <Label Content="{Binding Birthdate}" x:Name="UserBirthdateLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" FontSize="14" Width="210" MaxWidth="210" Margin="0,292,0,0"/>
+        <Label Content="{Binding Street}" x:Name="UserStreetLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,323,0,0" FontSize="14" Width="210" MaxWidth="210"/>
+        <Label Content="{Binding Address}" x:Name="UserAdressLabel" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,353,0,0" FontSize="14" Width="210" MaxWidth="210"/>
 
-
-        <Button Command="{Binding SignOut}" Name="LogOutButton" Content="Log uit" Margin="278,456,278,143"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
-
+        <Button Command="{Binding ToUpdate}" x:Name="ToUpdateButton" Content="Gegevens aanpassen" Margin="278,421,278,178"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+        <Button Command="{Binding SignOut}" Name="SignOutButton" Content="Log uit" Margin="278,470,278,129"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
+        
     </Grid>
 </Page>
