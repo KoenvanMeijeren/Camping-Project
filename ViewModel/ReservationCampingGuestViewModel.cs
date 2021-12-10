@@ -118,25 +118,22 @@ namespace ViewModel
 
         private void ExecuteCustomerGuestReservation()
         {
-
-            // Address addressModel = new Address(args.Reservation.CampingCustomer., this.PostalCode, this.PlaceName);
-            /*var address = Reservation.CampingCustomer.Address.FirstOrInsert();
-
-            var customer = Reservation.CampingCustomer.Insert();*/
-
-            var reservation = Reservation.Insert();
-
-            foreach (var guest in _campingGuestsList)
+            this.Reservation.Insert();
+            var lastReservation = this.Reservation.SelectLast();
+            
+            foreach (var guest in this._campingGuestsList)
             {
                 guest.Insert();
-            }
+                var lastGuest = guest.SelectLast();
 
-            var lastReservation = Reservation.SelectLast();
+                var reservationCampingGuest = new ReservationCampingGuest(lastReservation, lastGuest);
+                reservationCampingGuest.Insert();
+            }
 
             ReservationConfirmEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
         }
 
-        private void ExecuteCutomerGuestGoBackReservation()
+        private void ExecuteCustomerGuestGoBackReservation()
         {
             ReservationGoBackEvent?.Invoke(this, new ReservationDurationEventArgs(new CampingPlace(), new ReservationDuration()));
         }
@@ -148,7 +145,7 @@ namespace ViewModel
 
         public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerGuestReservation);
 
-        public ICommand CutomerGuestGoBackReservation => new RelayCommand(ExecuteCutomerGuestGoBackReservation);
+        public ICommand CustomerGuestGoBackReservation => new RelayCommand(ExecuteCustomerGuestGoBackReservation);
 
         public ICommand AddGuestReservation => new RelayCommand(ExecuteAddGuestReservation);
     }

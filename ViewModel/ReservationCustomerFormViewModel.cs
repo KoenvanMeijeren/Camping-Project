@@ -490,10 +490,7 @@ namespace ViewModel
             }
 
             Reservation reservation = new Reservation(this._amountOfGuests, customer, this.CampingPlace, this._reservationDuration);
-            reservation.Insert();
-            var lastReservation = reservation.SelectLast();
 
-            //ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
             ReservationGuestEvent?.Invoke(this, new ReservationGuestEventArgs(address, customer, reservation));
             this.ResetInput();
         }

@@ -38,7 +38,7 @@
 
         </Border>
         <Label Content="Voeg gast toe:" HorizontalAlignment="Left" Margin="562,327,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="35" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Button Content="Terug" Height ="30" Margin="58,569,537,35"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding CutomerGuestGoBackReservation, Mode=OneWay}" />
+        <Button Content="Terug" Height ="30" Margin="58,569,537,35"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding CustomerGuestGoBackReservation, Mode=OneWay}" />
         <Button Content="Bevestig" Height ="30" Margin="549,569,46,35"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding AddCustomerReservation, Mode=OneWay}" />
         <TextBox x:Name="FirstNameTextBox"  Margin="576,367,74,237" Height="30" Text="{Binding FirstNameGuest}" />
         <TextBox x:Name="LastNameTextBox" Margin="576,402,74,202" Height="30" Text="{Binding LastNameGuest}" />
