@@ -100,7 +100,7 @@ namespace ViewModel
             get => this._selectedReservation;
             set
             {
-                if (Equals(value, this._selectedReservation) || value == null)
+                if (Equals(value, this._selectedReservation))
                 {
                     return;
                 }
@@ -136,7 +136,13 @@ namespace ViewModel
             this.CampingGuestCollection = new ObservableCollection<ReservationCampingGuest>();
 
             SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
+            AccountViewModel.SignOutEvent += this.AccountViewModelOnSignOutEvent;
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.ReservationCustomerFormViewModelOnReservationConfirmedEvent;
+        }
+
+        private void AccountViewModelOnSignOutEvent(object? sender, EventArgs e)
+        {
+            this.SelectedReservation = null;
         }
 
         private void SignInViewModelOnSignInEvent(object? sender, AccountEventArgs e)
@@ -170,18 +176,7 @@ namespace ViewModel
         /// <param name="reservation">Reservation object of the selected reservation</param>
         private void DisplayNewReservationInfoData(Reservation reservation)
         {
-            if (reservation != null)
-            {
-                this.InfoId = reservation.Id.ToString();
-                this.InfoStartDate = reservation.Duration.CheckInDate;
-                this.InfoEndDate = reservation.Duration.CheckOutDate;
-                // Amount of guests + customer
-                this.InfoAmountOfGuests = (reservation.CampingGuests.Count + 1).ToString();
-                this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
-                this.InfoSurface = reservation.CampingPlace.Surface.ToString(CultureInfo.InvariantCulture);
-                this.InfoLocation = reservation.CampingPlace.Location;
-                this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
-            } else
+            if (reservation == null)
             {
                 this.InfoId = "";
                 this.InfoStartDate = "";
@@ -191,12 +186,27 @@ namespace ViewModel
                 this.InfoSurface = "";
                 this.InfoLocation = "";
                 this.InfoTotalPrice = "";
+                return;
             }
+            
+            this.InfoId = reservation.Id.ToString();
+            this.InfoStartDate = reservation.Duration.CheckInDate;
+            this.InfoEndDate = reservation.Duration.CheckOutDate;
+            // Amount of guests + customer
+            this.InfoAmountOfGuests = (reservation.CampingGuests.Count + 1).ToString();
+            this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
+            this.InfoSurface = reservation.CampingPlace.Surface.ToString(CultureInfo.InvariantCulture);
+            this.InfoLocation = reservation.CampingPlace.Location;
+            this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
         }
 
         private void DisplayNewCustomerGuestData(Reservation reservation)
         {
             this.CampingGuestCollection.Clear();
+            if (reservation == null)
+            {
+                return;
+            }
 
             foreach (var reservationCampingGuest in reservation.CampingGuests)
             {
