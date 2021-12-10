@@ -205,20 +205,17 @@ namespace ViewModel
         {
             this.Reservations.Clear();
 
-            bool CampingPlaceTypeFilter(Reservation reservation) => this.SelectedCampingPlaceType.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType);
-            bool MinPriceFilter(Reservation reservation) => !int.TryParse(this.MinTotalPrice, out int min) || reservation.TotalPrice >= min;
-            bool MaxPriceFilter(Reservation reservation) => !int.TryParse(this.MaxTotalPrice, out int max) || reservation.TotalPrice <= max;
-            bool CheckInDateFilter(Reservation reservation) => this.CheckInDate == DateTime.MinValue || reservation.Duration.CheckInDatetime >= this.CheckInDate;
-            bool CheckOutDateFilter(Reservation reservation) => this.CheckOutDate == DateTime.MinValue || reservation.Duration.CheckOutDatetime <= this.CheckOutDate;
-            bool GuestFilter(Reservation reservation) => !int.TryParse(this.Guests, out int guests) || reservation.NumberOfPeople >= guests;
+            bool ReservationsFilter(Reservation reservation) => 
+                (this.SelectedCampingPlaceType.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)) 
+                && (!int.TryParse(this.MinTotalPrice, out int min) || reservation.TotalPrice >= min) 
+                && (!int.TryParse(this.MaxTotalPrice, out int max) || reservation.TotalPrice <= max) 
+                && (this.CheckInDate == DateTime.MinValue || reservation.Duration.CheckInDatetime >= this.CheckInDate)
+                && (this.CheckOutDate == DateTime.MinValue || reservation.Duration.CheckOutDatetime <= this.CheckOutDate)
+                && (!int.TryParse(this.Guests, out int guests) || reservation.NumberOfPeople >= guests);
 
             var reservationItems = this._reservationModel.Select()
-                .Where((Func<Reservation, bool>) CampingPlaceTypeFilter)
-                .Where((Func<Reservation, bool>) MinPriceFilter)
-                .Where((Func<Reservation, bool>) MaxPriceFilter)
-                .Where((Func<Reservation, bool>) CheckInDateFilter)
-                .Where((Func<Reservation, bool>) CheckOutDateFilter)
-                .Where((Func<Reservation, bool>) GuestFilter);
+                .Where((Func<Reservation, bool>) ReservationsFilter);
+            
             foreach (var reservation in reservationItems)
             {
                 this.Reservations.Add(new ReservationViewModel(reservation));
