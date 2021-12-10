@@ -37,10 +37,10 @@ namespace Visualization
             this._manageReservationPage = new ReservationUpdateDeletePage();
             this._reservationOverviewPage = new ReservationOverviewPage();
 
-            ReservationCampingGuestViewModel.ReservationConfirmEvent += this.OnReservationConfirmEvent;
+            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
-            ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationConfirmedEvent;
-            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestsFormEvent;
+            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveDurationEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             SignInViewModel.SignInEvent += this.OnSignInEvent;
@@ -55,18 +55,22 @@ namespace Visualization
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
         }
 
-        private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
+        private void OnReserveEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationCustomerForm.Content;
+        }
+        
+        private void OnReserveDurationEvent(object sender, ReservationDurationEventArgs args)
         {
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)
+        private void OnReservationGuestsFormEvent(object sender, ReservationGuestEventArgs args)
         {
-            //this.MainFrame.Content = this._reservationConfirmedPage.Content;
             this.MainFrame.Content = this._reservationCampingGuestPage;
         }
 
-        private void OnReservationConfirmEvent(object sender, ReservationEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
         {
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }

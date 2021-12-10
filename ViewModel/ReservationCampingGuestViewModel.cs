@@ -14,11 +14,10 @@ namespace ViewModel
 {
     public class ReservationCampingGuestViewModel : ObservableObject
     {
-        private readonly ReservationCampingGuest _reservationCampingGuest = new ReservationCampingGuest();
         private string _firstNameGuest, _lastNameGuest;
-        private List<CampingGuest> _campingGuestsList;
+        private readonly List<CampingGuest> _campingGuestsList;
         private DateTime _birthDate;
-        public ObservableCollection<CampingGuest> CampingGuests { get; set; }
+        public ObservableCollection<CampingGuest> CampingGuests { get; private set; }
         private Reservation _reservation;
         private string _checkInDate, _checkOutDate;
 
@@ -60,26 +59,6 @@ namespace ViewModel
             }
         }
 
-        public string CheckInDate
-        {
-            get => this._checkInDate;
-            set
-            {
-                this._checkInDate = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public string CheckOutDate
-        {
-            get => this._checkOutDate;
-            set
-            {
-                this._checkOutDate = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
         public ObservableCollection<CampingGuest> CampingGuestsTypes
         {
             get => this.CampingGuests;
@@ -95,8 +74,8 @@ namespace ViewModel
             }
         }
 
-        public static event EventHandler<ReservationEventArgs> ReservationConfirmEvent;
-        public static event EventHandler<ReservationDurationEventArgs> ReservationGoBackEvent;
+        public static event EventHandler<ReservationEventArgs> ReservationConfirmedEvent;
+        public static event EventHandler<ReservationEventArgs> ReservationGoBackEvent;
 
         public ReservationCampingGuestViewModel()
         {
@@ -130,12 +109,12 @@ namespace ViewModel
                 reservationCampingGuest.Insert();
             }
 
-            ReservationConfirmEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
+            ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
         }
 
         private void ExecuteCustomerGuestGoBackReservation()
         {
-            ReservationGoBackEvent?.Invoke(this, new ReservationDurationEventArgs(new CampingPlace(), new ReservationDuration()));
+            ReservationGoBackEvent?.Invoke(this, new ReservationEventArgs(this.Reservation));
         }
 
         private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)

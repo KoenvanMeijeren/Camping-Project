@@ -137,7 +137,7 @@ namespace ViewModel
 
             SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
             AccountViewModel.SignOutEvent += this.AccountViewModelOnSignOutEvent;
-            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.ReservationCustomerFormViewModelOnReservationConfirmedEvent;
+            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.ReservationCustomerFormViewModelOnReservationConfirmedEvent;
         }
 
         private void AccountViewModelOnSignOutEvent(object? sender, EventArgs e)

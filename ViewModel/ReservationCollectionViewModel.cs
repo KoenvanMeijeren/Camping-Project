@@ -192,7 +192,7 @@ namespace ViewModel
             this.CheckInDate = new DateTime(date.Year, date.Month, 1);
             this.CheckOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
 
-            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ManageReservationViewModel.UpdateReservationCollection += OnReservationConfirmedEvent;
         }
 

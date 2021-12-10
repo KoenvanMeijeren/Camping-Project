@@ -370,7 +370,6 @@ namespace ViewModel
         #region Events
 
         public static event EventHandler<ReservationGuestEventArgs> ReservationGuestEvent;
-        public static event EventHandler<ReservationEventArgs> ReservationConfirmedEvent;
 
         #endregion
 
@@ -390,7 +389,18 @@ namespace ViewModel
             };
             
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCampingGuestViewModel.ReservationGoBackEvent += ReservationCampingGuestViewModelOnReservationGoBackEvent;
             SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
+        }
+
+        private void ReservationCampingGuestViewModelOnReservationGoBackEvent(object? sender, ReservationEventArgs e)
+        {
+            this._reservationDuration = e.Reservation.Duration;
+            this.CampingPlace = e.Reservation.CampingPlace;
+            this.SelectedCampingPlace = $"Reservering van {this._reservationDuration.CheckInDate} tot {this._reservationDuration.CheckOutDate} in verblijf {this._campingPlace.Location}";
+
+            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
+            this.AmountOfGuests = e.Reservation.NumberOfPeople.ToString();
         }
 
         private void SignInViewModelOnSignInEvent(object? sender, AccountEventArgs e)
@@ -403,6 +413,7 @@ namespace ViewModel
             this._reservationDuration = args.ReservationDuration;
             this.CampingPlace = args.CampingPlace;
             
+            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
             this.SelectedCampingPlace = $"Reservering van {this._reservationDuration.CheckInDate} tot {this._reservationDuration.CheckOutDate} in verblijf {this._campingPlace.Location}";
         }
 

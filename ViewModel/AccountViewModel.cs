@@ -122,7 +122,7 @@ namespace ViewModel
         {
             this._currentAccount = CurrentUser.Account;
 
-            if (this._currentAccount.Rights == AccountRights.Admin)
+            if (this._currentAccount.Rights == AccountRights.Admin && CurrentUser.CampingOwner != null)
             {
                 this.Name = CurrentUser.CampingOwner.FirstName + " " + CurrentUser.CampingOwner.LastName;
                 this.Mail = CurrentUser.CampingOwner.Account.Email;
@@ -131,7 +131,7 @@ namespace ViewModel
                 this.Street = "";
                 this.Address = "";
             }
-            else
+            else if (CurrentUser.CampingCustomer != null)
             {
                 this.Name = CurrentUser.CampingCustomer.FirstName + " " + CurrentUser.CampingCustomer.LastName;
                 this.Mail = CurrentUser.CampingCustomer.Account.Email;
