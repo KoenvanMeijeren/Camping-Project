@@ -14,6 +14,7 @@ namespace SystemCore
         /// <param name="exception">The exception</param>
         public static void Handle(Exception exception)
         {
+            return;
             var success = bool.TryParse(ConfigReader.GetSetting("debug"), out bool debug);
             if (success && debug)
             {

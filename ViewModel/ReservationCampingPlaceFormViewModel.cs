@@ -244,13 +244,6 @@ namespace ViewModel
             this.MaxNightPrice = "";
         }
 
-        public new bool OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            base.OnPropertyChanged(e);
-
-            return true;
-        }
-
         #endregion
         
         #region Commands

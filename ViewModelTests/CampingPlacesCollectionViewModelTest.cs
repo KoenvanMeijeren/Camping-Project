@@ -50,7 +50,6 @@ namespace ViewModelTests
             this._campingPlacesMock.Object.CheckInDate = DateTime.Today;
             this._campingPlacesMock.Object.CheckOutDate = DateTime.Today.AddDays(1);
             this._campingPlacesMock.Setup(x => x.ToFilteredOnReservedCampingPlaces(this._campingPlaceList, this._checkInDate, this._checkOutDate)).Returns(this._campingPlaceList);
-            this._campingPlacesMock.Setup(mock => mock.OnPropertyChanged(null)).Returns(true);
         }
 
         [Test]
@@ -92,25 +91,25 @@ namespace ViewModelTests
         [Test]
         public void TestFilterMinPrice()
         {
-            Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 8);
+            Assert.AreEqual(8, this._campingPlacesMock.Object.CampingPlaces.Count());
             
             this._campingPlacesMock.Object.MinNightPrice = "50";
-            Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 5);
+            Assert.AreEqual(5, this._campingPlacesMock.Object.CampingPlaces.Count());
 
             this._campingPlacesMock.Object.MinNightPrice = "90";
-            Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 2);
+            Assert.AreEqual(0, this._campingPlacesMock.Object.CampingPlaces.Count());
         }
 
         [Test]
         public void TestFilterMaxPrice()
         {
-            Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 8);
+            Assert.AreEqual(8, this._campingPlacesMock.Object.CampingPlaces.Count());
 
             this._campingPlacesMock.Object.MaxNightPrice = "40";
-            Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 3);
+            Assert.AreEqual(2, this._campingPlacesMock.Object.CampingPlaces.Count());
 
             this._campingPlacesMock.Object.MaxNightPrice = "90";
-            Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 6);
+            Assert.AreEqual(8, this._campingPlacesMock.Object.CampingPlaces.Count());
         }
 
         [Test]
@@ -127,7 +126,7 @@ namespace ViewModelTests
             var testTwee = this._campingPlacesMock.Object.GetReservationModel();
             var test = this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList, this._checkInDate, this._checkOutDate).Count();
             //-------------------------------------------------------------------------
-            Assert.IsTrue(this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList, this._checkInDate, this._checkOutDate).Count() == 6);
+            Assert.AreEqual(8, this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList, this._checkInDate, this._checkOutDate).Count());
         }
     }
 }
