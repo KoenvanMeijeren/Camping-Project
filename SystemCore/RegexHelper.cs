@@ -22,5 +22,16 @@ namespace SystemCore
             var regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase);
             return regex.IsMatch(email.Trim());
         }
+
+        public static bool IsPostalcodeValid(string postalcode)
+        {
+            if (postalcode == null)
+            {
+                return false;
+            }
+
+            var regex = new Regex(@"^[0-9]{4}[a-z]{2}$", RegexOptions.IgnoreCase);
+            return regex.IsMatch(postalcode);
+        }
     }
 }

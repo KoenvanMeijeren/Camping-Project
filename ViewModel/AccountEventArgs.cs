@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
-    public class SignUpEventArgs : EventArgs
+    public class AccountEventArgs : EventArgs
     {
         public Account Account { get; private set; }
 
-        public SignUpEventArgs(Account account)
+        public AccountEventArgs(Account account)
         {
             this.Account = account;
         }

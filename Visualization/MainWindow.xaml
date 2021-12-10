@@ -14,16 +14,19 @@
 
     <Grid Background="#FF006837">
         <Grid x:Name="Menu" HorizontalAlignment="Left" Width="180" MinWidth="180" MaxWidth="180" Background="White">
-            <Label Content="{Binding Subtitle}" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22"/>
-            <Label Content="{Binding SubSubtitle}" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22" Foreground="#FF006837"/>
-            <Button x:Name="DashboardButton" Content="Dashboard" VerticalAlignment="Top" Height="55" Click="DashboardButtonClick" FontFamily="Century Gothic" FontWeight="Normal" FontSize="16" BorderThickness="0,0,0,0" Foreground="Black" Background="White" Margin="0,235,0,0"/>
-            <Button x:Name="CampingPitchesButton" Content="Reserveren" VerticalAlignment="Top" Height="55" Click="CampingPitchesButtonClick" FontFamily="Century Gothic" FontWeight="Normal" FontSize="16" BorderThickness="0,0,0,0" Foreground="Black" Background="White" Margin="0,290,0,0"/>
-            <Button x:Name="TestButton" Content="Test" VerticalAlignment="Top" Height="55" Click="TestClick" FontFamily="Century Gothic" FontWeight="Normal" FontSize="16" BorderThickness="0,0,0,0" Foreground="Black" Background="White" Margin="0,350,0,0"/>
-            <Button x:Name="TestInputButton" Content="Input" VerticalAlignment="Top" Height="55" Click="TestInputClick" FontFamily="Century Gothic" FontWeight="Normal" FontSize="16" BorderThickness="0,0,0,0" Foreground="Black" Background="White" Margin="0,420,0,0"/>
-            <Button x:Name="SignUpButton" Content="Aanmelden" VerticalAlignment="Top" Height="55" Click="SignUpButtonClick" FontFamily="Century Gothic" FontWeight="Normal" FontSize="16" BorderThickness="0,0,0,0" Foreground="Black" Background="White" Margin="0,485,0,0"/>
-            <Button x:Name="AccountButton" Content="Account" VerticalAlignment="Top" Height="55" Click="AccountButtonClick" FontFamily="Century Gothic" FontWeight="Normal" FontSize="16" BorderThickness="0,0,0,0" Foreground="Black" Background="White" Margin="0,485,0,0"/>
-        </Grid>
+            <Label Content="{Binding Subtitle}" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22" Grid.ColumnSpan="2"/>
+            <Label Content="{Binding SubSubtitle}" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22" Foreground="#FF006837" Grid.ColumnSpan="2"/>
+            <ListView x:Name="MenuList" Margin="0,117,0,351" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" BorderThickness="0,0,0,0"/>
+            <StackPanel x:Name="MainMenu" Margin="0,144,0,175">
+                <RadioButton x:Name="OverviewMenuButton" Content="Overzicht" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="OverviewMenuButton_Checked"/>
+                <RadioButton x:Name="ReserveMenuButton" Content="Reserveren" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ReserveMenuButton_Checked"/>
+                <RadioButton x:Name="AccountMenuButton" Content="Account" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="AccountMenuButton_Checked"/>
 
+                <RadioButton x:Name="SignInMenuButton" Content="Aanmelden" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="SignInMenuButton_Checked"/>
+                <RadioButton x:Name="SignUpMenuButton" Content="Registreren" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="SignUpMenuButton_Checked"/>
+            </StackPanel>
+
+        </Grid>
         <Frame x:Name="MainFrame" Margin="180,0,0,0" MinHeight="634.04" MaxHeight="634.04" MinWidth="820" MaxWidth="820" HorizontalAlignment="Center" VerticalAlignment="Center" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

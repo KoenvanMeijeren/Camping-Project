@@ -2,10 +2,16 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace ViewModel
 {
@@ -19,6 +25,25 @@ namespace ViewModel
 
         private readonly ObservableCollection<string> _campingPlaceTypes;
         public ObservableCollection<ReservationViewModel> Reservations { get; private set; }
+        public static event EventHandler<ReservationEventArgs> ManageReservationEvent;
+        
+        private ReservationViewModel _selectedReservation;
+        public ReservationViewModel SelectedReservation
+        {
+            get => _selectedReservation;
+            set
+            {
+                if (value == null || Equals(value, this._selectedReservation))
+                {
+                    return;
+                }
+
+                this._selectedReservation = value;
+                ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation.Reservation));
+            }
+        }
+
+
         
         private DateTime _checkOutDate, _checkInDate;
         private string _minTotalPrice, _maxTotalPrice, _selectedCampingPlaceType, _guests;
@@ -168,6 +193,7 @@ namespace ViewModel
             this.CheckOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ManageReservationViewModel.UpdateReservationCollection += OnReservationConfirmedEvent;
         }
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
@@ -179,44 +205,87 @@ namespace ViewModel
         {
             this.Reservations.Clear();
 
-            var reservationItems = this._reservationModel.Select();
-            if (!this.SelectedCampingPlaceType.Equals(SelectAll))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)).ToList();
-            }
-            
-            if (int.TryParse(this.MinTotalPrice, out int min))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.TotalPrice >= min).ToList();
-            }
-            
-            if (int.TryParse(this.MaxTotalPrice, out int max))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.TotalPrice <= max).ToList();
-            }
-            
-            if (this.CheckInDate != DateTime.MinValue)
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.Duration.CheckInDatetime >= this.CheckInDate).ToList();
-            }
-            
-            if (this.CheckOutDate != DateTime.MinValue)
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.Duration.CheckOutDatetime <= this.CheckOutDate).ToList();
-            }
-            
-            if (int.TryParse(this.Guests, out int guests))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.NumberOfPeople >= guests).ToList();
-            }
-            
+            bool ReservationsFilter(Reservation reservation) => 
+                (this.SelectedCampingPlaceType.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)) 
+                && (!int.TryParse(this.MinTotalPrice, out int min) || reservation.TotalPrice >= min) 
+                && (!int.TryParse(this.MaxTotalPrice, out int max) || reservation.TotalPrice <= max) 
+                && (this.CheckInDate == DateTime.MinValue || reservation.Duration.CheckInDatetime >= this.CheckInDate)
+                && (this.CheckOutDate == DateTime.MinValue || reservation.Duration.CheckOutDatetime <= this.CheckOutDate)
+                && (!int.TryParse(this.Guests, out int guests) || reservation.NumberOfPeople >= guests);
+
+            var reservationItems = this._reservationModel.Select().Where(ReservationsFilter);
             foreach (var reservation in reservationItems)
             {
                 this.Reservations.Add(new ReservationViewModel(reservation));
             }
         }
-    }
 
+    
+
+        private void ExecuteCreatePdf()
+        {
+            Document document = new Document(PageSize.A4, 36, 36, 70, 36);
+            PageEvents pageEvents = new PageEvents();
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            PdfWriter pdfWriter = PdfWriter.GetInstance(document, new FileStream(appData + "\\Downloads\\Reserveringen Overzicht.pdf", FileMode.Create));
+            pdfWriter.PageEvent = pageEvents;
+            document.Open();
+
+            foreach (var reservation in this.Reservations)
+            {
+                float[] columnWidths = { 3, 5, 8, 8, 8, 5, 6 };
+                PdfPTable reservationTable = new PdfPTable(columnWidths);
+
+                document.Add(new Paragraph("\n"));
+                document.Add(new Paragraph("\n"));
+                reservationTable.AddCell("ID");
+                reservationTable.AddCell("Verblijf");
+                reservationTable.AddCell("Klantnaam");
+                reservationTable.AddCell("Begindatum");
+                reservationTable.AddCell("Einddatum");
+                reservationTable.AddCell("Prijs");
+                reservationTable.AddCell("Aanwezig");
+
+                reservationTable.AddCell(reservation.Reservation.Id.ToString());
+                reservationTable.AddCell(reservation.Reservation.CampingPlace.ToString());
+                reservationTable.AddCell(reservation.Reservation.CampingCustomer.FirstName + " " + reservation.Reservation.CampingCustomer.LastName);
+                reservationTable.AddCell(reservation.Reservation.Duration.CheckInDate);
+                reservationTable.AddCell(reservation.Reservation.Duration.CheckOutDate);
+                reservationTable.AddCell(" €" + reservation.Reservation.TotalPrice.ToString(CultureInfo.InvariantCulture));
+                reservationTable.AddCell(" ");
+
+                document.Add(new Paragraph("\n"));
+                document.Add(reservationTable);
+
+                //Should be used for the CampingGuest table
+                var campingGuests = reservation.Reservation.CampingGuests;
+                if (!campingGuests.Any())
+                {
+                    continue;
+                }
+                
+                PdfPTable campingGuestTable = new PdfPTable(3);
+
+                campingGuestTable.AddCell("Gastnaam");
+                campingGuestTable.AddCell("Geboortedatum");
+                foreach (var reservationGuest in campingGuests)
+                {
+                    campingGuestTable.AddCell(reservationGuest.CampingGuest.FirstName + " " + reservationGuest.CampingGuest.LastName);
+                    campingGuestTable.AddCell(reservationGuest.CampingGuest.Birthdate.ToShortDateString());
+                }
+                
+                document.Add(campingGuestTable);
+            }
+
+    
+
+            document.Close();
+
+            Process.Start("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", "file:///" + appData + "\\Downloads\\Reserveringen%20Overzicht.pdf");
+        }
+
+        public ICommand CreatePdf => new RelayCommand(ExecuteCreatePdf);
+    }
     public class ReservationViewModel
     {
         public Reservation Reservation { get; private init; }
@@ -225,6 +294,5 @@ namespace ViewModel
         {
             this.Reservation = reservation;
         }
-        
     }
 }

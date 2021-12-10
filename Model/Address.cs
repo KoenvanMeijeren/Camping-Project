@@ -95,7 +95,7 @@ namespace Model
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Address.ToDictionary(this.Street, this.PostalCode, this.PostalCode);
+            return Address.ToDictionary(this.Street, this.PostalCode, this.Place);
         }
 
         private static Dictionary<string, string> ToDictionary(string address, string postalCode, string place)

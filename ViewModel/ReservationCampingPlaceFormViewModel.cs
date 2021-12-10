@@ -216,28 +216,16 @@ namespace ViewModel
             
             // Removes all current camping places.
             this.CampingPlaces.Clear();
-            
-            if (!this.SelectedCampingPlaceType.Equals(SelectAll))
-            {
-                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)).ToList();
-            }
 
-            if (int.TryParse(this.MinNightPrice, out int min))
-            {
-                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.TotalPrice >= min).ToList();
-            }
+            bool CampingPlaceFilter(CampingPlace campingPlace) => 
+                (this._selectedCampingPlaceType.Equals(SelectAll) || campingPlace.Type.Accommodation.Name.Equals(this._selectedCampingPlaceType)) 
+                && (!int.TryParse(this.MinNightPrice, out int min) || campingPlace.TotalPrice >= min) 
+                && (!int.TryParse(this.MaxNightPrice, out int max) || campingPlace.TotalPrice <= max) 
+                && (!int.TryParse(this.Guests, out int guests) || campingPlace.Type.GuestLimit >= guests);
 
-            if (int.TryParse(this.MaxNightPrice, out int max))
-            {
-                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.TotalPrice <= max).ToList();
-            }
-            
-            if (int.TryParse(this.Guests, out int guests))
-            {
-                campingPlaceItems = campingPlaceItems.Where(campingPlace => campingPlace.Type.GuestLimit >= guests).ToList();
-            }
-
-            // Sets the camping places on the screen.
+            var campingPlaceItems = 
+                this.ToFilteredOnReservedCampingPlaces(this.GetCampingPlaces(), CheckInDate, CheckOutDate)
+                .Where(CampingPlaceFilter);
             foreach (CampingPlace item in campingPlaceItems)
             {
                 this.CampingPlaces.Add(item);

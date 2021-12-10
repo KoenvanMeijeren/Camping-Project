@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using SystemCore;
@@ -61,7 +62,7 @@ namespace Model
 
             return this.ToModel(query.SelectFirst());
         }
-        
+
         /// <summary>
         /// Selects the last record from the database table, this is done by ordering by the primary key column.
         /// </summary>
@@ -126,7 +127,8 @@ namespace Model
 
             return query.IsSuccessFullyExecuted();
         }
-        
+
+
         /// <summary>
         /// Deletes one record from the database table.
         /// </summary>

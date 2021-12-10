@@ -5,7 +5,18 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Images\caravan-solid.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Images\caravan-solid.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Extended.Wpf.Toolkit" Version="4.2.0" />
+      <PackageReference Include="iTextSharp" Version="5.5.13.2" />
       <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
       <PackageReference Include="Moq" Version="4.16.1" />
     </ItemGroup>
