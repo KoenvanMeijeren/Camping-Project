@@ -20,8 +20,7 @@ namespace ViewModel
         private string 
             _firstName, 
             _lastName, 
-            _streetName, 
-            _streetNumber, 
+            _street, 
             _postalCode, 
             _place, 
             _phoneNumber,
@@ -91,48 +90,23 @@ namespace ViewModel
             }
         }
 
-        public string StreetName
+        public string Street
         {
-            get => this._streetName;
+            get => this._street;
             set
             {
-                if (value == this._streetName)
+                if (value == this._street)
                 {
                     return;
                 }
 
-                this._streetName = value;
+                this._street = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.RegisterError = "";
-                if (!Validation.IsInputFilled(_streetName))
+                if (!Validation.IsInputFilled(_street))
                 {
                     this.RegisterError = "Straatnaam is een verplicht veld";
-                }
-            }
-        }
-
-        public string StreetNumber
-        {
-            get => this._streetNumber;
-            set
-            {
-                if (value == this._streetNumber)
-                {
-                    return;
-                }
-
-                this._streetNumber = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-
-                this.RegisterError = "";
-                if (!Validation.IsInputFilled(_streetNumber))
-                {
-                    this.RegisterError = "Huisnummer is een verplicht veld";
-                } 
-                else if (!Validation.IsNumber(_streetNumber))
-                {
-                    this.RegisterError = "Ongeldig huisnummer";
                 }
             }
         }
@@ -319,8 +293,7 @@ namespace ViewModel
         {
             this.FirstName = "";
             this.LastName = "";
-            this.StreetName = "";
-            this.StreetNumber = "";
+            this.Street = "";
             this.Postalcode = "";
             this.Place = "";
             this.PhoneNumber = "";
@@ -342,7 +315,7 @@ namespace ViewModel
             accountModel.Insert();
             var insertedAccount = accountModel.SelectByEmail(this.Email);
 
-            Address addressModel = new Address(this.StreetName + " " + this.StreetNumber, this.Postalcode, this.Place);
+            Address addressModel = new Address(this.Street, this.Postalcode, this.Place);
             var address = addressModel.FirstOrInsert();
 
             CampingCustomer campingCustomer = new CampingCustomer(insertedAccount, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName, this.LastName);
@@ -357,9 +330,7 @@ namespace ViewModel
         {
             return  Validation.IsInputFilled(_firstName) &&
                     Validation.IsInputFilled(_lastName) &&
-                    Validation.IsInputFilled(_streetName) &&
-                    Validation.IsInputFilled(_streetNumber) &&
-                    Validation.IsNumber(_streetNumber) &&
+                    Validation.IsInputFilled(_street) &&
                     Validation.IsInputFilled(_postalCode) &&
                     RegexHelper.IsPostalcodeValid(_postalCode) &&
                     Validation.IsInputFilled(_place) &&

@@ -111,14 +111,16 @@ namespace ViewModel
 
         #region Events
         public static event EventHandler SignOutEvent;
+        public static event EventHandler ToAccountUpdatePageEvent;
         #endregion
 
         public AccountViewModel()
         {
             CurrentUser.CurrentUserSetEvent += OnCurrentUserSetEvent;
+            AccountUpdateViewModel.UpdateConfirmEvent += OnUpdateConfirmEvent;
         }
 
-        private void OnCurrentUserSetEvent(object sender, EventArgs e)
+        private void SetOverview()
         {
             this._currentAccount = CurrentUser.Account;
 
@@ -142,7 +144,13 @@ namespace ViewModel
             }
         }
 
+        private void OnCurrentUserSetEvent(object sender, EventArgs e)
+        {
+            SetOverview();
+        }
+
         public ICommand SignOut => new RelayCommand(ExecuteSignOut);
+        public ICommand ToUpdate => new RelayCommand(ExecuteToUpdate);
 
         private void ExecuteSignOut()
         {
@@ -155,6 +163,16 @@ namespace ViewModel
 
             CurrentUser.EmptyCurrentUser();
             SignOutEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ExecuteToUpdate()
+        {
+            ToAccountUpdatePageEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnUpdateConfirmEvent(object sender, EventArgs e)
+        {
+            SetOverview();
         }
     }
 }
