@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -97,14 +98,20 @@ namespace ViewModel
         }
 
         #endregion
-        
+
         #region Commands
         private void ExecuteSignIn()
         {
             Account account = new Account();
             account = account.SelectByEmail(this.Email);
 
-            if (account == null || this.Password != account.Password)
+            if (account == null)
+            {
+                this.SignInError = "Onjuiste gegevens";
+                return;
+            }
+
+            if (!PasswordHashing.SignInHashValidation(account.Password, this.Password))
             {
                 this.SignInError = "Onjuiste gegevens";
                 return;
