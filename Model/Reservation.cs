@@ -8,6 +8,15 @@ using SystemCore;
 
 namespace Model
 {
+    /// <summary>
+    /// Enum used for database columns: ReservationDeleted, ReservationPayed, ReservationRestitutionPayed
+    /// </summary>
+    public enum ReservationColumnStatus
+    {
+        False = 0,
+        True = 1
+    }
+    
     /// <inheritdoc/>
     public class Reservation : ModelBase<Reservation>
     {
@@ -17,7 +26,10 @@ namespace Model
             ColumnPlace = "ReservationCampingPlaceID",
             ColumnCustomer = "ReservationCampingCustomerID",
             ColumnPeople = "ReservationNumberOfPeople",
-            ColumnDuration = "ReservationDurationID";
+            ColumnDuration = "ReservationDurationID",
+            columnDeleted = "ReservationDeleted",
+            columnPaid = "ReservationPaid",
+            columnRestitutionPaid = "ReservationRestitutionPaid";
         
         public int NumberOfPeople { get; private set; }
         public CampingCustomer CampingCustomer { get; private set; }
@@ -25,30 +37,58 @@ namespace Model
         public ReservationDuration Duration { get; private set; }
         public float TotalPrice { get; private set; }
         public string TotalPriceString { get; private set; }
-        
+        public ReservationColumnStatus ReservationDeleted { get; private set; }
+        public ReservationColumnStatus ReservationPaid { get; private set; }
+        public ReservationColumnStatus ReservationRestitutionPaid { get; private set; }
+
         public List<ReservationCampingGuest> CampingGuests { get; private set; }
 
+        /// <summary>
+        /// Constructs this object for accessing the select methods.
+        /// </summary>
         public Reservation(): base(TableName, ColumnId)
         {
         }
         
+        /// <summary>
+        /// Constructs the object for inserting it in the database.
+        /// </summary>
+        /// <param name="numberOfPeople">The number of people.</param>
+        /// <param name="campingCustomer">The camping customer.</param>
+        /// <param name="campingPlace">The camping place.</param>
+        /// <param name="duration">The duration.</param>
         public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, 
-            ReservationDuration duration): this("-1", numberOfPeople, campingCustomer, campingPlace, duration)
+            ReservationDuration duration) : this("-1", numberOfPeople, campingCustomer, campingPlace, duration, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False)
         {
         }
         
-        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration): base(TableName, ColumnId)
+        /// <summary>
+        /// Constructs the object for updating and deleting it in the database.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="numberOfPeople">The number of people.</param>
+        /// <param name="campingCustomer">The camping customer.</param>
+        /// <param name="campingPlace">The camping place.</param>
+        /// <param name="duration">The duration.</param>
+        /// <param name="reservationDeleted">If it has been deleted.</param>
+        /// <param name="reservationPaid">If it has been paid.</param>
+        /// <param name="reservationRestitutionPaid">If restitution has been paid.</param>
+        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid) : base(TableName, ColumnId)
         {
             bool successId = int.TryParse(id, out int numericId);
             bool successPeople = int.TryParse(numberOfPeople, out int numericPeople);
 
             this.Id = successId ? numericId : -1;
-            this.NumberOfPeople = successPeople ? numericPeople : 0;
+            // Add one, else it doesn't include the customer
+            this.NumberOfPeople = (successPeople ? numericPeople : 0) + 1;
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.Duration = duration;
             this.TotalPrice = this.CalculateTotalPrice();
             this.TotalPriceString = $"€{this.TotalPrice}";
+            this.ReservationDeleted = reservationDeleted;
+            this.ReservationPaid = reservationPaid;
+            this.ReservationRestitutionPaid = reservationRestitutionPaid;
         }
 
         /// <summary>
@@ -81,8 +121,9 @@ namespace Model
         /// <returns>Database records of given customer's reservations</returns>
         public List<Reservation> GetCustomersReservations(int customerId)
         {
-            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId");
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId AND {columnDeleted} = @{columnDeleted} ORDER BY {ReservationDuration.ColumnCheckInDate} ");
             query.AddParameter("customerId", customerId);
+            query.AddParameter(columnDeleted, ReservationDeleted == ReservationColumnStatus.True);
 
             List<Reservation> reservations = new List<Reservation>();
             foreach(var item in query.Select())
@@ -107,9 +148,22 @@ namespace Model
             return this.Collection;
         }
 
-        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        public bool Update()
         {
-            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration));
+            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid);
+        }
+        
+        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid)
+        {
+            bool durationUpdated = duration.Update();
+            
+            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration, reservationDeleted, reservationPaid, reservationRestitutionPaid)) && durationUpdated;
+        }
+
+        /// <inheritdoc/>
+        public override bool Delete()
+        {
+            return base.Delete() && this.Duration.Delete();
         }
 
         /// <inheritdoc/>
@@ -125,6 +179,9 @@ namespace Model
             dictionary.TryGetValue(ColumnPeople, out string peopleCount);
             dictionary.TryGetValue(ColumnCustomer, out string campingCustomerId);
             dictionary.TryGetValue(ColumnDuration, out string durationId);
+            dictionary.TryGetValue(columnDeleted, out string reservationDeleted);
+            dictionary.TryGetValue(columnPaid, out string reservationPaid);
+            dictionary.TryGetValue(columnRestitutionPaid, out string reservationRestitutionPaid);
             
             dictionary.TryGetValue(CampingPlaceType.ColumnId, out string campingPlaceTypeId);
             dictionary.TryGetValue(CampingPlaceType.ColumnGuestLimit, out string guestLimit);
@@ -164,7 +221,7 @@ namespace Model
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, phoneNumber, firstName, lastName);
             ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
-            Reservation reservation = new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration);
+            Reservation reservation = new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration, (ReservationColumnStatus)Int32.Parse(reservationDeleted), (ReservationColumnStatus)Int32.Parse(reservationPaid), (ReservationColumnStatus)Int32.Parse(reservationRestitutionPaid));
             
             ReservationCampingGuest reservationCampingGuestModel = new ReservationCampingGuest();
             reservation.CampingGuests = reservationCampingGuestModel.SelectByReservation(reservation);
@@ -175,17 +232,20 @@ namespace Model
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration);
+            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid);
         }
 
-        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration)
+        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 {ColumnPeople, numberOfPeople},
                 {ColumnCustomer, campingCustomer.Id.ToString()},
                 {ColumnPlace, campingPlace.Id.ToString()},
-                {ColumnDuration, duration.Id.ToString()}
+                {ColumnDuration, duration.Id.ToString()},
+                {columnDeleted, Convert.ToInt32(reservationDeleted).ToString()},
+                {columnPaid, Convert.ToInt32(reservationPaid).ToString()},
+                {columnRestitutionPaid, Convert.ToInt32(reservationRestitutionPaid).ToString()}
             };
 
             return dictionary;

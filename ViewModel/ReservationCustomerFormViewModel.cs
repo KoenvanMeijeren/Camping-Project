@@ -48,11 +48,16 @@ namespace ViewModel
             _amountOfGuestsError,
             
             _selectedCampingPlace;
+
+        private bool
+            _emailEnabled;
         
         private DateTime _birthdate;
         private ReservationDuration _reservationDuration;
         
         private CampingPlace _campingPlace;
+
+        private CampingCustomer _currentUserCustomer;
         
         #endregion
 
@@ -279,12 +284,23 @@ namespace ViewModel
                 this.AddErrorToDictionary("EmailAddress", "Ongeldige email");
             }
         }
+        
         public string EmailAddressError
         {
             get => this._emailAddressError;
             set
             {
                 this._emailAddressError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+        
+        public bool EmailEnabled
+        {
+            get => this._emailEnabled;
+            set
+            {
+                this._emailEnabled = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -337,6 +353,18 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
+        
+        public CampingCustomer CurrentUserCustomer
+        {
+            get => this._currentUserCustomer;
+            set
+            {
+                this._currentUserCustomer = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.FillInputWithCustomerData(this._currentUserCustomer);
+            }
+        }
         #endregion
 
         #region Events
@@ -361,6 +389,12 @@ namespace ViewModel
             };
             
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
+            SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
+        }
+
+        private void SignInViewModelOnSignInEvent(object? sender, AccountEventArgs e)
+        {
+            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
         }
         
         private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
@@ -392,6 +426,26 @@ namespace ViewModel
             this._errorDictionary.Add(key, value);
         }
 
+        private void FillInputWithCustomerData(CampingCustomer campingCustomer)
+        {
+            if (campingCustomer == null)
+            {
+                return;
+            }
+
+            this.FirstName = campingCustomer.FirstName;
+            this.LastName = campingCustomer.LastName;
+            this.Birthdate = campingCustomer.Birthdate;
+            this.EmailAddress = campingCustomer.Account.Email;
+            this.PhoneNumber = campingCustomer.PhoneNumber;
+            this.StreetName = campingCustomer.Address.Street;
+            this.AmountOfGuests = "";
+            this.PlaceName = campingCustomer.Address.Place;
+            this.PostalCode = campingCustomer.Address.PostalCode;
+
+            this.EmailEnabled = campingCustomer.Account.Id != -1;
+        }
+        
         private void ResetInput()
         {
             this.FirstName = "";
@@ -419,16 +473,22 @@ namespace ViewModel
         #region Commands
         private void ExecuteCustomerDataReservation()
         {
-            //TODO: Insert with transaction
             Address addressModel = new Address(this.StreetName, this.PostalCode, this.PlaceName);
             var address = addressModel.FirstOrInsert();
 
-            var customer = new CampingCustomer(null, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName,
+            var customer = new CampingCustomer(this._currentUserCustomer?.Id.ToString(), this._currentUserCustomer?.Account, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName,
                 this.LastName);
-            customer.Insert();
-            var lastCustomer = customer.SelectLast();
+            if (customer.Id == -1)
+            {
+                customer.Insert();
+                customer = customer.SelectLast();
+            }
+            else
+            {
+                customer.Update();
+            }
 
-            Reservation reservation = new Reservation(this._amountOfGuests, lastCustomer, this.CampingPlace, this._reservationDuration);
+            Reservation reservation = new Reservation(this._amountOfGuests, customer, this.CampingPlace, this._reservationDuration);
             reservation.Insert();
             var lastReservation = reservation.SelectLast();
             

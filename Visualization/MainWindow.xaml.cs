@@ -18,6 +18,7 @@ namespace Visualization
         private readonly AccountPage _accountPage;
         private readonly SignInPage _signInPage;
         private readonly SignUpPage _signUpPage;
+        private readonly ReservationUpdateDeletePage _manageReservationPage;
         private readonly ReservationOverviewPage _reservationOverviewPage;
 
         public MainWindow()
@@ -31,6 +32,7 @@ namespace Visualization
             this._accountPage = new AccountPage();
             this._signInPage = new SignInPage();
             this._signUpPage = new SignUpPage();
+            this._manageReservationPage = new ReservationUpdateDeletePage();
             this._reservationOverviewPage = new ReservationOverviewPage();
 
             ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
@@ -39,7 +41,9 @@ namespace Visualization
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             SignInViewModel.SignInEvent += this.OnSignInEvent;
             SignInViewModel.SignUpFormEvent += this.OnSignUpFormEvent;
-
+            ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
+            ManageReservationViewModel.FromReservationBackToDashboardEvent += this.OnBackToDashboardEvent;
+            
             // Sets the sign up page as the active menu and hides other menuitems.
             this.SignInMenuButton.IsChecked = true;
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
@@ -123,6 +127,16 @@ namespace Visualization
         private void SignUpMenuButton_Checked(object sender, RoutedEventArgs e)
         {
             this.MainFrame.Content = this._signUpPage.Content;
+        }
+        
+        private void OnManageReservationEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._manageReservationPage.Content;
+        }
+
+        private void OnBackToDashboardEvent(object sender, ReservationEventArgs args)
+        {
+            this.DashboardButtonClick(sender, new RoutedEventArgs());
         }
     }
 }
