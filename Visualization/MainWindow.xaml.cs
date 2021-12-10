@@ -18,8 +18,6 @@ namespace Visualization
         private readonly AccountPage _accountPage;
         private readonly SignInPage _signInPage;
         private readonly SignUpPage _signUpPage;
-        private readonly TestInputPage _testInputPage;
-        private readonly TestPage _testPage;
         private readonly ReservationUpdateDeletePage _manageReservationPage;
         private readonly ReservationOverviewPage _reservationOverviewPage;
 
@@ -34,8 +32,6 @@ namespace Visualization
             this._accountPage = new AccountPage();
             this._signInPage = new SignInPage();
             this._signUpPage = new SignUpPage();
-            this._testPage = new TestPage();
-            this._testInputPage = new TestInputPage();
             this._manageReservationPage = new ReservationUpdateDeletePage();
             this._reservationOverviewPage = new ReservationOverviewPage();
 
@@ -47,93 +43,12 @@ namespace Visualization
             SignInViewModel.SignUpFormEvent += this.OnSignUpFormEvent;
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
             ManageReservationViewModel.FromReservationBackToDashboardEvent += this.OnBackToDashboardEvent;
-
-
-            AccountButton.Visibility = Visibility.Collapsed;
             
-            // Sets the dashboard as the active menu.
-            this.DashboardButtonClick(this, null);
-        }
-
-        private void DashboardButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.DashboardButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.DashboardButton.Foreground = Brushes.White;
-
-            this.CampingPitchesButton.Background = Brushes.White;
-            this.CampingPitchesButton.Foreground = Brushes.Black;
-            
-            this.DashboardCustomerButton.Background = Brushes.White;
-            this.DashboardCustomerButton.Foreground = Brushes.Black;
-            
-            this.TestInputButton.Background = Brushes.White;
-            this.TestInputButton.Foreground = Brushes.Black;
-
-            this.MainFrame.Content = this._reservationCollectionFrame.Content;
-        }
-        
-        private void CampingPitchesButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.CampingPitchesButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.CampingPitchesButton.Foreground = Brushes.White;
-
-            this.DashboardButton.Background = Brushes.White;
-            this.DashboardButton.Foreground = Brushes.Black;
-            
-            this.DashboardCustomerButton.Background = Brushes.White;
-            this.DashboardCustomerButton.Foreground = Brushes.Black;
-            
-            this.TestInputButton.Background = Brushes.White;
-            this.TestInputButton.Foreground = Brushes.Black;
-
-            this.MainFrame.Content = this._campingPlacesCollectionFrame.Content;
-        }
-        
-        private void DashboardCustomerButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.DashboardCustomerButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.DashboardCustomerButton.Foreground = Brushes.White;
-
-            this.CampingPitchesButton.Background = Brushes.White;
-            this.CampingPitchesButton.Foreground = Brushes.Black;
-            
-            this.DashboardButton.Background = Brushes.White;
-            this.DashboardButton.Foreground = Brushes.Black;
-            
-            this.DashboardCustomerButton.Background = Brushes.White;
-            this.DashboardCustomerButton.Foreground = Brushes.Black;
-            
-            this.TestInputButton.Background = Brushes.White;
-            this.TestInputButton.Foreground = Brushes.Black;
-
-            this.MainFrame.Content = this._reservationOverviewPage.Content;
-        }
-        
-        private void TestInputClick(object sender, RoutedEventArgs e)
-        {
-            this.TestInputButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.TestInputButton.Foreground = Brushes.White;
-
-            this.DashboardCustomerButton.Background = Brushes.White;
-            this.DashboardCustomerButton.Foreground = Brushes.Black;
-            
-            this.CampingPitchesButton.Background = Brushes.White;
-            this.CampingPitchesButton.Foreground = Brushes.Black;
-            
-            this.DashboardButton.Background = Brushes.White;
-            this.DashboardButton.Foreground = Brushes.Black;
-
-            this.MainFrame.Content = this._testInputPage.Content;
-        }
-
-        private void SignUpButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._signInPage.Content;
-        }
-
-        private void AccountButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._accountPage.Content;
+            // Sets the sign up page as the active menu and hides other menu items.
+            this.SignInMenuButton.IsChecked = true;
+            this.OverviewMenuButton.Visibility = Visibility.Collapsed;
+            this.ReserveMenuButton.Visibility = Visibility.Collapsed;
+            this.AccountMenuButton.Visibility = Visibility.Collapsed;
         }
 
         private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
@@ -148,27 +63,69 @@ namespace Visualization
 
         private void OnSignInEvent(object sender, AccountEventArgs args)
         {
-            SignUpButton.Visibility = Visibility.Collapsed;
-            AccountButton.Visibility = Visibility.Visible;
+            this.OverviewMenuButton_Checked(sender, null);
 
-            this.MainFrame.Content = this._accountPage.Content;
+            this.OverviewMenuButton.Visibility = Visibility.Visible;
+            this.ReserveMenuButton.Visibility = Visibility.Visible;
+            this.AccountMenuButton.Visibility = Visibility.Visible;
+            this.SignInMenuButton.Visibility = Visibility.Collapsed;
+            this.SignUpMenuButton.Visibility = Visibility.Collapsed;
         }
 
         private void OnSignUpEvent(object sender, AccountEventArgs args)
         {
             this.MainFrame.Content = this._signInPage.Content;
+            this.SignInMenuButton.IsChecked = true;
         }
 
 
         private void OnSignOutEvent(object sender, EventArgs e)
         {
-            SignUpButton.Visibility = Visibility.Visible;
-            AccountButton.Visibility = Visibility.Collapsed;
-
             this.MainFrame.Content = this._signInPage.Content;
+
+            this.OverviewMenuButton.Visibility = Visibility.Collapsed;
+            this.ReserveMenuButton.Visibility = Visibility.Collapsed;
+            this.AccountMenuButton.Visibility = Visibility.Collapsed;
+            this.SignInMenuButton.Visibility = Visibility.Visible;
+            this.SignUpMenuButton.Visibility = Visibility.Visible;
+
+            this.SignInMenuButton.IsChecked = true;
         }
 
         private void OnSignUpFormEvent(object sender, EventArgs e)
+        {
+            this.MainFrame.Content = this._signUpPage.Content;
+            this.SignUpMenuButton.IsChecked = true;
+        }
+
+        private void OverviewMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.OverviewMenuButton.IsChecked = true;
+            if (CurrentUser.Account.Rights == Model.AccountRights.Admin)
+            {
+                this.MainFrame.Content = this._reservationCollectionFrame;
+                return;
+            }
+
+            this.MainFrame.Content = this._reservationOverviewPage;
+        }
+
+        private void ReserveMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._campingPlacesCollectionFrame;
+        }
+
+        private void AccountMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._accountPage;
+        }
+
+        private void SignInMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._signInPage;
+        }
+
+        private void SignUpMenuButton_Checked(object sender, RoutedEventArgs e)
         {
             this.MainFrame.Content = this._signUpPage.Content;
         }
@@ -180,7 +137,7 @@ namespace Visualization
 
         private void OnBackToDashboardEvent(object sender, ReservationEventArgs args)
         {
-            this.DashboardButtonClick(sender, new RoutedEventArgs());
+            this.OverviewMenuButton_Checked(sender, null);
         }
     }
 }
