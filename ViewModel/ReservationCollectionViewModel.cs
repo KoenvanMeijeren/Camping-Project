@@ -205,37 +205,20 @@ namespace ViewModel
         {
             this.Reservations.Clear();
 
-            var reservationItems = this._reservationModel.Select();
-            if (!this.SelectedCampingPlaceType.Equals(SelectAll))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)).ToList();
-            }
-            
-            if (int.TryParse(this.MinTotalPrice, out int min))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.TotalPrice >= min).ToList();
-            }
-            
-            if (int.TryParse(this.MaxTotalPrice, out int max))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.TotalPrice <= max).ToList();
-            }
-            
-            if (this.CheckInDate != DateTime.MinValue)
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.Duration.CheckInDatetime >= this.CheckInDate).ToList();
-            }
-            
-            if (this.CheckOutDate != DateTime.MinValue)
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.Duration.CheckOutDatetime <= this.CheckOutDate).ToList();
-            }
-            
-            if (int.TryParse(this.Guests, out int guests))
-            {
-                reservationItems = reservationItems.Where(reservation => reservation.NumberOfPeople >= guests).ToList();
-            }
-            
+            bool CampingPlaceTypeFilter(Reservation reservation) => this.SelectedCampingPlaceType.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType);
+            bool MinPriceFilter(Reservation reservation) => !int.TryParse(this.MinTotalPrice, out int min) || reservation.TotalPrice >= min;
+            bool MaxPriceFilter(Reservation reservation) => !int.TryParse(this.MaxTotalPrice, out int max) || reservation.TotalPrice <= max;
+            bool CheckInDateFilter(Reservation reservation) => this.CheckInDate == DateTime.MinValue || reservation.Duration.CheckInDatetime >= this.CheckInDate;
+            bool CheckOutDateFilter(Reservation reservation) => this.CheckOutDate == DateTime.MinValue || reservation.Duration.CheckOutDatetime <= this.CheckOutDate;
+            bool GuestFilter(Reservation reservation) => !int.TryParse(this.Guests, out int guests) || reservation.NumberOfPeople >= guests;
+
+            var reservationItems = this._reservationModel.Select()
+                .Where((Func<Reservation, bool>) CampingPlaceTypeFilter)
+                .Where((Func<Reservation, bool>) MinPriceFilter)
+                .Where((Func<Reservation, bool>) MaxPriceFilter)
+                .Where((Func<Reservation, bool>) CheckInDateFilter)
+                .Where((Func<Reservation, bool>) CheckOutDateFilter)
+                .Where((Func<Reservation, bool>) GuestFilter);
             foreach (var reservation in reservationItems)
             {
                 this.Reservations.Add(new ReservationViewModel(reservation));
