@@ -52,6 +52,11 @@ namespace Model
             this.LastName = lastName;
         }
 
+        public bool Update()
+        {
+            return base.Update(CampingCustomer.ToDictionary(this.Account, this.Address, this.Birthdate, this.PhoneNumber, this.FirstName, this.LastName));
+        }
+        
         public bool Update(Account account, Address address, DateTime birthdate, string phoneNumber, string firstName, string lastName)
         {
             this.Account = account;

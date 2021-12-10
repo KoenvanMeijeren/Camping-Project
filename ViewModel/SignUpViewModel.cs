@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -331,7 +332,7 @@ namespace ViewModel
 
         private void ExecuteRegister()
         {
-            Account accountModel = new Account(this.Email, this.Password, AccountRights.Customer.ToString());
+            Account accountModel = new Account(this.Email, PasswordHashing.HashPassword(this.Password), AccountRights.Customer.ToString());
             if (accountModel.SelectByEmail(this.Email) != null)
             {
                 this.RegisterError = "Er bestaat al een account met dit email";

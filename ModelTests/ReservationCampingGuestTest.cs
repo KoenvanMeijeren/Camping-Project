@@ -20,7 +20,7 @@ namespace ModelTests
             CampingCustomer campingCustomer = new CampingCustomer("1", account, address, "19/10/12", "testPhoneNumber", "testFirstName", "testLastName");
 
             ReservationDuration reservationDuration = new ReservationDuration("1", "19/10/21", "20/10/21");
-            Reservation reservation = new Reservation("1", "1", campingCustomer, campingPlace, reservationDuration);
+            Reservation reservation = new Reservation("1", "1", campingCustomer, campingPlace, reservationDuration, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False);
 
             ReservationCampingGuest reservationCampingGuest = new ReservationCampingGuest("1", reservation, campingGuest);
             Assert.AreEqual(reservationCampingGuest.Id, 1);
