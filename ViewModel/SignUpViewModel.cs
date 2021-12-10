@@ -321,7 +321,7 @@ namespace ViewModel
             CampingCustomer campingCustomer = new CampingCustomer(insertedAccount, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName, this.LastName);
             campingCustomer.Insert();
             
-            CurrentUser.SetCurrentUser(insertedAccount);
+            CurrentUser.SetCurrentUser(insertedAccount, campingCustomer.SelectByAccount(insertedAccount));
             SignUpViewModel.SignUpEvent?.Invoke(this, new AccountEventArgs(insertedAccount));
             this.ResetInput();
         }

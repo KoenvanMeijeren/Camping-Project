@@ -117,7 +117,20 @@ namespace ViewModel
                 return;
             }
 
-            CurrentUser.SetCurrentUser(account);
+            switch (account.Rights)
+            {
+                case AccountRights.Customer:
+                    var campingCustomer = new CampingCustomer();
+                    
+                    CurrentUser.SetCurrentUser(account, campingCustomer.SelectByAccount(account));
+                    break;
+                case AccountRights.Admin:
+                    var campingOwner = new CampingOwner();
+                    
+                    CurrentUser.SetCurrentUser(account, campingOwner.SelectByAccount(account));
+                    break;
+            }
+            
             SignInEvent?.Invoke(this, new AccountEventArgs(account));
             this.ResetInput();
         }
