@@ -253,7 +253,9 @@ namespace ViewModel
                     this._selectedReservation.CampingCustomer, this._selectedReservation.CampingPlace,
                     this._selectedReservation.Duration, ReservationColumnStatus.True,
                     this._selectedReservation.ReservationPaid,
-                    this._selectedReservation.ReservationRestitutionPaid))
+                    this._selectedReservation.ReservationRestitutionPaid,
+                    null)
+                )
             {
                 return;
             }
