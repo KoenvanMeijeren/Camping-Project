@@ -258,7 +258,6 @@ namespace ViewModel
                 return;
             }
 
-            
             bool campingGuestsDeleted = true;
             if (this._reservation.CampingGuests.Count > 0)
             {

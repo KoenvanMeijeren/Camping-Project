@@ -83,7 +83,12 @@ namespace Model
 
             this.Id = successId ? numericId : -1;
             // Add one, else it doesn't include the customer
-            this.NumberOfPeople = (successPeople ? numericPeople : 0) + 1;
+            this.NumberOfPeople = successPeople ? numericPeople : 0;
+            if (this.Id == -1 && campingCustomer != null)
+            {
+                this.NumberOfPeople++;
+            }
+            
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.Duration = duration;
