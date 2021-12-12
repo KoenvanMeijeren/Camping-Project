@@ -15,13 +15,22 @@ namespace ViewModel
 {
     public class ReservationCampingGuestViewModel : ObservableObject
     {
-        private string _firstNameGuest, _lastNameGuest, _amountOfPeopleError, _firstNameError, _lastNameError, _birthDateError;
+        private string _id, _firstNameGuest, _lastNameGuest, _amountOfPeopleError, _firstNameError, _lastNameError, _birthDateError;
         private readonly List<CampingGuest> _campingGuestsList;
         private DateTime _birthDate;
         public ObservableCollection<CampingGuest> CampingGuests { get; private set; }
         private Reservation _reservation;
         private int _numberOfAddedGuest;
         private Dictionary<string, string> _errorDictionary;
+
+        public string IdGuest {
+            get => this._id;
+            set
+            {
+                this._id = value;
+
+            }
+        }
 
         public string FirstNameGuest
         {
@@ -80,6 +89,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
+
         public string LastNameError
         {
             get => this._lastNameError;
@@ -89,6 +99,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
+
         public string BirthDateError
         {
             get => this._birthDateError;
@@ -129,6 +140,8 @@ namespace ViewModel
             }
         }
 
+        public CampingGuest SelectedCampingGuest { get; set; }
+
         public ObservableCollection<CampingGuest> CampingGuestsTypes
         {
             get => this.CampingGuests;
@@ -163,12 +176,7 @@ namespace ViewModel
 
         private void AddErrorToDictionary(string key, string value)
         {
-            if (this._errorDictionary.ContainsKey(key))
-            {
-                return;
-            }
-
-            this._errorDictionary.Add(key, value);
+            this._errorDictionary.TryAdd(key, value);
         }
 
         private void RemoveErrorFromDictionary(string key)
@@ -184,7 +192,10 @@ namespace ViewModel
         private void ExecuteAddGuestReservation()
         {
             string birthDate = BirthDate.ToShortDateString();
-            CampingGuest campingGuest = new CampingGuest(FirstNameGuest, LastNameGuest, birthDate);
+            CampingGuest campingGuestGetID = new CampingGuest();
+            IdGuest = (campingGuestGetID.SelectLast().Id + 1).ToString();
+
+            CampingGuest campingGuest = new CampingGuest(IdGuest, FirstNameGuest, LastNameGuest, birthDate);
             //Removes the customer from NumberOfPeople.
             if (_numberOfAddedGuest >= this.Reservation.CampingPlace.Type.GuestLimit)
             {
@@ -206,6 +217,21 @@ namespace ViewModel
             BirthDateError = "";
         }
 
+        private bool CanExecuteExecuteAddGuestReservation()
+        {
+            return !this._errorDictionary.Any();
+        }
+
+        private void ExecuteRemoveGuestReservation()
+        {
+            if (this.SelectedCampingGuest != null)
+            {
+                this.SelectedCampingGuest.Delete();
+                _campingGuestsList.Remove(SelectedCampingGuest);
+                CampingGuestsTypes.Remove(SelectedCampingGuest);
+            }
+        }
+
         private void ExecuteCustomerGuestReservation()
         {
             this.Reservation.Insert();
@@ -213,7 +239,7 @@ namespace ViewModel
 
             foreach (var guest in this._campingGuestsList)
             {
-                guest.Insert();
+                //guest.Insert();
                 var lastGuest = guest.SelectLast();
 
                 var reservationCampingGuest = new ReservationCampingGuest(lastReservation, lastGuest);
@@ -235,15 +261,12 @@ namespace ViewModel
             this._numberOfAddedGuest = this._campingGuestsList.Count() + 1;
         }
 
-        private bool CanExecuteExecuteAddGuestReservation()
-        {
-            return !this._errorDictionary.Any();
-        }
-
         public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerGuestReservation);
 
         public ICommand CustomerGuestGoBackReservation => new RelayCommand(ExecuteCustomerGuestGoBackReservation);
 
         public ICommand AddGuestReservation => new RelayCommand(ExecuteAddGuestReservation, CanExecuteExecuteAddGuestReservation);
+
+        public ICommand RemoveGuestReservation => new RelayCommand(ExecuteRemoveGuestReservation);
     }
 }

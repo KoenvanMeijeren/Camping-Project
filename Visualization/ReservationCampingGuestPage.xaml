@@ -15,16 +15,18 @@
 
     <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="58,37,364,92" CornerRadius="15,15,15,15" Background="White">
-            <ListView Margin="46,71,45,252" Background="White" FontFamily="Century Gothic" FontWeight="Bold" ItemsSource="{Binding CampingGuests}" >
+            <ListView x:Name="GuestList"  Margin="46,71,45,54" Background="White" FontFamily="Century Gothic" FontWeight="Bold" ItemsSource="{Binding CampingGuests}" SelectedItem="{Binding SelectedCampingGuest}"  >
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Voornaam" Width="100" DisplayMemberBinding="{Binding FirstName, Mode=OneWay}" />
-                        <GridViewColumn Header="Achternaam" Width="100" DisplayMemberBinding="{Binding LastName, Mode=OneWay}" />
-                        <GridViewColumn Header="Geboortedatum" Width="100" DisplayMemberBinding="{Binding BirthdateReadable , Mode=OneWay}" />
+                        <GridViewColumn Header="Voornaam" Width="90" DisplayMemberBinding="{Binding FirstName, Mode=OneWay}" />
+                        <GridViewColumn Header="Achternaam" Width="90" DisplayMemberBinding="{Binding LastName, Mode=OneWay}" />
+                        <GridViewColumn Header="Geboortedatum" Width="120" DisplayMemberBinding="{Binding BirthdateReadable , Mode=OneWay}" />
                     </GridView>
                 </ListView.View>
             </ListView>
         </Border>
+        <Button x:Name="RemoveGuestButton" Content="Verwijder" Height ="30" Width="170" Margin="170,498,480,106"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding RemoveGuestReservation}"/>
+        
         <Label Content="Toevoegen campingasten" HorizontalAlignment="Left" Margin="125,53,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="35" Width="264" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="549,37,46,405" CornerRadius="15,15,15,15" Background="White"/>
         <Label Content="Uw Reservering:" HorizontalAlignment="Left" Margin="576,39,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="14" Height="31" Width="174" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
