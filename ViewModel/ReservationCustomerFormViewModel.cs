@@ -400,7 +400,8 @@ namespace ViewModel
             this.SelectedCampingPlace = $"Reservering van {this._reservationDuration.CheckInDate} tot {this._reservationDuration.CheckOutDate} in verblijf {this._campingPlace.Location}";
 
             this.CurrentUserCustomer = CurrentUser.CampingCustomer;
-            this.AmountOfGuests = e.Reservation.NumberOfPeople.ToString();
+            //Removes the customer from NumberOfPeople.
+            this.AmountOfGuests = (e.Reservation.NumberOfPeople - 1).ToString();
         }
 
         private void SignInViewModelOnSignInEvent(object? sender, AccountEventArgs e)

@@ -15,7 +15,7 @@
 
     <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="58,37,364,92" CornerRadius="15,15,15,15" Background="White">
-            <ListView Height="400" Margin="46,71,46,34" Background="White" FontFamily="Century Gothic" FontWeight="Bold" ItemsSource="{Binding CampingGuests}" >
+            <ListView Margin="46,71,45,252" Background="White" FontFamily="Century Gothic" FontWeight="Bold" ItemsSource="{Binding CampingGuests}" >
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Voornaam" Width="100" DisplayMemberBinding="{Binding FirstName, Mode=OneWay}" />
@@ -26,23 +26,52 @@
             </ListView>
         </Border>
         <Label Content="Toevoegen campingasten" HorizontalAlignment="Left" Margin="125,53,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="35" Width="264" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="549,37,46,330" CornerRadius="15,15,15,15" Background="White" Width="225"/>
-        <Label Content="Uw Reservering:" HorizontalAlignment="Left" Margin="562,53,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="30" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Label x:Name="StartDate"  HorizontalAlignment="Left" Margin="562,85,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Height="30" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{Binding Reservation.Duration.CheckInDate}"/>
-        <Label x:Name="EndDate"  HorizontalAlignment="Left" Margin="561,120,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Height="30" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{Binding Reservation.Duration.CheckOutDate}"/>
-        <Label x:Name="Type"  HorizontalAlignment="Left" Margin="562,155,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Height="30" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{Binding Reservation.CampingPlace.Type.Accommodation.Name}"/>
-        <Label x:Name="Surface"  HorizontalAlignment="Left" Margin="561,190,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Height="30" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{Binding Reservation.CampingPlace.Surface}"/>
-        <Label x:Name="Location"  HorizontalAlignment="Left" Margin="562,225,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Height="30" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{Binding Reservation.CampingPlace.Location}"/>
-        <Label x:Name="TotalPrice"  HorizontalAlignment="Left" Margin="562,260,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Height="30" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{Binding Reservation.CampingPlace.TotalPrice}"/>
-        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="550,317,46,92" CornerRadius="15,15,15,15" Background="White" Height="225" Width="225">
-
-        </Border>
-        <Label Content="Voeg gast toe:" HorizontalAlignment="Left" Margin="562,327,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="35" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="549,37,46,405" CornerRadius="15,15,15,15" Background="White"/>
+        <Label Content="Uw Reservering:" HorizontalAlignment="Left" Margin="576,39,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="14" Height="31" Width="174" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Label Content="Start datum:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="576,67,157,543"/>
+        <Label x:Name="StartDate" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.Duration.CheckInDate, Mode=OneWay}" Margin="663,67,70,543"/>
+        <Label Content="Eind datum:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="576,91,157,519"/>
+        <Label x:Name="EndDate" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.Duration.CheckOutDate, Mode=OneWay}" Margin="663,91,70,519"/>
+        <Label Content="Type:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="576,115,157,495"/>
+        <Label x:Name="Type" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Type.Accommodation.Name, Mode=OneWay}" Margin="663,115,70,495"/>
+        <Label Content="Oppervlakte:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="576,139,157,471"/>
+        <Label x:Name="Surface" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Surface, Mode=OneWay}" Margin="663,139,70,471"/>
+        <Label Content="Locatie:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="576,163,157,447"/>
+        <Label x:Name="Location"  FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Location, Mode=OneWay}" Margin="663,163,70,447"/>
+        <Label Content="Totale prijs:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="576,187,157,423"/>
+        <Label x:Name="TotalPrice" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content ="{Binding Reservation.TotalPriceString, Mode=OneWay}" Margin="663,187,70,423"/>
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="549,248,46,92" CornerRadius="15,15,15,15" Background="White"/>
+        <Label Content="Voeg gast toe:" HorizontalAlignment="Left" Margin="560,255,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" Height="29" Width="200" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         <Button Content="Terug" Height ="30" Margin="58,569,537,35"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding CustomerGuestGoBackReservation, Mode=OneWay}" />
         <Button Content="Bevestig" Height ="30" Margin="549,569,46,35"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding AddCustomerReservation, Mode=OneWay}" />
-        <TextBox x:Name="FirstNameTextBox"  Margin="576,367,74,237" Height="30" Text="{Binding FirstNameGuest}" />
-        <TextBox x:Name="LastNameTextBox" Margin="576,402,74,202" Height="30" Text="{Binding LastNameGuest}" />
-        <DatePicker x:Name="BirthDateDatePicker" Height="30" Width="170" Margin="576,437,74,167" DisplayDate="2021-01-01" SelectedDate="{Binding BirthDate}"  />
-        <Button x:Name="AddGuestButton" Content="Voeg toe" Height ="30" Width="170" Margin="550,472,45,132"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding AddGuestReservation, Mode=OneWay}"/>
+        <Label Content="Voornaam*" HorizontalAlignment="Left" Margin="585,293,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12" Height="30" Width="100"/>
+        <Label Content="Achternaam*" HorizontalAlignment="Left" Margin="586,359,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12" Height="30" Width="100" RenderTransformOrigin="0.418,0.847"/>
+        <TextBox x:Name="CustomerLastName" Text="{Binding FirstNameGuest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="585,328,0,0">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+        <TextBox x:Name="CustomerFirstName" Text="{Binding LastNameGuest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="585,389,0,0">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="0.75"/>
+                    <GradientStop Color="Black" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+        <Label Content="Geboortedatum*" HorizontalAlignment="Left" Margin="586,418,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12" Height="30" Width="126" RenderTransformOrigin="0.418,0.847"/>
+        <DatePicker x:Name="BirthDateDatePicker" Height="23" Width="150" Margin="587,460,83,151" DisplayDate="2021-01-01" SelectedDate="{Binding BirthDate}"  />
+        <Button x:Name="AddGuestButton" Content="Voeg toe" Height ="30" Width="170" Margin="578,498,72,106"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding AddGuestReservation}"/>
+        <Label Content="{Binding AmountOfPeopleError}" Margin="577,276,0,0" Foreground="Red" FontFamily="Century Gothic" FontWeight="Bold" FontSize="9" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.703,0.519" Width="170" Height="19"/>
+        <Label Content="{Binding FirstNameError}" Margin="578,317,0,0" Foreground="Red" FontFamily="Century Gothic" FontWeight="Bold" FontSize="9" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.703,0.519" Width="170" Height="19"/>
+        <Label Content="{Binding LastNameError}" Margin="575,382,0,0" Foreground="Red" FontFamily="Century Gothic" FontWeight="Bold" FontSize="9" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.703,0.519" Width="170" Height="19"/>
+        <Label Content="{Binding BirthDateError}" Margin="575,436,0,0" Foreground="Red" FontFamily="Century Gothic" FontWeight="Bold" FontSize="9" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.703,0.519" Width="170" Height="19"/>
     </Grid>
 </Page>
