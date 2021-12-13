@@ -171,6 +171,8 @@ namespace ViewModel
 
             this._campingGuestsList = new List<CampingGuest>();
             this.CampingGuests = new ObservableCollection<CampingGuest>();
+            this.BirthDate = DateTime.Today.AddYears(-1);
+            
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationConfirmedEvent;
         }
 
@@ -193,11 +195,10 @@ namespace ViewModel
         /// </summary>
         private void ExecuteAddGuestReservation()
         {
-            string birthDate = BirthDate.ToShortDateString();
+            string birthDate = this.BirthDate.ToShortDateString();
             CampingGuest campingGuestModel = new CampingGuest();
-            this.IdGuest = (campingGuestModel.SelectLast().Id + 1).ToString();
 
-            CampingGuest campingGuest = new CampingGuest(this.IdGuest, this.FirstNameGuest, this.LastNameGuest, birthDate);
+            CampingGuest campingGuest = new CampingGuest(this.FirstNameGuest, this.LastNameGuest, birthDate);
             //Removes the customer from NumberOfPeople.
             if (this._numberOfAddedGuest >= this.Reservation.CampingPlace.Type.GuestLimit)
             {
@@ -206,14 +207,15 @@ namespace ViewModel
             }
             
             campingGuest.Insert();
-            this._campingGuestsList.Add(campingGuest);
-            this.CampingGuestsTypes.Add(campingGuest);
+            var lastCampingGuest = campingGuestModel.SelectLast();
+            
+            this._campingGuestsList.Add(lastCampingGuest);
+            this.CampingGuestsTypes.Add(lastCampingGuest);
             this._numberOfAddedGuest++;
 
             this.FirstNameGuest = "";
             this.LastNameGuest = "";
-            this.BirthDate = new DateTime(1 / 1 / 0001);
-
+            this.BirthDate = DateTime.Today.AddYears(-1);
             this.AmountOfPeopleError = "";
             this.FirstNameError = "";
             this.LastNameError = "";
@@ -229,12 +231,14 @@ namespace ViewModel
         /// </summary>
         private void ExecuteRemoveGuestReservation()
         {
-            if (this.SelectedCampingGuest != null)
+            if (this.SelectedCampingGuest == null)
             {
-                this.SelectedCampingGuest.Delete();
-                this._campingGuestsList.Remove(SelectedCampingGuest);
-                this.CampingGuestsTypes.Remove(SelectedCampingGuest);
+                return;
             }
+            
+            this.SelectedCampingGuest.Delete();
+            this._campingGuestsList.Remove(SelectedCampingGuest);
+            this.CampingGuestsTypes.Remove(SelectedCampingGuest);
         }
         /// <summary>
         /// Checks if button can be pressed/
@@ -255,10 +259,7 @@ namespace ViewModel
 
             foreach (var guest in this._campingGuestsList)
             {
-                var lastGuest = guest.SelectLast();
-
-                var reservationCampingGuest = new ReservationCampingGuest(lastReservation, lastGuest);
-                reservationCampingGuest.Insert();
+                (new ReservationCampingGuest(lastReservation, guest)).Insert();
             }
 
             ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));

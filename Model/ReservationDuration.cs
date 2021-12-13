@@ -66,8 +66,8 @@ namespace Model
             this.CheckInDate = this.CheckInDatetime.ToShortDateString();
             this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
             
-            this.CheckInDateDatabaseFormat = DateTimeParser.TryParseToDatabaseFormat(this.CheckInDatetime);
-            this.CheckOutDateDatabaseFormat = DateTimeParser.TryParseToDatabaseFormat(this.CheckOutDatetime);
+            this.CheckInDateDatabaseFormat = DateTimeParser.TryParseToDatabaseDateTimeFormat(this.CheckInDatetime);
+            this.CheckOutDateDatabaseFormat = DateTimeParser.TryParseToDatabaseDateTimeFormat(this.CheckOutDatetime);
         }
 
         /// <inheritdoc/>

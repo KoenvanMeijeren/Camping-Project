@@ -33,12 +33,11 @@ namespace Model
         public CampingGuest(string id, string firstName, string lastName, string birthdate): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int numericId);
-            bool successDate = DateTime.TryParse(birthdate, out DateTime dateTime);
             
             this.Id = success ? numericId : -1;
             this.FirstName = firstName;
             this.LastName = lastName;
-            this.Birthdate = successDate ? dateTime : DateTime.MinValue;
+            this.Birthdate = DateTimeParser.TryParse(birthdate);
             this.BirthdateReadable = this.Birthdate.ToShortDateString();
         }
 
@@ -79,7 +78,7 @@ namespace Model
             {
                 {ColumnFirstName, firstName},
                 {ColumnLastName, lastName},
-                {ColumnBirthdate, birthdate.ToShortDateString()}
+                {ColumnBirthdate, DateTimeParser.TryParseToDatabaseDateFormat(birthdate)}
             };
 
             return dictionary;

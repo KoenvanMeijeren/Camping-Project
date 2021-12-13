@@ -30,11 +30,11 @@
                         </TransformGroup>
                     </Rectangle.RenderTransform>
                 </Rectangle>
-                <ListView SelectedItem="{Binding SelectedReservation}" ItemsSource="{Binding ReservationsCollection}">
+                <ListView Height="220" SelectedItem="{Binding SelectedReservation}" ItemsSource="{Binding ReservationsCollection}">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding Id}" />
-                            <GridViewColumn Header="Verblijf" Width="120" DisplayMemberBinding="{Binding CampingPlace.Type.Accommodation.Name}" />
+                            <GridViewColumn Header="Verblijf" Width="100" DisplayMemberBinding="{Binding CampingPlace.Type.Accommodation.Name}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
