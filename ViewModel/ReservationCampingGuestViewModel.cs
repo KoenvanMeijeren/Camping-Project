@@ -188,7 +188,9 @@ namespace ViewModel
 
             this._errorDictionary.Remove(key);
         }
-
+        /// <summary>
+        /// Inserts campingGuest into the database.
+        /// </summary>
         private void ExecuteAddGuestReservation()
         {
             string birthDate = BirthDate.ToShortDateString();
@@ -221,7 +223,9 @@ namespace ViewModel
         {
             return !this._errorDictionary.Any();
         }
-
+        /// <summary>
+        /// Removes campingGuest from database.
+        /// </summary>
         private void ExecuteRemoveGuestReservation()
         {
             if (this.SelectedCampingGuest != null)
@@ -231,7 +235,24 @@ namespace ViewModel
                 CampingGuestsTypes.Remove(SelectedCampingGuest);
             }
         }
-
+        /// <summary>
+        /// Checks if button can be pressed/
+        /// </summary>
+        /// <returns>true or false</returns>
+        private bool CanExecuteRemoveGuestReservation()
+        {
+            if(_campingGuestsList.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// Inserts Reservation into the database.
+        /// </summary>
         private void ExecuteCustomerGuestReservation()
         {
             this.Reservation.Insert();
@@ -239,7 +260,6 @@ namespace ViewModel
 
             foreach (var guest in this._campingGuestsList)
             {
-                //guest.Insert();
                 var lastGuest = guest.SelectLast();
 
                 var reservationCampingGuest = new ReservationCampingGuest(lastReservation, lastGuest);
@@ -248,7 +268,9 @@ namespace ViewModel
 
             ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
         }
-
+        /// <summary>
+        /// Returns to former page.
+        /// </summary>
         private void ExecuteCustomerGuestGoBackReservation()
         {
             ReservationGoBackEvent?.Invoke(this, new ReservationEventArgs(this.Reservation));
@@ -267,6 +289,6 @@ namespace ViewModel
 
         public ICommand AddGuestReservation => new RelayCommand(ExecuteAddGuestReservation, CanExecuteExecuteAddGuestReservation);
 
-        public ICommand RemoveGuestReservation => new RelayCommand(ExecuteRemoveGuestReservation);
+        public ICommand RemoveGuestReservation => new RelayCommand(ExecuteRemoveGuestReservation, CanExecuteRemoveGuestReservation);
     }
 }
