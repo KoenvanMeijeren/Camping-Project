@@ -241,14 +241,8 @@ namespace ViewModel
         /// <returns>true or false</returns>
         private bool CanExecuteRemoveGuestReservation()
         {
-            if(this._campingGuestsList.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return this._campingGuestsList.Count > 0;
+            
         }
         /// <summary>
         /// Inserts Reservation into the database.
