@@ -194,22 +194,23 @@ namespace ViewModel
         private void ExecuteAddGuestReservation()
         {
             string birthDate = BirthDate.ToShortDateString();
-            CampingGuest campingGuestGetID = new CampingGuest();
-            this.IdGuest = (campingGuestGetID.SelectLast().Id + 1).ToString();
+            CampingGuest campingGuestModel = new CampingGuest();
+            this.IdGuest = (campingGuestModel.SelectLast().Id + 1).ToString();
 
-            CampingGuest campingGuest = new CampingGuest(this.IdGuest, this.FirstNameGuest, this.LastNameGuest, this.birthDate);
+            CampingGuest campingGuest = new CampingGuest(this.IdGuest, this.FirstNameGuest, this.LastNameGuest, birthDate);
             //Removes the customer from NumberOfPeople.
-            if (_numberOfAddedGuest >= this.Reservation.CampingPlace.Type.GuestLimit)
+            if (this._numberOfAddedGuest >= this.Reservation.CampingPlace.Type.GuestLimit)
             {
                 this.AmountOfPeopleError = "Het maximaal aantal gasten is bereikt!";
                 return;
             }
+            
             campingGuest.Insert();
             this._campingGuestsList.Add(campingGuest);
             this.CampingGuestsTypes.Add(campingGuest);
             this._numberOfAddedGuest++;
 
-            this.FirstNameGuest. = "";
+            this.FirstNameGuest = "";
             this.LastNameGuest = "";
             this.BirthDate = new DateTime(1 / 1 / 0001);
 
@@ -273,8 +274,7 @@ namespace ViewModel
         private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)
         {
             this.Reservation = args.Reservation;
-            //Add customer
-            this._numberOfAddedGuest = this._campingGuestsList.Count() + 1;
+            this._numberOfAddedGuest = this._campingGuestsList.Count();
         }
 
         public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerGuestReservation);
