@@ -41,7 +41,7 @@ namespace Model
         public ReservationColumnStatus ReservationDeleted { get; private set; }
         public ReservationColumnStatus ReservationPaid { get; private set; }
         public ReservationColumnStatus ReservationRestitutionPaid { get; private set; }
-        public string ReservationDeletedTime { get; private set; }
+        public DateTime? ReservationDeletedTime { get; private set; }
 
         public List<ReservationCampingGuest> CampingGuests { get; private set; }
 
@@ -79,7 +79,7 @@ namespace Model
         {
             bool successId = int.TryParse(id, out int numericId);
             bool successPeople = int.TryParse(numberOfPeople, out int numericPeople);
-            bool successDatetime = DateTime.TryParse(reservationDeletedTime, out var reservationDeletedDateTime);
+            DateTime dateTime = DateTimeParser.TryParse(reservationDeletedTime);
 
             this.Id = successId ? numericId : -1;
             // Add one, else it doesn't include the customer
@@ -97,7 +97,7 @@ namespace Model
             this.ReservationDeleted = reservationDeleted;
             this.ReservationPaid = reservationPaid;
             this.ReservationRestitutionPaid = reservationRestitutionPaid;
-            this.ReservationDeletedTime = successDatetime ? reservationDeletedDateTime.ToString() : DateTime.MinValue.ToString();
+            this.ReservationDeletedTime = dateTime != DateTime.MinValue ? dateTime : null;
         }
 
         /// <summary>
@@ -159,15 +159,14 @@ namespace Model
 
         public bool Update()
         {
-            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid, this.ReservationDeletedTime.ToString());
+            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid, this.ReservationDeletedTime);
         }
         
-        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, string reservationDeletedTime)
+        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, DateTime? reservationDeletedTime)
         {
             bool durationUpdated = duration.Update();
 
-            string checkIfReservationIsDeletedAndSetDateTime = (reservationDeleted == ReservationColumnStatus.True) ? DateTimeParser.TryParseToDatabaseFormat(DateTime.Now).ToString() : "";
-            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration, reservationDeleted, reservationPaid, reservationRestitutionPaid, checkIfReservationIsDeletedAndSetDateTime)) && durationUpdated;
+            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration, reservationDeleted, reservationPaid, reservationRestitutionPaid, reservationDeletedTime)) && durationUpdated;
         }
 
         /// <inheritdoc/>
@@ -243,10 +242,10 @@ namespace Model
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid, this.ReservationDeletedTime.ToString());
+            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid, this.ReservationDeletedTime);
         }
 
-        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, string reservationDeletedTime)
+        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, DateTime? reservationDeletedTime)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
@@ -257,8 +256,12 @@ namespace Model
                 {columnDeleted, Convert.ToInt32(reservationDeleted).ToString()},
                 {columnPaid, Convert.ToInt32(reservationPaid).ToString()},
                 {columnRestitutionPaid, Convert.ToInt32(reservationRestitutionPaid).ToString()},
-                {columnDeletedTime,  reservationDeletedTime.ToString()}
             };
+
+            if (reservationDeletedTime != null && reservationDeletedTime != DateTime.MinValue)
+            {
+                dictionary.Add(columnDeletedTime, DateTimeParser.TryParseToDatabaseFormat(reservationDeletedTime));
+            }
 
             return dictionary;
         }

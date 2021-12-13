@@ -51,9 +51,9 @@ namespace SystemCore
         /// </summary>
         /// <param name="date">The datetime object</param>
         /// <returns>The data as string in database format.</returns>
-        public static string TryParseToDatabaseFormat(DateTime date)
+        public static string TryParseToDatabaseFormat(DateTime? date)
         {
-            return date.ToString(DatabaseDateTimeFormatString);
+            return date is not DateTime dateTime ? null : dateTime.ToString(DatabaseDateTimeFormatString);
         }
     }
 }
