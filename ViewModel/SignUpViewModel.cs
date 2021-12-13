@@ -328,7 +328,7 @@ namespace ViewModel
 
         private bool CanExecuteRegister()
         {
-            return  Validation.IsInputFilled(_firstName) &&
+           return  Validation.IsInputFilled(_firstName) &&
                     Validation.IsInputFilled(_lastName) &&
                     Validation.IsInputFilled(_street) &&
                     Validation.IsInputFilled(_postalCode) &&

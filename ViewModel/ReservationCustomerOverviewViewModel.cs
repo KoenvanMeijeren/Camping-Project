@@ -137,7 +137,7 @@ namespace ViewModel
 
             SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
             AccountViewModel.SignOutEvent += this.AccountViewModelOnSignOutEvent;
-            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.ReservationCustomerFormViewModelOnReservationConfirmedEvent;
+            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.ReservationCustomerFormViewModelOnReservationConfirmedEvent;
         }
 
         private void AccountViewModelOnSignOutEvent(object? sender, EventArgs e)
@@ -254,7 +254,7 @@ namespace ViewModel
                     this._selectedReservation.Duration, ReservationColumnStatus.True,
                     this._selectedReservation.ReservationPaid,
                     this._selectedReservation.ReservationRestitutionPaid,
-                    null)
+                    this._selectedReservation.ReservationDeletedTime)
                 )
             {
                 return;

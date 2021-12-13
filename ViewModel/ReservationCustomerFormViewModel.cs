@@ -43,10 +43,9 @@ namespace ViewModel
             
             _emailAddress,
             _emailAddressError,
-            
+
             _amountOfGuests,
-            _amountOfGuestsError,
-            
+
             _selectedCampingPlace;
 
         private bool
@@ -305,31 +304,11 @@ namespace ViewModel
             }
         }
 
-        public string AmountOfGuests
-        {
+        public string AmountOfGuests {
             get => this._amountOfGuests;
             set
             {
                 this._amountOfGuests = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
-                this.AmountOfGuestsError = string.Empty;
-                this.RemoveErrorFromDictionary("AmountOfGuests");
-                if (Validation.IsInputFilled(this._amountOfGuests) || !int.TryParse(value, out int x))
-                {
-                    return;
-                }
-                
-                this.AmountOfGuestsError = "Ongeldige aantal gasten";
-                this.AddErrorToDictionary("AmountOfGuests", "Ongeldige aantal gasten");
-            }
-        }
-        public string AmountOfGuestsError
-        {
-            get => this._amountOfGuestsError;
-            set
-            {
-                this._amountOfGuestsError = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -369,7 +348,7 @@ namespace ViewModel
 
         #region Events
 
-        public static event EventHandler<ReservationEventArgs> ReservationConfirmedEvent;
+        public static event EventHandler<ReservationGuestEventArgs> ReservationGuestEvent;
 
         #endregion
 
@@ -385,11 +364,22 @@ namespace ViewModel
                 {"PostalCode", ""},
                 {"PlaceName", ""},
                 {"EmailAddress", ""},
-                {"AmountOfGuests", ""},
             };
             
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCampingGuestViewModel.ReservationGoBackEvent += ReservationCampingGuestViewModelOnReservationGoBackEvent;
             SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
+        }
+
+        private void ReservationCampingGuestViewModelOnReservationGoBackEvent(object? sender, ReservationEventArgs e)
+        {
+            this._reservationDuration = e.Reservation.Duration;
+            this.CampingPlace = e.Reservation.CampingPlace;
+            this.SelectedCampingPlace = $"Reservering van {this._reservationDuration.CheckInDate} tot {this._reservationDuration.CheckOutDate} in verblijf {this._campingPlace.Location}";
+
+            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
+            //Removes the customer from NumberOfPeople.
+            this.AmountOfGuests = (e.Reservation.NumberOfPeople - 1).ToString();
         }
 
         private void SignInViewModelOnSignInEvent(object? sender, AccountEventArgs e)
@@ -402,6 +392,7 @@ namespace ViewModel
             this._reservationDuration = args.ReservationDuration;
             this.CampingPlace = args.CampingPlace;
             
+            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
             this.SelectedCampingPlace = $"Reservering van {this._reservationDuration.CheckInDate} tot {this._reservationDuration.CheckOutDate} in verblijf {this._campingPlace.Location}";
         }
 
@@ -439,7 +430,6 @@ namespace ViewModel
             this.EmailAddress = campingCustomer.Account.Email;
             this.PhoneNumber = campingCustomer.PhoneNumber;
             this.StreetName = campingCustomer.Address.Street;
-            this.AmountOfGuests = "";
             this.PlaceName = campingCustomer.Address.Place;
             this.PostalCode = campingCustomer.Address.PostalCode;
 
@@ -461,7 +451,6 @@ namespace ViewModel
             this.StreetName = "";
             this.StreetNameError = "";
             this.AmountOfGuests = "";
-            this.AmountOfGuestsError = "";
             this.PlaceName = "";
             this.PlaceNameError = "";
             this.PostalCode = "";
@@ -489,10 +478,8 @@ namespace ViewModel
             }
 
             Reservation reservation = new Reservation(this._amountOfGuests, customer, this.CampingPlace, this._reservationDuration);
-            reservation.Insert();
-            var lastReservation = reservation.SelectLast();
-            
-            ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
+
+            ReservationGuestEvent?.Invoke(this, new ReservationGuestEventArgs(address, customer, reservation));
             this.ResetInput();
         }
         private bool CanExecuteCustomerDataReservation()
