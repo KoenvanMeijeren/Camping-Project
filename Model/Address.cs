@@ -48,18 +48,35 @@ namespace Model
         private Address SelectByParameters(string address, string postalCode)
         {
             Query query = new Query($"{this.BaseSelectQuery()} WHERE {ColumnAddress} = @Address AND {ColumnPostalCode} = @AddressPostalCode");
-            query.AddParameter("Address", address);
-            query.AddParameter("AddressPostalCode", postalCode);
+            query.AddParameter(ColumnAddress, address);
+            query.AddParameter(ColumnPostalCode, postalCode);
+            
             var result = query.SelectFirst();
+            if (result == null)
+            {
+                return null;
+            }
+            
+            // Updates the selected address with the current place.
+            result.Remove(ColumnPlace);
+            result.Add(ColumnPlace, this.Place);
 
-            return result != null ? this.ToModel(result) : null;
+            result.TryGetValue(ColumnId, out string id);
+            bool successId = int.TryParse(id, out int numericId);
+            
+            this.Id = successId ? numericId : this.Id;
+            
+            this.Update(address, postalCode, this.Place);
+
+            return this.ToModel(result);
         }
 
         /// <summary>
-        /// Returns Address object based on if it already exists in database. If it doesn't exist it creates one and returns that one
+        /// Returns Address object based on if it already exists in database. If it doesn't exist it creates one and
+        /// returns that one. An existing address is always updated.
         /// </summary>
         /// <returns>Address object</returns>
-        public Address FirstOrInsert()
+        public Address FirstAndUpdateOrInsert()
         {
             var result = this.SelectByParameters(this.Street, this.PostalCode);
             if (result != null)
@@ -77,7 +94,7 @@ namespace Model
             {
                 this.Place = place;
                 
-                return this.Update(Address.ToDictionary(street, postalCode, place));
+                return base.Update(Address.ToDictionary(street, postalCode, place));
             }
             
             // Reset all data, in order to prepare updating the address.
@@ -86,7 +103,7 @@ namespace Model
             this.PostalCode = postalCode;
             this.Place = place;
 
-            var address = this.FirstOrInsert();
+            var address = this.FirstAndUpdateOrInsert();
             this.Id = address.Id;
             this.Street = address.Street;
             this.PostalCode = address.PostalCode;
