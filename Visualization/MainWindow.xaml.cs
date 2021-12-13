@@ -15,6 +15,7 @@ namespace Visualization
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
+        private readonly ReservationCampingGuestPage _reservationCampingGuestPage;
         private readonly AccountPage _accountPage;
         private readonly SignInPage _signInPage;
         private readonly SignUpPage _signUpPage;
@@ -30,6 +31,7 @@ namespace Visualization
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
+            this._reservationCampingGuestPage = new ReservationCampingGuestPage();
             this._accountPage = new AccountPage();
             this._signInPage = new SignInPage();
             this._signUpPage = new SignUpPage();
@@ -37,8 +39,10 @@ namespace Visualization
             this._reservationOverviewPage = new ReservationOverviewPage();
             this._accountUpdatePage = new AccountUpdatePage();
 
-            ReservationCustomerFormViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
+            ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestsFormEvent;
+            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveDurationEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             SignInViewModel.SignInEvent += this.OnSignInEvent;
@@ -56,9 +60,19 @@ namespace Visualization
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
         }
 
-        private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
+        private void OnReserveEvent(object sender, ReservationEventArgs args)
         {
             this.MainFrame.Content = this._reservationCustomerForm.Content;
+        }
+        
+        private void OnReserveDurationEvent(object sender, ReservationDurationEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationCustomerForm.Content;
+        }
+
+        private void OnReservationGuestsFormEvent(object sender, ReservationGuestEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationCampingGuestPage;
         }
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)

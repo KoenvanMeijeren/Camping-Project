@@ -90,26 +90,6 @@
             </TextBox.BorderBrush>
         </TextBox>
 
-        <Label Content="Aantal gasten*" HorizontalAlignment="Left" Margin="465,344,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
-        <TextBox Name="CustomerGuestAmount" Text="{Binding AmountOfGuests, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="233" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="465,367,0,0" RenderTransformOrigin="0.5,0.5">
-            <TextBox.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="0.015"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </TextBox.RenderTransform>
-            <TextBox.BorderBrush>
-                <LinearGradientBrush EndPoint="1,1" StartPoint="1,0">
-                    <GradientStop Color="White" Offset="0"/>
-                    <GradientStop Color="White" Offset="0.75"/>
-                    <GradientStop Color="Black" Offset="0.75"/>
-                    <GradientStop Color="Black" Offset="1"/>
-                </LinearGradientBrush>
-            </TextBox.BorderBrush>
-        </TextBox>
-
         <Label Content="Postcode*" HorizontalAlignment="Left" Margin="94,419,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" RenderTransformOrigin="0.703,0.519"/>
         <TextBox Name="CustomerPostalcode" Text="{Binding PostalCode, Mode='TwoWay', UpdateSourceTrigger=PropertyChanged}" BorderThickness="3" Height="24"  Width="178" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="95,442,0,0">
             <TextBox.BorderBrush>
