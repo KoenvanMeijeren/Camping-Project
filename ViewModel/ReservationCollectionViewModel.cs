@@ -231,6 +231,7 @@ namespace ViewModel
             pdfWriter.PageEvent = pageEvents;
             document.Open();
 
+            document.Add(new Paragraph("     "));
             foreach (var reservation in this.Reservations)
             {
                 float[] columnWidths = { 3, 5, 8, 8, 8, 5, 6 };

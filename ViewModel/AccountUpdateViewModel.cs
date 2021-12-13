@@ -48,7 +48,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.UpdateError = "";
-                if (!Validation.IsInputFilled(_firstName))
+                if (!Validation.IsInputFilled(this._firstName))
                 {
                     this.UpdateError = "Voornaam is een verplicht veld";
                 }
@@ -69,7 +69,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.UpdateError = "";
-                if (!Validation.IsInputFilled(_lastName))
+                if (!Validation.IsInputFilled(this._lastName))
                 {
                     this.UpdateError = "Achternaam is een verplicht veld";
                 }
@@ -90,11 +90,11 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.UpdateError = "";
-                if (!Validation.IsBirthdateValid(_birthdate))
+                if (!Validation.IsBirthdateValid(this._birthdate))
                 {
                     this.UpdateError = "Ongeldig geboortedatum";
                 }
-                else if (!Validation.IsBirthdateAdult(_birthdate))
+                else if (!Validation.IsBirthdateAdult(this._birthdate))
                 {
                     this.UpdateError = "U bent te jong om te reserveren";
                 }
@@ -115,7 +115,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.UpdateError = "";
-                if (!Validation.IsInputFilled(_street))
+                if (!Validation.IsInputFilled(this._street))
                 {
                     this.UpdateError = "Straatnaam is een verplicht veld";
                 }
@@ -136,11 +136,11 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.UpdateError = "";
-                if (!Validation.IsInputFilled(_postalCode))
+                if (!Validation.IsInputFilled(this._postalCode))
                 {
                     this.UpdateError = "Postcode is een verplicht veld";
                 }
-                if (!RegexHelper.IsPostalcodeValid(_postalCode))
+                if (!RegexHelper.IsPostalcodeValid(this._postalCode))
                 {
                     this.UpdateError = "Ongeldig postcode";
                 }
@@ -161,7 +161,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.UpdateError = "";
-                if (!Validation.IsInputFilled(_place))
+                if (!Validation.IsInputFilled(this._place))
                 {
                     this.UpdateError = "Plaatsnaam is een verplicht veld";
                 }
@@ -253,16 +253,16 @@ namespace ViewModel
 
         private bool CanExecuteUpdateConfirm()
         {
-            return  Validation.IsInputFilled(_firstName) &&
-                    Validation.IsInputFilled(_lastName) &&
-                    Validation.IsBirthdateValid(_birthdate) &&
-                    Validation.IsBirthdateAdult(_birthdate) &&
-                    Validation.IsInputFilled(_street) &&
-                    Validation.IsInputFilled(_postalCode) &&
-                    RegexHelper.IsPostalcodeValid(_postalCode) &&
-                    Validation.IsInputFilled(_place) &&
-                    Validation.IsInputFilled(_phoneNumber) &&
-                    Validation.IsNumber(_phoneNumber);
+            return  Validation.IsInputFilled(this._firstName) &&
+                    Validation.IsInputFilled(this._lastName) &&
+                    Validation.IsBirthdateValid(this._birthdate) &&
+                    Validation.IsBirthdateAdult(this._birthdate) &&
+                    Validation.IsInputFilled(this._street) &&
+                    Validation.IsInputFilled(this._postalCode) &&
+                    RegexHelper.IsPostalcodeValid(this._postalCode) &&
+                    Validation.IsInputFilled(this._place) &&
+                    Validation.IsInputFilled(this._phoneNumber) &&
+                    Validation.IsNumber(this._phoneNumber);
         }
 
         private void ExecuteUpdateConfirm()
@@ -274,8 +274,8 @@ namespace ViewModel
             }
             else
             {
-                CurrentUser.CampingCustomer.Address.Update(Street, PostalCode, Place);
-                CurrentUser.CampingCustomer.Update(CurrentUser.CampingCustomer.Account, CurrentUser.CampingCustomer.Address, Birthdate, PhoneNumber, FirstName, LastName);
+                CurrentUser.CampingCustomer.Address.Update(this.Street, this.PostalCode, this.Place);
+                CurrentUser.CampingCustomer.Update(CurrentUser.CampingCustomer.Account, CurrentUser.CampingCustomer.Address, this.Birthdate, this.PhoneNumber, this.FirstName, this.LastName);
                 CurrentUser.SetCurrentUser(CurrentUser.Account, CurrentUser.CampingCustomer);
             }
 

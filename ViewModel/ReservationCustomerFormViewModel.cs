@@ -463,7 +463,7 @@ namespace ViewModel
         private void ExecuteCustomerDataReservation()
         {
             Address addressModel = new Address(this.StreetName, this.PostalCode, this.PlaceName);
-            var address = addressModel.FirstOrInsert();
+            var address = addressModel.FirstAndUpdateOrInsert();
 
             var customer = new CampingCustomer(this._currentUserCustomer?.Id.ToString(), this._currentUserCustomer?.Account, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName,
                 this.LastName);
@@ -475,6 +475,7 @@ namespace ViewModel
             else
             {
                 customer.Update();
+                CurrentUser.SetCurrentUser(CurrentUser.Account, customer);
             }
 
             Reservation reservation = new Reservation(this._amountOfGuests, customer, this.CampingPlace, this._reservationDuration);

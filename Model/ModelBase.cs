@@ -15,7 +15,7 @@ namespace Model
     /// <typeparam name="T">A model class, representing a record within a database table.</typeparam>
     public abstract class ModelBase<T> : IModel
     {
-        public int Id { get; protected init; }
+        public int Id { get; protected set; }
         
         protected List<T> Collection = new List<T>();
 
