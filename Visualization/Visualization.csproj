@@ -11,12 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
-    <ProjectReference Include="..\Model\Model.csproj" />
-    <ProjectReference Include="..\SystemCore\SystemCore.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
   </ItemGroup>
 
 </Project>
