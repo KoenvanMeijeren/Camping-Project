@@ -146,7 +146,7 @@ namespace ViewModel
 
         private void OnCurrentUserSetEvent(object sender, EventArgs e)
         {
-            SetOverview();
+            this.SetOverview();
         }
 
         public ICommand SignOut => new RelayCommand(ExecuteSignOut);
@@ -172,7 +172,7 @@ namespace ViewModel
 
         private void OnUpdateConfirmEvent(object sender, EventArgs e)
         {
-            SetOverview();
+            this.SetOverview();
         }
     }
 }
