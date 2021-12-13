@@ -220,7 +220,7 @@ namespace ViewModel
             this.BirthDateError = "";
         }
 
-        private bool CanExecuteExecuteAddGuestReservation()
+        private bool CanExecuteAddGuestReservation()
         {
             return !this._errorDictionary.Any();
         }
@@ -281,7 +281,7 @@ namespace ViewModel
 
         public ICommand CustomerGuestGoBackReservation => new RelayCommand(ExecuteCustomerGuestGoBackReservation);
 
-        public ICommand AddGuestReservation => new RelayCommand(ExecuteAddGuestReservation, CanExecuteExecuteAddGuestReservation);
+        public ICommand AddGuestReservation => new RelayCommand(ExecuteAddGuestReservation, CanExecuteAddGuestReservation);
 
         public ICommand RemoveGuestReservation => new RelayCommand(ExecuteRemoveGuestReservation, CanExecuteRemoveGuestReservation);
     }
