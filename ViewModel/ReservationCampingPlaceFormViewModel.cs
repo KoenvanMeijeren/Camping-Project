@@ -132,7 +132,6 @@ namespace ViewModel
                 }
                 
                 this._campingPlaces = value;
-                this.SetOverview(this.GetCampingPlaces());
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -148,7 +147,6 @@ namespace ViewModel
                 }
                 
                 this._selectedCampingPlace = value;
-                this.SetOverview(this.GetCampingPlaces());
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -164,7 +162,6 @@ namespace ViewModel
                 }
                 
                 this._campingPlaceTypes = value;
-                this.SetOverview(this.GetCampingPlaces());
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -191,10 +188,6 @@ namespace ViewModel
         
         public ReservationCampingPlaceFormViewModel()
         {
-            this.SelectedCampingPlaceType = SelectAll;
-            this.CheckInDate = DateTime.Today;
-            this.CheckOutDate = DateTime.Today.AddDays(1);
-            
             this.CampingPlaces = new ObservableCollection<CampingPlace>();
             this.CampingPlaceTypes = new ObservableCollection<string> {
                 SelectAll
@@ -205,6 +198,10 @@ namespace ViewModel
             {
                 this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);
             }
+            
+            this.SelectedCampingPlaceType = SelectAll;
+            this.CheckInDate = DateTime.Today;
+            this.CheckOutDate = DateTime.Today.AddDays(1);
         }
 
         private void SetOverview(IEnumerable<CampingPlace> campingPlaceItems)
