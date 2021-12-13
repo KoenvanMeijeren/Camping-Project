@@ -260,7 +260,7 @@ namespace Model
 
             if (reservationDeletedTime != null && reservationDeletedTime != DateTime.MinValue)
             {
-                dictionary.Add(columnDeletedTime, DateTimeParser.TryParseToDatabaseFormat(reservationDeletedTime));
+                dictionary.Add(columnDeletedTime, DateTimeParser.TryParseToDatabaseDateTimeFormat(reservationDeletedTime));
             }
 
             return dictionary;
