@@ -71,9 +71,28 @@ namespace Model
             return this.SelectByParameters(this.Street, this.PostalCode);
         }
 
-        public bool Update(string address, string postalCode, string place)
+        public bool Update(string street, string postalCode, string place)
         {
-            return base.Update(Address.ToDictionary(address, postalCode, place));
+            if (this.Street.Equals(street) && this.PostalCode.Equals(postalCode))
+            {
+                this.Place = place;
+                
+                return this.Update(Address.ToDictionary(street, postalCode, place));
+            }
+            
+            // Reset all data, in order to prepare updating the address.
+            this.Id = -1;
+            this.Street = street;
+            this.PostalCode = postalCode;
+            this.Place = place;
+
+            var address = this.FirstOrInsert();
+            this.Id = address.Id;
+            this.Street = address.Street;
+            this.PostalCode = address.PostalCode;
+            this.Place = address.Place;
+            
+            return true;
         }
 
         /// <inheritdoc/>
