@@ -316,7 +316,7 @@ namespace ViewModel
             var insertedAccount = accountModel.SelectByEmail(this.Email);
 
             Address addressModel = new Address(this.Street, this.Postalcode, this.Place);
-            var address = addressModel.FirstOrInsert();
+            var address = addressModel.FirstAndUpdateOrInsert();
 
             CampingCustomer campingCustomer = new CampingCustomer(insertedAccount, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName, this.LastName);
             campingCustomer.Insert();
