@@ -273,17 +273,14 @@ namespace ViewModel
         
         public virtual IEnumerable<CampingPlace> GetCampingPlaces()
         {
-            return this.ToFilteredOnReservedCampingPlaces(this._campingPlaceModel.Select(), CheckInDate, CheckOutDate);
+            return this.ToFilteredOnReservedCampingPlaces(this._campingPlaceModel.Select(), this.CheckInDate, this.CheckOutDate);
         }
 
         public virtual IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> campingPlaceList, DateTime checkInDate, DateTime checkOutDate)
         {
-            //Reservation reservationModel = new Reservation();
-            //var reservations = reservationModel.Select();
+            var reservations = this.GetReservationModel();
 
-            var reservations = GetReservationModel();
-
-            //removes reserved campingplaces from the list
+            // Removes reserved camping places from the list.
             foreach (Reservation reservation in reservations)
             {
                 ReservationDuration reservationDuration = reservation.Duration;
