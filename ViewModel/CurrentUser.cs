@@ -7,35 +7,45 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
+    /// <summary>
+    /// The current user of the application.
+    /// </summary>
     public static class CurrentUser
     {
         public static Account Account { get; private set; }
-        public static CampingCustomer CampingCustomer;
-        public static CampingOwner CampingOwner;
-
+        public static CampingCustomer CampingCustomer { get; private set; }
+        public static CampingOwner CampingOwner { get; private set; }
         public static event EventHandler CurrentUserSetEvent;
 
-        public static void SetCurrentUser(Account account)
+        /// <summary>
+        /// Sets the current camping customer user.
+        /// </summary>
+        /// <param name="account">The account.</param>
+        /// <param name="campingCustomer">The camping customer.</param>
+        public static void SetCurrentUser(Account account, CampingCustomer campingCustomer)
         {
-            Account = account;
+            CurrentUser.Account = account;
+            CurrentUser.CampingCustomer = campingCustomer;
 
-            switch (Account.Rights)
-            {
-                case AccountRights.Customer:
-                    Account = account;
-                    CampingCustomer = new CampingCustomer();
-                    CampingCustomer = CampingCustomer.SelectByAccount(account);
-                    break;
-                case AccountRights.Admin:
-                    Account = account;
-                    CampingOwner = new CampingOwner();
-                    CampingOwner = CampingOwner.SelectByAccount(account);
-                    break;
-            }
+            CurrentUserSetEvent?.Invoke(null, EventArgs.Empty);
+        }
+        
+        /// <summary>
+        /// Sets the current camping owner user.
+        /// </summary>
+        /// <param name="account">The account.</param>
+        /// <param name="campingOwner">The camping owner.</param>
+        public static void SetCurrentUser(Account account, CampingOwner campingOwner)
+        {
+            CurrentUser.Account = account;
+            CurrentUser.CampingOwner = campingOwner;
 
             CurrentUserSetEvent?.Invoke(null, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Empties the current user, usually done on log out.
+        /// </summary>
         public static void EmptyCurrentUser()
         {
             CurrentUser.Account = null;

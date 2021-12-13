@@ -270,14 +270,14 @@ namespace ViewModel
             if (this._currentAccount.Rights == AccountRights.Admin)
             {
                 CurrentUser.CampingOwner.Update(CurrentUser.CampingOwner.Account, FirstName, LastName);
+                CurrentUser.SetCurrentUser(CurrentUser.Account, CurrentUser.CampingOwner);
             }
             else
             {
                 CurrentUser.CampingCustomer.Address.Update(Street, PostalCode, Place);
                 CurrentUser.CampingCustomer.Update(CurrentUser.CampingCustomer.Account, CurrentUser.CampingCustomer.Address, Birthdate, PhoneNumber, FirstName, LastName);
+                CurrentUser.SetCurrentUser(CurrentUser.Account, CurrentUser.CampingCustomer);
             }
-
-            CurrentUser.SetCurrentUser(CurrentUser.Account);
 
             UpdateConfirmEvent?.Invoke(this, EventArgs.Empty);
         }

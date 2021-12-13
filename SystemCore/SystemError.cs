@@ -14,6 +14,13 @@ namespace SystemCore
         /// <param name="exception">The exception</param>
         public static void Handle(Exception exception)
         {
+            // Do nothing with the exception if we do not have a loaded config. This is fine because a non-existing 
+            // config breaks the application anyway.
+            if (string.IsNullOrEmpty(ConfigReader.GetSetting("debug")))
+            {
+                return;
+            }
+            
             var success = bool.TryParse(ConfigReader.GetSetting("debug"), out bool debug);
             if (success && debug)
             {
