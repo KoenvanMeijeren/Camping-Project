@@ -9,9 +9,6 @@ namespace SystemCore
 {
     public static class PasswordHashing
     {
-
-        public static string hashingError { get; private set; }
-
         /// <summary>
         /// Check if string is a Base64 string. Used to check if database password is a base64 string.
         /// </summary>
