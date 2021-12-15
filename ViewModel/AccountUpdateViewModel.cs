@@ -225,10 +225,12 @@ namespace ViewModel
                 this.FirstName = CurrentUser.CampingOwner.FirstName;
                 this.LastName = CurrentUser.CampingOwner.LastName;
                 this.Email = CurrentUser.CampingOwner.Account.Email;
-                this.PhoneNumber = "";
-                this.Birthdate = new DateTime();
-                this.Street = "";
-                this.Place = "";
+                this.PhoneNumber = "1";
+                this.Birthdate = new DateTime(1900,1,1);
+                this.Street = "Straatnaam";
+                this.PostalCode = "1234AB";
+                this.Place = "Plaatsnaam";
+
             }
             else
             {
@@ -269,7 +271,7 @@ namespace ViewModel
         {
             if (this._currentAccount.Rights == AccountRights.Admin)
             {
-                CurrentUser.CampingOwner.Update(CurrentUser.CampingOwner.Account, FirstName, LastName);
+                CurrentUser.CampingOwner.Update(CurrentUser.CampingOwner.Account, this.FirstName, this.LastName);
                 CurrentUser.SetCurrentUser(CurrentUser.Account, CurrentUser.CampingOwner);
             }
             else

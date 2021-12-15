@@ -203,7 +203,7 @@ namespace ViewModel
             //Removes the customer from NumberOfPeople.
             if (this._numberOfAddedGuest >= this.Reservation.CampingPlace.Type.GuestLimit-1)
             {
-                this.AmountOfPeopleError = "Het maximaal aantal gasten is bereikt!";
+                this.AmountOfPeopleError = "Maximaal aantal gasten is bereikt";
                 return;
             }
             
