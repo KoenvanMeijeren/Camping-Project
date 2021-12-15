@@ -20,15 +20,15 @@ namespace ViewModel
         #region Fields
         private readonly Accommodation _accommodationModel = new Accommodation();
         private readonly Reservation _reservationModel = new Reservation();
-        
+
         private const string SelectAll = "Alle";
 
         private readonly ObservableCollection<string> _campingPlaceTypes;
         public ObservableCollection<Reservation> Reservations { get; private set; }
         public static event EventHandler<ReservationEventArgs> ManageReservationEvent;
-        
-        private ReservationViewModel _selectedReservation;
-        public ReservationViewModel SelectedReservation
+
+        private Reservation _selectedReservation;
+        public Reservation SelectedReservation
         {
             get => _selectedReservation;
             set
@@ -39,12 +39,12 @@ namespace ViewModel
                 }
 
                 this._selectedReservation = value;
-                ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation.Reservation));
+                ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation));
             }
         }
 
 
-        
+
         private DateTime _checkOutDate, _checkInDate;
         private string _minTotalPrice, _maxTotalPrice, _selectedCampingPlaceType, _guests;
 
@@ -114,11 +114,11 @@ namespace ViewModel
                 }
 
                 int daysDifference = this._checkOutDate.Subtract(this._checkInDate).Days;
-                
+
                 this._checkInDate = value;
                 this.SetOverview();
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
+
                 this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
             }
         }
@@ -138,7 +138,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-        
+
         public ObservableCollection<string> CampingPlaceTypes
         {
             get => this._campingPlaceTypes;
@@ -148,7 +148,7 @@ namespace ViewModel
                 {
                     return;
                 }
-                
+
                 this._campingPlaceTypes = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
@@ -166,7 +166,7 @@ namespace ViewModel
 
                 this._selectedCampingPlaceType = value;
                 this.SetOverview();
-                
+
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -185,10 +185,10 @@ namespace ViewModel
             {
                 this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);
             }
-           
+
 
             this.SelectedCampingPlaceType = SelectAll;
-            
+
             DateTime date = DateTime.Today;
             this.CheckInDate = new DateTime(date.Year, date.Month, 1);
             this.CheckOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
@@ -197,7 +197,7 @@ namespace ViewModel
             ManageReservationViewModel.UpdateReservationCollection += OnReservationConfirmedEvent;
         }
 
-        public virtual IEnumerable<Accommodation> SelectAccomodationTypes() 
+        public virtual IEnumerable<Accommodation> SelectAccomodationTypes()
         {
             return this._accommodationModel.Select();
         }
@@ -212,22 +212,26 @@ namespace ViewModel
         {
             this.Reservations.Clear();
 
-            bool ReservationsFilter(Reservation reservation) => 
-                (this.SelectedCampingPlaceType.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)) 
-                && (!int.TryParse(this.MinTotalPrice, out int min) || reservation.TotalPrice >= min) 
-                && (!int.TryParse(this.MaxTotalPrice, out int max) || reservation.TotalPrice <= max) 
+            bool ReservationsFilter(Reservation reservation) =>
+                (this.SelectedCampingPlaceType.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType))
+                && (!int.TryParse(this.MinTotalPrice, out int min) || reservation.TotalPrice >= min)
+                && (!int.TryParse(this.MaxTotalPrice, out int max) || reservation.TotalPrice <= max)
                 && (this.CheckInDate == DateTime.MinValue || reservation.Duration.CheckInDatetime >= this.CheckInDate)
                 && (this.CheckOutDate == DateTime.MinValue || reservation.Duration.CheckOutDatetime <= this.CheckOutDate)
                 && (!int.TryParse(this.Guests, out int guests) || reservation.NumberOfPeople >= guests);
 
-            var reservationItems = this._reservationModel.Select().Where(ReservationsFilter);
+            var reservationItems = this.SelectReservations().Where(ReservationsFilter); 
+
             foreach (var reservation in reservationItems)
             {
                 this.Reservations.Add(reservation);
             }
         }
 
-
+        public virtual IEnumerable<Reservation> SelectReservations() 
+        {
+            return this._reservationModel.Select();
+        }
     
 
         private void ExecuteCreatePdf()
