@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
 using SystemCore;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {

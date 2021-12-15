@@ -1,13 +1,9 @@
-﻿using iTextSharp.text;
+﻿using System.Collections.Generic;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ViewModel
+namespace ViewModel.EventArguments
 {
     public class PageEvents : PdfPageEventHelper
     {

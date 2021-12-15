@@ -170,6 +170,7 @@ namespace ViewModel
             ToAccountUpdatePageEvent?.Invoke(this, EventArgs.Empty);
         }
 
+        
         private void OnUpdateConfirmEvent(object sender, EventArgs e)
         {
             this.SetOverview();

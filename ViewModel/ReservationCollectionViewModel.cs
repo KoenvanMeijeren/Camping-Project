@@ -12,6 +12,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using System.Collections.Generic;
 using System.Globalization;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {

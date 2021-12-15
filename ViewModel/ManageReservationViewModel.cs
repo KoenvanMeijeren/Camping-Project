@@ -13,6 +13,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using SystemCore;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {
