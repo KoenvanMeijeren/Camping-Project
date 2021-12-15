@@ -26,22 +26,27 @@ namespace Model
             ColumnPlace = "ReservationCampingPlaceID",
             ColumnCustomer = "ReservationCampingCustomerID",
             ColumnPeople = "ReservationNumberOfPeople",
-            ColumnDuration = "ReservationDurationID",
-            columnDeleted = "ReservationDeleted",
-            columnPaid = "ReservationPaid",
-            columnRestitutionPaid = "ReservationRestitutionPaid",
-            columnDeletedTime = "ReservationDeletedTime";
+            ColumnDeleted = "ReservationDeleted",
+            ColumnPaid = "ReservationPaid",
+            ColumnRestitutionPaid = "ReservationRestitutionPaid",
+            ColumnDeletedTime = "ReservationDeletedTime",
+            ColumnCheckInDate = "ReservationCheckInDate",
+            ColumnCheckOutDate = "ReservationCheckOutDate";
         
         public int NumberOfPeople { get; private set; }
         public CampingCustomer CampingCustomer { get; private set; }
         public CampingPlace CampingPlace { get; private set; }
-        public ReservationDuration Duration { get; private set; }
         public float TotalPrice { get; private set; }
         public string TotalPriceString { get; private set; }
         public ReservationColumnStatus ReservationDeleted { get; private set; }
         public ReservationColumnStatus ReservationPaid { get; private set; }
         public ReservationColumnStatus ReservationRestitutionPaid { get; private set; }
         public DateTime? ReservationDeletedTime { get; private set; }
+        public DateTime CheckInDatetime { get; private set; }
+        public DateTime CheckOutDatetime { get; private set; }
+        
+        public string CheckInDate { get; private set; }
+        public string CheckOutDate { get; private set; }
 
         public List<ReservationCampingGuest> CampingGuests { get; private set; }
 
@@ -58,9 +63,9 @@ namespace Model
         /// <param name="numberOfPeople">The number of people.</param>
         /// <param name="campingCustomer">The camping customer.</param>
         /// <param name="campingPlace">The camping place.</param>
-        /// <param name="duration">The duration.</param>
-        public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, 
-            ReservationDuration duration) : this("-1", numberOfPeople, campingCustomer, campingPlace, duration, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False, "")
+        /// <param name="checkInDate">The check in date.</param>
+        /// <param name="checkOutDate">The check out date.</param>
+        public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, string checkInDate, string checkOutDate) : this("-1", numberOfPeople, campingCustomer, campingPlace, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False, null, checkInDate, checkOutDate)
         {
         }
         
@@ -71,16 +76,19 @@ namespace Model
         /// <param name="numberOfPeople">The number of people.</param>
         /// <param name="campingCustomer">The camping customer.</param>
         /// <param name="campingPlace">The camping place.</param>
-        /// <param name="duration">The duration.</param>
         /// <param name="reservationDeleted">If it has been deleted.</param>
         /// <param name="reservationPaid">If it has been paid.</param>
         /// <param name="reservationRestitutionPaid">If restitution has been paid.</param>
-        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, string reservationDeletedTime) : base(TableName, ColumnId)
+        /// <param name="reservationDeletedTime">The time where the reservation was deleted.</param>
+        /// <param name="checkInDate">The check in date.</param>
+        /// <param name="checkOutDate">The check out date.</param>
+        public Reservation(string id, string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, string reservationDeletedTime, string checkInDate, string checkOutDate) : base(TableName, ColumnId)
         {
             bool successId = int.TryParse(id, out int numericId);
             bool successPeople = int.TryParse(numberOfPeople, out int numericPeople);
             DateTime dateTime = DateTimeParser.TryParse(reservationDeletedTime);
-
+            this.ParseInputDates(checkInDate, checkOutDate);
+            
             this.Id = successId ? numericId : -1;
             // Add one, else it doesn't include the customer
             this.NumberOfPeople = successPeople ? numericPeople : 0;
@@ -91,7 +99,6 @@ namespace Model
             
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
-            this.Duration = duration;
             this.TotalPrice = this.CalculateTotalPrice();
             this.TotalPriceString = $"€{this.TotalPrice}";
             this.ReservationDeleted = reservationDeleted;
@@ -106,23 +113,26 @@ namespace Model
         /// <returns>The total price of the reservation.</returns>
         public float CalculateTotalPrice()
         {
-            if (this.Duration == null && this.CampingPlace == null)
+            if (this.CampingPlace == null)
             {
                 return 0;
             }
-            
-            int days = 0;
-            if (this.Duration == null)
-            {
-                return this.CampingPlace.TotalPrice * days;
-            }
-            
-            var timeSpan = this.Duration.CheckOutDatetime.Subtract(this.Duration.CheckInDatetime);
-            days = timeSpan.Days;
+
+            var timeSpan = this.CheckOutDatetime.Subtract(this.CheckInDatetime);
+            var days = timeSpan.Days;
 
             return this.CampingPlace.TotalPrice * days;
         }
 
+        private void ParseInputDates(string checkInDate, string checkOutDate)
+        {
+            this.CheckInDatetime = DateTimeParser.TryParse(checkInDate);
+            this.CheckOutDatetime = DateTimeParser.TryParse(checkOutDate);
+            
+            this.CheckInDate = this.CheckInDatetime.ToShortDateString();
+            this.CheckOutDate = this.CheckOutDatetime.ToShortDateString();
+        }
+        
         /// <summary>
         /// Returns all the reservation of the given customer id.
         /// </summary>
@@ -130,9 +140,9 @@ namespace Model
         /// <returns>Database records of given customer's reservations</returns>
         public List<Reservation> GetCustomersReservations(int customerId)
         {
-            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId AND {columnDeleted} = @{columnDeleted} ORDER BY {ReservationDuration.ColumnCheckInDate} ");
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomer} = @customerId AND {ColumnDeleted} = @{ColumnDeleted} ORDER BY {ColumnCheckInDate} ");
             query.AddParameter("customerId", customerId);
-            query.AddParameter(columnDeleted, ReservationDeleted == ReservationColumnStatus.True);
+            query.AddParameter(ColumnDeleted, ReservationDeleted == ReservationColumnStatus.True);
 
             List<Reservation> reservations = new List<Reservation>();
             foreach(var item in query.Select())
@@ -146,7 +156,7 @@ namespace Model
         /// <inheritdoc/>
         public override IEnumerable<Reservation> Select()
         {
-            Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ReservationDuration.ColumnCheckInDate}");
+            Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ColumnCheckInDate}");
             var items = query.Select();
             this.Collection = new List<Reservation>();
             foreach (Dictionary<string, string> dictionary in items)
@@ -159,20 +169,12 @@ namespace Model
 
         public bool Update()
         {
-            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid, this.ReservationDeletedTime);
+            return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid, this.ReservationDeletedTime, this.CheckInDatetime, this.CheckOutDatetime);
         }
         
-        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, DateTime? reservationDeletedTime)
+        public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, DateTime? reservationDeletedTime, DateTime checkInDate, DateTime checkOutDate)
         {
-            bool durationUpdated = duration.Update();
-
-            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, duration, reservationDeleted, reservationPaid, reservationRestitutionPaid, reservationDeletedTime)) && durationUpdated;
-        }
-
-        /// <inheritdoc/>
-        public override bool Delete()
-        {
-            return base.Delete() && this.Duration.Delete();
+            return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, reservationDeleted, reservationPaid, reservationRestitutionPaid, reservationDeletedTime, checkInDate, checkOutDate));
         }
 
         /// <inheritdoc/>
@@ -187,11 +189,12 @@ namespace Model
             dictionary.TryGetValue(ColumnPlace, out string campingPlaceId);
             dictionary.TryGetValue(ColumnPeople, out string peopleCount);
             dictionary.TryGetValue(ColumnCustomer, out string campingCustomerId);
-            dictionary.TryGetValue(ColumnDuration, out string durationId);
-            dictionary.TryGetValue(columnDeleted, out string reservationDeleted);
-            dictionary.TryGetValue(columnPaid, out string reservationPaid);
-            dictionary.TryGetValue(columnRestitutionPaid, out string reservationRestitutionPaid);
-            dictionary.TryGetValue(columnDeletedTime, out string reservationDeletedTime);
+            dictionary.TryGetValue(ColumnDeleted, out string reservationDeleted);
+            dictionary.TryGetValue(ColumnPaid, out string reservationPaid);
+            dictionary.TryGetValue(ColumnRestitutionPaid, out string reservationRestitutionPaid);
+            dictionary.TryGetValue(ColumnDeletedTime, out string reservationDeletedTime);
+            dictionary.TryGetValue(ColumnCheckInDate, out string checkInDate);
+            dictionary.TryGetValue(ColumnCheckOutDate, out string checkOutDate);
             
             dictionary.TryGetValue(CampingPlaceType.ColumnId, out string campingPlaceTypeId);
             dictionary.TryGetValue(CampingPlaceType.ColumnGuestLimit, out string guestLimit);
@@ -219,9 +222,6 @@ namespace Model
             dictionary.TryGetValue(CampingCustomer.ColumnPhoneNumber, out string phoneNumber);
             dictionary.TryGetValue(CampingCustomer.ColumnFirstName, out string firstName);
             dictionary.TryGetValue(CampingCustomer.ColumnLastName, out string lastName);
-            
-            dictionary.TryGetValue(ReservationDuration.ColumnCheckInDate, out string checkInDateTime);
-            dictionary.TryGetValue(ReservationDuration.ColumnCheckOutDate, out string checkOutDateTime);
 
             Address customerAddress = new Address(addressId, address, postalCode, place);
             Accommodation accommodation = new Accommodation(accommodationId, prefix, name);
@@ -229,9 +229,8 @@ namespace Model
             CampingPlace campingPlace = new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
             Account account = new Account(accountId, email, password, rights);
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, phoneNumber, firstName, lastName);
-            ReservationDuration reservationDuration = new ReservationDuration(durationId, checkInDateTime, checkOutDateTime);
 
-            Reservation reservation = new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, reservationDuration, (ReservationColumnStatus)Int32.Parse(reservationDeleted), (ReservationColumnStatus)Int32.Parse(reservationPaid), (ReservationColumnStatus)Int32.Parse(reservationRestitutionPaid), reservationDeletedTime);
+            Reservation reservation = new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, (ReservationColumnStatus)Int32.Parse(reservationDeleted), (ReservationColumnStatus)Int32.Parse(reservationPaid), (ReservationColumnStatus)Int32.Parse(reservationRestitutionPaid), reservationDeletedTime, checkInDate, checkOutDate);
             
             ReservationCampingGuest reservationCampingGuestModel = new ReservationCampingGuest();
             reservation.CampingGuests = reservationCampingGuestModel.SelectByReservation(reservation);
@@ -242,25 +241,26 @@ namespace Model
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.Duration, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid, this.ReservationDeletedTime);
+            return Reservation.ToDictionary(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid, this.ReservationDeletedTime, this.CheckInDatetime, this.CheckOutDatetime);
         }
 
-        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationDuration duration, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, DateTime? reservationDeletedTime)
+        private static Dictionary<string, string> ToDictionary(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, DateTime? reservationDeletedTime, DateTime checkInDate, DateTime checkOutDate)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 {ColumnPeople, numberOfPeople},
                 {ColumnCustomer, campingCustomer.Id.ToString()},
                 {ColumnPlace, campingPlace.Id.ToString()},
-                {ColumnDuration, duration.Id.ToString()},
-                {columnDeleted, Convert.ToInt32(reservationDeleted).ToString()},
-                {columnPaid, Convert.ToInt32(reservationPaid).ToString()},
-                {columnRestitutionPaid, Convert.ToInt32(reservationRestitutionPaid).ToString()},
+                {ColumnDeleted, Convert.ToInt32(reservationDeleted).ToString()},
+                {ColumnPaid, Convert.ToInt32(reservationPaid).ToString()},
+                {ColumnRestitutionPaid, Convert.ToInt32(reservationRestitutionPaid).ToString()},
+                {ColumnCheckInDate, DateTimeParser.TryParseToDatabaseDateTimeFormat(checkInDate)},
+                {ColumnCheckOutDate, DateTimeParser.TryParseToDatabaseDateTimeFormat(checkOutDate)},
             };
 
             if (reservationDeletedTime != null && reservationDeletedTime != DateTime.MinValue)
             {
-                dictionary.Add(columnDeletedTime, DateTimeParser.TryParseToDatabaseDateTimeFormat(reservationDeletedTime));
+                dictionary.Add(ColumnDeletedTime, DateTimeParser.TryParseToDatabaseDateTimeFormat(reservationDeletedTime));
             }
 
             return dictionary;
@@ -276,7 +276,6 @@ namespace Model
             query += $" INNER JOIN {CampingCustomer.TableName} CC ON CC.{CampingCustomer.ColumnId} = R.{ColumnCustomer} ";
             query += $" LEFT JOIN {Account.TableName} AC on CC.{CampingCustomer.ColumnAccount} = AC.{Account.ColumnId}";
             query += $" INNER JOIN {Address.TableName} CCA ON CCA.{Address.ColumnId} = CC.{CampingCustomer.ColumnAddress} ";
-            query += $" INNER JOIN {ReservationDuration.TableName} RD ON RD.{ReservationDuration.ColumnId} = R.{ColumnDuration} ";
 
             return query;
         }

@@ -10,6 +10,7 @@ using Model;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using SystemCore;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {

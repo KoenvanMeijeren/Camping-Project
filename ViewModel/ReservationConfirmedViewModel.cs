@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {
@@ -88,8 +89,8 @@ namespace ViewModel
         {
             this.FirstName = args.Reservation.CampingCustomer.FirstName;
             this.LastName = args.Reservation.CampingCustomer.LastName;
-            this.CheckInDate = args.Reservation.Duration.CheckInDatetime;
-            this.CheckOutDate = args.Reservation.Duration.CheckOutDatetime;
+            this.CheckInDate = args.Reservation.CheckInDatetime;
+            this.CheckOutDate = args.Reservation.CheckOutDatetime;
 
             this.Title = $"Gefeliciteerd {this.FirstName} {this.LastName},";
             this.ConfirmationText = $"Uw reservering van {this.CheckInDate.Date.ToShortDateString()} tot {this.CheckOutDate.Date.ToShortDateString()}";

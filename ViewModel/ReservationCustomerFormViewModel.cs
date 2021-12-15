@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
 using SystemCore;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {
@@ -51,9 +52,8 @@ namespace ViewModel
         private bool
             _emailEnabled;
         
-        private DateTime _birthdate;
-        private ReservationDuration _reservationDuration;
-        
+        private DateTime _birthdate, _checkInDateTime, _checkOutDateTime;
+
         private CampingPlace _campingPlace;
 
         private CampingCustomer _currentUserCustomer;
@@ -373,9 +373,10 @@ namespace ViewModel
 
         private void ReservationCampingGuestViewModelOnReservationGoBackEvent(object? sender, ReservationEventArgs e)
         {
-            this._reservationDuration = e.Reservation.Duration;
+            this._checkInDateTime = e.Reservation.CheckInDatetime;
+            this._checkOutDateTime = e.Reservation.CheckOutDatetime;
             this.CampingPlace = e.Reservation.CampingPlace;
-            this.SelectedCampingPlace = $"Reservering van {this._reservationDuration.CheckInDate} tot {this._reservationDuration.CheckOutDate} in verblijf {this._campingPlace.Location}";
+            this.SelectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
 
             this.CurrentUserCustomer = CurrentUser.CampingCustomer;
             //Removes the customer from NumberOfPeople.
@@ -389,11 +390,12 @@ namespace ViewModel
         
         private void OnReserveEvent(object sender, ReservationDurationEventArgs args)
         {
-            this._reservationDuration = args.ReservationDuration;
+            this._checkInDateTime = args.CheckInDatetime;
+            this._checkOutDateTime = args.CheckOutDatetime;
             this.CampingPlace = args.CampingPlace;
             
             this.CurrentUserCustomer = CurrentUser.CampingCustomer;
-            this.SelectedCampingPlace = $"Reservering van {this._reservationDuration.CheckInDate} tot {this._reservationDuration.CheckOutDate} in verblijf {this._campingPlace.Location}";
+            this.SelectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
         }
 
         #region Input validation
@@ -478,7 +480,7 @@ namespace ViewModel
                 CurrentUser.SetCurrentUser(CurrentUser.Account, customer);
             }
 
-            Reservation reservation = new Reservation(this._amountOfGuests, customer, this.CampingPlace, this._reservationDuration);
+            Reservation reservation = new Reservation(this._amountOfGuests, customer, this.CampingPlace, this._checkInDateTime.ToString(CultureInfo.InvariantCulture), this._checkOutDateTime.ToString(CultureInfo.InvariantCulture));
 
             ReservationGuestEvent?.Invoke(this, new ReservationGuestEventArgs(address, customer, reservation));
             this.ResetInput();

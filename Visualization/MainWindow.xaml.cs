@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 using ViewModel;
+using ViewModel.EventArguments;
 
 namespace Visualization
 {

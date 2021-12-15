@@ -35,8 +35,8 @@
                         <GridViewColumn Header="Verblijf" Width="75" DisplayMemberBinding="{Binding Reservation.CampingPlace.Location}" />
                         <GridViewColumn Header="Klantnummer" Width="100" DisplayMemberBinding="{Binding Reservation.CampingCustomer.Id}" />
                         <GridViewColumn Header="Personen" Width="100" DisplayMemberBinding="{Binding Reservation.NumberOfPeople}" />
-                        <GridViewColumn Header="Begindatum" Width="100" DisplayMemberBinding="{Binding Reservation.Duration.CheckInDate}" />
-                        <GridViewColumn Header="Einddatum" Width="100" DisplayMemberBinding="{Binding Reservation.Duration.CheckOutDate}" />
+                        <GridViewColumn Header="Begindatum" Width="100" DisplayMemberBinding="{Binding Reservation.CheckInDate}" />
+                        <GridViewColumn Header="Einddatum" Width="100" DisplayMemberBinding="{Binding Reservation.CheckOutDate}" />
                         <GridViewColumn Header="Totaalprijs" Width="100" DisplayMemberBinding="{Binding Reservation.TotalPriceString}" />
                     </GridView>
                 </ListView.View>

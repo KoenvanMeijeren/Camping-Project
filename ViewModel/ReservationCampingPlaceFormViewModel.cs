@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {
@@ -261,14 +262,7 @@ namespace ViewModel
         #region Commands
         private void ExecuteStartReservation()
         {
-            ReservationDuration reservationDuration = new ReservationDuration(
-                this.CheckInDate.ToString(CultureInfo.InvariantCulture), 
-                this.CheckOutDate.ToString(CultureInfo.InvariantCulture)
-            );
-            reservationDuration.Insert();
-            var lastReservationDuration = reservationDuration.SelectLast();
-            
-            ReserveEvent?.Invoke(this, new ReservationDurationEventArgs(this.SelectedCampingPlace, lastReservationDuration));
+            ReserveEvent?.Invoke(this, new ReservationDurationEventArgs(this.SelectedCampingPlace, this.CheckInDate, this.CheckOutDate));
             this.ResetInput();
         }
 
@@ -295,8 +289,7 @@ namespace ViewModel
             // Removes reserved camping places from the list.
             foreach (Reservation reservation in reservations)
             {
-                ReservationDuration reservationDuration = reservation.Duration;
-                if (reservationDuration.CheckInDatetime.Date <= checkOutDate.Date && checkInDate.Date <= reservationDuration.CheckOutDatetime.Date)
+                if (reservation.CheckInDatetime.Date <= checkOutDate.Date && checkInDate.Date <= reservation.CheckOutDatetime.Date)
                 {
                     campingPlaceList = campingPlaceList.Where(campingPlace => campingPlace.Id != reservation.CampingPlace.Id).ToList();
                 }

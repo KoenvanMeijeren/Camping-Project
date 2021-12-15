@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {
@@ -190,8 +191,8 @@ namespace ViewModel
             }
             
             this.InfoId = reservation.Id.ToString();
-            this.InfoStartDate = reservation.Duration.CheckInDate;
-            this.InfoEndDate = reservation.Duration.CheckOutDate;
+            this.InfoStartDate = reservation.CheckInDate;
+            this.InfoEndDate = reservation.CheckOutDate;
             // Amount of guests + customer
             this.InfoAmountOfGuests = (reservation.CampingGuests.Count + 1).ToString();
             this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
@@ -232,13 +233,13 @@ namespace ViewModel
         private void ExecuteDeleteReservation()
         {
             // Check if reservation has passed
-            if (DateTime.Today >= Convert.ToDateTime(this._selectedReservation.Duration.CheckInDate))
+            if (DateTime.Today >= Convert.ToDateTime(this._selectedReservation.CheckInDate))
             {
                 MessageBox.Show("Reserveringen van vandaag of eerder kunnen niet meer worden verwijderd.", "Reservering verwijderen ", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             
-            bool checkIfReservationIsWithinOneWeek = DateTime.Today.AddMonths(+1) >= Convert.ToDateTime(this._selectedReservation.Duration.CheckInDate);
+            bool checkIfReservationIsWithinOneWeek = DateTime.Today.AddMonths(+1) >= Convert.ToDateTime(this._selectedReservation.CheckInDate);
             string restitutionValue = checkIfReservationIsWithinOneWeek ? (this._selectedReservation.TotalPrice / 2).ToString(CultureInfo.InvariantCulture) : this._selectedReservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
 
             // Confirmation box
@@ -249,13 +250,12 @@ namespace ViewModel
             }
             
             // Checks if update was successful.
-            if (!this._selectedReservation.Update(this._selectedReservation.CampingGuests.Count.ToString(),
-                    this._selectedReservation.CampingCustomer, this._selectedReservation.CampingPlace,
-                    this._selectedReservation.Duration, ReservationColumnStatus.True,
-                    this._selectedReservation.ReservationPaid,
-                    this._selectedReservation.ReservationRestitutionPaid,
-                    this._selectedReservation.ReservationDeletedTime)
-                )
+            if (!this._selectedReservation.Update(
+                    this._selectedReservation.CampingGuests.Count.ToString(),
+                    this._selectedReservation.CampingCustomer, this._selectedReservation.CampingPlace, 
+                    ReservationColumnStatus.True, this._selectedReservation.ReservationPaid, 
+                    this._selectedReservation.ReservationRestitutionPaid, this._selectedReservation.ReservationDeletedTime, 
+                    this._selectedReservation.CheckInDatetime, this._selectedReservation.CheckOutDatetime))
             {
                 return;
             }

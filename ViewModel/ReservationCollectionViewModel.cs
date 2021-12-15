@@ -12,6 +12,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using System.Collections.Generic;
 using System.Globalization;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {
@@ -217,8 +218,8 @@ namespace ViewModel
                 (this.SelectedCampingPlaceType.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)) 
                 && (!int.TryParse(this.MinTotalPrice, out int min) || reservation.TotalPrice >= min) 
                 && (!int.TryParse(this.MaxTotalPrice, out int max) || reservation.TotalPrice <= max) 
-                && (this.CheckInDate == DateTime.MinValue || reservation.Duration.CheckInDatetime >= this.CheckInDate)
-                && (this.CheckOutDate == DateTime.MinValue || reservation.Duration.CheckOutDatetime <= this.CheckOutDate)
+                && (this.CheckInDate == DateTime.MinValue || reservation.CheckInDatetime >= this.CheckInDate)
+                && (this.CheckOutDate == DateTime.MinValue || reservation.CheckOutDatetime <= this.CheckOutDate)
                 && (!int.TryParse(this.Guests, out int guests) || reservation.NumberOfPeople >= guests);
 
             var reservationItems = this._reservationModel.Select().Where(ReservationsFilter);
@@ -257,8 +258,8 @@ namespace ViewModel
                 reservationTable.AddCell(reservation.Reservation.Id.ToString());
                 reservationTable.AddCell(reservation.Reservation.CampingPlace.ToString());
                 reservationTable.AddCell(reservation.Reservation.CampingCustomer.FirstName + " " + reservation.Reservation.CampingCustomer.LastName);
-                reservationTable.AddCell(reservation.Reservation.Duration.CheckInDate);
-                reservationTable.AddCell(reservation.Reservation.Duration.CheckOutDate);
+                reservationTable.AddCell(reservation.Reservation.CheckInDate);
+                reservationTable.AddCell(reservation.Reservation.CheckOutDate);
                 reservationTable.AddCell(" €" + reservation.Reservation.TotalPrice.ToString(CultureInfo.InvariantCulture));
                 reservationTable.AddCell(" ");
 
