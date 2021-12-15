@@ -200,7 +200,7 @@ namespace ViewModel
 
             CampingGuest campingGuest = new CampingGuest(this.FirstNameGuest, this.LastNameGuest, birthDate);
             //Removes the customer from NumberOfPeople.
-            if (this._numberOfAddedGuest >= this.Reservation.CampingPlace.Type.GuestLimit)
+            if (this._numberOfAddedGuest >= this.Reservation.CampingPlace.Type.GuestLimit-1)
             {
                 this.AmountOfPeopleError = "Het maximaal aantal gasten is bereikt!";
                 return;
