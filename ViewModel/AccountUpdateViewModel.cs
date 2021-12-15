@@ -225,12 +225,6 @@ namespace ViewModel
                 this.FirstName = CurrentUser.CampingOwner.FirstName;
                 this.LastName = CurrentUser.CampingOwner.LastName;
                 this.Email = CurrentUser.CampingOwner.Account.Email;
-                this.PhoneNumber = "1";
-                this.Birthdate = new DateTime(1900,1,1);
-                this.Street = "Straatnaam";
-                this.PostalCode = "1234AB";
-                this.Place = "Plaatsnaam";
-
             }
             else
             {
@@ -255,16 +249,27 @@ namespace ViewModel
 
         private bool CanExecuteUpdateConfirm()
         {
-            return  Validation.IsInputFilled(this._firstName) &&
-                    Validation.IsInputFilled(this._lastName) &&
-                    Validation.IsBirthdateValid(this._birthdate) &&
-                    Validation.IsBirthdateAdult(this._birthdate) &&
-                    Validation.IsInputFilled(this._street) &&
-                    Validation.IsInputFilled(this._postalCode) &&
-                    RegexHelper.IsPostalcodeValid(this._postalCode) &&
-                    Validation.IsInputFilled(this._place) &&
-                    Validation.IsInputFilled(this._phoneNumber) &&
-                    Validation.IsNumber(this._phoneNumber);
+            if (CurrentUser.Account == null)
+            {
+                return false;
+            }
+
+            if (CurrentUser.Account.Rights == AccountRights.Customer)
+            {
+                return  Validation.IsInputFilled(this._firstName) &&
+                        Validation.IsInputFilled(this._lastName) &&
+                        Validation.IsBirthdateValid(this._birthdate) &&
+                        Validation.IsBirthdateAdult(this._birthdate) &&
+                        Validation.IsInputFilled(this._street) &&
+                        Validation.IsInputFilled(this._postalCode) &&
+                        RegexHelper.IsPostalcodeValid(this._postalCode) &&
+                        Validation.IsInputFilled(this._place) &&
+                        Validation.IsInputFilled(this._phoneNumber) &&
+                        Validation.IsNumber(this._phoneNumber);
+            }
+
+            return      Validation.IsInputFilled(this._firstName) &&
+                        Validation.IsInputFilled(this._lastName);
         }
 
         private void ExecuteUpdateConfirm()
