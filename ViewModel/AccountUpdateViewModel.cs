@@ -225,10 +225,6 @@ namespace ViewModel
                 this.FirstName = CurrentUser.CampingOwner.FirstName;
                 this.LastName = CurrentUser.CampingOwner.LastName;
                 this.Email = CurrentUser.CampingOwner.Account.Email;
-                this.PhoneNumber = "";
-                this.Birthdate = new DateTime();
-                this.Street = "";
-                this.Place = "";
             }
             else
             {
@@ -253,23 +249,34 @@ namespace ViewModel
 
         private bool CanExecuteUpdateConfirm()
         {
-            return  Validation.IsInputFilled(this._firstName) &&
-                    Validation.IsInputFilled(this._lastName) &&
-                    Validation.IsBirthdateValid(this._birthdate) &&
-                    Validation.IsBirthdateAdult(this._birthdate) &&
-                    Validation.IsInputFilled(this._street) &&
-                    Validation.IsInputFilled(this._postalCode) &&
-                    RegexHelper.IsPostalcodeValid(this._postalCode) &&
-                    Validation.IsInputFilled(this._place) &&
-                    Validation.IsInputFilled(this._phoneNumber) &&
-                    Validation.IsNumber(this._phoneNumber);
+            if (CurrentUser.Account == null)
+            {
+                return false;
+            }
+
+            if (CurrentUser.Account.Rights == AccountRights.Customer)
+            {
+                return  Validation.IsInputFilled(this._firstName) &&
+                        Validation.IsInputFilled(this._lastName) &&
+                        Validation.IsBirthdateValid(this._birthdate) &&
+                        Validation.IsBirthdateAdult(this._birthdate) &&
+                        Validation.IsInputFilled(this._street) &&
+                        Validation.IsInputFilled(this._postalCode) &&
+                        RegexHelper.IsPostalcodeValid(this._postalCode) &&
+                        Validation.IsInputFilled(this._place) &&
+                        Validation.IsInputFilled(this._phoneNumber) &&
+                        Validation.IsNumber(this._phoneNumber);
+            }
+
+            return      Validation.IsInputFilled(this._firstName) &&
+                        Validation.IsInputFilled(this._lastName);
         }
 
         private void ExecuteUpdateConfirm()
         {
             if (this._currentAccount.Rights == AccountRights.Admin)
             {
-                CurrentUser.CampingOwner.Update(CurrentUser.CampingOwner.Account, FirstName, LastName);
+                CurrentUser.CampingOwner.Update(CurrentUser.CampingOwner.Account, this.FirstName, this.LastName);
                 CurrentUser.SetCurrentUser(CurrentUser.Account, CurrentUser.CampingOwner);
             }
             else
