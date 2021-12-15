@@ -163,8 +163,7 @@ namespace ViewModel
             var reservations = this._reservationModel.Select();
             foreach (Reservation reservation in reservations)
             {
-                ReservationDuration reservationDuration = reservation.Duration;
-                if (reservationDuration.CheckInDatetime.Date < this.CheckOutDate.Date && this.CheckInDate.Date < reservationDuration.CheckOutDatetime.Date)
+                if (reservation.CheckInDatetime.Date < this.CheckOutDate.Date && this.CheckInDate.Date < reservation.CheckOutDatetime.Date)
                 {
                     viewData = viewData.Where(campingPlace => campingPlace.Id != reservation.CampingPlace.Id).ToList();
                 }
@@ -185,8 +184,8 @@ namespace ViewModel
             
             this.NumberOfPeople = this._reservation.NumberOfPeople.ToString();
             this.SelectedCampingPlace = this._reservation.CampingPlace;
-            this.CheckInDate = this._reservation.Duration.CheckInDatetime;
-            this.CheckOutDate = this._reservation.Duration.CheckOutDatetime;
+            this.CheckInDate = this._reservation.CheckInDatetime;
+            this.CheckOutDate = this._reservation.CheckOutDatetime;
             this.PageTitle = "Reservering " + this._reservation.Id + " bijwerken";
 
             this.SetAvailableCampingPlaces();
@@ -205,8 +204,7 @@ namespace ViewModel
                 return;
             }
 
-            ReservationDuration reservationDuration = new ReservationDuration(this._reservation.Duration.Id.ToString(), this.CheckInDate.ToString(CultureInfo.InvariantCulture), this.CheckOutDate.ToString(CultureInfo.InvariantCulture));
-            Reservation reservation = new Reservation(this._reservation.Id.ToString(), this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, reservationDuration, this._reservation.ReservationDeleted, this._reservation.ReservationPaid, this._reservation.ReservationRestitutionPaid, null);
+            Reservation reservation = new Reservation(this._reservation.Id.ToString(), this.NumberOfPeople, this._campingCustomer, this.SelectedCampingPlace, this._reservation.ReservationDeleted, this._reservation.ReservationPaid, this._reservation.ReservationRestitutionPaid, null, this._checkInDate.ToString(CultureInfo.InvariantCulture), this._checkOutDate.ToString(CultureInfo.InvariantCulture));
 
             bool reservationUpdated = reservation.Update();
 

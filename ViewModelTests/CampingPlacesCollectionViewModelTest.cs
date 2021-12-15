@@ -117,10 +117,9 @@ namespace ViewModelTests
         {
             List<Reservation> mockListReservations = new List<Reservation>();
             CampingCustomer testCampingCustomer = new CampingCustomer();
-            ReservationDuration testReservationDuration = new ReservationDuration("-1", this._checkInDate.ToString(CultureInfo.InvariantCulture), this._checkOutDate.ToString(CultureInfo.InvariantCulture));
 
-            mockListReservations.Add(new Reservation("2", testCampingCustomer, this._testCampingPlaceOne, testReservationDuration));
-            mockListReservations.Add(new Reservation("2", testCampingCustomer, this._testCampingPlaceTwo, testReservationDuration));
+            mockListReservations.Add(new Reservation("2", testCampingCustomer, this._testCampingPlaceOne, this._checkInDate.ToString(CultureInfo.InvariantCulture), this._checkOutDate.ToString(CultureInfo.InvariantCulture)));
+            mockListReservations.Add(new Reservation("2", testCampingCustomer, this._testCampingPlaceTwo, this._checkInDate.ToString(CultureInfo.InvariantCulture), this._checkOutDate.ToString(CultureInfo.InvariantCulture)));
             this._campingPlacesMock.Setup(x => x.GetReservationModel()).Returns(mockListReservations);
 
             var testTwee = this._campingPlacesMock.Object.GetReservationModel();

@@ -79,11 +79,12 @@ namespace Model
             dictionary.TryGetValue(Reservation.ColumnPlace, out string campingPlaceId);
             dictionary.TryGetValue(Reservation.ColumnPeople, out string numberOfPeople);
             dictionary.TryGetValue(Reservation.ColumnCustomer, out string campingCustomerId);
-            dictionary.TryGetValue(Reservation.ColumnDuration, out string reservationDurationId);
-            dictionary.TryGetValue(Reservation.columnDeleted, out string reservationDeleted);
-            dictionary.TryGetValue(Reservation.columnPaid, out string reservationPaid);
-            dictionary.TryGetValue(Reservation.columnRestitutionPaid, out string reservationRestitutionPaid);
-            dictionary.TryGetValue(Reservation.columnDeletedTime, out string reservationDeletedTime);
+            dictionary.TryGetValue(Reservation.ColumnDeleted, out string reservationDeleted);
+            dictionary.TryGetValue(Reservation.ColumnPaid, out string reservationPaid);
+            dictionary.TryGetValue(Reservation.ColumnRestitutionPaid, out string reservationRestitutionPaid);
+            dictionary.TryGetValue(Reservation.ColumnDeletedTime, out string reservationDeletedTime);
+            dictionary.TryGetValue(Reservation.ColumnCheckInDate, out string checkInDate);
+            dictionary.TryGetValue(Reservation.ColumnCheckOutDate, out string checkOutDate);
 
             dictionary.TryGetValue(ColumnGuest, out string campingGuestId);
             dictionary.TryGetValue(CampingGuest.ColumnFirstName, out string guestFirstName);
@@ -116,9 +117,6 @@ namespace Model
             dictionary.TryGetValue(CampingCustomer.ColumnPhoneNumber, out string customerPhoneNumber);
             dictionary.TryGetValue(CampingCustomer.ColumnFirstName, out string customerFirstName);
             dictionary.TryGetValue(CampingCustomer.ColumnLastName, out string customerLastName);
-            
-            dictionary.TryGetValue(ReservationDuration.ColumnCheckInDate, out string checkInDateTime);
-            dictionary.TryGetValue(ReservationDuration.ColumnCheckOutDate, out string checkOutDateTime);
 
             Address customerAddress = new Address(addressId, address, postalCode, place);
             Accommodation accommodation = new Accommodation(accommodationId, prefix, name);
@@ -126,9 +124,8 @@ namespace Model
             CampingPlace campingPlace = new CampingPlace(campingPlaceId, placeNumber, surface, extraNightPrice, campingPlaceType);
             Account account = new Account(accountId, email, password, rights);
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, customerBirthdate, customerPhoneNumber, customerFirstName, customerLastName);
-            ReservationDuration reservationDuration = new ReservationDuration(reservationDurationId, checkInDateTime, checkOutDateTime);
 
-            Reservation reservation = new Reservation(reservationId, numberOfPeople, campingCustomer, campingPlace, reservationDuration, (ReservationColumnStatus)Int32.Parse(reservationDeleted), (ReservationColumnStatus)Int32.Parse(reservationPaid), (ReservationColumnStatus)Int32.Parse(reservationRestitutionPaid), reservationDeletedTime);
+            Reservation reservation = new Reservation(reservationId, numberOfPeople, campingCustomer, campingPlace, (ReservationColumnStatus)Int32.Parse(reservationDeleted), (ReservationColumnStatus)Int32.Parse(reservationPaid), (ReservationColumnStatus)Int32.Parse(reservationRestitutionPaid), reservationDeletedTime, checkInDate, checkOutDate);
             CampingGuest campingGuest = new CampingGuest(campingGuestId, guestFirstName, guestLastName, guestBirthdate);
 
             return new ReservationCampingGuest(reservationCampingGuestId, reservation, campingGuest);
@@ -162,7 +159,6 @@ namespace Model
             query += $" INNER JOIN {CampingCustomer.TableName} CC ON CC.{CampingCustomer.ColumnId} = R.{Reservation.ColumnCustomer} ";
             query += $" LEFT JOIN {Account.TableName} AC on CC.{CampingCustomer.ColumnAccount} = AC.{Account.ColumnId}";
             query += $" INNER JOIN {Address.TableName} CCA ON CCA.{Address.ColumnId} = CC.{CampingCustomer.ColumnAddress} ";
-            query += $" INNER JOIN {ReservationDuration.TableName} RD ON RD.{ReservationDuration.ColumnId} = R.{Reservation.ColumnDuration} ";
             query += $" INNER JOIN {CampingGuest.TableName} CG ON BT.{ColumnGuest} = CG.{CampingGuest.ColumnId}";
 
             return query;
