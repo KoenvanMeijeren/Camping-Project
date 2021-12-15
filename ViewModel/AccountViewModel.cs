@@ -14,10 +14,14 @@ namespace ViewModel
 {
     public class AccountViewModel : ObservableObject
     {
+        #region Fields
+        
         private string _name , _birthdate, _street, _address, _mail, _phoneNumber;
         private Account _currentAccount;
 
-        #region properties
+        #endregion
+        
+        #region Properties
         public string Name
         {
             get => this._name;
@@ -114,6 +118,8 @@ namespace ViewModel
         public static event EventHandler ToAccountUpdatePageEvent;
         #endregion
 
+        #region View construction
+        
         public AccountViewModel()
         {
             CurrentUser.CurrentUserSetEvent += OnCurrentUserSetEvent;
@@ -149,6 +155,15 @@ namespace ViewModel
             this.SetOverview();
         }
 
+        private void OnUpdateConfirmEvent(object sender, EventArgs e)
+        {
+            this.SetOverview();
+        }
+        
+        #endregion
+
+        #region Commands
+
         public ICommand SignOut => new RelayCommand(ExecuteSignOut);
         public ICommand ToUpdate => new RelayCommand(ExecuteToUpdate);
 
@@ -170,10 +185,6 @@ namespace ViewModel
             ToAccountUpdatePageEvent?.Invoke(this, EventArgs.Empty);
         }
 
-        
-        private void OnUpdateConfirmEvent(object sender, EventArgs e)
-        {
-            this.SetOverview();
-        }
+        #endregion
     }
 }
