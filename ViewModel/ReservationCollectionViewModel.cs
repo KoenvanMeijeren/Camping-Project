@@ -118,8 +118,11 @@ namespace ViewModel
                 this._checkInDate = value;
                 this.SetOverview();
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
-                this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
+
+                if (daysDifference > 0)
+                {
+                    this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
+                }
             }
         }
 
@@ -136,6 +139,11 @@ namespace ViewModel
                 this._checkOutDate = value;
                 this.SetOverview();
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                if (this._checkOutDate < this.CheckInDate)
+                {
+                    this.CheckInDate = this._checkOutDate.AddDays(-1);
+                }
             }
         }
         
