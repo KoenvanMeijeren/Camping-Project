@@ -16,22 +16,20 @@ namespace ViewModel
 {
     public class ReservationCampingGuestViewModel : ObservableObject
     {
+        #region Fields
+
         private string _id, _firstNameGuest, _lastNameGuest, _amountOfPeopleError, _firstNameError, _lastNameError, _birthDateError;
         private readonly List<CampingGuest> _campingGuestsList;
         private DateTime _birthDate;
-        public ObservableCollection<CampingGuest> CampingGuests { get; private set; }
         private Reservation _reservation;
         private int _numberOfAddedGuest;
-        private Dictionary<string, string> _errorDictionary;
+        private readonly Dictionary<string, string> _errorDictionary;
+        
+        #endregion
 
-        public string IdGuest {
-            get => this._id;
-            set
-            {
-                this._id = value;
+        #region Properties
 
-            }
-        }
+        public ObservableCollection<CampingGuest> CampingGuests { get; private set; }
 
         public string FirstNameGuest
         {
@@ -158,8 +156,16 @@ namespace ViewModel
             }
         }
 
+        #endregion
+
+        #region Events
+
         public static event EventHandler<ReservationEventArgs> ReservationConfirmedEvent;
         public static event EventHandler<ReservationEventArgs> ReservationGoBackEvent;
+
+        #endregion
+
+        #region View construction
 
         public ReservationCampingGuestViewModel()
         {
@@ -176,6 +182,16 @@ namespace ViewModel
             
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationConfirmedEvent;
         }
+        
+        private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)
+        {
+            this.Reservation = args.Reservation;
+            this._numberOfAddedGuest = this._campingGuestsList.Count();
+        }
+
+        #endregion
+
+        #region Input validation
 
         private void AddErrorToDictionary(string key, string value)
         {
@@ -191,7 +207,12 @@ namespace ViewModel
 
             this._errorDictionary.Remove(key);
         }
-        /// <summary>
+
+        #endregion
+
+        #region Commands
+
+                /// <summary>
         /// Inserts campingGuest into the database.
         /// </summary>
         private void ExecuteAddGuestReservation()
@@ -273,12 +294,6 @@ namespace ViewModel
             ReservationGoBackEvent?.Invoke(this, new ReservationEventArgs(this.Reservation));
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)
-        {
-            this.Reservation = args.Reservation;
-            this._numberOfAddedGuest = this._campingGuestsList.Count();
-        }
-
         public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerGuestReservation);
 
         public ICommand CustomerGuestGoBackReservation => new RelayCommand(ExecuteCustomerGuestGoBackReservation);
@@ -286,5 +301,7 @@ namespace ViewModel
         public ICommand AddGuestReservation => new RelayCommand(ExecuteAddGuestReservation, CanExecuteAddGuestReservation);
 
         public ICommand RemoveGuestReservation => new RelayCommand(ExecuteRemoveGuestReservation, CanExecuteRemoveGuestReservation);
+
+        #endregion
     }
 }
