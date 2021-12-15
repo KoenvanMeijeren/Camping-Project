@@ -23,6 +23,7 @@ namespace Visualization
         private readonly ReservationUpdateDeletePage _manageReservationPage;
         private readonly ReservationOverviewPage _reservationOverviewPage;
         private readonly AccountUpdatePage _accountUpdatePage;
+        private readonly ContactPage _contactPage;
 
         public MainWindow()
         {
@@ -39,6 +40,7 @@ namespace Visualization
             this._manageReservationPage = new ReservationUpdateDeletePage();
             this._reservationOverviewPage = new ReservationOverviewPage();
             this._accountUpdatePage = new AccountUpdatePage();
+            this._contactPage = new ContactPage();
 
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
@@ -59,6 +61,7 @@ namespace Visualization
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
+            this.ContactMenuButton.Visibility = Visibility.Collapsed;
         }
 
         private void OnReserveEvent(object sender, ReservationEventArgs args)
@@ -88,6 +91,7 @@ namespace Visualization
             this.OverviewMenuButton.Visibility = Visibility.Visible;
             this.ReserveMenuButton.Visibility = Visibility.Visible;
             this.AccountMenuButton.Visibility = Visibility.Visible;
+            this.ContactMenuButton.Visibility = Visibility.Visible;
             this.SignInMenuButton.Visibility = Visibility.Collapsed;
             this.SignUpMenuButton.Visibility = Visibility.Collapsed;
         }
@@ -106,6 +110,7 @@ namespace Visualization
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
+            this.ContactMenuButton.Visibility = Visibility.Collapsed;
             this.SignInMenuButton.Visibility = Visibility.Visible;
             this.SignUpMenuButton.Visibility = Visibility.Visible;
 
@@ -149,7 +154,12 @@ namespace Visualization
         {
             this.MainFrame.Content = this._signUpPage.Content;
         }
-        
+
+        private void OnToAccountUpdatePageEvent(object sender, EventArgs e)
+        {
+            this.MainFrame.Content = this._accountUpdatePage.Content;
+        }
+
         private void OnManageReservationEvent(object sender, ReservationEventArgs args)
         {
             this.MainFrame.Content = this._manageReservationPage.Content;
@@ -160,9 +170,9 @@ namespace Visualization
             this.OverviewMenuButton_Checked(sender, null);
         }
 
-        private void OnToAccountUpdatePageEvent(object sender, EventArgs e)
+        private void ContactMenuButton_Checked(object sender, EventArgs e)
         {
-            this.MainFrame.Content = this._accountUpdatePage.Content;
+            this.MainFrame.Content = this._contactPage.Content;
         }
 
         private void OnUpdateCancelEvent(object sender, EventArgs e)
