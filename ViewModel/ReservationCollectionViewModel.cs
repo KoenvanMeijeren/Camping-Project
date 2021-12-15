@@ -24,7 +24,7 @@ namespace ViewModel
         private const string SelectAll = "Alle";
 
         private readonly ObservableCollection<string> _campingPlaceTypes;
-        public ObservableCollection<ReservationViewModel> Reservations { get; private set; }
+        public ObservableCollection<Reservation> Reservations { get; private set; }
         public static event EventHandler<ReservationEventArgs> ManageReservationEvent;
         
         private ReservationViewModel _selectedReservation;
@@ -175,16 +175,17 @@ namespace ViewModel
 
         public ReservationCollectionViewModel()
         {
-            this.Reservations = new ObservableCollection<ReservationViewModel>();
+            this.Reservations = new ObservableCollection<Reservation>();
             this.CampingPlaceTypes = new ObservableCollection<string> {
                 SelectAll
             };
-            
+
             //Loop through rows in Accommodation table
-            foreach (var accommodationDatabaseRow in this._accommodationModel.Select())
+            foreach (var accommodationDatabaseRow in SelectAccomodationTypes())
             {
                 this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);
             }
+           
 
             this.SelectedCampingPlaceType = SelectAll;
             
@@ -195,6 +196,12 @@ namespace ViewModel
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ManageReservationViewModel.UpdateReservationCollection += OnReservationConfirmedEvent;
         }
+
+        public virtual IEnumerable<Accommodation> SelectAccomodationTypes() 
+        {
+            return this._accommodationModel.Select();
+        }
+
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
         {
@@ -216,9 +223,10 @@ namespace ViewModel
             var reservationItems = this._reservationModel.Select().Where(ReservationsFilter);
             foreach (var reservation in reservationItems)
             {
-                this.Reservations.Add(new ReservationViewModel(reservation));
+                this.Reservations.Add(reservation);
             }
         }
+
 
     
 
@@ -246,18 +254,18 @@ namespace ViewModel
                 reservationTable.AddCell("Prijs");
                 reservationTable.AddCell("Aanwezig");
 
-                reservationTable.AddCell(reservation.Reservation.Id.ToString());
-                reservationTable.AddCell(reservation.Reservation.CampingPlace.ToString());
-                reservationTable.AddCell(reservation.Reservation.CampingCustomer.FirstName + " " + reservation.Reservation.CampingCustomer.LastName);
-                reservationTable.AddCell(reservation.Reservation.Duration.CheckInDate);
-                reservationTable.AddCell(reservation.Reservation.Duration.CheckOutDate);
-                reservationTable.AddCell(" €" + reservation.Reservation.TotalPrice.ToString(CultureInfo.InvariantCulture));
+                reservationTable.AddCell(reservation.Id.ToString());
+                reservationTable.AddCell(reservation.CampingPlace.ToString());
+                reservationTable.AddCell(reservation.CampingCustomer.FirstName + " " + reservation.CampingCustomer.LastName);
+                reservationTable.AddCell(reservation.Duration.CheckInDate);
+                reservationTable.AddCell(reservation.Duration.CheckOutDate);
+                reservationTable.AddCell(" €" + reservation.TotalPrice.ToString(CultureInfo.InvariantCulture));
                 reservationTable.AddCell(" ");
 
                 document.Add(reservationTable);
 
                 //Should be used for the CampingGuest table
-                var campingGuests = reservation.Reservation.CampingGuests;
+                var campingGuests = reservation.CampingGuests;
                 if (!campingGuests.Any())
                 {
                     continue;
@@ -285,13 +293,6 @@ namespace ViewModel
 
         public ICommand CreatePdf => new RelayCommand(ExecuteCreatePdf);
     }
-    public class ReservationViewModel
-    {
-        public Reservation Reservation { get; private init; }
 
-        public ReservationViewModel(Reservation reservation)
-        {
-            this.Reservation = reservation;
-        }
-    }
+ 
 }
