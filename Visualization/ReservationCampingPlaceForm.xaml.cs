@@ -5,9 +5,9 @@ namespace Visualization
     /// <summary>
     /// Interaction logic for CampingPitchesCollectionPage.xaml
     /// </summary>
-    public partial class CampingPlacesCollectionPage : Page
+    public partial class ReservationCampingPlaceForm : Page
     {
-        public CampingPlacesCollectionPage()
+        public ReservationCampingPlaceForm()
         {
             this.InitializeComponent();
         }
