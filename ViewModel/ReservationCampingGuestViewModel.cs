@@ -18,7 +18,8 @@ namespace ViewModel
     {
         #region Fields
 
-        private string _id, _firstNameGuest, _lastNameGuest, _amountOfPeopleError, _firstNameError, _lastNameError, _birthDateError;
+        private string _firstNameGuest, _lastNameGuest, _amountOfPeopleError, _firstNameError, _lastNameError, _birthDateError;
+        private readonly List<CampingGuest> _campingGuestsList;
         private DateTime _birthDate;
         private Reservation _reservation;
         private int _numberOfAddedGuest;
@@ -225,8 +226,8 @@ namespace ViewModel
         #endregion
 
         #region Commands
-
-                /// <summary>
+        
+        /// <summary>
         /// Inserts campingGuest into the database.
         /// </summary>
         private void ExecuteAddGuestReservation()
@@ -236,7 +237,7 @@ namespace ViewModel
 
             CampingGuest campingGuest = new CampingGuest(this.FirstNameGuest, this.LastNameGuest, birthDate);
             //Removes the customer from NumberOfPeople.
-            if (this._numberOfAddedGuest >= this.Reservation.CampingPlace.Type.GuestLimit-1)
+            if (this._numberOfAddedGuest >= (this.Reservation.CampingPlace.Type.GuestLimit - 1))
             {
                 this.AmountOfPeopleError = "Maximaal aantal gasten is bereikt";
                 return;

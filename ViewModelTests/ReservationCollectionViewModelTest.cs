@@ -49,6 +49,7 @@ namespace ViewModelTests
         public void TestThatWeHaveReservations()
         {
             Assert.NotNull(this._reservationCollectionMock.Object.Reservations);
+            Assert.AreEqual(6, this._reservationCollectionMock.Object.Reservations.Count);
         }
 
         [Test]
@@ -74,20 +75,20 @@ namespace ViewModelTests
         public void TestFilterMinPrice()
         {
             this._reservationCollectionMock.Object.MinTotalPrice = "50";
-            Assert.AreEqual(5, this._reservationCollectionMock.Object.Reservations.Count());
+            Assert.AreEqual(6, this._reservationCollectionMock.Object.Reservations.Count());
 
             this._reservationCollectionMock.Object.MinTotalPrice = "90";
-            Assert.AreEqual(2, this._reservationCollectionMock.Object.Reservations.Count());
+            Assert.AreEqual(5, this._reservationCollectionMock.Object.Reservations.Count());
         }
 
         [Test]
         public void TestFilterMaxPrice()
         {
             this._reservationCollectionMock.Object.MaxTotalPrice = "40";
-            Assert.AreEqual(1, this._reservationCollectionMock.Object.Reservations.Count());
+            Assert.AreEqual(0, this._reservationCollectionMock.Object.Reservations.Count());
 
             this._reservationCollectionMock.Object.MaxTotalPrice = "90";
-            Assert.AreEqual(4, this._reservationCollectionMock.Object.Reservations.Count());
+            Assert.AreEqual(1, this._reservationCollectionMock.Object.Reservations.Count());
         }
 
         [Test]

@@ -10,13 +10,24 @@ namespace ModelTests
         public void TestCampingPlaceTypeConstructorCorrect()
         {
             Accommodation accommodation = new Accommodation("12", "BH", "test");
+            CampingPlaceType campingPlaceType = new CampingPlaceType( "10", "100", accommodation);
+            Assert.AreEqual(campingPlaceType.Id, -1);
+            Assert.AreEqual(campingPlaceType.Accommodation.Id, 12);
+            Assert.AreEqual(campingPlaceType.GuestLimit, 10);
+            Assert.AreEqual(campingPlaceType.StandardNightPrice, 100);
+        }
+
+        [Test]
+        public void TestCampingPlaceTypeLongConstructorCorrect()
+        {
+            Accommodation accommodation = new Accommodation("12", "BH", "test");
             CampingPlaceType campingPlaceType = new CampingPlaceType("122", "10", "100", accommodation);
             Assert.AreEqual(campingPlaceType.Id, 122);
             Assert.AreEqual(campingPlaceType.Accommodation.Id, 12);
             Assert.AreEqual(campingPlaceType.GuestLimit, 10);
             Assert.AreEqual(campingPlaceType.StandardNightPrice, 100);
         }
-
+        
         [Test]
         public void TestCampingPlaceTypeConstructorIncorrect()
         {
