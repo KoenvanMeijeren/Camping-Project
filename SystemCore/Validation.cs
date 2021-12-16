@@ -4,6 +4,8 @@ namespace SystemCore
 {
     public static class Validation
     {
+        public const int AdultAge = 18;
+        
         public static bool IsInputFilled(string input)
         {
             return (!string.IsNullOrEmpty(input) && input.Length != 0);
@@ -21,14 +23,7 @@ namespace SystemCore
 
         public static bool IsBirthdateAdult(DateTime birthdate)
         {
-            int AgeLimit = 18;
-            int age = DateTime.Now.Year - birthdate.Year;
-
-            if (birthdate > DateTime.Now.AddYears(-age))
-            {
-                age--;
-            }
-            return !(age <= AgeLimit);
+            return birthdate.AddYears(AdultAge) <= DateTime.Today;
         }
     }
 }
