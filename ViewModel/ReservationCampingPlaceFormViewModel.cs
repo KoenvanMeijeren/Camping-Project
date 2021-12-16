@@ -215,7 +215,7 @@ namespace ViewModel
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.ReservationCampingGuestViewModelOnReservationConfirmedEvent;
         }
 
-        private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object? sender, ReservationEventArgs e)
+        private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object sender, ReservationEventArgs e)
         {
             this.SetOverview(this.GetCampingPlaces());
         }

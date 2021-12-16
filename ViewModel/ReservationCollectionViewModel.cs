@@ -25,27 +25,10 @@ namespace ViewModel
         private const string SelectAll = "Alle";
 
         private readonly ObservableCollection<string> _campingPlaceTypes;
-        public ObservableCollection<ReservationViewModel> Reservations { get; private set; }
-        public static event EventHandler<ReservationEventArgs> ManageReservationEvent;
-        
-        private ReservationViewModel _selectedReservation;
-        public ReservationViewModel SelectedReservation
-        {
-            get => _selectedReservation;
-            set
-            {
-                if (value == null || Equals(value, this._selectedReservation))
-                {
-                    return;
-                }
+        public ObservableCollection<Reservation> Reservations { get; private set; }
 
-                this._selectedReservation = value;
-                ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation.Reservation));
-            }
-        }
+        private Reservation _selectedReservation;
 
-
-        
         private DateTime _checkOutDate, _checkInDate;
         private string _minTotalPrice, _maxTotalPrice, _selectedCampingPlaceType, _guests;
 
@@ -179,12 +162,35 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
+        
+        public Reservation SelectedReservation
+        {
+            get => _selectedReservation;
+            set
+            {
+                if (value == null || Equals(value, this._selectedReservation))
+                {
+                    return;
+                }
+
+                this._selectedReservation = value;
+                ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation));
+            }
+        }
 
         #endregion
 
+        #region Events
+
+        public static event EventHandler<ReservationEventArgs> ManageReservationEvent;
+
+        #endregion
+
+        #region View construction
+
         public ReservationCollectionViewModel()
         {
-            this.Reservations = new ObservableCollection<ReservationViewModel>();
+            this.Reservations = new ObservableCollection<Reservation>();
             this.CampingPlaceTypes = new ObservableCollection<string> {
                 SelectAll
             };
@@ -225,11 +231,13 @@ namespace ViewModel
             var reservationItems = this._reservationModel.Select().Where(ReservationsFilter);
             foreach (var reservation in reservationItems)
             {
-                this.Reservations.Add(new ReservationViewModel(reservation));
+                this.Reservations.Add(reservation);
             }
         }
 
-    
+        #endregion
+
+        #region Commands
 
         private void ExecuteCreatePdf()
         {
@@ -255,18 +263,18 @@ namespace ViewModel
                 reservationTable.AddCell("Prijs");
                 reservationTable.AddCell("Aanwezig");
 
-                reservationTable.AddCell(reservation.Reservation.Id.ToString());
-                reservationTable.AddCell(reservation.Reservation.CampingPlace.ToString());
-                reservationTable.AddCell(reservation.Reservation.CampingCustomer.FirstName + " " + reservation.Reservation.CampingCustomer.LastName);
-                reservationTable.AddCell(reservation.Reservation.CheckInDate);
-                reservationTable.AddCell(reservation.Reservation.CheckOutDate);
-                reservationTable.AddCell(" €" + reservation.Reservation.TotalPrice.ToString(CultureInfo.InvariantCulture));
+                reservationTable.AddCell(reservation.Id.ToString());
+                reservationTable.AddCell(reservation.CampingPlace.ToString());
+                reservationTable.AddCell(reservation.CampingCustomer.FirstName + " " + reservation.CampingCustomer.LastName);
+                reservationTable.AddCell(reservation.CheckInDate);
+                reservationTable.AddCell(reservation.CheckOutDate);
+                reservationTable.AddCell(" €" + reservation.TotalPrice.ToString(CultureInfo.InvariantCulture));
                 reservationTable.AddCell(" ");
 
                 document.Add(reservationTable);
 
                 //Should be used for the CampingGuest table
-                var campingGuests = reservation.Reservation.CampingGuests;
+                var campingGuests = reservation.CampingGuests;
                 if (!campingGuests.Any())
                 {
                     continue;
@@ -293,14 +301,7 @@ namespace ViewModel
         }
 
         public ICommand CreatePdf => new RelayCommand(ExecuteCreatePdf);
-    }
-    public class ReservationViewModel
-    {
-        public Reservation Reservation { get; private init; }
 
-        public ReservationViewModel(Reservation reservation)
-        {
-            this.Reservation = reservation;
-        }
+        #endregion
     }
 }

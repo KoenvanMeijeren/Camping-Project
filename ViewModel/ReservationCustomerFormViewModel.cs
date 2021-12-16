@@ -21,32 +21,17 @@ namespace ViewModel
 
         private readonly Dictionary<string, string> _errorDictionary;
 
-        private string 
+        private string
+            _customerReservationError,
+
             _firstName,
-            _firstNameError,
-            
             _lastName,
-            _lastNameError,
-            
-            _birthdateError,
-            
             _phoneNumber,
-            _phoneNumberError,
-            
-            _streetName,
-            _streetNameError,
-            
+            _street,
             _postalCode,
-            _postalCodeError,
-            
-            _placeName,
-            _placeNameError,
-            
-            _emailAddress,
-            _emailAddressError,
-
+            _place,
+            _email,
             _amountOfGuests,
-
             _selectedCampingPlace;
 
         private bool
@@ -57,36 +42,43 @@ namespace ViewModel
         private CampingPlace _campingPlace;
 
         private CampingCustomer _currentUserCustomer;
-        
+
         #endregion
 
         #region Properties
+
+        public string CustomerReservationError
+        {
+            get => this._customerReservationError;
+            set
+            {
+                if (value == this._customerReservationError)
+                {
+                    return;
+                }
+
+                this._customerReservationError = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
         public string FirstName
         {
             get => this._firstName;
             set
             {
-                this._firstName = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-
-                this.FirstNameError = string.Empty;
-                this.RemoveErrorFromDictionary("FirstName");
-                if (Validation.IsInputFilled(value))
+                if (value == this._firstName)
                 {
                     return;
                 }
-                
-                this.FirstNameError = "Ongeldige input";
-                this.AddErrorToDictionary("FirstName", "Ongeldige input");
-            }
-        }
-        public string FirstNameError
-        {
-            get => this._firstNameError;
-            set
-            {
-                this._firstNameError = value;
+
+                this._firstName = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                this.CustomerReservationError = "";
+                if (!Validation.IsInputFilled(this._firstName))
+                {
+                    this.CustomerReservationError = "Voornaam is een verplicht veld";
+                }
             }
         }
 
@@ -95,27 +87,19 @@ namespace ViewModel
             get => this._lastName;
             set
             {
-                this._lastName = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
-                this.LastNameError = string.Empty;
-                this.RemoveErrorFromDictionary("LastName");
-                if (Validation.IsInputFilled(value))
+                if (value == this._lastName)
                 {
                     return;
                 }
-                
-                this.LastNameError = "Ongeldige input";
-                this.AddErrorToDictionary("LastName", "Ongeldige input");
-            }
-        }
-        public string LastNameError
-        {
-            get => this._lastNameError;
-            set
-            {
-                this._lastNameError = value;
+
+                this._lastName = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                this.CustomerReservationError = "";
+                if (!Validation.IsInputFilled(this._lastName))
+                {
+                    this.CustomerReservationError = "Achternaam is een verplicht veld";
+                }
             }
         }
 
@@ -124,26 +108,104 @@ namespace ViewModel
             get => this._birthdate;
             set
             {
-                this._birthdate = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
-                this.BirthdateError = string.Empty;
-                this.RemoveErrorFromDictionary("Birthdate");
-                if (!this._birthdate.Equals(DateTime.MinValue))
+                if (value == this._birthdate)
                 {
                     return;
                 }
-                
-                this.BirthdateError = "Ongeldige input";
-                this.AddErrorToDictionary("Birthdate", "Ongeldige input");
+
+                this._birthdate = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                this.CustomerReservationError = "";
+                if (!Validation.IsBirthdateValid(this._birthdate))
+                {
+                    this.CustomerReservationError = "Ongeldig geboortedatum";
+                }
+                else if (!Validation.IsBirthdateAdult(this._birthdate))
+                {
+                    this.CustomerReservationError = "U bent te jong om te reserveren";
+                }
             }
         }
-        public string BirthdateError
+
+        public string Street
         {
-            get => this._birthdateError;
+            get => this._street;
             set
             {
-                this._birthdateError = value;
+                if (value == this._street)
+                {
+                    return;
+                }
+
+                this._street = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                this.CustomerReservationError = "";
+                if (!Validation.IsInputFilled(this._street))
+                {
+                    this.CustomerReservationError = "Straatnaam is een verplicht veld";
+                }
+            }
+        }
+
+        public string PostalCode
+        {
+            get => this._postalCode;
+            set
+            {
+                if (value == this._postalCode)
+                {
+                    return;
+                }
+
+                this._postalCode = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                this.CustomerReservationError = "";
+                if (!Validation.IsInputFilled(this._postalCode))
+                {
+                    this.CustomerReservationError = "Postcode is een verplicht veld";
+                }
+                if (!RegexHelper.IsPostalcodeValid(this._postalCode))
+                {
+                    this.CustomerReservationError = "Ongeldig postcode";
+                }
+            }
+        }
+
+        public string Place
+        {
+            get => this._place;
+            set
+            {
+                if (value == this._place)
+                {
+                    return;
+                }
+
+                this._place = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                this.CustomerReservationError = "";
+                if (!Validation.IsInputFilled(this._place))
+                {
+                    this.CustomerReservationError = "Plaatsnaam is een verplicht veld";
+                }
+            }
+        }
+
+        public string Email
+        {
+            get => this._email;
+            set
+            {
+                if (value == this._email)
+                {
+                    return;
+                }
+
+                this._email = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -153,147 +215,26 @@ namespace ViewModel
             get => this._phoneNumber;
             set
             {
+                if (value == this._phoneNumber)
+                {
+                    return;
+                }
+
                 this._phoneNumber = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
-                this.PhoneNumberError = string.Empty;
-                this.RemoveErrorFromDictionary("PhoneNumber");
-                if (Validation.IsInputFilled(value))
+
+                this.CustomerReservationError = "";
+                if (!Validation.IsInputFilled(this._phoneNumber))
                 {
-                    return;
+                    this.CustomerReservationError = "Telefoonnummer is een verplicht veld";
                 }
-                
-                this.PhoneNumberError = "Ongeldige input";
-                this.AddErrorToDictionary("PhoneNumber", "Ongeldige input");
-            }
-        }
-        public string PhoneNumberError
-        {
-            get => this._phoneNumberError;
-            set
-            {
-                this._phoneNumberError = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                else if (!Validation.IsNumber(this._phoneNumber))
+                {
+                    this.CustomerReservationError = "Ongeldig telefoonnummer";
+                }
             }
         }
 
-        public string StreetName
-        {
-            get => this._streetName;
-            set
-            {
-                this._streetName = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
-                this.StreetNameError = string.Empty;
-                this.RemoveErrorFromDictionary("StreetName");
-                if (Validation.IsInputFilled(value))
-                {
-                    return;
-                }
-                
-                this.StreetNameError = "Ongeldige straat";
-                this.AddErrorToDictionary("StreetName", "Ongeldige straat");
-            }
-        }
-        public string StreetNameError
-        {
-            get => this._streetNameError;
-            set
-            {
-                this._streetNameError = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public string PostalCode
-        {
-            get => this._postalCode;
-            set
-            {
-                this._postalCode = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
-                this.PostalCodeError = string.Empty;
-                this.RemoveErrorFromDictionary("PostalCode");
-                if (Validation.IsInputFilled(value))
-                {
-                    return;
-                }
-                
-                this.PostalCodeError = "Ongeldige postcode";
-                this.AddErrorToDictionary("PostalCode", "Ongeldige postcode");
-            }
-        }
-        public string PostalCodeError
-        {
-            get => this._postalCodeError;
-            set
-            {
-                this._postalCodeError = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public string PlaceName
-        {
-            get => this._placeName;
-            set
-            {
-                this._placeName = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
-                this.PlaceNameError = string.Empty;
-                this.RemoveErrorFromDictionary("PlaceName");
-                if (Validation.IsInputFilled(value))
-                {
-                    return;
-                }
-                
-                this.PlaceNameError = "Ongeldige plaats";
-                this.AddErrorToDictionary("PlaceName", "Ongeldige plaats");
-            }
-        }
-        public string PlaceNameError
-        {
-            get => this._placeNameError;
-            set
-            {
-                this._placeNameError = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public string EmailAddress
-        {
-            get => this._emailAddress;
-            set
-            {
-                this._emailAddress = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
-                this.EmailAddressError = string.Empty;
-                this.RemoveErrorFromDictionary("EmailAddress");
-                if (RegexHelper.IsEmailValid(value))
-                {
-                    return;
-                }
-                
-                this.EmailAddressError = "Ongeldige email";
-                this.AddErrorToDictionary("EmailAddress", "Ongeldige email");
-            }
-        }
-        
-        public string EmailAddressError
-        {
-            get => this._emailAddressError;
-            set
-            {
-                this._emailAddressError = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-        
         public bool EmailEnabled
         {
             get => this._emailEnabled;
@@ -352,6 +293,8 @@ namespace ViewModel
 
         #endregion
 
+        #region View construction
+
         public ReservationCustomerFormViewModel()
         {
             this._errorDictionary = new Dictionary<string, string>
@@ -371,7 +314,7 @@ namespace ViewModel
             SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
         }
 
-        private void ReservationCampingGuestViewModelOnReservationGoBackEvent(object? sender, ReservationEventArgs e)
+        private void ReservationCampingGuestViewModelOnReservationGoBackEvent(object sender, ReservationEventArgs e)
         {
             this._checkInDateTime = e.Reservation.CheckInDatetime;
             this._checkOutDateTime = e.Reservation.CheckOutDatetime;
@@ -383,7 +326,7 @@ namespace ViewModel
             this.AmountOfGuests = (e.Reservation.NumberOfPeople - 1).ToString();
         }
 
-        private void SignInViewModelOnSignInEvent(object? sender, AccountEventArgs e)
+        private void SignInViewModelOnSignInEvent(object sender, AccountEventArgs e)
         {
             this.CurrentUserCustomer = CurrentUser.CampingCustomer;
         }
@@ -398,26 +341,9 @@ namespace ViewModel
             this.SelectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
         }
 
+        #endregion
+
         #region Input validation
-        private void RemoveErrorFromDictionary(string key)
-        {
-            if (!this._errorDictionary.ContainsKey(key))
-            {
-                return;
-            }
-
-            this._errorDictionary.Remove(key);
-        }
-
-        private void AddErrorToDictionary(string key, string value)
-        {
-            if (this._errorDictionary.ContainsKey(key))
-            {
-                return;
-            }
-            
-            this._errorDictionary.Add(key, value);
-        }
 
         private void FillInputWithCustomerData(CampingCustomer campingCustomer)
         {
@@ -429,10 +355,10 @@ namespace ViewModel
             this.FirstName = campingCustomer.FirstName;
             this.LastName = campingCustomer.LastName;
             this.Birthdate = campingCustomer.Birthdate;
-            this.EmailAddress = campingCustomer.Account.Email;
+            this.Email = campingCustomer.Account.Email;
             this.PhoneNumber = campingCustomer.PhoneNumber;
-            this.StreetName = campingCustomer.Address.Street;
-            this.PlaceName = campingCustomer.Address.Place;
+            this.Street = campingCustomer.Address.Street;
+            this.Place = campingCustomer.Address.Place;
             this.PostalCode = campingCustomer.Address.PostalCode;
 
             this.EmailEnabled = campingCustomer.Account.Id != -1;
@@ -441,30 +367,23 @@ namespace ViewModel
         private void ResetInput()
         {
             this.FirstName = "";
-            this.FirstNameError = "";
             this.LastName = "";
-            this.LastNameError = "";
             this.Birthdate = DateTime.MinValue;
-            this.BirthdateError = "";
-            this.EmailAddress = "";
-            this.EmailAddressError = "";
+            this.Email = "";
             this.PhoneNumber = "";
-            this.PhoneNumberError = "";
-            this.StreetName = "";
-            this.StreetNameError = "";
+            this.Street = "";
             this.AmountOfGuests = "";
-            this.PlaceName = "";
-            this.PlaceNameError = "";
+            this.Place = "";
             this.PostalCode = "";
-            this.PostalCodeError = "";
             this._errorDictionary.Clear();
+            this._customerReservationError = "";
         }
         #endregion
 
         #region Commands
         private void ExecuteCustomerDataReservation()
         {
-            Address addressModel = new Address(this.StreetName, this.PostalCode, this.PlaceName);
+            Address addressModel = new Address(this.Street, this.PostalCode, this.Place);
             var address = addressModel.FirstAndUpdateOrInsert();
 
             var customer = new CampingCustomer(this._currentUserCustomer?.Id.ToString(), this._currentUserCustomer?.Account, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName,
@@ -487,7 +406,16 @@ namespace ViewModel
         }
         private bool CanExecuteCustomerDataReservation()
         {
-            return !this._errorDictionary.Any();
+            return   Validation.IsInputFilled(this._firstName) &&
+                     Validation.IsInputFilled(this._lastName) &&
+                     Validation.IsBirthdateValid(this._birthdate) &&
+                     Validation.IsBirthdateAdult(this._birthdate) &&
+                     Validation.IsInputFilled(this._street) &&
+                     Validation.IsInputFilled(this._postalCode) &&
+                     RegexHelper.IsPostalcodeValid(this._postalCode) &&
+                     Validation.IsInputFilled(this._place) &&
+                     Validation.IsInputFilled(this._phoneNumber) &&
+                     Validation.IsNumber(this._phoneNumber);
         }
 
         public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerDataReservation, CanExecuteCustomerDataReservation);
