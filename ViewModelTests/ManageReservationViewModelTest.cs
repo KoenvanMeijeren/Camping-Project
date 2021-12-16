@@ -45,18 +45,22 @@ namespace ViewModelTests
                 new CampingPlace("8", "1", "80", "0", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper")))
             };
 
+            _campingPlaceList.Add(_selectedCampingPlace);
+
             this._reservations = new();
             int i = 1;
+            this._reservations.Add(new Reservation(i.ToString(), "2", campingCustomer, _selectedCampingPlace, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False, "", DateTime.Today.AddDays(5).ToString(), DateTime.Today.AddDays(10).ToString()));
+            i++;
             foreach (var campingPlace in _campingPlaceList)
             {
-                this._reservations.Add(new Reservation(i.ToString(), "2", campingCustomer, campingPlace, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False, "", "12/26/2021 12:00:00", "12/28/2021 12:00:00"));
+                this._reservations.Add(new Reservation(i.ToString(), "2", campingCustomer, campingPlace, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False, "", this._checkInDate.ToString(), this._checkOutDate.ToString()));
                 i++;
             }
 
             this._manageReservationViewModelMock.Object.SelectedCampingPlace = this._selectedCampingPlace;
             this._manageReservationViewModelMock.Setup(x => x.SelectCampingPlaces()).Returns(this._campingPlaceList);
-            this._manageReservationViewModelMock.Object.CheckInDate = DateTime.Today;
-            this._manageReservationViewModelMock.Object.CheckOutDate = DateTime.Today.AddDays(1);
+            this._manageReservationViewModelMock.Object.CheckInDate = DateTime.Today.AddDays(1);
+            this._manageReservationViewModelMock.Object.CheckOutDate = DateTime.Today.AddDays(3);
             this._manageReservationViewModelMock.Setup(x => x.GetReservationModel()).Returns(this._reservations);
         }
 
@@ -68,6 +72,20 @@ namespace ViewModelTests
             Assert.IsTrue(_manageReservationViewModelMock.Object.CampingPlaces.Count == this._campingPlaceList.Count+1);
             Assert.IsTrue(this._selectedCampingPlace == this._manageReservationViewModelMock.Object.SelectedCampingPlace);
             Assert.IsTrue(_manageReservationViewModelMock.Object.CampingPlaces.Contains(this._selectedCampingPlace));
+        }
+
+        [Test]
+        public void TestFilterOnDate()
+        {
+            this._manageReservationViewModelMock.Object.CheckInDate = this._checkInDate;
+            this._manageReservationViewModelMock.Object.CheckOutDate = this._checkOutDate;
+       
+            Assert.IsTrue(this._manageReservationViewModelMock.Object.CampingPlaces.Count == this._campingPlaceList.Count());
+
+            this._manageReservationViewModelMock.Object.CheckInDate = DateTime.Today.AddDays(5);
+            this._manageReservationViewModelMock.Object.CheckOutDate = DateTime.Today.AddDays(10);
+
+            Assert.IsTrue(this._manageReservationViewModelMock.Object.CampingPlaces.Count == 1);
         }
     }
 }

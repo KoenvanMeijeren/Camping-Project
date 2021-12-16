@@ -152,13 +152,20 @@ namespace ViewModel
         private void SetAvailableCampingPlaces(IEnumerable<CampingPlace> campingPlaces)
         {
             var selectedCampingPlace = this.SelectedCampingPlace;
+            if(selectedCampingPlace == null){
+                return;
+            }
             
             this.CampingPlaces.Clear();
 
             this.CampingPlaces.Add(selectedCampingPlace);
             foreach (var campingPlace in campingPlaces)
             {
-                this.CampingPlaces.Add(campingPlace);
+                //don't insert selected campingplace
+                if(campingPlace.Location != selectedCampingPlace.Location)
+                {
+                    this.CampingPlaces.Add(campingPlace);
+                }
             }
 
             this.SelectedCampingPlace = selectedCampingPlace;
@@ -210,7 +217,6 @@ namespace ViewModel
             
             MessageBox.Show(context, caption, MessageBoxButton.OK);
 
-            //update page?
             ExecuteGoToDashBoard();
         }
         private bool CanExecuteUpdateReservation()
@@ -229,12 +235,7 @@ namespace ViewModel
             FromReservationBackToDashboardEvent?.Invoke(this, new ReservationEventArgs(_reservation));
         }
 
-        private bool CanExecuteGoToDashboard()
-        {
-            //Is it possible to check this execution?
-            return true;
-        }
-        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
+        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard);
 
 
         /// <summary>
