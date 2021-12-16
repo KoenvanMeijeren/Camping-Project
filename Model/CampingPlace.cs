@@ -38,9 +38,9 @@ namespace Model
         public CampingPlace(string id, string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType): base(TableName, ColumnId)
         {
             bool successId = int.TryParse(id, out int numericId);
-            bool successNumber = int.TryParse(id, out int numericNumber);
-            bool successSurface = float.TryParse(id, out float numericSurface);
-            bool successExtraNightPrice = float.TryParse(id, out float numericExtraNightPrice);
+            bool successNumber = int.TryParse(number, out int numericNumber);
+            bool successSurface = float.TryParse(surface, out float numericSurface);
+            bool successExtraNightPrice = float.TryParse(extraNightPrice, out float numericExtraNightPrice);
 
             float standardNightPrice = 0;
             if (campingPlaceType != null)

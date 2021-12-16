@@ -24,7 +24,7 @@ namespace Visualization
     {
         public AccountUpdatePage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
             SignInViewModel.SignInEvent += this.OnSignInEvent;
         }
 

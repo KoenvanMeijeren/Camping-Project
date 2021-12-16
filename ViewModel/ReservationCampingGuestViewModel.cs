@@ -16,22 +16,20 @@ namespace ViewModel
 {
     public class ReservationCampingGuestViewModel : ObservableObject
     {
-        private string _id, _firstNameGuest, _lastNameGuest, _amountOfPeopleError, _firstNameError, _lastNameError, _birthDateError;
+        #region Fields
+
+        private string _firstNameGuest, _lastNameGuest, _amountOfPeopleError, _firstNameError, _lastNameError, _birthDateError;
         private readonly List<CampingGuest> _campingGuestsList;
         private DateTime _birthDate;
-        public ObservableCollection<CampingGuest> CampingGuests { get; private set; }
         private Reservation _reservation;
         private int _numberOfAddedGuest;
-        private Dictionary<string, string> _errorDictionary;
+        private readonly Dictionary<string, string> _errorDictionary;
+        
+        #endregion
 
-        public string IdGuest {
-            get => this._id;
-            set
-            {
-                this._id = value;
+        #region Properties
 
-            }
-        }
+        public ObservableCollection<CampingGuest> CampingGuests { get; private set; }
 
         public string FirstNameGuest
         {
@@ -158,8 +156,16 @@ namespace ViewModel
             }
         }
 
+        #endregion
+
+        #region Events
+
         public static event EventHandler<ReservationEventArgs> ReservationConfirmedEvent;
         public static event EventHandler<ReservationEventArgs> ReservationGoBackEvent;
+
+        #endregion
+
+        #region View construction
 
         public ReservationCampingGuestViewModel()
         {
@@ -170,12 +176,37 @@ namespace ViewModel
                 {"BirthDate", ""},
             };
 
-            this._campingGuestsList = new List<CampingGuest>();
             this.CampingGuests = new ObservableCollection<CampingGuest>();
-            this.BirthDate = DateTime.Today.AddYears(-1);
+            this.BirthDate = DateTime.Today.AddYears(-18);
             
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationConfirmedEvent;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
         }
+
+        public void ResetInput()
+        {
+            this.FirstNameGuest = "";
+            this.LastNameGuest = "";
+            this.FirstNameError = "";
+            this.LastNameError = "";
+            this.BirthDate = DateTime.Today.AddYears(-18);
+            this.CampingGuests.Clear();
+        }
+        
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            this.ResetInput();
+        }
+
+        private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)
+        {
+            this.Reservation = args.Reservation;
+            this._numberOfAddedGuest = this.CampingGuests.Count();
+        }
+
+        #endregion
+
+        #region Input validation
 
         private void AddErrorToDictionary(string key, string value)
         {
@@ -191,6 +222,11 @@ namespace ViewModel
 
             this._errorDictionary.Remove(key);
         }
+
+        #endregion
+
+        #region Commands
+        
         /// <summary>
         /// Inserts campingGuest into the database.
         /// </summary>
@@ -201,7 +237,7 @@ namespace ViewModel
 
             CampingGuest campingGuest = new CampingGuest(this.FirstNameGuest, this.LastNameGuest, birthDate);
             //Removes the customer from NumberOfPeople.
-            if (this._numberOfAddedGuest >= this.Reservation.CampingPlace.Type.GuestLimit-1)
+            if (this._numberOfAddedGuest >= (this.Reservation.CampingPlace.Type.GuestLimit - 1))
             {
                 this.AmountOfPeopleError = "Maximaal aantal gasten is bereikt";
                 return;
@@ -210,7 +246,6 @@ namespace ViewModel
             campingGuest.Insert();
             var lastCampingGuest = campingGuestModel.SelectLast();
             
-            this._campingGuestsList.Add(lastCampingGuest);
             this.CampingGuestsTypes.Add(lastCampingGuest);
             this._numberOfAddedGuest++;
 
@@ -238,7 +273,6 @@ namespace ViewModel
             }
             
             this.SelectedCampingGuest.Delete();
-            this._campingGuestsList.Remove(SelectedCampingGuest);
             this.CampingGuestsTypes.Remove(SelectedCampingGuest);
         }
         /// <summary>
@@ -247,7 +281,7 @@ namespace ViewModel
         /// <returns>true or false</returns>
         private bool CanExecuteRemoveGuestReservation()
         {
-            return this._campingGuestsList.Count > 0;
+            return this.CampingGuests.Count > 0;
             
         }
         /// <summary>
@@ -258,12 +292,14 @@ namespace ViewModel
             this.Reservation.Insert();
             var lastReservation = this.Reservation.SelectLast();
 
-            foreach (var guest in this._campingGuestsList)
+            foreach (var guest in this.CampingGuests)
             {
                 (new ReservationCampingGuest(lastReservation, guest)).Insert();
             }
 
             ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
+
+            this.ResetInput();
         }
         /// <summary>
         /// Returns to former page.
@@ -273,12 +309,6 @@ namespace ViewModel
             ReservationGoBackEvent?.Invoke(this, new ReservationEventArgs(this.Reservation));
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)
-        {
-            this.Reservation = args.Reservation;
-            this._numberOfAddedGuest = this._campingGuestsList.Count();
-        }
-
         public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerGuestReservation);
 
         public ICommand CustomerGuestGoBackReservation => new RelayCommand(ExecuteCustomerGuestGoBackReservation);
@@ -286,5 +316,7 @@ namespace ViewModel
         public ICommand AddGuestReservation => new RelayCommand(ExecuteAddGuestReservation, CanExecuteAddGuestReservation);
 
         public ICommand RemoveGuestReservation => new RelayCommand(ExecuteRemoveGuestReservation, CanExecuteRemoveGuestReservation);
+
+        #endregion
     }
 }

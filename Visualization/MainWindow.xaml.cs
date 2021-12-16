@@ -12,7 +12,7 @@ namespace Visualization
 
     public partial class MainWindow : Window
     {
-        private readonly CampingPlacesCollectionPage _campingPlacesCollectionFrame;
+        private readonly ReservationCampingPlaceForm _reservationCampingPlaceForm;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
@@ -21,15 +21,16 @@ namespace Visualization
         private readonly ManageCampingPlacePage _manageCampingPlacePage;
         private readonly SignInPage _signInPage;
         private readonly SignUpPage _signUpPage;
-        private readonly ReservationUpdateDeletePage _manageReservationPage;
-        private readonly ReservationOverviewPage _reservationOverviewPage;
+        private readonly ReservationManagePage _manageReservationPage;
+        private readonly ReservationCustomerOverviewPage _reservationCustomerOverviewPage;
         private readonly AccountUpdatePage _accountUpdatePage;
+        private readonly ContactPage _contactPage;
 
         public MainWindow()
         {
             this.InitializeComponent();
             
-            this._campingPlacesCollectionFrame = new CampingPlacesCollectionPage();
+            this._reservationCampingPlaceForm = new ReservationCampingPlaceForm();
             this._reservationCustomerForm = new ReservationCustomerForm();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
@@ -38,9 +39,10 @@ namespace Visualization
             this._manageCampingPlacePage = new ManageCampingPlacePage();
             this._signInPage = new SignInPage();
             this._signUpPage = new SignUpPage();
-            this._manageReservationPage = new ReservationUpdateDeletePage();
-            this._reservationOverviewPage = new ReservationOverviewPage();
+            this._manageReservationPage = new ReservationManagePage();
+            this._reservationCustomerOverviewPage = new ReservationCustomerOverviewPage();
             this._accountUpdatePage = new AccountUpdatePage();
+            this._contactPage = new ContactPage();
 
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
@@ -61,6 +63,7 @@ namespace Visualization
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
+            this.ContactMenuButton.Visibility = Visibility.Collapsed;
             this.ManageMenuButton.Visibility = Visibility.Collapsed;
         }
 
@@ -91,6 +94,7 @@ namespace Visualization
             this.OverviewMenuButton.Visibility = Visibility.Visible;
             this.ReserveMenuButton.Visibility = Visibility.Visible;
             this.AccountMenuButton.Visibility = Visibility.Visible;
+            this.ContactMenuButton.Visibility = Visibility.Visible;
             this.SignInMenuButton.Visibility = Visibility.Collapsed;
             this.SignUpMenuButton.Visibility = Visibility.Collapsed;
 
@@ -114,6 +118,7 @@ namespace Visualization
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
+            this.ContactMenuButton.Visibility = Visibility.Collapsed;
             this.ManageMenuButton.Visibility = Visibility.Collapsed;
             this.SignInMenuButton.Visibility = Visibility.Visible;
             this.SignUpMenuButton.Visibility = Visibility.Visible;
@@ -136,12 +141,12 @@ namespace Visualization
                 return;
             }
 
-            this.MainFrame.Content = this._reservationOverviewPage;
+            this.MainFrame.Content = this._reservationCustomerOverviewPage;
         }
 
         private void ReserveMenuButton_Checked(object sender, RoutedEventArgs e)
         {
-            this.MainFrame.Content = this._campingPlacesCollectionFrame;
+            this.MainFrame.Content = this._reservationCampingPlaceForm;
         }
 
         private void AccountMenuButton_Checked(object sender, RoutedEventArgs e)
@@ -163,7 +168,12 @@ namespace Visualization
         {
             this.MainFrame.Content = this._signUpPage.Content;
         }
-        
+
+        private void OnToAccountUpdatePageEvent(object sender, EventArgs e)
+        {
+            this.MainFrame.Content = this._accountUpdatePage.Content;
+        }
+
         private void OnManageReservationEvent(object sender, ReservationEventArgs args)
         {
             this.MainFrame.Content = this._manageReservationPage.Content;
@@ -174,9 +184,9 @@ namespace Visualization
             this.OverviewMenuButton_Checked(sender, null);
         }
 
-        private void OnToAccountUpdatePageEvent(object sender, EventArgs e)
+        private void ContactMenuButton_Checked(object sender, EventArgs e)
         {
-            this.MainFrame.Content = this._accountUpdatePage.Content;
+            this.MainFrame.Content = this._contactPage.Content;
         }
 
         private void OnUpdateCancelEvent(object sender, EventArgs e)

@@ -281,15 +281,18 @@ namespace ViewModel
 
         #endregion
 
+        #region Events
+
+        public static event EventHandler<AccountEventArgs> SignUpEvent;
+
+        #endregion
+        
         #region Viewconstruction
         public SignUpViewModel()
         {
             this.Birthdate = new DateTime(2000,01,01);
         }
-        #endregion
-
-        public static event EventHandler<AccountEventArgs> SignUpEvent;
-
+        
         private void ResetInput()
         {
             this.FirstName = "";
@@ -303,6 +306,9 @@ namespace ViewModel
             this.ConfirmPassword = "";
             this.RegisterError = "";
         }
+        #endregion
+
+        #region Commands
 
         private void ExecuteRegister()
         {
@@ -347,6 +353,7 @@ namespace ViewModel
 
         public ICommand Register => new RelayCommand(ExecuteRegister, CanExecuteRegister);
 
+        #endregion
 
     }
 
