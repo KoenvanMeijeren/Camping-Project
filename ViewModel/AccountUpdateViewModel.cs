@@ -15,11 +15,15 @@ namespace ViewModel
 {
     public class AccountUpdateViewModel : ObservableObject
     {
+        #region Fields
+
         private string _firstName, _lastName, _street, _postalCode, _place, _email, _phoneNumber, _updateError;
         private DateTime _birthdate;
         private Account _currentAccount;
 
-        #region properties
+        #endregion
+
+        #region Properties
         public string UpdateError
         {
             get => this._updateError;
@@ -209,8 +213,15 @@ namespace ViewModel
         }
         #endregion
 
+        #region Events
+        
         public static event EventHandler UpdateCancelEvent;
         public static event EventHandler UpdateConfirmEvent;
+
+        #endregion
+
+        #region View construction
+
         public AccountUpdateViewModel()
         {
             AccountViewModel.ToAccountUpdatePageEvent += this.OnToAccountUpdatePageEvent;
@@ -238,6 +249,10 @@ namespace ViewModel
                 this.Place = CurrentUser.CampingCustomer.Address.Place;
             }
         }
+
+        #endregion
+
+        #region Commands
 
         public ICommand UpdateCancel => new RelayCommand(ExecuteUpdateCancel);
         public ICommand UpdateConfirm => new RelayCommand(ExecuteUpdateConfirm, CanExecuteUpdateConfirm);
@@ -288,6 +303,8 @@ namespace ViewModel
 
             UpdateConfirmEvent?.Invoke(this, EventArgs.Empty);
         }
+
+        #endregion
 
     }
 }

@@ -80,6 +80,8 @@ namespace ViewModel
         
         #endregion
 
+        #region View construction
+
         public ReservationConfirmedViewModel()
         {
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
@@ -95,6 +97,8 @@ namespace ViewModel
             this.Title = $"Gefeliciteerd {this.FirstName} {this.LastName},";
             this.ConfirmationText = $"Uw reservering van {this.CheckInDate.Date.ToShortDateString()} tot {this.CheckOutDate.Date.ToShortDateString()}";
         }
-        
+
+        #endregion
+
     }
 }

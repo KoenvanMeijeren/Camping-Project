@@ -25,30 +25,13 @@ namespace ViewModel
             _customerReservationError,
 
             _firstName,
-            _firstNameError,
-            
             _lastName,
-            _lastNameError,
-            
-            _birthdateError,
-            
             _phoneNumber,
-            _phoneNumberError,
-            
             _street,
-            _streetNameError,
-            
             _postalCode,
-            _postalCodeError,
-            
             _place,
-            _placeNameError,
-            
             _email,
-            _emailAddressError,
-
             _amountOfGuests,
-
             _selectedCampingPlace;
 
         private bool
@@ -241,11 +224,11 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.CustomerReservationError = "";
-                if (!Validation.IsInputFilled(_phoneNumber))
+                if (!Validation.IsInputFilled(this._phoneNumber))
                 {
                     this.CustomerReservationError = "Telefoonnummer is een verplicht veld";
                 }
-                else if (!Validation.IsNumber(_phoneNumber))
+                else if (!Validation.IsNumber(this._phoneNumber))
                 {
                     this.CustomerReservationError = "Ongeldig telefoonnummer";
                 }
@@ -310,6 +293,8 @@ namespace ViewModel
 
         #endregion
 
+        #region View construction
+
         public ReservationCustomerFormViewModel()
         {
             this._errorDictionary = new Dictionary<string, string>
@@ -329,7 +314,7 @@ namespace ViewModel
             SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
         }
 
-        private void ReservationCampingGuestViewModelOnReservationGoBackEvent(object? sender, ReservationEventArgs e)
+        private void ReservationCampingGuestViewModelOnReservationGoBackEvent(object sender, ReservationEventArgs e)
         {
             this._checkInDateTime = e.Reservation.CheckInDatetime;
             this._checkOutDateTime = e.Reservation.CheckOutDatetime;
@@ -341,7 +326,7 @@ namespace ViewModel
             this.AmountOfGuests = (e.Reservation.NumberOfPeople - 1).ToString();
         }
 
-        private void SignInViewModelOnSignInEvent(object? sender, AccountEventArgs e)
+        private void SignInViewModelOnSignInEvent(object sender, AccountEventArgs e)
         {
             this.CurrentUserCustomer = CurrentUser.CampingCustomer;
         }
@@ -355,6 +340,8 @@ namespace ViewModel
             this.CurrentUserCustomer = CurrentUser.CampingCustomer;
             this.SelectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
         }
+
+        #endregion
 
         #region Input validation
 

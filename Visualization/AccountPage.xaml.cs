@@ -22,7 +22,7 @@ namespace Visualization
     {
         public AccountPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

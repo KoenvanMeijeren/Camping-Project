@@ -31,13 +31,13 @@
             <ListView ItemsSource="{Binding Reservations}" FontFamily="Century Gothic" FontWeight="Bold" Width="700" Margin="30,50,30,81" SelectedItem="{Binding SelectedReservation}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="ID" Width="75" DisplayMemberBinding="{Binding Reservation.Id}" />
-                        <GridViewColumn Header="Verblijf" Width="75" DisplayMemberBinding="{Binding Reservation.CampingPlace.Location}" />
-                        <GridViewColumn Header="Klantnummer" Width="100" DisplayMemberBinding="{Binding Reservation.CampingCustomer.Id}" />
-                        <GridViewColumn Header="Personen" Width="100" DisplayMemberBinding="{Binding Reservation.NumberOfPeople}" />
-                        <GridViewColumn Header="Begindatum" Width="100" DisplayMemberBinding="{Binding Reservation.CheckInDate}" />
-                        <GridViewColumn Header="Einddatum" Width="100" DisplayMemberBinding="{Binding Reservation.CheckOutDate}" />
-                        <GridViewColumn Header="Totaalprijs" Width="100" DisplayMemberBinding="{Binding Reservation.TotalPriceString}" />
+                        <GridViewColumn Header="ID" Width="75" DisplayMemberBinding="{Binding Id}" />
+                        <GridViewColumn Header="Verblijf" Width="75" DisplayMemberBinding="{Binding CampingPlace.Location}" />
+                        <GridViewColumn Header="Klantnummer" Width="100" DisplayMemberBinding="{Binding CampingCustomer.Id}" />
+                        <GridViewColumn Header="Personen" Width="100" DisplayMemberBinding="{Binding NumberOfPeople}" />
+                        <GridViewColumn Header="Begindatum" Width="100" DisplayMemberBinding="{Binding CheckInDate}" />
+                        <GridViewColumn Header="Einddatum" Width="100" DisplayMemberBinding="{Binding CheckOutDate}" />
+                        <GridViewColumn Header="Totaalprijs" Width="100" DisplayMemberBinding="{Binding TotalPriceString}" />
                     </GridView>
                 </ListView.View>
             </ListView>

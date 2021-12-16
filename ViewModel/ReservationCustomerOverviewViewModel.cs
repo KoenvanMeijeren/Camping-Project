@@ -141,19 +141,19 @@ namespace ViewModel
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.ReservationCustomerFormViewModelOnReservationConfirmedEvent;
         }
 
-        private void AccountViewModelOnSignOutEvent(object? sender, EventArgs e)
+        private void AccountViewModelOnSignOutEvent(object sender, EventArgs e)
         {
             this.SelectedReservation = null;
         }
 
-        private void SignInViewModelOnSignInEvent(object? sender, AccountEventArgs e)
+        private void SignInViewModelOnSignInEvent(object sender, AccountEventArgs e)
         {
             this._customerId = CurrentUser.CampingCustomer != null ? CurrentUser.CampingCustomer.Id : -1;
             
             this.ReservationCustomerFormViewModelOnReservationConfirmedEvent(sender, null);
         }
 
-        private void ReservationCustomerFormViewModelOnReservationConfirmedEvent(object? sender, ReservationEventArgs e)
+        private void ReservationCustomerFormViewModelOnReservationConfirmedEvent(object sender, ReservationEventArgs e)
         {
             this.ReservationsCollection.Clear();
             
