@@ -11,7 +11,7 @@ using Moq;
 
 namespace ViewModelTests
 {
-    public class CampingPlacesCollectionViewModelTest
+    public class ReservationCampingPlaceFormViewModelTest
     {
         private Mock<ReservationCampingPlaceFormViewModel> _campingPlacesMock;
         private List<CampingPlace> _campingPlaceList;
