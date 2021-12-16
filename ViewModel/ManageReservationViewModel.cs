@@ -291,12 +291,18 @@ namespace ViewModel
 
         private IEnumerable<CampingPlace> GetCampingPlaces()
         {
-            return this.ToFilteredOnReservedCampingPlaces(this._campingPlaceModel.Select());
+            return this.ToFilteredOnReservedCampingPlaces(SelectCampingPlaces());
+        }
+
+        public virtual IEnumerable<CampingPlace> SelectCampingPlaces()
+        {
+            return this._campingPlaceModel.Select();
         }
 
         private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData)
         {
-            var reservations = this._reservationModel.Select();
+            var reservations = this.GetReservationModel();
+
             foreach (Reservation reservation in reservations)
             {
                 if (reservation.CheckInDatetime.Date < this.CheckOutDate.Date && this.CheckInDate.Date < reservation.CheckOutDatetime.Date)
@@ -307,6 +313,13 @@ namespace ViewModel
 
             return viewData;
         }
+
+        public virtual IEnumerable<Reservation> GetReservationModel()
+        {
+            Reservation reservationModel = new Reservation();
+            return reservationModel.Select();
+        }
+
 
         #endregion
 
