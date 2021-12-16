@@ -15,6 +15,7 @@ namespace ModelTests
             Assert.AreEqual(campingGuest.FirstName, "test");
             Assert.AreEqual(campingGuest.LastName, "testName");
             Assert.AreEqual(campingGuest.Birthdate, DateTime.Parse("19/10/21"));
+            Assert.AreEqual(campingGuest.BirthdateReadable, DateTime.Parse("19/10/21").ToShortDateString());
         }
         
         [Test]

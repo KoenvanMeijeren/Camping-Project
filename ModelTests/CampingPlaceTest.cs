@@ -29,9 +29,12 @@ namespace ModelTests
             Assert.AreEqual(campingPlace.Id, 11);
             Assert.AreEqual(campingPlace.Number, 1.0);
             Assert.AreEqual(campingPlace.Surface, 1.0);
+            Assert.AreEqual(campingPlace.SurfaceReadable, "1 m3");
             Assert.AreEqual(campingPlace.TotalPrice, 2.0);
+            Assert.AreEqual(campingPlace.TotalPriceReadable, "€ 2");
             Assert.AreEqual(campingPlace.Type, campingPlaceType);
             Assert.AreEqual(campingPlace.Location, "testPrefix-1");
+            Assert.AreEqual(campingPlace.ToString(), "testPrefix-1");
         }
 
         [Test]

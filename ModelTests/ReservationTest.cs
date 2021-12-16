@@ -23,6 +23,9 @@ namespace ModelTests
             Assert.AreEqual(reservation.NumberOfPeople, 1);
             Assert.AreEqual(reservation.CampingCustomer, campingCustomer);
             Assert.AreEqual(reservation.CampingPlace, campingPlace);
+            Assert.AreEqual(reservation.CheckInDate, "26-12-2021");
+            Assert.AreEqual(reservation.CheckOutDate, "28-12-2021");
+            Assert.IsNull(reservation.CampingGuests);
             Assert.AreEqual(reservation.TotalPrice, reservation.CalculateTotalPrice());
             Assert.AreEqual(reservation.TotalPriceString, $"€{reservation.CalculateTotalPrice()}");
             Assert.IsTrue(reservation.ReservationDeleted == ReservationColumnStatus.False);
