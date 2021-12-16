@@ -19,7 +19,6 @@ namespace ViewModel
         #region Fields
 
         private string _id, _firstNameGuest, _lastNameGuest, _amountOfPeopleError, _firstNameError, _lastNameError, _birthDateError;
-        private readonly List<CampingGuest> _campingGuestsList;
         private DateTime _birthDate;
         private Reservation _reservation;
         private int _numberOfAddedGuest;
@@ -176,17 +175,32 @@ namespace ViewModel
                 {"BirthDate", ""},
             };
 
-            this._campingGuestsList = new List<CampingGuest>();
             this.CampingGuests = new ObservableCollection<CampingGuest>();
-            this.BirthDate = DateTime.Today.AddYears(-1);
+            this.BirthDate = DateTime.Today.AddYears(-18);
             
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationConfirmedEvent;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+        }
+
+        public void ResetInput()
+        {
+            this.FirstNameGuest = "";
+            this.LastNameGuest = "";
+            this.FirstNameError = "";
+            this.LastNameError = "";
+            this.BirthDate = DateTime.Today.AddYears(-18);
+            this.CampingGuests.Clear();
         }
         
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            this.ResetInput();
+        }
+
         private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)
         {
             this.Reservation = args.Reservation;
-            this._numberOfAddedGuest = this._campingGuestsList.Count();
+            this._numberOfAddedGuest = this.CampingGuests.Count();
         }
 
         #endregion
@@ -231,7 +245,6 @@ namespace ViewModel
             campingGuest.Insert();
             var lastCampingGuest = campingGuestModel.SelectLast();
             
-            this._campingGuestsList.Add(lastCampingGuest);
             this.CampingGuestsTypes.Add(lastCampingGuest);
             this._numberOfAddedGuest++;
 
@@ -259,7 +272,6 @@ namespace ViewModel
             }
             
             this.SelectedCampingGuest.Delete();
-            this._campingGuestsList.Remove(SelectedCampingGuest);
             this.CampingGuestsTypes.Remove(SelectedCampingGuest);
         }
         /// <summary>
@@ -268,7 +280,7 @@ namespace ViewModel
         /// <returns>true or false</returns>
         private bool CanExecuteRemoveGuestReservation()
         {
-            return this._campingGuestsList.Count > 0;
+            return this.CampingGuests.Count > 0;
             
         }
         /// <summary>
@@ -279,12 +291,14 @@ namespace ViewModel
             this.Reservation.Insert();
             var lastReservation = this.Reservation.SelectLast();
 
-            foreach (var guest in this._campingGuestsList)
+            foreach (var guest in this.CampingGuests)
             {
                 (new ReservationCampingGuest(lastReservation, guest)).Insert();
             }
 
             ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
+
+            ResetInput();
         }
         /// <summary>
         /// Returns to former page.
