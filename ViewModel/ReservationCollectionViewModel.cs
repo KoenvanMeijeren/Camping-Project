@@ -228,11 +228,16 @@ namespace ViewModel
                 && (this.CheckOutDate == DateTime.MinValue || reservation.CheckOutDatetime <= this.CheckOutDate)
                 && (!int.TryParse(this.Guests, out int guests) || reservation.NumberOfPeople >= guests);
 
-            var reservationItems = this._reservationModel.Select().Where(ReservationsFilter);
+            var reservationItems = this.GetReservations().Where(ReservationsFilter);
             foreach (var reservation in reservationItems)
             {
                 this.Reservations.Add(reservation);
             }
+        }
+
+        public virtual IEnumerable<Reservation> GetReservations()
+        {
+            return this._reservationModel.Select();
         }
 
         #endregion
