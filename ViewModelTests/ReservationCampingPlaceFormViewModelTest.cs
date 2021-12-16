@@ -97,7 +97,7 @@ namespace ViewModelTests
             Assert.AreEqual(5, this._campingPlacesMock.Object.CampingPlaces.Count());
 
             this._campingPlacesMock.Object.MinNightPrice = "90";
-            Assert.AreEqual(0, this._campingPlacesMock.Object.CampingPlaces.Count());
+            Assert.AreEqual(2, this._campingPlacesMock.Object.CampingPlaces.Count());
         }
 
         [Test]
@@ -106,10 +106,10 @@ namespace ViewModelTests
             Assert.AreEqual(8, this._campingPlacesMock.Object.CampingPlaces.Count());
 
             this._campingPlacesMock.Object.MaxNightPrice = "40";
-            Assert.AreEqual(2, this._campingPlacesMock.Object.CampingPlaces.Count());
+            Assert.AreEqual(3, this._campingPlacesMock.Object.CampingPlaces.Count());
 
             this._campingPlacesMock.Object.MaxNightPrice = "90";
-            Assert.AreEqual(8, this._campingPlacesMock.Object.CampingPlaces.Count());
+            Assert.AreEqual(6, this._campingPlacesMock.Object.CampingPlaces.Count());
         }
 
         [Test]

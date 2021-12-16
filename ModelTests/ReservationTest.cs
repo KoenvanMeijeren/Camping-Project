@@ -25,6 +25,10 @@ namespace ModelTests
             Assert.AreEqual(reservation.CampingPlace, campingPlace);
             Assert.AreEqual(reservation.TotalPrice, reservation.CalculateTotalPrice());
             Assert.AreEqual(reservation.TotalPriceString, $"€{reservation.CalculateTotalPrice()}");
+            Assert.IsTrue(reservation.ReservationDeleted == ReservationColumnStatus.False);
+            Assert.IsTrue(reservation.ReservationPaid == ReservationColumnStatus.False);
+            Assert.IsTrue(reservation.ReservationRestitutionPaid == ReservationColumnStatus.False);
+            Assert.IsNull(reservation.ReservationDeletedTime);
         }
 
         [Test]
