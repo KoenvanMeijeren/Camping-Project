@@ -59,5 +59,18 @@ namespace ViewModel
             this.ContactPagePhoneNumber = camping.campingPhoneNumber;
             this.ContactPageEmailAddress = camping.campingEmailAddress;
         }
+
+        #region Chat
+        private bool ReturnTrue()
+        {
+            return true;
+        }
+        public ICommand ChatButton => new RelayCommand(DisplayChat);
+
+        private void DisplayChat()
+        {
+
+        }
+        #endregion
     }
 }
