@@ -298,7 +298,7 @@ namespace ViewModel
 
             ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
 
-            ResetInput();
+            this.ResetInput();
         }
         /// <summary>
         /// Returns to former page.
