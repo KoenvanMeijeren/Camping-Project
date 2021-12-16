@@ -11,8 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
-    <ProjectReference Include="..\Model\Model.csproj" />
-    <ProjectReference Include="..\SystemCore\SystemCore.csproj" />
   </ItemGroup>
 
 </Project>

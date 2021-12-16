@@ -1,20 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using SystemCore;
-using Model;
+using ViewModel;
+using ViewModel.EventArguments;
 
 namespace Visualization
 {
@@ -24,59 +12,167 @@ namespace Visualization
 
     public partial class MainWindow : Window
     {
-        private readonly CampingPitchesCollectionPage _campingPitchesCollectionFrame;
+        private readonly CampingPlacesCollectionPage _campingPlacesCollectionFrame;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
+        private readonly ReservationCampingGuestPage _reservationCampingGuestPage;
+        private readonly AccountPage _accountPage;
+        private readonly SignInPage _signInPage;
+        private readonly SignUpPage _signUpPage;
+        private readonly ReservationUpdateDeletePage _manageReservationPage;
+        private readonly ReservationOverviewPage _reservationOverviewPage;
+        private readonly AccountUpdatePage _accountUpdatePage;
 
         public MainWindow()
         {
             this.InitializeComponent();
             
-            this._campingPitchesCollectionFrame = new CampingPitchesCollectionPage();
+            this._campingPlacesCollectionFrame = new CampingPlacesCollectionPage();
             this._reservationCustomerForm = new ReservationCustomerForm();
-            this._reservationCollectionFrame = new ReservationCollectionPage(ReservationCollection.Select());
+            this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
+            this._reservationCampingGuestPage = new ReservationCampingGuestPage();
+            this._accountPage = new AccountPage();
+            this._signInPage = new SignInPage();
+            this._signUpPage = new SignUpPage();
+            this._manageReservationPage = new ReservationUpdateDeletePage();
+            this._reservationOverviewPage = new ReservationOverviewPage();
+            this._accountUpdatePage = new AccountUpdatePage();
 
-            ReservationCustomerForm.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            CampingPitchesCollectionPage.ReserveEvent += this.OnReserveEvent;
+            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
+            ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestsFormEvent;
+            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveDurationEvent;
+            SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+            SignInViewModel.SignInEvent += this.OnSignInEvent;
+            SignInViewModel.SignUpFormEvent += this.OnSignUpFormEvent;
+            ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
+            ManageReservationViewModel.FromReservationBackToDashboardEvent += this.OnBackToDashboardEvent;
+            AccountViewModel.ToAccountUpdatePageEvent += this.OnToAccountUpdatePageEvent;
+            AccountUpdateViewModel.UpdateCancelEvent += this.OnUpdateCancelEvent;
+            AccountUpdateViewModel.UpdateConfirmEvent += this.OnUpdateConfirmEvent;
+            
+            // Sets the sign up page as the active menu and hides other menu items.
+            this.SignInMenuButton.IsChecked = true;
+            this.OverviewMenuButton.Visibility = Visibility.Collapsed;
+            this.ReserveMenuButton.Visibility = Visibility.Collapsed;
+            this.AccountMenuButton.Visibility = Visibility.Collapsed;
         }
 
-        private void DashboardButtonClick(object sender, RoutedEventArgs e)
+        private void OnReserveEvent(object sender, ReservationEventArgs args)
         {
-            this.DashboardButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.DashboardButton.Foreground = Brushes.White;
-
-            this.CampingPitchesButton.Background = Brushes.White;
-            this.CampingPitchesButton.Foreground = Brushes.Black;
-
-            this.MainFrame.Content = this._reservationCollectionFrame.Content;
+            this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
         
-        private void CampingPitchesButtonClick(object sender, RoutedEventArgs e)
+        private void OnReserveDurationEvent(object sender, ReservationDurationEventArgs args)
         {
-            this.CampingPitchesButton.Background = (SolidColorBrush) new BrushConverter().ConvertFrom("#006837");
-            this.CampingPitchesButton.Foreground = Brushes.White;
-
-            this.DashboardButton.Background = Brushes.White;
-            this.DashboardButton.Foreground = Brushes.Black;
-
-            this.MainFrame.Content = this._campingPitchesCollectionFrame.Content;
-        }
-
-        private void OnReserveEvent(object sender, ReserveEventArgs args)
-        {
-            this._reservationCustomerForm.CampingPlaceID = args.CampingPlaceID;
-            this._reservationCustomerForm.CheckInDatetime = args.CheckInDatetime;
-            this._reservationCustomerForm.CheckOutDatetime = args.CheckOutDatetime;
-
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationConfirmedEventArgs args)
+        private void OnReservationGuestsFormEvent(object sender, ReservationGuestEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationCampingGuestPage;
+        }
+
+        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
         {
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
 
+        private void OnSignInEvent(object sender, AccountEventArgs args)
+        {
+            this.OverviewMenuButton_Checked(sender, null);
+
+            this.OverviewMenuButton.Visibility = Visibility.Visible;
+            this.ReserveMenuButton.Visibility = Visibility.Visible;
+            this.AccountMenuButton.Visibility = Visibility.Visible;
+            this.SignInMenuButton.Visibility = Visibility.Collapsed;
+            this.SignUpMenuButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void OnSignUpEvent(object sender, AccountEventArgs args)
+        {
+            this.MainFrame.Content = this._signInPage.Content;
+            this.SignInMenuButton.IsChecked = true;
+        }
+
+
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            this.MainFrame.Content = this._signInPage.Content;
+
+            this.OverviewMenuButton.Visibility = Visibility.Collapsed;
+            this.ReserveMenuButton.Visibility = Visibility.Collapsed;
+            this.AccountMenuButton.Visibility = Visibility.Collapsed;
+            this.SignInMenuButton.Visibility = Visibility.Visible;
+            this.SignUpMenuButton.Visibility = Visibility.Visible;
+
+            this.SignInMenuButton.IsChecked = true;
+        }
+
+        private void OnSignUpFormEvent(object sender, EventArgs e)
+        {
+            this.MainFrame.Content = this._signUpPage.Content;
+            this.SignUpMenuButton.IsChecked = true;
+        }
+
+        private void OverviewMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.OverviewMenuButton.IsChecked = true;
+            if (CurrentUser.Account.Rights == Model.AccountRights.Admin)
+            {
+                this.MainFrame.Content = this._reservationCollectionFrame;
+                return;
+            }
+
+            this.MainFrame.Content = this._reservationOverviewPage;
+        }
+
+        private void ReserveMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._campingPlacesCollectionFrame;
+        }
+
+        private void AccountMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._accountPage;
+        }
+
+        private void SignInMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._signInPage;
+        }
+
+        private void SignUpMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._signUpPage.Content;
+        }
+        
+        private void OnManageReservationEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._manageReservationPage.Content;
+        }
+
+        private void OnBackToDashboardEvent(object sender, ReservationEventArgs args)
+        {
+            this.OverviewMenuButton_Checked(sender, null);
+        }
+
+        private void OnToAccountUpdatePageEvent(object sender, EventArgs e)
+        {
+            this.MainFrame.Content = this._accountUpdatePage.Content;
+        }
+
+        private void OnUpdateCancelEvent(object sender, EventArgs e)
+        {
+            this.AccountMenuButton_Checked(sender, null);
+        }
+
+        private void OnUpdateConfirmEvent(object sender, EventArgs e)
+        {
+            this.AccountMenuButton_Checked(sender, null);
+        }
     }
 }

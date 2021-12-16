@@ -39,7 +39,7 @@ namespace SystemCore
         }
         
         /// <summary>
-        /// Selects rows from SqlCommand. 
+        /// Selects rows from database table. 
         /// </summary>
         /// <returns>List with chosen rows</returns>
         public IEnumerable<Dictionary<string, string>> Select()
@@ -51,25 +51,35 @@ namespace SystemCore
             }
             
             List<Dictionary<string, string>> list = new List<Dictionary<string, string>>();
-            
-            DatabaseConnector.Open();
-            this._sqlCommand.Connection = DatabaseConnector.GetConnection();
-            
-            using SqlDataReader reader = this._sqlCommand.ExecuteReader();
-            while (reader.Read())
+
+            try
             {
-                list.Add(this.DataRecordToDictionary(reader));
+                DatabaseConnector.Open();
+                this._sqlCommand.Connection = DatabaseConnector.GetConnection();
+
+                using SqlDataReader reader = this._sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(this.DataRecordToDictionary(reader));
+                }
+
+                DatabaseConnector.Close();
+
+                this._success = true;
             }
-
-            DatabaseConnector.Close();
-
-            this._success = true;
+            catch (Exception exception)
+            {
+                this._success = false;
+                
+                SystemError.Handle(exception);
+            }
+            
 
             return list;
         }
 
         /// <summary>
-        /// Select first row from SqlCommand.
+        /// Select first row from database table.
         /// </summary>
         /// <returns>Dictionary with first row from the SELECT statement</returns>
         public Dictionary<string, string> SelectFirst()
@@ -79,47 +89,80 @@ namespace SystemCore
                 this._success = false;
                 SystemError.Handle(new ArgumentException("SQL query must contain a SELECT query in order to execute this method."));
             }
-            
-            DatabaseConnector.Open();
-            this._sqlCommand.Connection = DatabaseConnector.GetConnection();
-            
-            using SqlDataReader reader = this._sqlCommand.ExecuteReader();
-            reader.Read();
-            Dictionary<string, string> dictionary = this.DataRecordToDictionary(reader);
-            
-            DatabaseConnector.Close();
 
-            this._success = true;
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+
+            try
+            {
+                DatabaseConnector.Open();
+                this._sqlCommand.Connection = DatabaseConnector.GetConnection();
+            
+                using SqlDataReader reader = this._sqlCommand.ExecuteReader();
+                if (reader == null)
+                {
+                    return null;
+                }
+            
+                bool hasData = reader.Read();
+                if (!hasData)
+                {
+                    return null;
+                }
+            
+                dictionary = this.DataRecordToDictionary(reader);
+            
+                DatabaseConnector.Close();
+
+                this._success = true;
+            }
+            catch (Exception exception)
+            {
+                this._success = false;
+                
+                SystemError.Handle(exception);
+            }
             
             return dictionary;
         }
 
         /// <summary>
-        /// Executes the SqlCommand.
+        /// Executes the SqlCommand and saves the success status.
         /// </summary>
         public void Execute()
         {
-            DatabaseConnector.Open();
+            try
+            {
+                DatabaseConnector.Open();
 
-            this._sqlCommand.Connection = DatabaseConnector.GetConnection();
-            var updatedRows = this._sqlCommand.ExecuteNonQuery();
-            
-            DatabaseConnector.Close();
+                this._sqlCommand.Connection = DatabaseConnector.GetConnection();
+                var updatedRows = this._sqlCommand.ExecuteNonQuery();
 
-            this._success = updatedRows > 0;
+                DatabaseConnector.Close();
+
+                this._success = updatedRows > 0;
+            }
+            catch (Exception exception)
+            {
+                this._success = false;
+                
+                SystemError.Handle(exception);
+            }
         }
 
         /// <summary>
-        /// Checks succes.
+        /// Determines if the query has been successfully executed.
         /// </summary>
-        /// <returns>Succes status</returns>
-        public bool SuccessFullyExecuted()
+        /// <returns>Whether the query was successful or not.</returns>
+        public bool IsSuccessFullyExecuted()
         {
             return this._success;
         }
         
         /// <summary>
-        /// Inserts DataRecord items in a Dictionary.
+        /// Inserts DataRecord items in a Dictionary. Renders all kind of data types to one single data type, we do this
+        /// because this makes it easy for us to use the most common data type, string, and we only have to cast the
+        /// less common data types, such as int or bool. If we do not do this, then we have to save it as an object type
+        /// and we have to cast every single the corresponding data type every time we use it.
         /// </summary>
         /// <returns>Filled Dictionary</returns>
         private Dictionary<string, string> DataRecordToDictionary(IDataRecord dataRecord)
@@ -130,23 +173,25 @@ namespace SystemCore
             {
                 string dataType = dataRecord.GetDataTypeName(delta);
                 string column = dataRecord.GetName(delta);
-                if (dictionary.ContainsKey(column))
+                if (dictionary.ContainsKey(column) || dataRecord.IsDBNull(delta))
                 {
                     continue;
                 }
                 
                 string value = dataType switch
                 {
+                    "text" => dataRecord.GetString(delta),
                     "string" => dataRecord.GetString(delta),
                     "varchar" => dataRecord.GetString(delta),
                     "nvarchar" => dataRecord.GetString(delta),
                     "int" => dataRecord.GetInt32(delta).ToString(),
+                    "tinyint" => dataRecord.GetByte(delta).ToString(),
                     "float" => dataRecord.GetDouble(delta).ToString(CultureInfo.InvariantCulture),
                     "double" => dataRecord.GetDouble(delta).ToString(CultureInfo.InvariantCulture),
                     "decimal" => dataRecord.GetDecimal(delta).ToString(CultureInfo.InvariantCulture),
                     "bool" => dataRecord.GetBoolean(delta).ToString(),
-                    "date" => dataRecord.GetDateTime(delta).ToString(),
-                    "datetime" => dataRecord.GetDateTime(delta).ToString(),
+                    "date" => dataRecord.GetDateTime(delta).ToString(CultureInfo.InvariantCulture),
+                    "datetime" => dataRecord.GetDateTime(delta).ToString(CultureInfo.InvariantCulture),
                     _ => throw new InvalidEnumArgumentException(
                         $"The data type: {dataType} is not supported yet to read data from database records.")
                 };
