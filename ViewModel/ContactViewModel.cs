@@ -59,8 +59,8 @@ namespace ViewModel
 
             this.ContactPageAddress = $"{camping.Address.Street}, {camping.Address.Place}";
             this.ContactPostalCode = camping.Address.PostalCode;
-            this.ContactPagePhoneNumber = camping.campingPhoneNumber;
-            this.ContactPageEmailAddress = camping.campingEmailAddress;
+            this.ContactPagePhoneNumber = camping.PhoneNumber;
+            this.ContactPageEmailAddress = camping.Email;
         }
 
         #region Chat
