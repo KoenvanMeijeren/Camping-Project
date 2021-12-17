@@ -32,6 +32,12 @@ namespace Model
             this.Name = name;
         }
 
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return this.Name;
+        }
+
         public bool Update(string prefix, string name)
         {
             return base.Update(Accommodation.ToDictionary(prefix, name));

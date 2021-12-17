@@ -40,6 +40,23 @@ namespace Model
             this.Accommodation = accommodation;
         }
 
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return this.Accommodation.ToString();
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object? obj)
+        {
+            if (obj is CampingPlaceType campingPlaceType)
+            {
+                return campingPlaceType.Id == this.Id;
+            }
+
+            return false;
+        }
+
         public bool Update(int guestLimit, float standardNightPrice, Accommodation accommodation)
         {
             this.GuestLimit = guestLimit;
