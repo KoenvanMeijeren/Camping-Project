@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using System;
@@ -146,7 +146,7 @@ namespace ViewModel
                 }
                 else if (!RegexHelper.IsPostalcodeValid(this._postalCode))
                 {
-                    this.UpdateError = "Ongeldige postcode";
+                    this.UpdateError = "Ongeldig postcode";
                 }
             }
         }
@@ -207,7 +207,7 @@ namespace ViewModel
                 }
                 else if (!Validation.IsNumber(_phoneNumber))
                 {
-                    this.UpdateError = "Ongeldige telefoonnummer";
+                    this.UpdateError = "Ongeldig telefoonnummer";
                 }
             }
         }
