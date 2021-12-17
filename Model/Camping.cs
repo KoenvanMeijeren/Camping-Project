@@ -19,19 +19,19 @@ namespace Model
         
         public Address Address { get; private set; }
         public CampingOwner CampingOwner { get; private set; }
-        public string campingPhoneNumber { get; private set; }
-        public string campingEmailAddress { get; private set; }
+        public string PhoneNumber { get; private set; }
+        public string Email { get; private set; }
 
         public Camping(): base(TableName, ColumnId)
         {
             
         }
         
-        public Camping(string name, Address address, CampingOwner campingOwner, string phoneNumber, string emailAddress): this("-1", name, address, campingOwner, phoneNumber, emailAddress)
+        public Camping(string name, Address address, CampingOwner campingOwner, string phoneNumber, string email): this("-1", name, address, campingOwner, phoneNumber, email)
         {
         }
         
-        public Camping(string id, string name, Address address, CampingOwner campingOwner, string phoneNumber, string emailAddress): base(TableName, ColumnId)
+        public Camping(string id, string name, Address address, CampingOwner campingOwner, string phoneNumber, string email): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int idNumeric);
             
@@ -39,8 +39,8 @@ namespace Model
             this.Name = name;
             this.Address = address;
             this.CampingOwner = campingOwner;
-            this.campingPhoneNumber = phoneNumber;
-            this.campingEmailAddress = emailAddress;
+            this.PhoneNumber = phoneNumber;
+            this.Email = email;
         }
 
         public bool Update(string name, Address address, CampingOwner campingOwner, string phoneNumber, string emailAddress)
@@ -48,8 +48,8 @@ namespace Model
             this.Name = name;
             this.Address = address;
             this.CampingOwner = campingOwner;
-            this.campingPhoneNumber = phoneNumber;
-            this.campingEmailAddress = emailAddress;
+            this.PhoneNumber = phoneNumber;
+            this.Email = emailAddress;
             
             return base.Update(Camping.ToDictionary(name, address, campingOwner, phoneNumber, emailAddress));
         }
@@ -90,7 +90,7 @@ namespace Model
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Camping.ToDictionary(this.Name, this.Address, this.CampingOwner, this.campingPhoneNumber, this.campingEmailAddress);
+            return Camping.ToDictionary(this.Name, this.Address, this.CampingOwner, this.PhoneNumber, this.Email);
         }
 
         private static Dictionary<string, string> ToDictionary(string name, Address address, CampingOwner campingOwner, string phoneNumber, string emailAddress)
@@ -100,8 +100,8 @@ namespace Model
                 {ColumnName, name},
                 {ColumnAddress, address.Id.ToString()},
                 {ColumnCampingOwner, campingOwner.Id.ToString()},
-                {ColumnPhoneNumber, phoneNumber.ToString()},
-                {ColumnEmailAddress, emailAddress.ToString()}
+                {ColumnPhoneNumber, phoneNumber},
+                {ColumnEmailAddress, emailAddress}
             };
 
             return dictionary;

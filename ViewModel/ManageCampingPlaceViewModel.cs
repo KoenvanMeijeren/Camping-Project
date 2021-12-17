@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -206,6 +207,12 @@ namespace ViewModel
         
         #endregion
 
+        #region Events
+
+        public static event EventHandler CampingPlacesUpdated;
+
+        #endregion
+
         #region View construction
 
         public ManageCampingPlaceViewModel()
@@ -214,6 +221,14 @@ namespace ViewModel
          
             this.SetCampingPlaces();
             this.SetCampingPlaceTypes();
+            
+            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated += ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated;
+        }
+
+        private void ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated(object? sender, EventArgs e)
+        {
+            this.SetCampingPlaceTypes();
+            this.ResetInput();
         }
 
         private void SetCampingPlaces()
@@ -265,18 +280,19 @@ namespace ViewModel
 
         #region Commands
         
-        private void ExecuteCancel()
+        private void ExecuteCancelEditAction()
         {
             this.ResetInput();
         }
-        private bool CanExecuteCancel()
+        private bool CanExecuteCancelEditAction()
         {
             return Validation.IsInputFilled(this.Number)
                    || Validation.IsNumber(this.Surface)
-                   || Validation.IsInputFilled(this.ExtraNightPrice);
+                   || Validation.IsInputFilled(this.ExtraNightPrice)
+                   || this.SelectedCampingPlaceType != null;
         }
 
-        public ICommand Cancel => new RelayCommand(ExecuteCancel, CanExecuteCancel);
+        public ICommand CancelEditAction => new RelayCommand(ExecuteCancelEditAction, CanExecuteCancelEditAction);
         
         private void ExecuteEditSave()
         {
@@ -295,17 +311,19 @@ namespace ViewModel
             
             this.SetCampingPlaces();
             this.ResetInput();
+            ManageCampingPlaceViewModel.CampingPlacesUpdated?.Invoke(this, EventArgs.Empty);
 
             MessageBox.Show("De campingplaatsen zijn succesvol bijgewerkt.", "Campingplaatsen bewerken");
         }
         private bool CanExecuteEditSave()
         {
-            return Validation.IsInputFilled(this.Number) 
+            return Validation.IsInputFilled(this.Number)
                    && Validation.IsNumber(this.Number)
-                   && Validation.IsInputFilled(this.Surface) 
-                   && Validation.IsDecimalNumber(this.Surface) 
-                   && Validation.IsInputFilled(this.ExtraNightPrice) 
-                   && Validation.IsDecimalNumber(this.ExtraNightPrice);
+                   && Validation.IsInputFilled(this.Surface)
+                   && Validation.IsDecimalNumber(this.Surface)
+                   && Validation.IsInputFilled(this.ExtraNightPrice)
+                   && Validation.IsDecimalNumber(this.ExtraNightPrice)
+                   && this.SelectedCampingPlaceType != null;
         }
 
         public ICommand EditSave => new RelayCommand(ExecuteEditSave, CanExecuteEditSave);
@@ -321,10 +339,12 @@ namespace ViewModel
             this.SelectedCampingPlace.Delete();
             this.CampingPlaces.Remove(this.SelectedCampingPlace);
             this.SelectedCampingPlace = null;
+            
+            ManageCampingPlaceViewModel.CampingPlacesUpdated?.Invoke(this, EventArgs.Empty);
         }
         private bool CanExecuteDelete()
         {
-            return this.SelectedCampingPlace != null && !this._campingPlaceModel.CampingPlaceHasReservations(this.SelectedCampingPlace);
+            return this.SelectedCampingPlace != null && !this._campingPlaceModel.HasReservations(this.SelectedCampingPlace);
         }
 
         public ICommand Delete => new RelayCommand(ExecuteDelete, CanExecuteDelete);

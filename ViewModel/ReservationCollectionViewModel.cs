@@ -24,7 +24,7 @@ namespace ViewModel
         
         private const string SelectAll = "Alle";
 
-        private readonly ObservableCollection<string> _campingPlaceTypes;
+        private readonly ObservableCollection<string> _accommodations;
 
         private Reservation _selectedReservation;
 
@@ -131,17 +131,17 @@ namespace ViewModel
             }
         }
         
-        public ObservableCollection<string> CampingPlaceTypes
+        public ObservableCollection<string> Accommodations
         {
-            get => this._campingPlaceTypes;
+            get => this._accommodations;
             private init
             {
-                if (Equals(value, this._campingPlaceTypes))
+                if (Equals(value, this._accommodations))
                 {
                     return;
                 }
                 
-                this._campingPlaceTypes = value;
+                this._accommodations = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -191,14 +191,13 @@ namespace ViewModel
         public ReservationCollectionViewModel()
         {
             this.Reservations = new ObservableCollection<Reservation>();
-            this.CampingPlaceTypes = new ObservableCollection<string> {
+            this.Accommodations = new ObservableCollection<string> {
                 SelectAll
             };
             
-            //Loop through rows in Accommodation table
-            foreach (var accommodationDatabaseRow in this._accommodationModel.Select())
+            foreach (var accommodation in this._accommodationModel.Select())
             {
-                this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);
+                this.Accommodations.Add(accommodation.Name);
             }
 
             this.SelectedCampingPlaceType = SelectAll;

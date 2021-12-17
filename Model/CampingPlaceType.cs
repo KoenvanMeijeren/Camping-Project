@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using SystemCore;
 
 namespace Model
 {
@@ -15,6 +17,7 @@ namespace Model
         
         public int GuestLimit { get; private set; }
         public float StandardNightPrice { get; private set; }
+        public string StandardNightPriceReadable { get; private set; }
         
         public Accommodation Accommodation { get; private set; }
 
@@ -38,12 +41,13 @@ namespace Model
             this.GuestLimit = successGuestLimit ? numericGuestLimit : 0;
             this.StandardNightPrice = successStandardNightPrice ? numericStandardNightPrice : 0;
             this.Accommodation = accommodation;
+            this.StandardNightPriceReadable = $"€ {this.StandardNightPrice}";
         }
 
         /// <inheritdoc/>
         public override string ToString()
         {
-            return this.Accommodation.ToString();
+            return this.Accommodation.ToString() + $" ({this.Id})";
         }
 
         /// <inheritdoc/>
@@ -57,13 +61,43 @@ namespace Model
             return false;
         }
 
-        public bool Update(int guestLimit, float standardNightPrice, Accommodation accommodation)
+        public bool HasCampingPlaces(CampingPlaceType campingPlaceType)
         {
-            this.GuestLimit = guestLimit;
-            this.StandardNightPrice = standardNightPrice;
+            string queryString = this.BaseSelectQuery();
+            queryString += $" INNER JOIN {CampingPlace.TableName} CP ON CP.{CampingPlace.ColumnType} = BT.{ColumnId} ";
+            queryString += $" WHERE BT.{ColumnId} = @{ColumnId} ";
+
+            Query query = new Query(queryString);
+            query.AddParameter(ColumnId, campingPlaceType.Id);
+            var results = query.Select();
+
+            return results != null && results.Any();
+        }
+        
+        /// <inheritdoc/>
+        public override IEnumerable<CampingPlaceType> Select()
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ColumnId}");
+            var items = query.Select();
+            this.Collection = new List<CampingPlaceType>();
+            foreach (Dictionary<string, string> dictionary in items)
+            {
+                this.Collection.Add(this.ToModel(dictionary));
+            }
+
+            return this.Collection;
+        }
+        
+        public bool Update(string guestLimit, string standardNightPrice, Accommodation accommodation)
+        {
+            bool successGuestLimit = int.TryParse(guestLimit, out int numericGuestLimit);
+            bool successStandardNightPrice = float.TryParse(standardNightPrice, out float numericStandardNightPrice);
+            
+            this.GuestLimit = successGuestLimit ? numericGuestLimit : 0;
+            this.StandardNightPrice = successStandardNightPrice ? numericStandardNightPrice : 0;
             this.Accommodation = accommodation;
 
-            return base.Update(CampingPlaceType.ToDictionary(guestLimit, standardNightPrice, accommodation));
+            return base.Update(CampingPlaceType.ToDictionary(this.GuestLimit, this.StandardNightPrice, this.Accommodation));
         }
 
         /// <inheritdoc/>

@@ -77,10 +77,10 @@ namespace Model
             return this.GetLocation();
         }
 
-        public bool CampingPlaceHasReservations(CampingPlace campingPlace)
+        public bool HasReservations(CampingPlace campingPlace)
         {
             string queryString = this.BaseSelectQuery();
-            queryString += $" LEFT JOIN {Reservation.TableName} R ON R.{Reservation.ColumnPlace} = BT.{ColumnId} ";
+            queryString += $" INNER JOIN {Reservation.TableName} R ON R.{Reservation.ColumnPlace} = BT.{ColumnId} ";
             queryString += $" WHERE BT.{ColumnId} = @{ColumnId} ";
 
             Query query = new Query(queryString);
@@ -88,6 +88,20 @@ namespace Model
             var results = query.Select();
 
             return results != null && results.Any();
+        }
+        
+        /// <inheritdoc/>
+        public override IEnumerable<CampingPlace> Select()
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ColumnId}");
+            var items = query.Select();
+            this.Collection = new List<CampingPlace>();
+            foreach (Dictionary<string, string> dictionary in items)
+            {
+                this.Collection.Add(this.ToModel(dictionary));
+            }
+
+            return this.Collection;
         }
 
         public bool Update(string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType)

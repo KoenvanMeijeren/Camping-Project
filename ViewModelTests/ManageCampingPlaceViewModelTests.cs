@@ -93,7 +93,7 @@ namespace ViewModelTests
         public void TestExecuteCancelAction()
         {
             this._manageCampingPlaceViewModel.Object.SelectedCampingPlace = this._campingPlaces.First();;
-            this._manageCampingPlaceViewModel.Object.Cancel.Execute(null);
+            this._manageCampingPlaceViewModel.Object.CancelEditAction.Execute(null);
             
             Assert.AreEqual("Campingplaats toevoegen", this._manageCampingPlaceViewModel.Object.EditTitle);
             Assert.IsEmpty(this._manageCampingPlaceViewModel.Object.Number);
