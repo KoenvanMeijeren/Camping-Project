@@ -174,6 +174,16 @@ namespace Model
         
         public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, DateTime? reservationDeletedTime, DateTime checkInDate, DateTime checkOutDate)
         {
+            this.NumberOfPeople = int.Parse(numberOfPeople);
+            this.CampingCustomer = campingCustomer;
+            this.CampingPlace = campingPlace;
+            this.ReservationDeleted = reservationDeleted;
+            this.ReservationPaid = reservationPaid;
+            this.ReservationRestitutionPaid = reservationRestitutionPaid;
+            this.ReservationDeletedTime = reservationDeletedTime;
+            this.CheckInDatetime = checkInDate;
+            this.CheckOutDatetime = checkOutDate;
+            
             return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, reservationDeleted, reservationPaid, reservationRestitutionPaid, reservationDeletedTime, checkInDate, checkOutDate));
         }
 

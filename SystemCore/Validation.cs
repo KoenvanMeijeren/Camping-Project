@@ -8,12 +8,17 @@ namespace SystemCore
         
         public static bool IsInputFilled(string input)
         {
-            return (!string.IsNullOrEmpty(input) && input.Length != 0);
+            return !string.IsNullOrEmpty(input) && input.Length != 0;
         }
 
         public static bool IsNumber(string input)
         {
-            return (int.TryParse(input, out int result));
+            return int.TryParse(input, out int result);
+        }
+        
+        public static bool IsDecimalNumber(string input)
+        {
+            return float.TryParse(input, out float result);
         }
 
         public static bool IsBirthdateValid(DateTime birthdate)
