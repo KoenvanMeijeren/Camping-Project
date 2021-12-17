@@ -1,0 +1,55 @@
+﻿<Page x:Class="Visualization.ManageCampingPlaceTypePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Visualization"
+      xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ManageCampingPlacePage" Height="634.04" Width="820" MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
+
+    <Page.DataContext>
+        <viewModel:ManageCampingPlaceTypeViewModel/>
+    </Page.DataContext>
+    
+    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837">
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,62,30,219" CornerRadius="15,15,15,15" Background="White">
+            <ListView SelectedItem="{Binding SelectedCampingPlaceType}" ItemsSource="{Binding CampingPlaceTypes}" Margin="23,48,23,68" Background="White" FontFamily="Century Gothic" FontWeight="Bold" >
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="ID" Width="75" DisplayMemberBinding="{Binding Id}" />
+                        <GridViewColumn Header="Verblijf" Width="125" DisplayMemberBinding="{Binding Accommodation.Name}" />
+                        <GridViewColumn Header="Gasten limiet" Width="125" DisplayMemberBinding="{Binding GuestLimit}" />
+                        <GridViewColumn Header="Dagprijs" Width="125" DisplayMemberBinding="{Binding StandardNightPrice}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Border>
+
+        <Label Content="Campingplaatstypes beheer&#xD;&#xA;" HorizontalAlignment="Left" Margin="46,74,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,437,30,51" CornerRadius="15,15,15,15" Background="White" RenderTransformOrigin="0.5,0.5">
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="-1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Border.RenderTransform>
+        </Border>
+        <Label Content="{Binding EditTitle}" HorizontalAlignment="Left" Margin="46,452,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+        <Button Command="{Binding Delete}" x:Name="DeleteButton" Content="Verwijder" Margin="53,364,647,238"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
+
+        <Label Content="Verblijf" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="48,495,0,0" Height="25"/>
+
+        <Label Content="Gast limiet" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="190,495,0,0" Height="25"/>
+        <TextBox Text="{Binding GuestLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="LocationNumberTextBox" HorizontalAlignment="Left" Height="20" Margin="195,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
+        <ComboBox SelectedItem="{Binding SelectedAccommodation}" ItemsSource="{Binding Accommodations}" Margin="53,524,671,82" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White" />
+        <Label Content="Dagprijs" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="327,495,0,0" Height="25"/>
+        <TextBox Text="{Binding StandardNightPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="SurfaceTextBox" HorizontalAlignment="Left" Height="20" Margin="332,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
+
+        <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Bevestig" Margin="613,476,67,125"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+        <Button Command="{Binding Cancel}" x:Name="Cancel" Content="Annuleer" Margin="613,521,67,80"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+    </Grid>
+</Page>

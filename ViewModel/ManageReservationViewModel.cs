@@ -229,13 +229,7 @@ namespace ViewModel
             FromReservationBackToDashboardEvent?.Invoke(this, new ReservationEventArgs(_reservation));
         }
 
-        private bool CanExecuteGoToDashboard()
-        {
-            //Is it possible to check this execution?
-            return true;
-        }
-        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
-
+        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard);
 
         /// <summary>
         /// Deletes the reservation in de Reservationtable, reservationdurationtable and reservationcampingGuesttable

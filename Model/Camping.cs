@@ -10,23 +10,28 @@ namespace Model
             ColumnId = "CampingID",
             ColumnName = "CampingName",
             ColumnAddress = "CampingAddressID",
-            ColumnCampingOwner = "CampingOwnerID";
+            ColumnCampingOwner = "CampingOwnerID",
+            ColumnPhoneNumber = "CampingPhoneNumber",
+            ColumnEmailAddress = "CampingEmailAddress";
+
         
         public string Name { get; private set; }
         
         public Address Address { get; private set; }
         public CampingOwner CampingOwner { get; private set; }
+        public string PhoneNumber { get; private set; }
+        public string Email { get; private set; }
 
         public Camping(): base(TableName, ColumnId)
         {
             
         }
         
-        public Camping(string name, Address address, CampingOwner campingOwner): this("-1", name, address, campingOwner)
+        public Camping(string name, Address address, CampingOwner campingOwner, string phoneNumber, string email): this("-1", name, address, campingOwner, phoneNumber, email)
         {
         }
         
-        public Camping(string id, string name, Address address, CampingOwner campingOwner): base(TableName, ColumnId)
+        public Camping(string id, string name, Address address, CampingOwner campingOwner, string phoneNumber, string email): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int idNumeric);
             
@@ -34,15 +39,19 @@ namespace Model
             this.Name = name;
             this.Address = address;
             this.CampingOwner = campingOwner;
+            this.PhoneNumber = phoneNumber;
+            this.Email = email;
         }
 
-        public bool Update(string name, Address address, CampingOwner campingOwner)
+        public bool Update(string name, Address address, CampingOwner campingOwner, string phoneNumber, string emailAddress)
         {
             this.Name = name;
             this.Address = address;
             this.CampingOwner = campingOwner;
+            this.PhoneNumber = phoneNumber;
+            this.Email = emailAddress;
             
-            return base.Update(Camping.ToDictionary(name, address, campingOwner));
+            return base.Update(Camping.ToDictionary(name, address, campingOwner, phoneNumber, emailAddress));
         }
 
         /// <inheritdoc/>
@@ -55,6 +64,8 @@ namespace Model
             
             dictionary.TryGetValue(ColumnId, out string id);
             dictionary.TryGetValue(ColumnName, out string name);
+            dictionary.TryGetValue(ColumnPhoneNumber, out string phoneNumber);
+            dictionary.TryGetValue(ColumnEmailAddress, out string emailAddress);
 
             dictionary.TryGetValue(Account.ColumnId, out string accountId);
             dictionary.TryGetValue(Account.ColumnEmail, out string email);
@@ -73,22 +84,24 @@ namespace Model
             Address address = new Address(addressId, street, postalCode, place);
             CampingOwner campingOwner = new CampingOwner(account, campingOwnerId, campingOwnerName);
 
-            return new Camping(id, name, address, campingOwner);
+            return new Camping(id, name, address, campingOwner, phoneNumber, emailAddress);
         }
 
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Camping.ToDictionary(this.Name, this.Address, this.CampingOwner);
+            return Camping.ToDictionary(this.Name, this.Address, this.CampingOwner, this.PhoneNumber, this.Email);
         }
 
-        private static Dictionary<string, string> ToDictionary(string name, Address address, CampingOwner campingOwner)
+        private static Dictionary<string, string> ToDictionary(string name, Address address, CampingOwner campingOwner, string phoneNumber, string emailAddress)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
                 {ColumnName, name},
                 {ColumnAddress, address.Id.ToString()},
-                {ColumnCampingOwner, campingOwner.Id.ToString()}
+                {ColumnCampingOwner, campingOwner.Id.ToString()},
+                {ColumnPhoneNumber, phoneNumber},
+                {ColumnEmailAddress, emailAddress}
             };
 
             return dictionary;

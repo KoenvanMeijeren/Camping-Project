@@ -23,7 +23,6 @@ namespace ViewModel
 
         private string
             _customerReservationError,
-
             _firstName,
             _lastName,
             _phoneNumber,
@@ -417,16 +416,16 @@ namespace ViewModel
         }
         private bool CanExecuteCustomerDataReservation()
         {
-            return   Validation.IsInputFilled(this._firstName) &&
-                     Validation.IsInputFilled(this._lastName) &&
-                     Validation.IsBirthdateValid(this._birthdate) &&
-                     Validation.IsBirthdateAdult(this._birthdate) &&
-                     Validation.IsInputFilled(this._street) &&
-                     Validation.IsInputFilled(this._postalCode) &&
-                     RegexHelper.IsPostalcodeValid(this._postalCode) &&
-                     Validation.IsInputFilled(this._place) &&
-                     Validation.IsInputFilled(this._phoneNumber) &&
-                     Validation.IsNumber(this._phoneNumber);
+            return Validation.IsInputFilled(this._firstName) 
+                   && Validation.IsInputFilled(this._lastName) 
+                   && Validation.IsBirthdateValid(this._birthdate)
+                   && Validation.IsBirthdateAdult(this._birthdate) 
+                   && Validation.IsInputFilled(this._street) 
+                   && Validation.IsInputFilled(this._postalCode) 
+                   && RegexHelper.IsPostalcodeValid(this._postalCode) 
+                   && Validation.IsInputFilled(this._place) 
+                   && Validation.IsInputFilled(this._phoneNumber) 
+                   && Validation.IsNumber(this._phoneNumber);
         }
 
         public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerDataReservation, CanExecuteCustomerDataReservation);

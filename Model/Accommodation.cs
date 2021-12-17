@@ -32,6 +32,23 @@ namespace Model
             this.Name = name;
         }
 
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return this.Name;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object? obj)
+        {
+            if (obj is Accommodation accommodation)
+            {
+                return accommodation.Id == this.Id;
+            }
+
+            return false;
+        }
+
         public bool Update(string prefix, string name)
         {
             return base.Update(Accommodation.ToDictionary(prefix, name));

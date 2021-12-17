@@ -37,7 +37,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\maps.PNG" />
+    <None Remove="Images\user_stock.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\maps.PNG" />
+    <Resource Include="Images\user_stock.png" />
   </ItemGroup>
 
   <ItemGroup>

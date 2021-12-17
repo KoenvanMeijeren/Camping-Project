@@ -17,16 +17,20 @@
             <Label Content="{Binding Subtitle}" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22" Grid.ColumnSpan="2"/>
             <Label Content="{Binding SubSubtitle}" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22" Foreground="#FF006837" Grid.ColumnSpan="2"/>
             <ListView x:Name="MenuList" Margin="0,117,0,351" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" BorderThickness="0,0,0,0"/>
-            <StackPanel x:Name="MainMenu" Margin="0,144,0,175">
-                <RadioButton x:Name="OverviewMenuButton" Content="Overzicht" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="OverviewMenuButton_Checked"/>
-                <RadioButton x:Name="ReserveMenuButton" Content="Reserveren" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ReserveMenuButton_Checked"/>
-                <RadioButton x:Name="AccountMenuButton" Content="Account" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="AccountMenuButton_Checked"/>
-                <RadioButton x:Name="ContactMenuButton" Content="Contact" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ContactMenuButton_Checked"/>
-                <RadioButton x:Name="ManageMenuButton" Content="Beheer" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ManageMenuButton_Checked"/>
-                <RadioButton x:Name="ManageCampingMapMenuButton" Content="Beheer map" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ManageCampingMapMenuButton_Checked"/>
+            <StackPanel x:Name="MainMenu" Margin="0,144,0, 0">
+                <RadioButton x:Name="OverviewMenuButton" Content="Overzicht" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="OverviewMenuButton_Checked"/>
+                <RadioButton x:Name="ReserveMenuButton" Content="Reserveren" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ReserveMenuButton_Checked"/>
                 
-                <RadioButton x:Name="SignInMenuButton" Content="Aanmelden" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="SignInMenuButton_Checked"/>
-                <RadioButton x:Name="SignUpMenuButton" Content="Registreren" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="SignUpMenuButton_Checked"/>
+                <RadioButton x:Name="ManageCampingPlaceButton" Content="Campingplaatsen" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ManageCampingPlacesButton_Checked"/>
+                <RadioButton x:Name="ManageCampingPlaceTypeButton" Content="Campingplaatstypes" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ManageCampingPlaceTypesButton_Checked"/>
+                <RadioButton x:Name="ManageAccommodationsButton" Content="Accommodaties" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ManageAccommodationsButton_Checked"/>
+                <RadioButton x:Name="ManageCampingMapMenuButton" Content="Beheer map" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ManageCampingMapMenuButton_Checked"/>
+
+                <RadioButton x:Name="AccountMenuButton" Content="Account" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="AccountMenuButton_Checked"/>
+                <RadioButton x:Name="ContactMenuButton" Content="Contact" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ContactMenuButton_Checked"/>
+                
+                <RadioButton x:Name="SignInMenuButton" Content="Aanmelden" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="SignInMenuButton_Checked"/>
+                <RadioButton x:Name="SignUpMenuButton" Content="Registreren" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="SignUpMenuButton_Checked"/>
             </StackPanel>
 
         </Grid>

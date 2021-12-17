@@ -71,5 +71,28 @@ namespace SystemCoreTests
             Assert.IsFalse(Validation.IsNumber(""));
             Assert.IsFalse(Validation.IsNumber(null));
         }
+        
+        [Test]
+        public void TestIsDecimalNumberValid()
+        {
+            Assert.IsTrue(Validation.IsDecimalNumber("2.2"));
+            Assert.IsTrue(Validation.IsDecimalNumber("2,2"));
+            Assert.IsTrue(Validation.IsDecimalNumber("2"));
+            Assert.IsTrue(Validation.IsDecimalNumber("0.0"));
+            Assert.IsTrue(Validation.IsDecimalNumber("0,0"));
+            Assert.IsTrue(Validation.IsDecimalNumber("0"));
+            Assert.IsTrue(Validation.IsDecimalNumber("-1.1"));
+            Assert.IsTrue(Validation.IsDecimalNumber("-1,1"));
+            Assert.IsTrue(Validation.IsDecimalNumber("-1"));
+        }
+
+        [Test]
+        public void TestIsDecimalNumberInvalid()
+        {
+            Assert.IsFalse(Validation.IsDecimalNumber("2fe"));
+            Assert.IsFalse(Validation.IsDecimalNumber("faf"));
+            Assert.IsFalse(Validation.IsDecimalNumber(""));
+            Assert.IsFalse(Validation.IsDecimalNumber(null));
+        }
     }
 }
