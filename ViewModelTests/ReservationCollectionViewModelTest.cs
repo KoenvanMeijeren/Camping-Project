@@ -29,9 +29,9 @@ namespace ViewModelTests
                 new CampingPlace("3", "1", "80", "0", new CampingPlaceType("5", "40", new Accommodation("CA", "Caravan"))),
                 new CampingPlace("4", "1", "80", "30", new CampingPlaceType("2", "80", new Accommodation("CH", "Chalet"))),
                 new CampingPlace("5", "1", "80", "30", new CampingPlaceType("10", "80", new Accommodation("CH", "Chalet"))),
-                new CampingPlace("6", "1", "80", "10", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper"))),
-                new CampingPlace("7", "1", "80", "10", new CampingPlaceType("1", "50", new Accommodation("CA", "Camper"))),
-                new CampingPlace("8", "1", "80", "0", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper")))
+                new CampingPlace("6", "1", "50", "10", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper"))),
+                new CampingPlace("7", "1", "50", "10", new CampingPlaceType("1", "50", new Accommodation("CA", "Camper"))),
+                new CampingPlace("8", "1", "60", "0", new CampingPlaceType("2", "50", new Accommodation("TE", "Tent")))
             };
 
             this._reservations = new();
@@ -49,6 +49,57 @@ namespace ViewModelTests
         public void TestThatWeHaveReservations()
         {
             Assert.NotNull(this._reservationCollectionMock.Object.Reservations);
+            Assert.AreEqual(6, this._reservationCollectionMock.Object.Reservations.Count);
+        }
+
+        [Test]
+        public void TestFilterCampingPlaceType()
+        {
+            this._reservationCollectionMock.Object.SelectedCampingPlaceType = "Caravan";
+            Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 1);
+
+            this._reservationCollectionMock.Object.SelectedCampingPlaceType = "Chalet";
+            Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 2);
+
+            this._reservationCollectionMock.Object.SelectedCampingPlaceType = "Camper";
+            Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 2);
+
+            this._reservationCollectionMock.Object.SelectedCampingPlaceType = "Tent";
+            Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 1);
+
+            this._reservationCollectionMock.Object.SelectedCampingPlaceType = "Bungalow";
+            Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 0);
+        }
+
+        [Test]
+        public void TestFilterMinPrice()
+        {
+            this._reservationCollectionMock.Object.MinTotalPrice = "50";
+            Assert.AreEqual(6, this._reservationCollectionMock.Object.Reservations.Count());
+
+            this._reservationCollectionMock.Object.MinTotalPrice = "90";
+            Assert.AreEqual(5, this._reservationCollectionMock.Object.Reservations.Count());
+        }
+
+        [Test]
+        public void TestFilterMaxPrice()
+        {
+            this._reservationCollectionMock.Object.MaxTotalPrice = "40";
+            Assert.AreEqual(0, this._reservationCollectionMock.Object.Reservations.Count());
+
+            this._reservationCollectionMock.Object.MaxTotalPrice = "90";
+            Assert.AreEqual(1, this._reservationCollectionMock.Object.Reservations.Count());
+        }
+
+        [Test]
+        public void TestReservationAmount()
+        {
+            Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 6);
+            this._reservationCollectionMock.Object.Reservations.Add(this._reservationCollectionMock.Object.Reservations[this._reservationCollectionMock.Object.Reservations.Count() - 1]);
+            Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 7);
+            this._reservationCollectionMock.Object.Reservations.Remove(this._reservationCollectionMock.Object.Reservations[this._reservationCollectionMock.Object.Reservations.Count() - 1]);
+            this._reservationCollectionMock.Object.Reservations.Remove(this._reservationCollectionMock.Object.Reservations[this._reservationCollectionMock.Object.Reservations.Count() - 1]);
+            Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count, 5);
         }
     }
 }
