@@ -18,7 +18,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using System.Diagnostics;
-using System.Windows.Navigation;
 
 namespace Visualization
 {
@@ -32,10 +31,12 @@ namespace Visualization
             InitializeComponent();
         }
 
+        // Opens new browser on clients pc
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { 
-                UseShellExecute = true 
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri)
+            {
+                UseShellExecute = true
             });
         }
     }

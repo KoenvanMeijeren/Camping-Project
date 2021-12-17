@@ -49,6 +49,9 @@ namespace ViewModel
 
         #endregion
 
+        public ICommand ChatButton => new RelayCommand(ExecuteGoToChat);
+        public static event EventHandler FromContactToChatEvent;
+
         public ContactViewModel()
         {
             Camping campingModel = new Camping();
@@ -61,15 +64,9 @@ namespace ViewModel
         }
 
         #region Chat
-        private bool ReturnTrue()
+        private void ExecuteGoToChat()
         {
-            return true;
-        }
-        public ICommand ChatButton => new RelayCommand(DisplayChat);
-
-        private void DisplayChat()
-        {
-
+            FromContactToChatEvent?.Invoke(this, null);
         }
         #endregion
     }

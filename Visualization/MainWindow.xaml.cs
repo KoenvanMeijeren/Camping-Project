@@ -24,6 +24,7 @@ namespace Visualization
         private readonly ReservationCustomerOverviewPage _reservationCustomerOverviewPage;
         private readonly AccountUpdatePage _accountUpdatePage;
         private readonly ContactPage _contactPage;
+        private readonly ChatPage _chatPage;
 
         public MainWindow()
         {
@@ -41,6 +42,7 @@ namespace Visualization
             this._reservationCustomerOverviewPage = new ReservationCustomerOverviewPage();
             this._accountUpdatePage = new AccountUpdatePage();
             this._contactPage = new ContactPage();
+            this._chatPage = new ChatPage();
 
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
@@ -55,7 +57,8 @@ namespace Visualization
             AccountViewModel.ToAccountUpdatePageEvent += this.OnToAccountUpdatePageEvent;
             AccountUpdateViewModel.UpdateCancelEvent += this.OnUpdateCancelEvent;
             AccountUpdateViewModel.UpdateConfirmEvent += this.OnUpdateConfirmEvent;
-            
+            ContactViewModel.FromContactToChatEvent += this.OnChatButton;
+
             // Sets the sign up page as the active menu and hides other menu items.
             this.SignInMenuButton.IsChecked = true;
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
@@ -183,6 +186,11 @@ namespace Visualization
         private void OnUpdateConfirmEvent(object sender, EventArgs e)
         {
             this.AccountMenuButton_Checked(sender, null);
+        }
+
+        private void OnChatButton(object sender, EventArgs e)
+        {
+            this.MainFrame.Content = this._chatPage.Content;
         }
     }
 }
