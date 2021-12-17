@@ -23,7 +23,6 @@ namespace ViewModel
 
         private string
             _customerReservationError,
-
             _firstName,
             _lastName,
             _phoneNumber,

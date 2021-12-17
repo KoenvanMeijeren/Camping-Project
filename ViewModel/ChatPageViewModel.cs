@@ -13,10 +13,15 @@ using System.Windows.Input;
 using SystemCore;
 using ViewModel.EventArguments;
 using System.Windows.Controls;
-using System.Windows.Documents;
 
 namespace ViewModel
 {
+    public enum MessageSender
+    {
+        Sender = 0,
+        Reciever = 1
+    }
+
     public class ChatPageViewModel : ObservableObject
     {
         // Close chat button
@@ -27,13 +32,31 @@ namespace ViewModel
         public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute);
 
         // Text
-        private string ChatTextInput;
+        private string _chatTextInput;
+        public string ChatTextInput
+        {
+            get => this._chatTextInput;
+            set
+            {
+                if (value == this._chatTextInput)
+                {
+                    return;
+                }
+
+                this._chatTextInput = value;
+            }
+        }
 
         private void SendChatButtonExecute()
         {
-
+            String test = ChatTextInput;
+            
+            ChatTextInput = "";
         }
 
+        /// <summary>
+        /// Closes the chat, returns to contact page
+        /// </summary>
         private void ExecuteCloseChat()
         {
             FromChatToContactEvent?.Invoke(this, null);

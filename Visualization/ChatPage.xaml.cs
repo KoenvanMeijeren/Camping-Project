@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+﻿using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using ViewModel;
 
 namespace Visualization
 {
@@ -22,16 +11,38 @@ namespace Visualization
     {
         public ChatPage()
         {
-            InitializeComponent();
-            var textblock = new TextBlock();
-            textblock.Text = "123";
+            this.InitializeComponent();
 
-            ChatField.Children.Add(textblock);
+            this.CreateChatTextBlock(MessageSender.Sender, "ewaa, strijder ik heb een vraagje..");
+            this.CreateChatTextBlock(MessageSender.Reciever, "Wat is je vraag bro?");
+            this.CreateChatTextBlock(MessageSender.Sender, "Mag ik m'n geld terug, kut camping bro.");
+            this.CreateChatTextBlock(MessageSender.Reciever, "Bel Alberto Stegeman maar");
+            this.CreateChatTextBlock(MessageSender.Sender, "Dit is Alberto Stegeman, en wij gaan Nederland voor jou waarschuwen >:(");
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
 
+        public void CreateChatTextBlock(MessageSender messageType, string message)
+        {
+            var textblock = new TextBlock();
+            var brushConverter = new BrushConverter();
+
+            textblock.Text = message;
+            textblock.Padding = new System.Windows.Thickness(7);
+            textblock.FontFamily = new FontFamily("Century Gothic");
+
+            if (messageType.Equals(MessageSender.Reciever))
+            {
+                textblock.Background = (Brush)brushConverter.ConvertFrom("#f2f2f2");
+                textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            }
+
+            if (messageType.Equals(MessageSender.Sender))
+            {
+                textblock.Background = (Brush)brushConverter.ConvertFrom("#f0f8ff");
+                textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+            }
+
+            ChatField.Children.Add(textblock);
         }
     }
 }
