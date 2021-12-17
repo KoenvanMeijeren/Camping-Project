@@ -112,7 +112,7 @@ namespace ViewModelTests
             Assert.AreEqual("Telefoonnummer is een verplicht veld", this._accountUpdateViewModel.UpdateError);
             
             this._accountUpdateViewModel.PhoneNumber = "test";
-            Assert.AreEqual("Ongeldige telefoonnummer", this._accountUpdateViewModel.UpdateError);
+            Assert.AreEqual("Ongeldig telefoonnummer", this._accountUpdateViewModel.UpdateError);
 
             this._accountUpdateViewModel.PhoneNumber = "0321345678";
             Assert.IsEmpty(this._accountUpdateViewModel.UpdateError);
@@ -127,7 +127,7 @@ namespace ViewModelTests
             Assert.AreEqual("Postcode is een verplicht veld", this._accountUpdateViewModel.UpdateError);
             
             this._accountUpdateViewModel.PostalCode = "23";
-            Assert.AreEqual("Ongeldige postcode", this._accountUpdateViewModel.UpdateError);
+            Assert.AreEqual("Ongeldig postcode", this._accountUpdateViewModel.UpdateError);
             
             this._accountUpdateViewModel.PostalCode = "1234AB";
             Assert.IsEmpty(this._accountUpdateViewModel.UpdateError);
