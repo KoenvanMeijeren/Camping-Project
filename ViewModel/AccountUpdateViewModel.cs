@@ -27,7 +27,7 @@ namespace ViewModel
         public string UpdateError
         {
             get => this._updateError;
-            set
+            private set
             {
                 if (value == this._updateError)
                 {
@@ -144,9 +144,9 @@ namespace ViewModel
                 {
                     this.UpdateError = "Postcode is een verplicht veld";
                 }
-                if (!RegexHelper.IsPostalcodeValid(this._postalCode))
+                else if (!RegexHelper.IsPostalcodeValid(this._postalCode))
                 {
-                    this.UpdateError = "Ongeldig postcode";
+                    this.UpdateError = "Ongeldige postcode";
                 }
             }
         }
@@ -207,7 +207,7 @@ namespace ViewModel
                 }
                 else if (!Validation.IsNumber(_phoneNumber))
                 {
-                    this.UpdateError = "Ongeldig telefoonnummer";
+                    this.UpdateError = "Ongeldige telefoonnummer";
                 }
             }
         }
