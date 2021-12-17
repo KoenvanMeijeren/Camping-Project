@@ -17,6 +17,7 @@ namespace Visualization
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
         private readonly ReservationCampingGuestPage _reservationCampingGuestPage;
+        private readonly ReservationPaymentPage _reservationPaymentPage;
         private readonly AccountPage _accountPage;
         private readonly SignInPage _signInPage;
         private readonly SignUpPage _signUpPage;
@@ -34,6 +35,7 @@ namespace Visualization
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
             this._reservationCampingGuestPage = new ReservationCampingGuestPage();
+            this._reservationPaymentPage = new ReservationPaymentPage();
             this._accountPage = new AccountPage();
             this._signInPage = new SignInPage();
             this._signUpPage = new SignUpPage();
@@ -81,7 +83,7 @@ namespace Visualization
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
         {
-            this.MainFrame.Content = this._reservationConfirmedPage.Content;
+            this.MainFrame.Content = this._reservationPaymentPage.Content;
         }
 
         private void OnSignInEvent(object sender, AccountEventArgs args)
