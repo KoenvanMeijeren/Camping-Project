@@ -292,10 +292,13 @@ namespace ViewModel
         {
             this.Reservation.Insert();
             var lastReservation = this.Reservation.SelectLast();
+            CampingGuest campingGuest = new CampingGuest();
 
             foreach (var guest in this.CampingGuests)
             {
-                (new ReservationCampingGuest(lastReservation, guest)).Insert();
+                guest.Insert();
+                var lastGuest = campingGuest.SelectLast();
+                (new ReservationCampingGuest(lastReservation, lastGuest)).Insert();
             }
 
             ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
