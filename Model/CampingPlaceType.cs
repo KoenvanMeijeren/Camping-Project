@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using SystemCore;
 
 namespace Model
 {
@@ -57,13 +59,29 @@ namespace Model
             return false;
         }
 
-        public bool Update(int guestLimit, float standardNightPrice, Accommodation accommodation)
+        public bool HasCampingPlaces(CampingPlaceType campingPlaceType)
         {
-            this.GuestLimit = guestLimit;
-            this.StandardNightPrice = standardNightPrice;
+            string queryString = this.BaseSelectQuery();
+            queryString += $" INNER JOIN {CampingPlace.TableName} CP ON CP.{CampingPlace.ColumnType} = BT.{ColumnId} ";
+            queryString += $" WHERE BT.{ColumnId} = @{ColumnId} ";
+
+            Query query = new Query(queryString);
+            query.AddParameter(ColumnId, campingPlaceType.Id);
+            var results = query.Select();
+
+            return results != null && results.Any();
+        }
+        
+        public bool Update(string guestLimit, string standardNightPrice, Accommodation accommodation)
+        {
+            bool successGuestLimit = int.TryParse(guestLimit, out int numericGuestLimit);
+            bool successStandardNightPrice = float.TryParse(standardNightPrice, out float numericStandardNightPrice);
+            
+            this.GuestLimit = successGuestLimit ? numericGuestLimit : 0;
+            this.StandardNightPrice = successStandardNightPrice ? numericStandardNightPrice : 0;
             this.Accommodation = accommodation;
 
-            return base.Update(CampingPlaceType.ToDictionary(guestLimit, standardNightPrice, accommodation));
+            return base.Update(CampingPlaceType.ToDictionary(this.GuestLimit, this.StandardNightPrice, this.Accommodation));
         }
 
         /// <inheritdoc/>

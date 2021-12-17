@@ -77,10 +77,10 @@ namespace Model
             return this.GetLocation();
         }
 
-        public bool CampingPlaceHasReservations(CampingPlace campingPlace)
+        public bool HasReservations(CampingPlace campingPlace)
         {
             string queryString = this.BaseSelectQuery();
-            queryString += $" LEFT JOIN {Reservation.TableName} R ON R.{Reservation.ColumnPlace} = BT.{ColumnId} ";
+            queryString += $" INNER JOIN {Reservation.TableName} R ON R.{Reservation.ColumnPlace} = BT.{ColumnId} ";
             queryString += $" WHERE BT.{ColumnId} = @{ColumnId} ";
 
             Query query = new Query(queryString);
