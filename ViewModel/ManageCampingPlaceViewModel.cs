@@ -89,7 +89,8 @@ namespace ViewModel
                 this._selectedCampingPlaceType = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
-                if (this._selectedCampingPlace == null)
+                this.CampingPlaceError = string.Empty;
+                if (this._selectedCampingPlaceType == null)
                 {
                     this.CampingPlaceError = "Verblijf is een verplicht veld";
                 }
