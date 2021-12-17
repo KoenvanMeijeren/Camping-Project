@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Visualization
 {
     /// <summary>
-    /// Interaction logic for ManageCampingPlacePage.xaml
+    /// Interaction logic for ManageCampingPlaceTypePage.xaml
     /// </summary>
-    public partial class ManageCampingPlacePage : Page
+    public partial class ManageCampingPlaceTypePage : Page
     {
-        public ManageCampingPlacePage()
+        public ManageCampingPlaceTypePage()
         {
             this.InitializeComponent();
         }
