@@ -213,6 +213,12 @@ namespace ViewModel
             this.CheckOutDate = DateTime.Today.AddDays(1);
             
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.ReservationCampingGuestViewModelOnReservationConfirmedEvent;
+            ManageCampingPlaceViewModel.CampingPlacesUpdated += ManageCampingPlaceViewModelOnCampingPlacesUpdated;
+        }
+
+        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object? sender, EventArgs e)
+        {
+            this.SetOverview(this.GetCampingPlaces());
         }
 
         private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object sender, ReservationEventArgs e)

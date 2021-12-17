@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -180,6 +181,12 @@ namespace ViewModel
         }
         
         #endregion
+        
+        #region Events
+
+        public static event EventHandler CampingPlaceTypesUpdated;
+
+        #endregion
 
         #region View construction
 
@@ -265,8 +272,9 @@ namespace ViewModel
             
             this.SetCampingPlaceTypes();
             this.ResetInput();
+            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated?.Invoke(this, EventArgs.Empty);
 
-            MessageBox.Show("De campingplaatsen zijn succesvol bijgewerkt.", "Campingplaatsen bewerken");
+            MessageBox.Show("De campingplaatstypes zijn succesvol bijgewerkt.", "Campingplaatstype bewerken");
         }
         private bool CanExecuteEditSave()
         {
@@ -281,7 +289,7 @@ namespace ViewModel
 
         private void ExecuteDelete()
         {
-            var result = MessageBox.Show($"Weet u zeker dat u de campingplaats {this.SelectedCampingPlaceType} wilt verwijderen?", "Campingplaats verwijderen", MessageBoxButton.YesNo);
+            var result = MessageBox.Show($"Weet u zeker dat u de campingplaatstype {this.SelectedCampingPlaceType} wilt verwijderen?", "Campingplaatstype verwijderen", MessageBoxButton.YesNo);
             if (result != MessageBoxResult.Yes)
             {
                 return;
@@ -290,6 +298,8 @@ namespace ViewModel
             this.SelectedCampingPlaceType.Delete();
             this.CampingPlaceTypes.Remove(this.SelectedCampingPlaceType);
             this.SelectedCampingPlaceType = null;
+            
+            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated?.Invoke(this, EventArgs.Empty);
         }
         private bool CanExecuteDelete()
         {

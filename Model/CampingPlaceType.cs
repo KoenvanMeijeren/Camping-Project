@@ -17,6 +17,7 @@ namespace Model
         
         public int GuestLimit { get; private set; }
         public float StandardNightPrice { get; private set; }
+        public string StandardNightPriceReadable { get; private set; }
         
         public Accommodation Accommodation { get; private set; }
 
@@ -40,12 +41,13 @@ namespace Model
             this.GuestLimit = successGuestLimit ? numericGuestLimit : 0;
             this.StandardNightPrice = successStandardNightPrice ? numericStandardNightPrice : 0;
             this.Accommodation = accommodation;
+            this.StandardNightPriceReadable = $"€ {this.StandardNightPrice}";
         }
 
         /// <inheritdoc/>
         public override string ToString()
         {
-            return this.Accommodation.ToString();
+            return this.Accommodation.ToString() + $" ({this.Id})";
         }
 
         /// <inheritdoc/>
@@ -70,6 +72,20 @@ namespace Model
             var results = query.Select();
 
             return results != null && results.Any();
+        }
+        
+        /// <inheritdoc/>
+        public override IEnumerable<CampingPlaceType> Select()
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ColumnId}");
+            var items = query.Select();
+            this.Collection = new List<CampingPlaceType>();
+            foreach (Dictionary<string, string> dictionary in items)
+            {
+                this.Collection.Add(this.ToModel(dictionary));
+            }
+
+            return this.Collection;
         }
         
         public bool Update(string guestLimit, string standardNightPrice, Accommodation accommodation)

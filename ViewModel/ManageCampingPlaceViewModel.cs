@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -206,6 +207,12 @@ namespace ViewModel
         
         #endregion
 
+        #region Events
+
+        public static event EventHandler CampingPlacesUpdated;
+
+        #endregion
+
         #region View construction
 
         public ManageCampingPlaceViewModel()
@@ -214,6 +221,14 @@ namespace ViewModel
          
             this.SetCampingPlaces();
             this.SetCampingPlaceTypes();
+            
+            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated += ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated;
+        }
+
+        private void ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated(object? sender, EventArgs e)
+        {
+            this.SetCampingPlaceTypes();
+            this.ResetInput();
         }
 
         private void SetCampingPlaces()
@@ -296,6 +311,7 @@ namespace ViewModel
             
             this.SetCampingPlaces();
             this.ResetInput();
+            ManageCampingPlaceViewModel.CampingPlacesUpdated?.Invoke(this, EventArgs.Empty);
 
             MessageBox.Show("De campingplaatsen zijn succesvol bijgewerkt.", "Campingplaatsen bewerken");
         }
@@ -323,6 +339,8 @@ namespace ViewModel
             this.SelectedCampingPlace.Delete();
             this.CampingPlaces.Remove(this.SelectedCampingPlace);
             this.SelectedCampingPlace = null;
+            
+            ManageCampingPlaceViewModel.CampingPlacesUpdated?.Invoke(this, EventArgs.Empty);
         }
         private bool CanExecuteDelete()
         {
