@@ -18,7 +18,7 @@ namespace ViewModel
 {
     public class ManageCampingMapViewModel : ObservableObject
     {
-        Dictionary<int, CampingField> CampingFields { get; set; }
+        private Dictionary<int, CampingField> CampingFields { get; set; }
 
         #region CampingField Fields
         private CampingField
@@ -402,59 +402,58 @@ namespace ViewModel
 
         public ManageCampingMapViewModel()
         {
-            FillCampingFieldColors();
-            SetFields();
+            this.FillCampingFieldColors();
+            this.SetFields();
         }
 
-        public void FillCampingFieldColors()
+        private void FillCampingFieldColors()
         {
-            CampingFields = new Dictionary<int, CampingField>();
-
-            CampingFields.Add(1, CampingField1 = new CampingField(1, "#FF68C948", null));
-            CampingFields.Add(2, CampingField2 = new CampingField(2, "#FF68C948", null));
-            CampingFields.Add(3, CampingField3 = new CampingField(3, "#FF68C948", null));
-            CampingFields.Add(4, CampingField4 = new CampingField(4, "#FF68C948", null));
-            CampingFields.Add(5, CampingField5 = new CampingField(5, "#FF68C948", null));
-            CampingFields.Add(6, CampingField6 = new CampingField(6, "#FF68C948", null));
-            CampingFields.Add(7, CampingField7 = new CampingField(7, "#FF68C948", null));
-            CampingFields.Add(8, CampingField8 = new CampingField(8, "#FF68C948", null));
-            CampingFields.Add(9, CampingField9 = new CampingField(9, "#FF68C948", null));
-            CampingFields.Add(10, CampingField10 = new CampingField(10, "#FF68C948", null));
-            CampingFields.Add(11, CampingField11 = new CampingField(11, "#FF68C948", null));
-            CampingFields.Add(12, CampingField12 = new CampingField(12, "#FF68C948", null));
-            CampingFields.Add(13, CampingField13 = new CampingField(13, "#FF68C948", null));
-            CampingFields.Add(14, CampingField14 = new CampingField(14, "#FF68C948", null));
-            CampingFields.Add(15, CampingField15 = new CampingField(15, "#FF68C948", null));
-            CampingFields.Add(16, CampingField16 = new CampingField(16, "#FF68C948", null));
-            CampingFields.Add(17, CampingField17 = new CampingField(17, "#FF68C948", null));
-            CampingFields.Add(18, CampingField18 = new CampingField(18, "#FF68C948", null));
-            CampingFields.Add(19, CampingField19 = new CampingField(19, "#FF68C948", null));
-            CampingFields.Add(20, CampingField20 = new CampingField(20, "#FF68C948", null));
-            CampingFields.Add(21, CampingField21 = new CampingField(21, "#FF68C948", null));
-            CampingFields.Add(22, CampingField22 = new CampingField(22, "#FF68C948", null));
-            CampingFields.Add(23, CampingField23 = new CampingField(23, "#FF68C948", null));
-            CampingFields.Add(24, CampingField24 = new CampingField(24, "#FF68C948", null));
-            CampingFields.Add(25, CampingField25 = new CampingField(25, "#FF68C948", null));
-            CampingFields.Add(26, CampingField26 = new CampingField(26, "#FF68C948", null));
-            CampingFields.Add(27, CampingField27 = new CampingField(27, "#FF68C948", null));
-            CampingFields.Add(28, CampingField28 = new CampingField(28, "#FF68C948", null));
-            CampingFields.Add(29, CampingField29 = new CampingField(29, "#FF68C948", null));
-            CampingFields.Add(30, CampingField30 = new CampingField(30, "#FF68C948", null));
-            CampingFields.Add(31, CampingField31 = new CampingField(31, "#FF68C948", null));
-            CampingFields.Add(32, CampingField32 = new CampingField(32, "#FF68C948", null));
-            CampingFields.Add(33, CampingField33 = new CampingField(33, "#FF68C948", null));
-            CampingFields.Add(34, CampingField34 = new CampingField(34, "#FF68C948", null));
+            this.CampingFields = new Dictionary<int, CampingField>
+            {
+                {1, this.CampingField1 = new CampingField(1, "#FF68C948", null)},
+                {2, this.CampingField2 = new CampingField(2, "#FF68C948", null)},
+                {3, this.CampingField3 = new CampingField(3, "#FF68C948", null)},
+                {4, this.CampingField4 = new CampingField(4, "#FF68C948", null)},
+                {5, this.CampingField5 = new CampingField(5, "#FF68C948", null)},
+                {6, this.CampingField6 = new CampingField(6, "#FF68C948", null)},
+                {7, this.CampingField7 = new CampingField(7, "#FF68C948", null)},
+                {8, this.CampingField8 = new CampingField(8, "#FF68C948", null)},
+                {9, this.CampingField9 = new CampingField(9, "#FF68C948", null)},
+                {10, this.CampingField10 = new CampingField(10, "#FF68C948", null)},
+                {11, this.CampingField11 = new CampingField(11, "#FF68C948", null)},
+                {12, this.CampingField12 = new CampingField(12, "#FF68C948", null)},
+                {13, this.CampingField13 = new CampingField(13, "#FF68C948", null)},
+                {14, this.CampingField14 = new CampingField(14, "#FF68C948", null)},
+                {15, this.CampingField15 = new CampingField(15, "#FF68C948", null)},
+                {16, this.CampingField16 = new CampingField(16, "#FF68C948", null)},
+                {17, this.CampingField17 = new CampingField(17, "#FF68C948", null)},
+                {18, this.CampingField18 = new CampingField(18, "#FF68C948", null)},
+                {19, this.CampingField19 = new CampingField(19, "#FF68C948", null)},
+                {20, this.CampingField20 = new CampingField(20, "#FF68C948", null)},
+                {21, this.CampingField21 = new CampingField(21, "#FF68C948", null)},
+                {22, this.CampingField22 = new CampingField(22, "#FF68C948", null)},
+                {23, this.CampingField23 = new CampingField(23, "#FF68C948", null)},
+                {24, this.CampingField24 = new CampingField(24, "#FF68C948", null)},
+                {25, this.CampingField25 = new CampingField(25, "#FF68C948", null)},
+                {26, this.CampingField26 = new CampingField(26, "#FF68C948", null)},
+                {27, this.CampingField27 = new CampingField(27, "#FF68C948", null)},
+                {28, this.CampingField28 = new CampingField(28, "#FF68C948", null)},
+                {29, this.CampingField29 = new CampingField(29, "#FF68C948", null)},
+                {30, this.CampingField30 = new CampingField(30, "#FF68C948", null)},
+                {31, this.CampingField31 = new CampingField(31, "#FF68C948", null)},
+                {32, this.CampingField32 = new CampingField(32, "#FF68C948", null)},
+                {33, this.CampingField33 = new CampingField(33, "#FF68C948", null)},
+                {34, this.CampingField34 = new CampingField(34, "#FF68C948", null)}
+            };
         }
 
-        public void SetFields()
+        private void SetFields()
         {
             CampingPlace emptyCampingPlace = new CampingPlace();
-            CampingPlace campingPlace = new CampingPlace();
 
-            foreach (CampingField campingField in CampingFields.Values)
+            foreach (CampingField campingField in this.CampingFields.Values)
             {
-
-                campingPlace = emptyCampingPlace.SelectByPlaceNumber(campingField.LocationNumber);
+                var campingPlace = emptyCampingPlace.SelectByPlaceNumber(campingField.LocationNumber);
                 if (campingPlace != null)
                 {
                     campingField.ImageResource = "/MapComponents/CampingFieldImage-" + campingPlace.Type.Accommodation.Name + ".png";
