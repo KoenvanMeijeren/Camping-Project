@@ -37,7 +37,7 @@
         </Border>
         <Label Content="Campingplaats toevoegen&#xA;" HorizontalAlignment="Left" Margin="46,452,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Button Command="{Binding Delete}" x:Name="DeleteButton" Content="Verwijder" Margin="53,364,647,238"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
-        <Button Command="{Binding Edit}" x:Name="EditButton" Content="Pas aan" Margin="195,364,506,238"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+        <Button Command="{Binding Edit}" x:Name="EditButton" Content="Bewerken" Margin="195,364,506,238"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
 
         <Label Content="Verblijfstype" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="48,495,0,0" Height="25"/>
 
@@ -48,8 +48,8 @@
         <TextBox Text="{Binding Surface, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="SurfaceTextBox" HorizontalAlignment="Left" Height="20" Margin="332,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <Label Content="Extra dagtarief" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="466,495,0,0" Height="25"/>
         <TextBox Text="{Binding ExtraNightPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="ExtraNightPriceTextBox" HorizontalAlignment="Left" Height="20" Margin="471,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
-        <Button Command="{Binding Edit}" x:Name="Confirm" Content="Bevestig" Margin="613,476,67,125"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
-        <Button Command="{Binding Edit}" x:Name="Cancel" Content="Annuleer" Margin="613,521,67,80"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+        <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Bevestig" Margin="613,476,67,125"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+        <Button Command="{Binding Cancel}" x:Name="Cancel" Content="Annuleer" Margin="613,521,67,80"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
 
     </Grid>
 </Page>
