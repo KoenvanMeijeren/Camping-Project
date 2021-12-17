@@ -19,7 +19,7 @@ namespace ViewModel
         #region Fields
 
         private string _firstNameGuest, _lastNameGuest, _amountOfPeopleError, _firstNameError, _lastNameError, _birthDateError;
-        private readonly List<CampingGuest> _campingGuestsList;
+        //private readonly List<CampingGuest> _campingGuestsList;
         private DateTime _birthDate;
         private Reservation _reservation;
         private int _numberOfAddedGuest;
@@ -243,10 +243,10 @@ namespace ViewModel
                 return;
             }
             
-            campingGuest.Insert();
+            //campingGuest.Insert();
             var lastCampingGuest = campingGuestModel.SelectLast();
             
-            this.CampingGuestsTypes.Add(lastCampingGuest);
+            this.CampingGuestsTypes.Add(campingGuest);
             this._numberOfAddedGuest++;
 
             this.FirstNameGuest = "";
@@ -272,8 +272,9 @@ namespace ViewModel
                 return;
             }
             
-            this.SelectedCampingGuest.Delete();
+            //this.SelectedCampingGuest.Delete();
             this.CampingGuestsTypes.Remove(SelectedCampingGuest);
+            this._numberOfAddedGuest--;
         }
         /// <summary>
         /// Checks if button can be pressed/
