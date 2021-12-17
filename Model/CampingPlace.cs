@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SystemCore;
 
 namespace Model
 {
@@ -87,6 +88,11 @@ namespace Model
         /// <inheritdoc/>
         protected override CampingPlace ToModel(Dictionary<string, string> dictionary)
         {
+            if (dictionary == null)
+            {
+                return null;
+            }
+
             dictionary.TryGetValue(ColumnId, out string campingPlaceId);
             dictionary.TryGetValue(ColumnType, out string campingPlaceTypeId);
             dictionary.TryGetValue(ColumnNumber, out string placeNumber);
@@ -133,6 +139,13 @@ namespace Model
             query += $" INNER JOIN {Accommodation.TableName} ACM ON ACM.{Accommodation.ColumnId} = CPT.{CampingPlaceType.ColumnAccommodation}";
 
             return query;
+        }
+
+        public CampingPlace SelectByPlaceNumber(int placeNumber)
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnNumber} = @{ColumnNumber}");
+            query.AddParameter(ColumnNumber, placeNumber);
+            return this.ToModel(query.SelectFirst());
         }
 
     }

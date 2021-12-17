@@ -10,7 +10,40 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="MapComponents\CampingFieldImage-Bungalow.png" />
+    <None Remove="MapComponents\CampingFieldImage-Camper.png" />
+    <None Remove="MapComponents\CampingFieldImage-Caravan.png" />
+    <None Remove="MapComponents\CampingFieldImage-Chalet.png" />
+    <None Remove="MapComponents\CampingFieldImage-Tent.png" />
+    <None Remove="MapComponents\CampingPlattegrond.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="MapComponents\CampingFieldImage-Bungalow.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MapComponents\CampingFieldImage-Caravan.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MapComponents\CampingFieldImage-Chalet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MapComponents\CampingFieldImage-Tent.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MapComponents\CampingPlattegrond.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="MapComponents\CampingFieldImage-Camper.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -22,8 +22,8 @@
                 <RadioButton x:Name="ReserveMenuButton" Content="Reserveren" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ReserveMenuButton_Checked"/>
                 <RadioButton x:Name="AccountMenuButton" Content="Account" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="AccountMenuButton_Checked"/>
                 <RadioButton x:Name="ContactMenuButton" Content="Contact" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ContactMenuButton_Checked"/>
-
                 <RadioButton x:Name="ManageMenuButton" Content="Beheer" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ManageMenuButton_Checked"/>
+                <RadioButton x:Name="ManageCampingMapMenuButton" Content="Beheer map" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ManageCampingMapMenuButton_Checked"/>
                 
                 <RadioButton x:Name="SignInMenuButton" Content="Aanmelden" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="SignInMenuButton_Checked"/>
                 <RadioButton x:Name="SignUpMenuButton" Content="Registreren" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="SignUpMenuButton_Checked"/>
