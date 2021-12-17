@@ -24,7 +24,8 @@
                 <RadioButton x:Name="ManageCampingPlaceButton" Content="Campingplaatsen" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ManageCampingPlacesButton_Checked"/>
                 <RadioButton x:Name="ManageCampingPlaceTypeButton" Content="Campingplaatstypes" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ManageCampingPlaceTypesButton_Checked"/>
                 <RadioButton x:Name="ManageAccommodationsButton" Content="Accommodaties" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ManageAccommodationsButton_Checked"/>
-                
+                <RadioButton x:Name="ManageCampingMapMenuButton" Content="Beheer map" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="ManageCampingMapMenuButton_Checked"/>
+
                 <RadioButton x:Name="AccountMenuButton" Content="Account" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="AccountMenuButton_Checked"/>
                 <RadioButton x:Name="ContactMenuButton" Content="Contact" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ContactMenuButton_Checked"/>
                 

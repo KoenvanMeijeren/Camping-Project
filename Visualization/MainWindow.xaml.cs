@@ -19,6 +19,8 @@ namespace Visualization
         private readonly ReservationCampingGuestPage _reservationCampingGuestPage;
         private readonly AccountPage _accountPage;
         private readonly ManageCampingPlacePage _manageCampingPlacePage;
+        private readonly ManageCampingMapPage _manageCampingMapPage;
+
         private readonly SignInPage _signInPage;
         private readonly SignUpPage _signUpPage;
         private readonly ReservationManagePage _manageReservationPage;
@@ -40,6 +42,7 @@ namespace Visualization
             this._reservationCampingGuestPage = new ReservationCampingGuestPage();
             this._accountPage = new AccountPage();
             this._manageCampingPlacePage = new ManageCampingPlacePage();
+            this._manageCampingMapPage = new ManageCampingMapPage();
             this._signInPage = new SignInPage();
             this._signUpPage = new SignUpPage();
             this._manageReservationPage = new ReservationManagePage();
@@ -72,6 +75,7 @@ namespace Visualization
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
             this.ContactMenuButton.Visibility = Visibility.Collapsed;
+            this.ManageCampingMapMenuButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceTypeButton.Visibility = Visibility.Collapsed;
             this.ManageAccommodationsButton.Visibility = Visibility.Collapsed;
@@ -113,6 +117,7 @@ namespace Visualization
                 return;
             }
             
+            this.ManageCampingMapMenuButton.Visibility = Visibility.Visible;
             this.ManageCampingPlaceButton.Visibility = Visibility.Visible;
             this.ManageCampingPlaceTypeButton.Visibility = Visibility.Visible;
             this.ManageAccommodationsButton.Visibility = Visibility.Visible;
@@ -133,6 +138,7 @@ namespace Visualization
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
             this.ContactMenuButton.Visibility = Visibility.Collapsed;
+            this.ManageCampingMapMenuButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceTypeButton.Visibility = Visibility.Collapsed;
             this.ManageAccommodationsButton.Visibility = Visibility.Collapsed;
@@ -183,6 +189,11 @@ namespace Visualization
         private void ManageAccommodationsButton_Checked(object sender, RoutedEventArgs e)
         {
             this.MainFrame.Content = this._manageAccommodationPage;
+        }
+
+        private void ManageCampingMapMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._manageCampingMapPage;
         }
 
         private void SignInMenuButton_Checked(object sender, RoutedEventArgs e)
