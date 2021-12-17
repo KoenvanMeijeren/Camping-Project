@@ -17,6 +17,8 @@ namespace ModelTests
             Assert.AreEqual(camping.Name, "testName");
             Assert.AreEqual(camping.Address, address);
             Assert.AreEqual(camping.CampingOwner, campingOwner);
+            Assert.AreEqual(camping.PhoneNumber, "0341234565");
+            Assert.AreEqual(camping.Email, "admin@nimda.com");
         }
         
         [Test]
@@ -30,6 +32,8 @@ namespace ModelTests
             Assert.AreEqual(camping.Name, "testName");
             Assert.AreEqual(camping.Address, address);
             Assert.AreEqual(camping.CampingOwner, campingOwner);
+            Assert.AreEqual(camping.PhoneNumber, "0341234565");
+            Assert.AreEqual(camping.Email, "admin@nimda.com");
         }
 
         [Test]
