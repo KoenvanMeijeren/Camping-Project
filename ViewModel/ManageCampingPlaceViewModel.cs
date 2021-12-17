@@ -81,13 +81,18 @@ namespace ViewModel
             get => this._selectedCampingPlaceType;
             set
             {
-                if (value == this._selectedCampingPlaceType)
+                if (Equals(value, this._selectedCampingPlaceType))
                 {
                     return;
                 }
 
                 this._selectedCampingPlaceType = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                if (this._selectedCampingPlace == null)
+                {
+                    this.CampingPlaceError = "Verblijf is een verplicht veld";
+                }
             }
         }
         
@@ -143,7 +148,7 @@ namespace ViewModel
                 }
                 else if (!Validation.IsNumber(this._number))
                 {
-                    this.CampingPlaceError = "Ongeldige locatienummer opgegeven";
+                    this.CampingPlaceError = "Ongeldig locatienummer opgegeven";
                 }
             }
         }
@@ -168,7 +173,7 @@ namespace ViewModel
                 }
                 else if (!Validation.IsDecimalNumber(this._surface))
                 {
-                    this.CampingPlaceError = "Ongeldige oppervlakte opgegeven";
+                    this.CampingPlaceError = "Ongeldig oppervlakte opgegeven";
                 }
             }
         }
@@ -193,7 +198,7 @@ namespace ViewModel
                 }
                 else if (!Validation.IsDecimalNumber(this._extraNightPrice))
                 {
-                    this.CampingPlaceError = "Ongeldige extra dagtarief opgegeven";
+                    this.CampingPlaceError = "Ongeldig extra dagtarief opgegeven";
                 }
             }
         }
@@ -232,6 +237,7 @@ namespace ViewModel
         {
             if (campingPlace == null)
             {
+                this.ResetInput();
                 return;
             }
 
