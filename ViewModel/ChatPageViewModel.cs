@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 using Model;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
 using System.Windows.Input;
-using SystemCore;
 using ViewModel.EventArguments;
-using System.Windows.Controls;
 
 namespace ViewModel
 {
@@ -32,7 +27,7 @@ namespace ViewModel
         public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute);
         public static event EventHandler<ChatEventArgs> SendChatEvent;
 
-        // Text
+        // Text input field propties
         private string _chatTextInput;
         public string ChatTextInput
         {

@@ -65,8 +65,7 @@ namespace Visualization
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
-            // TODO: Collapsed in production
-            this.ContactMenuButton.Visibility = Visibility.Visible;
+            this.ContactMenuButton.Visibility = Visibility.Collapsed;
         }
 
         private void OnReserveEvent(object sender, ReservationEventArgs args)

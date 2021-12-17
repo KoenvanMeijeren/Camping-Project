@@ -42,7 +42,6 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-
         <Button x:Name="CloseChatButton" Command="{Binding CloseChatButton}" IsEnabled="True" Content="X" Padding="5, 5, 5, 5"  FontWeight="Bold" Background="#D12F2C" Foreground="White" BorderThickness="0" Width="25" Height="25" Margin="743,66,52,543"/>
     </Grid>
 
