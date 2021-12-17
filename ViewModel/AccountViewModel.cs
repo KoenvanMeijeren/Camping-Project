@@ -176,13 +176,6 @@ namespace ViewModel
 
         private void ExecuteSignOut()
         {
-            this.Name = "";
-            this.Mail = "";
-            this.PhoneNumber = "";
-            this.Birthdate = "";
-            this.Street = "";
-            this.Address = "";
-
             CurrentUser.EmptyCurrentUser();
             SignOutEvent?.Invoke(this, EventArgs.Empty);
         }
