@@ -23,6 +23,15 @@ namespace Visualization
         public ChatPage()
         {
             InitializeComponent();
+            var textblock = new TextBlock();
+            textblock.Text = "123";
+
+            ChatField.Children.Add(textblock);
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -58,13 +58,15 @@ namespace Visualization
             AccountUpdateViewModel.UpdateCancelEvent += this.OnUpdateCancelEvent;
             AccountUpdateViewModel.UpdateConfirmEvent += this.OnUpdateConfirmEvent;
             ContactViewModel.FromContactToChatEvent += this.OnChatButton;
+            ChatPageViewModel.FromChatToContactEvent += this.ContactMenuButton_Checked;
 
             // Sets the sign up page as the active menu and hides other menu items.
             this.SignInMenuButton.IsChecked = true;
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
-            this.ContactMenuButton.Visibility = Visibility.Collapsed;
+            // TODO: Collapsed in production
+            this.ContactMenuButton.Visibility = Visibility.Visible;
         }
 
         private void OnReserveEvent(object sender, ReservationEventArgs args)
