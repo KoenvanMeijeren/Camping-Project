@@ -30,6 +30,7 @@ namespace ViewModel
 
         // Send chat button
         public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute);
+        public static event EventHandler<ChatEventArgs> SendChatEvent;
 
         // Text
         private string _chatTextInput;
@@ -47,11 +48,12 @@ namespace ViewModel
             }
         }
 
+        /// <summary>
+        /// Function that executes when "Verzenden" button has been pressed in Chat View.
+        /// </summary>
         private void SendChatButtonExecute()
         {
-            String test = ChatTextInput;
-            
-            ChatTextInput = "";
+            ExecuteSendChatEvent(ChatTextInput, MessageSender.Sender);
         }
 
         /// <summary>
@@ -60,6 +62,16 @@ namespace ViewModel
         private void ExecuteCloseChat()
         {
             FromChatToContactEvent?.Invoke(this, null);
+        }
+
+        /// <summary>
+        /// Fires event to CreateChatTextBlocKEvent() in View
+        /// </summary>
+        /// <param name="message">Message text</param>
+        /// <param name="messageSender">ENUM of who sent the message</param>
+        private void ExecuteSendChatEvent(string message, MessageSender messageSender)
+        {
+            SendChatEvent?.Invoke(this, new ChatEventArgs(message, messageSender));
         }
     }
 }
