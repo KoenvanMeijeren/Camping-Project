@@ -10,6 +10,17 @@ namespace ModelTests
         [Test]
         public void TestCampingGuestConstructorCorrect()
         {
+            CampingGuest campingGuest = new CampingGuest("test", "testName", "19/10/21");
+            Assert.AreEqual(campingGuest.Id, -1);
+            Assert.AreEqual(campingGuest.FirstName, "test");
+            Assert.AreEqual(campingGuest.LastName, "testName");
+            Assert.AreEqual(campingGuest.Birthdate, DateTime.Parse("19/10/21"));
+            Assert.AreEqual(campingGuest.BirthdateReadable, DateTime.Parse("19/10/21").ToShortDateString());
+        }
+        
+        [Test]
+        public void TestCampingGuestLongConstructorCorrect()
+        {
             CampingGuest campingGuest = new CampingGuest("1", "test", "testName", "19/10/21");
             Assert.AreEqual(campingGuest.Id, 1);
             Assert.AreEqual(campingGuest.FirstName, "test");

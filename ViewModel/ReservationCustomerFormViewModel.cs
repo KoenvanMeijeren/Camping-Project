@@ -311,6 +311,8 @@ namespace ViewModel
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += ReservationCampingGuestViewModelOnReservationGoBackEvent;
             SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
+            AccountViewModel.SignOutEvent += onSignOutEvent;
+            ReservationCampingGuestViewModel.ReservationConfirmedEvent += OnReservationConfirmedEvent;
         }
 
         private void ReservationCampingGuestViewModelOnReservationGoBackEvent(object sender, ReservationEventArgs e)
@@ -323,6 +325,16 @@ namespace ViewModel
             this.CurrentUserCustomer = CurrentUser.CampingCustomer;
             //Removes the customer from NumberOfPeople.
             this.AmountOfGuests = (e.Reservation.NumberOfPeople - 1).ToString();
+        }
+
+        private void OnReservationConfirmedEvent(object sender, EventArgs e)
+        {
+            this.ResetInput();
+        }
+
+        private void onSignOutEvent(object sender, EventArgs e)
+        {
+            this.ResetInput();
         }
 
         private void SignInViewModelOnSignInEvent(object sender, AccountEventArgs e)
@@ -401,20 +413,19 @@ namespace ViewModel
             Reservation reservation = new Reservation(this._amountOfGuests, customer, this.CampingPlace, this._checkInDateTime.ToString(CultureInfo.InvariantCulture), this._checkOutDateTime.ToString(CultureInfo.InvariantCulture));
 
             ReservationGuestEvent?.Invoke(this, new ReservationGuestEventArgs(address, customer, reservation));
-            this.ResetInput();
         }
         private bool CanExecuteCustomerDataReservation()
         {
-            return   Validation.IsInputFilled(this._firstName) &&
-                     Validation.IsInputFilled(this._lastName) &&
-                     Validation.IsBirthdateValid(this._birthdate) &&
-                     Validation.IsBirthdateAdult(this._birthdate) &&
-                     Validation.IsInputFilled(this._street) &&
-                     Validation.IsInputFilled(this._postalCode) &&
-                     RegexHelper.IsPostalcodeValid(this._postalCode) &&
-                     Validation.IsInputFilled(this._place) &&
-                     Validation.IsInputFilled(this._phoneNumber) &&
-                     Validation.IsNumber(this._phoneNumber);
+            return Validation.IsInputFilled(this._firstName) 
+                   && Validation.IsInputFilled(this._lastName) 
+                   && Validation.IsBirthdateValid(this._birthdate)
+                   && Validation.IsBirthdateAdult(this._birthdate) 
+                   && Validation.IsInputFilled(this._street) 
+                   && Validation.IsInputFilled(this._postalCode) 
+                   && RegexHelper.IsPostalcodeValid(this._postalCode) 
+                   && Validation.IsInputFilled(this._place) 
+                   && Validation.IsInputFilled(this._phoneNumber) 
+                   && Validation.IsNumber(this._phoneNumber);
         }
 
         public ICommand AddCustomerReservation => new RelayCommand(ExecuteCustomerDataReservation, CanExecuteCustomerDataReservation);

@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Controls;
 using NUnit.Framework;
 using SystemCore;
 
@@ -41,6 +42,13 @@ namespace SystemCoreTests
             Assert.AreEqual(new DateTime(2022, 1, 4), DateTimeParser.TryParse("4-1-2022 00:00:00"));
             Assert.AreEqual(new DateTime(2022, 1, 10), DateTimeParser.TryParse("10-1-2022 00:00:00"));
         }
+        
+        [Test]
+        public void TestTryParseFromDefaultDateString()
+        {
+            Assert.AreEqual(new DateTime(2021, 12, 26), DateTimeParser.TryParse("2021-12-26"));
+            Assert.AreEqual(new DateTime(2021, 12, 28), DateTimeParser.TryParse("2021-12-28"));
+        }
 
         [Test]
         public void TestTryParseToDatabaseFormatString()
@@ -56,6 +64,13 @@ namespace SystemCoreTests
             
             Assert.AreEqual("01-01-2022 12:00:00", DateTimeParser.TryParseToDatabaseDateTimeFormat(new DateTime(2022, 1, 1)));
             Assert.AreEqual("01-04-2022 12:00:00", DateTimeParser.TryParseToDatabaseDateTimeFormat(new DateTime(2022, 1, 4)));
+        }
+        
+        [Test]
+        public void TestTryParseToDatabaseDateFormat()
+        {
+            Assert.AreEqual("2021-12-26", DateTimeParser.TryParseToDatabaseDateFormat(new DateTime(2021, 12, 26)));
+            Assert.AreEqual("2021-12-28", DateTimeParser.TryParseToDatabaseDateFormat(new DateTime(2021, 12, 28)));
         }
     }
 }

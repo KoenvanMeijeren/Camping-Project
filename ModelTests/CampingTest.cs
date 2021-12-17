@@ -11,8 +11,22 @@ namespace ModelTests
         {
             Account account = new Account("1", "admin", "nimda",  "1");
             Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
+            CampingOwner campingOwner = new CampingOwner(account, "test", "testName");
+            Camping camping = new Camping( "testName", address, campingOwner);
+            Assert.AreEqual(camping.Id, -1);
+            Assert.AreEqual(camping.Name, "testName");
+            Assert.AreEqual(camping.Address, address);
+            Assert.AreEqual(camping.CampingOwner, campingOwner);
+        }
+        
+        [Test]
+        public void TestCampingLongConstructorCorrect()
+        {
+            Account account = new Account("1", "admin", "nimda",  "1");
+            Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
             CampingOwner campingOwner = new CampingOwner("1", account, "test", "testName");
-            Camping camping = new Camping("1", "testName", address, campingOwner);
+            Camping camping = new Camping("123", "testName", address, campingOwner);
+            Assert.AreEqual(camping.Id, 123);
             Assert.AreEqual(camping.Name, "testName");
             Assert.AreEqual(camping.Address, address);
             Assert.AreEqual(camping.CampingOwner, campingOwner);

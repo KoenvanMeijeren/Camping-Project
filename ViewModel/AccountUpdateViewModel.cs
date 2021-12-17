@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using System;
@@ -27,7 +27,7 @@ namespace ViewModel
         public string UpdateError
         {
             get => this._updateError;
-            set
+            private set
             {
                 if (value == this._updateError)
                 {
@@ -144,7 +144,7 @@ namespace ViewModel
                 {
                     this.UpdateError = "Postcode is een verplicht veld";
                 }
-                if (!RegexHelper.IsPostalcodeValid(this._postalCode))
+                else if (!RegexHelper.IsPostalcodeValid(this._postalCode))
                 {
                     this.UpdateError = "Ongeldig postcode";
                 }
@@ -271,20 +271,19 @@ namespace ViewModel
 
             if (CurrentUser.Account.Rights == AccountRights.Customer)
             {
-                return  Validation.IsInputFilled(this._firstName) &&
-                        Validation.IsInputFilled(this._lastName) &&
-                        Validation.IsBirthdateValid(this._birthdate) &&
-                        Validation.IsBirthdateAdult(this._birthdate) &&
-                        Validation.IsInputFilled(this._street) &&
-                        Validation.IsInputFilled(this._postalCode) &&
-                        RegexHelper.IsPostalcodeValid(this._postalCode) &&
-                        Validation.IsInputFilled(this._place) &&
-                        Validation.IsInputFilled(this._phoneNumber) &&
-                        Validation.IsNumber(this._phoneNumber);
+                return Validation.IsInputFilled(this._firstName) 
+                       && Validation.IsInputFilled(this._lastName) 
+                       && Validation.IsBirthdateValid(this._birthdate) 
+                       && Validation.IsBirthdateAdult(this._birthdate) 
+                       && Validation.IsInputFilled(this._street) 
+                       && Validation.IsInputFilled(this._postalCode) 
+                       && RegexHelper.IsPostalcodeValid(this._postalCode) 
+                       && Validation.IsInputFilled(this._place) 
+                       && Validation.IsInputFilled(this._phoneNumber) 
+                       && Validation.IsNumber(this._phoneNumber);
             }
 
-            return      Validation.IsInputFilled(this._firstName) &&
-                        Validation.IsInputFilled(this._lastName);
+            return Validation.IsInputFilled(this._firstName) && Validation.IsInputFilled(this._lastName);
         }
 
         private void ExecuteUpdateConfirm()

@@ -25,7 +25,6 @@ namespace ViewModel
         private const string SelectAll = "Alle";
 
         private readonly ObservableCollection<string> _campingPlaceTypes;
-        public ObservableCollection<Reservation> Reservations { get; private set; }
 
         private Reservation _selectedReservation;
 
@@ -35,6 +34,7 @@ namespace ViewModel
         #endregion
 
         #region Properties
+        public ObservableCollection<Reservation> Reservations { get; private set; }
 
         public string MinTotalPrice
         {

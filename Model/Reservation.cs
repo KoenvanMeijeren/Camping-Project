@@ -156,7 +156,7 @@ namespace Model
         /// <inheritdoc/>
         public override IEnumerable<Reservation> Select()
         {
-            Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ColumnCheckInDate}");
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnDeleted} = 0 ORDER BY {ColumnCheckInDate}");
             var items = query.Select();
             this.Collection = new List<Reservation>();
             foreach (Dictionary<string, string> dictionary in items)
