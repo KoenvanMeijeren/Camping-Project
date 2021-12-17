@@ -280,11 +280,11 @@ namespace ViewModel
 
         #region Commands
         
-        private void ExecuteCancel()
+        private void ExecuteCancelEditAction()
         {
             this.ResetInput();
         }
-        private bool CanExecuteCancel()
+        private bool CanExecuteCancelEditAction()
         {
             return Validation.IsInputFilled(this.Number)
                    || Validation.IsNumber(this.Surface)
@@ -292,7 +292,7 @@ namespace ViewModel
                    || this.SelectedCampingPlaceType != null;
         }
 
-        public ICommand Cancel => new RelayCommand(ExecuteCancel, CanExecuteCancel);
+        public ICommand CancelEditAction => new RelayCommand(ExecuteCancelEditAction, CanExecuteCancelEditAction);
         
         private void ExecuteEditSave()
         {
