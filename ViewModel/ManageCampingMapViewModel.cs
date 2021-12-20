@@ -460,7 +460,7 @@ namespace ViewModel
                 var campingPlace = emptyCampingPlace.SelectByPlaceNumber(campingField.LocationNumber);
                 if (campingPlace != null)
                 {
-                    campingField.ImageResource = GetCampingFieldImage(campingPlace.Type.Accommodation);
+                    campingField.ImageResource = this.GetCampingFieldImage(campingPlace.Type.Accommodation);
                     campingField.CampingPlace = campingPlace;
                 } 
                 else
