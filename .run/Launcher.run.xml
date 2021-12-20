@@ -1,0 +1,7 @@
+﻿<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Launcher" type="CompoundRunConfigurationType">
+    <toRun name="Visualization" type="DotNetProject" />
+    <toRun name="ChatServer" type="DotNetProject" />
+    <method v="2" />
+  </configuration>
+</component>
