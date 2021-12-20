@@ -77,8 +77,8 @@ namespace ChatServer
 
             _users.Remove(disconnectedUser);
 
-
-            foreach (var user in _users)
+            //_users.count >1 => anders kan het naar niemand worden verstuurd
+           /* foreach (var user in _users)
             {
                 var msgPacket = new PacketBuilder();
                 msgPacket.WriteTypeOfMessage(10);
@@ -86,7 +86,7 @@ namespace ChatServer
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
             }
 
-            ShowAllMessages($"[{disconnectedUser.Username}] is offline!");
+            ShowAllMessages($"[{disconnectedUser.Username}] is offline!");*/
 
 
         }

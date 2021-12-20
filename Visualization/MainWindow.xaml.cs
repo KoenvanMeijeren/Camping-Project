@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using Model;
-using Model.EventArguments;
+using Visualization;
+using Visualization.EventArguments;
 
 namespace Visualization
 {
@@ -23,6 +23,7 @@ namespace Visualization
         private readonly ReservationManagePage _manageReservationPage;
         private readonly ReservationCustomerOverviewPage _reservationCustomerOverviewPage;
         private readonly AccountUpdatePage _accountUpdatePage;
+        private readonly TestDataConnectionPage _testPage;
 
         public MainWindow()
         {
@@ -39,6 +40,7 @@ namespace Visualization
             this._manageReservationPage = new ReservationManagePage();
             this._reservationCustomerOverviewPage = new ReservationCustomerOverviewPage();
             this._accountUpdatePage = new AccountUpdatePage();
+            this._testPage = new TestDataConnectionPage();
 
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
@@ -121,7 +123,7 @@ namespace Visualization
         private void OverviewMenuButton_Checked(object sender, RoutedEventArgs e)
         {
             this.OverviewMenuButton.IsChecked = true;
-            if (CurrentUser.Account.Rights == Model.AccountRights.Admin)
+            if (CurrentUser.Account.Rights == Visualization.AccountRights.Admin)
             {
                 this.MainFrame.Content = this._reservationCollectionFrame;
                 return;
@@ -173,6 +175,11 @@ namespace Visualization
         private void OnUpdateConfirmEvent(object sender, EventArgs e)
         {
             this.AccountMenuButton_Checked(sender, null);
+        }
+
+        private void Dataconnection_Click(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._testPage.Content;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SystemCore;
 
-namespace Model
+namespace Visualization
 {
     /// <inheritdoc/>
     public class ReservationCampingGuest : ModelBase<ReservationCampingGuest>

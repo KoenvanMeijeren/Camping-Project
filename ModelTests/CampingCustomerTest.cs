@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using Model;
+using Visualization;
 using System;
 
 namespace ModelTests

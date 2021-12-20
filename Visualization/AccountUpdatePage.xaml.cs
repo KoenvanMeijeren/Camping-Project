@@ -12,8 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Model;
-using Model.EventArguments;
+using Visualization;
+using Visualization.EventArguments;
 
 namespace Visualization
 {
@@ -30,7 +30,7 @@ namespace Visualization
 
         private void OnSignInEvent(object sender, AccountEventArgs args)
         {
-            if (CurrentUser.Account.Rights == Model.AccountRights.Customer)
+            if (CurrentUser.Account.Rights == Visualization.AccountRights.Customer)
             {
                 this.BirthDateLabel.Visibility = Visibility.Visible;
                 this.PhonenumberLabel.Visibility = Visibility.Visible;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Model;
+using Visualization;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
@@ -11,9 +11,9 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
 using SystemCore;
-using Model.EventArguments;
+using Visualization.EventArguments;
 
-namespace Model
+namespace Visualization
 {
     public class ReservationCustomerFormViewModel : ObservableObject
     {

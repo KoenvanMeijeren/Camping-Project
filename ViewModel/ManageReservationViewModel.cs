@@ -11,11 +11,11 @@ using System.Windows;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using Model;
+using Visualization;
 using SystemCore;
-using Model.EventArguments;
+using Visualization.EventArguments;
 
-namespace Model
+namespace Visualization
 {
     public class ManageReservationViewModel : ObservableObject
     {

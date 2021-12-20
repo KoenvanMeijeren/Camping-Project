@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Model;
+using Visualization;
 
-namespace Model.EventArguments
+namespace Visualization.EventArguments
 {
     public class PageEvents : PdfPageEventHelper
     {

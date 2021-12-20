@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Data;
 using System.Windows.Controls;
-using Model;
-using Model;
+using Visualization;
+using Visualization;
 
 namespace Visualization
 {

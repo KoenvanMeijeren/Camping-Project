@@ -1,7 +1,7 @@
-﻿using Model;
+﻿using Visualization;
 using Moq;
 using NUnit.Framework;
-using Model;
+using Visualization;
 
 namespace ViewModelTests
 {

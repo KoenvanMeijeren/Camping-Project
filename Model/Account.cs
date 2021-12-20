@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SystemCore;
 
-namespace Model
+namespace Visualization
 {
     /// <summary>
     /// Provides an enum for the various account rights.

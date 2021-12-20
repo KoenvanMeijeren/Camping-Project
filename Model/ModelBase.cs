@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using SystemCore;
 
-namespace Model
+namespace Visualization
 {
     /// <summary>
     /// Provides a base model for interacting with database tables. Provides all behavior for interacting with database

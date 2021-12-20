@@ -2,7 +2,7 @@
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using SystemCore;
 
-namespace Model
+namespace Visualization
 {
     public class MainWindowViewModel : ObservableObject
     {

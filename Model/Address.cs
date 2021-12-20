@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SystemCore;
 
-namespace Model
+namespace Visualization
 {
     /// <inheritdoc/>
     public class Address : ModelBase<Address>

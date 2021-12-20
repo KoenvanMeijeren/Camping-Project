@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Model;
+using Visualization;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using SystemCore;
-using Model.EventArguments;
+using Visualization.EventArguments;
 
-namespace Model
+namespace Visualization
 {
     public class ReservationCampingGuestViewModel : ObservableObject
     {

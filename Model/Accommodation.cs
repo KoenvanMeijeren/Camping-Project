@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Model
+namespace Visualization
 {
     /// <inheritdoc/>
     public class Accommodation : ModelBase<Accommodation>

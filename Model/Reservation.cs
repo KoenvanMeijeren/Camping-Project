@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SystemCore;
 
-namespace Model
+namespace Visualization
 {
     /// <summary>
     /// Enum used for database columns: ReservationDeleted, ReservationPayed, ReservationRestitutionPayed

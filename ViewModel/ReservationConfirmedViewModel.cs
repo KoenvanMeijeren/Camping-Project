@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Model.EventArguments;
+using Visualization.EventArguments;
 
-namespace Model
+namespace Visualization
 {
     public class ReservationConfirmedViewModel : ObservableObject
     {

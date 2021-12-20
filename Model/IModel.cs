@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Model
+namespace Visualization
 {
     /// <summary>
     /// Provides an interface for models, representing a database table. One model class represents one record from

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Model
+namespace Visualization
 {
     /// <inheritdoc/>
     public class CampingPlaceType : ModelBase<CampingPlaceType>

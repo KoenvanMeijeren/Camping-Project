@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Windows;
-using Model;
+using ViewModel;
 
-namespace Model
+namespace Visualization
 {
-    class ChatViewModel : ObservableObject
+    public class ChatViewModel : ObservableObject
     {
         private ObservableCollection<Client> _users;
         public ObservableCollection<Client> Users
@@ -80,14 +76,15 @@ namespace Model
             var uid = _server._packetReader.ReadMessage();
 
             var disconnectedUser = _users.Where(u => u.UID.ToString() == uid).FirstOrDefault();
-            //Application.Current.Dispatcher.Invoke(() => _users.Remove(disconnectedUser));//will remove the user overal
+            Application.Current.Dispatcher.Invoke(() => _users.Remove(disconnectedUser));//will remove the user overal
         }
 
         private void MessageReceived()
         {
             var msg = _server._packetReader.ReadMessage();
-            //explain this line code
-            //Application.Current.Dispatcher.Invoke(() => _messages.Add(msg));
+
+            //updating wpf
+            Application.Current.Dispatcher.Invoke(() => _messages.Add(msg));
         }
 
 
@@ -105,7 +102,7 @@ namespace Model
             if (!Users.Any(x => x.UID == user.UID))
             {
                 //add user also in other thread => client
-                //Application.Current.Dispatcher.Invoke(() => Users.Add(user));
+                Application.Current.Dispatcher.Invoke(() => Users.Add(user));
             }
         }
 

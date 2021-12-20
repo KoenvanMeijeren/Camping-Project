@@ -1,4 +1,4 @@
-﻿using Model;
+﻿using Visualization;
 using NUnit.Framework;
 
 namespace ModelTests

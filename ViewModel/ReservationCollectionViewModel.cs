@@ -9,12 +9,12 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.Toolkit.Mvvm.Input;
-using Model;
+using Visualization;
 using System.Collections.Generic;
 using System.Globalization;
-using Model.EventArguments;
+using Visualization.EventArguments;
 
-namespace Model
+namespace Visualization
 {
     public class ReservationCollectionViewModel : ObservableObject
     {

@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Visualization" xmlns:viewModel="clr-namespace:Model;assembly=ViewModel"
+      xmlns:local="clr-namespace:Visualization" xmlns:viewModel="clr-namespace:Visualization;assembly=ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="624.4" d:DesignWidth="889.6"
       Title="ReservationUpdateDeletePage">

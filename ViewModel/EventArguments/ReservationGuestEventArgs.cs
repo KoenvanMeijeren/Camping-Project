@@ -1,7 +1,7 @@
 ﻿using System;
-using Model;
+using Visualization;
 
-namespace Model.EventArguments
+namespace Visualization.EventArguments
 {
     public class ReservationGuestEventArgs : EventArgs
     {

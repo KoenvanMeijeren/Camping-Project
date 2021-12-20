@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Model;
-using Model;
+using Visualization;
+using Visualization;
 using Moq;
 
 namespace ViewModelTests
