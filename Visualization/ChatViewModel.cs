@@ -73,7 +73,7 @@ namespace Visualization
 
         private void RemoveUser()
         {
-            var uid = this._server._packetReader.ReadMessage();
+            var uid = this._server._packetReader.ReadIncomingMessage();
 
             var disconnectedUser = _users.Where(u => u.UID.ToString() == uid).FirstOrDefault();
             //Remove user to WPF control from non-mainthread (UI thread)
@@ -82,7 +82,7 @@ namespace Visualization
 
         private void MessageReceived()
         {
-            var msg = this._server._packetReader.ReadMessage();
+            var msg = this._server._packetReader.ReadIncomingMessage();
 
             //Adding message to WPF control from non-mainthread (UI thread)
             Application.Current.Dispatcher.Invoke(() => Messages.Add(msg));
@@ -96,7 +96,7 @@ namespace Visualization
         {
             var user = new Client
             {
-                UID = this._server._packetReader.ReadMessage()
+                UID = this._server._packetReader.ReadIncomingMessage()
             };
 
             //check if client isn't in userslist

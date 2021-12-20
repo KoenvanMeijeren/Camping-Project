@@ -15,12 +15,12 @@ namespace Visualization
             this._ms = new MemoryStream();
         }
 
-        public void WriteToMemoryStream(byte data)
+        public void WriteTaskTypeToMemoryStream(byte data)
         {
             this._ms.WriteByte(data);
         }
 
-        public void WriteString(string message)
+        public void WriteMessageToStream(string message)
         {
             var msgLength = message.Length;
             _ms.Write(BitConverter.GetBytes(msgLength));

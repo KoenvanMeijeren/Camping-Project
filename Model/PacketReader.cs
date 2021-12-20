@@ -16,15 +16,14 @@ namespace Visualization
             this._networkStream = ns;
         }
 
-        public string ReadMessage()
+        public string ReadIncomingMessage()
         {
             byte[] messageBuffer;
-            var length = ReadInt32();
+            var length = ReadInt32();//reads first 4 byte from stream
             messageBuffer = new byte[length];
             _networkStream.Read(messageBuffer, 0, length);
 
-            var message = Encoding.ASCII.GetString(messageBuffer);
-            return message;
+            return Encoding.ASCII.GetString(messageBuffer);
         }
     }
 }

@@ -36,28 +36,10 @@ namespace ChatServer
                     _users.Add(superClient);
                 }
 
-                //share message to other client
-                ShareConnectedusers();
             }
         }
 
-        //deze vervalt met project
-        static void ShareConnectedusers()
-        {
-            //laat voor elke user zien welke andere users er zijn
-            foreach (var user in _users)
-            {
-                if (user != CampingOwner)
-                {
-                    var broadcastPacket = new PacketBuilder();
-                    broadcastPacket.WriteTypeOfMessage(1);//Verschil tussen packages
-                    broadcastPacket.WriteMessage(user.Username);
-                    broadcastPacket.WriteMessage(user.UID.ToString());
-                    CampingOwner.ClientSocket.Client.Send(broadcastPacket.GetPacketBytes());
-                }
-            }
-
-        }
+        
 
         public static void ShowAllMessages(string message)
         {

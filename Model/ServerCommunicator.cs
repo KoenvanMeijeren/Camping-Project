@@ -41,8 +41,8 @@ namespace Visualization
             {
                 while (true)
                 {
-                    var opcode = _packetReader.ReadByte();
-                    switch (opcode)
+                    var taskCode = _packetReader.ReadByte();//get first packet
+                    switch (taskCode)
                     {
                         case 1:
                             connectedEvent?.Invoke();
@@ -54,7 +54,7 @@ namespace Visualization
                             UserDisconnectedEvent?.Invoke();
                             break;
                         default:
-                            Console.WriteLine("Default in switch Chatclient.Server");
+                            Console.WriteLine($"No clear taskCode code received: {taskCode}");
                             break;
                     }
                 }
@@ -64,9 +64,9 @@ namespace Visualization
 
         public void SendMessageToServer(string message)
         {
-            var messagePacket = new Packetbuilder();
-            messagePacket.WriteToMemoryStream(5);
-            messagePacket.WriteString(message);
+            Packetbuilder messagePacket = new Packetbuilder();
+            messagePacket.WriteTaskTypeToMemoryStream(5);
+            messagePacket.WriteMessageToStream(message);
             _client.Client.Send(messagePacket.GetPacketBytes());
         }
 
