@@ -264,7 +264,7 @@ namespace ViewModel
                 return;
             }
 
-            this.EditTitle = $"Campingplaats {this.SelectedCampingPlace} bewerken";
+            this.EditTitle = $"Campingplaats {campingPlace} bewerken";
             
             this.SelectedCampingPlaceType = campingPlace.Type;
             this.Number = campingPlace.Number.ToString(CultureInfo.InvariantCulture);

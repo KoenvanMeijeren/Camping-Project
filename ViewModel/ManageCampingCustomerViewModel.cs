@@ -222,7 +222,7 @@ namespace ViewModel
                 {
                     this.CampingCustomerError = "Postcode is een verplicht veld";
                 }
-                if (!RegexHelper.IsPostalcodeValid(this._postalCode))
+                else if (!RegexHelper.IsPostalcodeValid(this._postalCode))
                 {
                     this.CampingCustomerError = "Ongeldig postcode";
                 }
