@@ -19,7 +19,7 @@
             <ColumnDefinition Width="247*"/>
         </Grid.ColumnDefinitions>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="337,29,96,506" CornerRadius="15,15,15,15" Background="White">
-            <ComboBox SelectedItem="{Binding SelectedCampingPlaceType}" ItemsSource="{Binding Accommodations}" Margin="22,48,22,23" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White" />
+            <ComboBox SelectedItem="{Binding SelectedAccommodation}" ItemsSource="{Binding Accommodations}" Margin="22,48,22,23" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White" />
         </Border>
         <Label Content="Verblijf" HorizontalAlignment="Left" Margin="354,38,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="29,29,404,506" CornerRadius="15,15,15,15" Background="White">

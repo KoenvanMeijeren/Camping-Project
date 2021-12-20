@@ -222,7 +222,14 @@ namespace ViewModel
             this.SetCampingPlaces();
             this.SetCampingPlaceTypes();
             
-            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated += ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated;
+            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated += this.ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated;
+            ManageAccommodationViewModel.AccommodationsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+        }
+
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object? sender, EventArgs e)
+        {
+            this.SetCampingPlaceTypes();
+            this.ResetInput();
         }
 
         private void ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated(object? sender, EventArgs e)

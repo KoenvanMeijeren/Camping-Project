@@ -44,7 +44,7 @@ namespace ViewModelTests
 
             //IEnumerable<CampingPlace> campingPlaceNumerable = campingPlaceList;
             this._campingPlacesMock.Setup(x => x.GetCampingPlaces()).Returns(this._campingPlaceList);
-            this._campingPlacesMock.Object.SelectedCampingPlaceType = ReservationCampingPlaceFormViewModel.SelectAll;
+            this._campingPlacesMock.Object.SelectedAccommodation = ReservationCampingPlaceFormViewModel.SelectAll;
             this._campingPlacesMock.Object.MinNightPrice = "0";
             this._campingPlacesMock.Object.MaxNightPrice = "2000";
             this._campingPlacesMock.Object.CheckInDate = DateTime.Today;
@@ -59,8 +59,8 @@ namespace ViewModelTests
             var mockListGetCampingPlaces = this._campingPlacesMock.Object.GetCampingPlaces();
             string expectedSelectedPlaceType = ReservationCampingPlaceFormViewModel.SelectAll;
 
-            Assert.AreEqual(this._campingPlacesMock.Object.SelectedCampingPlaceType, expectedSelectedPlaceType);
-            Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaceTypes.Any());
+            Assert.AreEqual(this._campingPlacesMock.Object.SelectedAccommodation, expectedSelectedPlaceType);
+            Assert.IsTrue(this._campingPlacesMock.Object.Accommodations.Any());
             Assert.IsTrue(mockListFilterOnDate.Any());
             Assert.IsTrue(mockListGetCampingPlaces.Any());
             Assert.AreEqual(this._campingPlacesMock.Object.CheckInDate, DateTime.Today);
@@ -72,19 +72,19 @@ namespace ViewModelTests
         [Test]
         public void TestFilterCampingPlaceType()
         {
-            this._campingPlacesMock.Object.SelectedCampingPlaceType = "Caravan";
+            this._campingPlacesMock.Object.SelectedAccommodation = "Caravan";
             Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 1);
 
-            this._campingPlacesMock.Object.SelectedCampingPlaceType = "Chalet";
+            this._campingPlacesMock.Object.SelectedAccommodation = "Chalet";
             Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 2);
 
-            this._campingPlacesMock.Object.SelectedCampingPlaceType = "Camper";
+            this._campingPlacesMock.Object.SelectedAccommodation = "Camper";
             Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 3);
 
-            this._campingPlacesMock.Object.SelectedCampingPlaceType = "Tent";
+            this._campingPlacesMock.Object.SelectedAccommodation = "Tent";
             Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 1);
 
-            this._campingPlacesMock.Object.SelectedCampingPlaceType = "Bungalow";
+            this._campingPlacesMock.Object.SelectedAccommodation = "Bungalow";
             Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Count() == 1);
         }
 
@@ -120,9 +120,9 @@ namespace ViewModelTests
 
             mockListReservations.Add(new Reservation("2", testCampingCustomer, this._testCampingPlaceOne, this._checkInDate.ToString(CultureInfo.InvariantCulture), this._checkOutDate.ToString(CultureInfo.InvariantCulture)));
             mockListReservations.Add(new Reservation("2", testCampingCustomer, this._testCampingPlaceTwo, this._checkInDate.ToString(CultureInfo.InvariantCulture), this._checkOutDate.ToString(CultureInfo.InvariantCulture)));
-            this._campingPlacesMock.Setup(x => x.GetReservationModel()).Returns(mockListReservations);
+            this._campingPlacesMock.Setup(x => x.GetReservations()).Returns(mockListReservations);
 
-            var testTwee = this._campingPlacesMock.Object.GetReservationModel();
+            var testTwee = this._campingPlacesMock.Object.GetReservations();
             var test = this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList, this._checkInDate, this._checkOutDate).Count();
             //-------------------------------------------------------------------------
             Assert.AreEqual(8, this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList, this._checkInDate, this._checkOutDate).Count());

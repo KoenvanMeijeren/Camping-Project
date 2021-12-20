@@ -29,7 +29,7 @@ namespace ViewModel
         private Reservation _selectedReservation;
 
         private DateTime _checkOutDate, _checkInDate;
-        private string _minTotalPrice, _maxTotalPrice, _selectedCampingPlaceType, _guests;
+        private string _minTotalPrice, _maxTotalPrice, _selectedAccommodation, _guests;
 
         #endregion
 
@@ -146,20 +146,20 @@ namespace ViewModel
             }
         }
 
-        public string SelectedCampingPlaceType
+        public string SelectedAccommodation
         {
-            get => this._selectedCampingPlaceType;
+            get => this._selectedAccommodation;
             set
             {
-                if (Equals(value, this._selectedCampingPlaceType))
+                if (Equals(value, this._selectedAccommodation))
                 {
                     return;
                 }
 
-                this._selectedCampingPlaceType = value;
-                this.SetOverview();
-                
+                this._selectedAccommodation = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.SetOverview();
             }
         }
         
@@ -191,23 +191,23 @@ namespace ViewModel
         public ReservationCollectionViewModel()
         {
             this.Reservations = new ObservableCollection<Reservation>();
-            this.Accommodations = new ObservableCollection<string> {
-                SelectAll
-            };
+            this.Accommodations = new ObservableCollection<string>();
             
-            foreach (var accommodation in this._accommodationModel.Select())
-            {
-                this.Accommodations.Add(accommodation.Name);
-            }
-
-            this.SelectedCampingPlaceType = SelectAll;
-            
+            this.SetAccommodations();
+            this.SelectedAccommodation = SelectAll;
             DateTime date = DateTime.Today;
             this.CheckInDate = new DateTime(date.Year, date.Month, 1);
             this.CheckOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
 
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            ManageReservationViewModel.UpdateReservationCollection += OnReservationConfirmedEvent;
+            ManageReservationViewModel.UpdateReservationCollection += this.OnReservationConfirmedEvent;
+            ManageAccommodationViewModel.AccommodationsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+        }
+
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object? sender, EventArgs e)
+        {
+            this.SetAccommodations();
+            this.SelectedAccommodation = SelectAll;
         }
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
@@ -215,12 +215,23 @@ namespace ViewModel
             this.SetOverview();
         }
 
+        private void SetAccommodations()
+        {
+            this.Accommodations.Clear();
+            
+            this.Accommodations.Add(SelectAll);
+            foreach (var accommodation in this.GetAccommodations())
+            {
+                this.Accommodations.Add(accommodation.ToString());
+            }
+        }
+
         private void SetOverview()
         {
             this.Reservations.Clear();
 
             bool ReservationsFilter(Reservation reservation) => 
-                (this.SelectedCampingPlaceType.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)) 
+                (this._selectedAccommodation != null && (this._selectedAccommodation.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this._selectedAccommodation)))
                 && (!int.TryParse(this.MinTotalPrice, out int min) || reservation.TotalPrice >= min) 
                 && (!int.TryParse(this.MaxTotalPrice, out int max) || reservation.TotalPrice <= max) 
                 && (this.CheckInDate == DateTime.MinValue || reservation.CheckInDatetime >= this.CheckInDate)
@@ -232,11 +243,6 @@ namespace ViewModel
             {
                 this.Reservations.Add(reservation);
             }
-        }
-
-        public virtual IEnumerable<Reservation> GetReservations()
-        {
-            return this._reservationModel.Select();
         }
 
         #endregion
@@ -305,6 +311,20 @@ namespace ViewModel
         }
 
         public ICommand CreatePdf => new RelayCommand(ExecuteCreatePdf);
+
+        #endregion
+
+        #region Database interaction
+
+        public virtual IEnumerable<Reservation> GetReservations()
+        {
+            return this._reservationModel.Select();
+        }
+        
+        public virtual IEnumerable<Accommodation> GetAccommodations()
+        {
+            return this._accommodationModel.Select();
+        }
 
         #endregion
     }

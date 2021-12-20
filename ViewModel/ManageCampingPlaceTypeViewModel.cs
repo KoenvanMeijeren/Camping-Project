@@ -196,6 +196,13 @@ namespace ViewModel
          
             this.SetAccommodations();
             this.SetCampingPlaceTypes();
+            
+            ManageAccommodationViewModel.AccommodationsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+        }
+
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object? sender, EventArgs e)
+        {
+            this.SetAccommodations();
         }
 
         private void SetAccommodations()
