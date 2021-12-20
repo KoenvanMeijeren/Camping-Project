@@ -11,6 +11,7 @@ namespace Model
         public int LocationNumber { get; set; }
         public String BackgroundColor { get; set; }
         public String ImageResource { get; set; }
+        public CampingPlace CampingPlace { get; set; }
 
         public CampingField(int locationNumber, string backgroundColor, string imageResource)
         {
