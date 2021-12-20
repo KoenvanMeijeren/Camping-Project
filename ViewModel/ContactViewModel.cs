@@ -17,6 +17,12 @@ namespace ViewModel
 {
     public class ContactViewModel : ObservableObject
     {
+        #region Fields
+        private string _facebookLink;
+        private string _twitterLink;
+        private string _instagramLink;
+        #endregion
+
         #region Properties
 
         private string _contactPageAddress = "Adres: ";
@@ -49,24 +55,52 @@ namespace ViewModel
 
         #endregion
 
+        #region Chat button
         public ICommand ChatButton => new RelayCommand(ExecuteGoToChat);
         public static event EventHandler FromContactToChatEvent;
+        #endregion
+
+        #region Social media buttons
+        // Defined this way so it is possible to add parameters to function in a RelayCommand
+        public ICommand FacebookButton => new RelayCommand<object>((x) => ExecuteLink(_facebookLink));
+        public ICommand InstagramButton => new RelayCommand<object>((x) => ExecuteLink(_instagramLink));
+        public ICommand TwitterButton => new RelayCommand<object>((x) => ExecuteLink(_twitterLink));
+
+        public static event EventHandler<LinkEventArgs> LinkEvent;
+        #endregion
 
         public ContactViewModel()
         {
             Camping campingModel = new Camping();
-            Camping camping = campingModel.SelectById(2);
+            Camping camping = campingModel.SelectLast();
 
             this.ContactPageAddress = $"{camping.Address.Street}, {camping.Address.Place}";
             this.ContactPostalCode = camping.Address.PostalCode;
             this.ContactPagePhoneNumber = camping.PhoneNumber;
             this.ContactPageEmailAddress = camping.Email;
+            this._facebookLink = camping.Facebook;
+            this._twitterLink = camping.Twitter;
+            this._instagramLink = camping.Instagram;
         }
 
+        /// <summary>
+        /// EVEnt that fires the go to chat
+        /// </summary>
         #region Chat
         private void ExecuteGoToChat()
         {
             FromContactToChatEvent?.Invoke(this, null);
+        }
+        #endregion
+
+        #region Social media
+        /// <summary>
+        /// Event that fires the link to the View
+        /// </summary>
+        /// <param name="href">String of the href you want to visit</param>
+        private void ExecuteLink(string href)
+        {
+            LinkEvent?.Invoke(this, new LinkEventArgs(href));
         }
         #endregion
     }

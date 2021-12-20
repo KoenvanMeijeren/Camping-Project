@@ -12,7 +12,10 @@ namespace Model
             ColumnAddress = "CampingAddressID",
             ColumnCampingOwner = "CampingOwnerID",
             ColumnPhoneNumber = "CampingPhoneNumber",
-            ColumnEmailAddress = "CampingEmailAddress";
+            ColumnEmailAddress = "CampingEmailAddress",
+            ColumnFacebook = "CampingFacebook",
+            ColumnTwitter = "CampingTwitter",
+            ColumnInstagram = "CampingInstagram";
 
         
         public string Name { get; private set; }
@@ -21,17 +24,20 @@ namespace Model
         public CampingOwner CampingOwner { get; private set; }
         public string PhoneNumber { get; private set; }
         public string Email { get; private set; }
+        public string Facebook { get; private set; }
+        public string Twitter { get; private set; }
+        public string Instagram { get; private set; }
 
         public Camping(): base(TableName, ColumnId)
         {
             
         }
         
-        public Camping(string name, Address address, CampingOwner campingOwner, string phoneNumber, string email): this("-1", name, address, campingOwner, phoneNumber, email)
+        public Camping(string name, Address address, CampingOwner campingOwner, string phoneNumber, string email, string facebook, string twitter, string instagram): this("-1", name, address, campingOwner, phoneNumber, email, facebook, twitter, instagram)
         {
         }
         
-        public Camping(string id, string name, Address address, CampingOwner campingOwner, string phoneNumber, string email): base(TableName, ColumnId)
+        public Camping(string id, string name, Address address, CampingOwner campingOwner, string phoneNumber, string email, string facebook, string twitter, string instagram): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int idNumeric);
             
@@ -41,17 +47,23 @@ namespace Model
             this.CampingOwner = campingOwner;
             this.PhoneNumber = phoneNumber;
             this.Email = email;
+            this.Facebook = facebook;
+            this.Twitter = twitter;
+            this.Instagram = instagram;
         }
 
-        public bool Update(string name, Address address, CampingOwner campingOwner, string phoneNumber, string emailAddress)
+        public bool Update(string name, Address address, CampingOwner campingOwner, string phoneNumber, string emailAddress, string facebook, string twitter, string instagram)
         {
             this.Name = name;
             this.Address = address;
             this.CampingOwner = campingOwner;
             this.PhoneNumber = phoneNumber;
             this.Email = emailAddress;
-            
-            return base.Update(Camping.ToDictionary(name, address, campingOwner, phoneNumber, emailAddress));
+            this.Facebook = facebook;
+            this.Twitter = twitter;
+            this.Instagram = instagram;
+
+            return base.Update(Camping.ToDictionary(name, address, campingOwner, phoneNumber, emailAddress, facebook, twitter, instagram));
         }
 
         /// <inheritdoc/>
@@ -66,6 +78,9 @@ namespace Model
             dictionary.TryGetValue(ColumnName, out string name);
             dictionary.TryGetValue(ColumnPhoneNumber, out string phoneNumber);
             dictionary.TryGetValue(ColumnEmailAddress, out string emailAddress);
+            dictionary.TryGetValue(ColumnFacebook, out string facebook);
+            dictionary.TryGetValue(ColumnTwitter, out string twitter);
+            dictionary.TryGetValue(ColumnInstagram, out string instagram);
 
             dictionary.TryGetValue(Account.ColumnId, out string accountId);
             dictionary.TryGetValue(Account.ColumnEmail, out string email);
@@ -84,16 +99,16 @@ namespace Model
             Address address = new Address(addressId, street, postalCode, place);
             CampingOwner campingOwner = new CampingOwner(account, campingOwnerId, campingOwnerName);
 
-            return new Camping(id, name, address, campingOwner, phoneNumber, emailAddress);
+            return new Camping(id, name, address, campingOwner, phoneNumber, emailAddress, facebook, twitter, instagram);
         }
 
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Camping.ToDictionary(this.Name, this.Address, this.CampingOwner, this.PhoneNumber, this.Email);
+            return Camping.ToDictionary(this.Name, this.Address, this.CampingOwner, this.PhoneNumber, this.Email, this.Facebook, this.Twitter, this.Instagram);
         }
 
-        private static Dictionary<string, string> ToDictionary(string name, Address address, CampingOwner campingOwner, string phoneNumber, string emailAddress)
+        private static Dictionary<string, string> ToDictionary(string name, Address address, CampingOwner campingOwner, string phoneNumber, string emailAddress, string facebook, string twitter, string instagram)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
@@ -101,7 +116,10 @@ namespace Model
                 {ColumnAddress, address.Id.ToString()},
                 {ColumnCampingOwner, campingOwner.Id.ToString()},
                 {ColumnPhoneNumber, phoneNumber},
-                {ColumnEmailAddress, emailAddress}
+                {ColumnEmailAddress, emailAddress},
+                {ColumnFacebook, facebook},
+                {ColumnTwitter, twitter},
+                {ColumnInstagram, instagram}
             };
 
             return dictionary;

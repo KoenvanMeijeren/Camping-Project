@@ -33,21 +33,24 @@
                     <Label Content="{Binding ContactPageEmailAddress}" Margin="0, 10, 0, 0"/>
 
                     <TextBlock Padding="10, 10, 0, 10" Margin="0, 10, 0, 0" FontWeight="bold" Background="#4267B2">
-                        <Hyperlink NavigateUri="http://www.facebook.com" RequestNavigate="Hyperlink_RequestNavigate" Foreground="White" TextDecorations="None">
-                            Facebook
-                        </Hyperlink>
+                        <Label Foreground="White">Facebook</Label>
+                        <TextBlock.InputBindings>
+                            <MouseBinding Command="{Binding FacebookButton}" MouseAction="LeftClick" />
+                        </TextBlock.InputBindings>
                     </TextBlock>
 
                     <TextBlock Padding="10, 10, 0, 10" Margin="0, 10, 0, 0" FontWeight="bold" Background="#1DA1F2">
-                        <Hyperlink NavigateUri="http://www.twitter.com" RequestNavigate="Hyperlink_RequestNavigate" Foreground="White" TextDecorations="None">
-                            Twitter
-                        </Hyperlink>
+                        <Label Foreground="White">Twitter</Label>
+                        <TextBlock.InputBindings>
+                            <MouseBinding Command="{Binding TwitterButton}" MouseAction="LeftClick" />
+                        </TextBlock.InputBindings>
                     </TextBlock>
 
                     <TextBlock Padding="10, 10, 0, 10" Margin="0, 10, 0, 0" FontWeight="bold" Background="#833AB4">
-                        <Hyperlink NavigateUri="http://www.instagram.com" RequestNavigate="Hyperlink_RequestNavigate" Foreground="White" TextDecorations="None">
-                            Instagram
-                        </Hyperlink>
+                        <Label Foreground="White">Instagram</Label>
+                        <TextBlock.InputBindings>
+                            <MouseBinding Command="{Binding InstagramButton}" MouseAction="LeftClick" />
+                        </TextBlock.InputBindings>
                     </TextBlock>
 
                     <Button x:Name="ChatButton" Command="{Binding ChatButton}" IsEnabled="True" Content="Chatten met camping" Padding="10, 15, 0, 15" Margin="0, 160, 0, 0" FontWeight="Bold" Background="#87E87A" Foreground="White" BorderThickness="0" Width="229"/>

@@ -18,6 +18,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
 using System.Diagnostics;
+using ViewModel;
+using ViewModel.EventArguments;
 
 namespace Visualization
 {
@@ -29,12 +31,12 @@ namespace Visualization
         public ContactPage()
         {
             InitializeComponent();
+            ContactViewModel.LinkEvent += this.ButtonClickOpenHref;
         }
 
-        // Opens new browser on clients pc
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        private void ButtonClickOpenHref(object sender, LinkEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri)
+            Process.Start(new ProcessStartInfo(e.href)
             {
                 UseShellExecute = true
             });
