@@ -20,10 +20,7 @@ namespace ViewModel
     public class ManageReservationViewModel : ObservableObject
     {
         #region Fields
-        
-        public static event EventHandler<ReservationEventArgs> FromReservationBackToDashboardEvent;
-        public static event EventHandler<ReservationEventArgs> UpdateReservationCollection;
-        
+
         private readonly Reservation _reservationModel = new Reservation();
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
 
@@ -116,7 +113,7 @@ namespace ViewModel
                 
                 this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
                 
-                this.SetAvailableCampingPlaces(this.GetCampingPlaces());
+                this.SetAvailableCampingPlaces();
             }
         }
 
@@ -133,9 +130,16 @@ namespace ViewModel
                 this._checkOutDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
                 
-                this.SetAvailableCampingPlaces(this.GetCampingPlaces());
+                this.SetAvailableCampingPlaces();
             }
         }
+
+        #endregion
+
+        #region Events
+
+        public static event EventHandler<ReservationEventArgs> FromReservationBackToDashboardEvent;
+        public static event EventHandler<ReservationEventArgs> UpdateReservationCollection;
 
         #endregion
 
@@ -144,19 +148,25 @@ namespace ViewModel
         public ManageReservationViewModel()
         {
             this.CampingPlaces = new ObservableCollection<CampingPlace>();
-            this.SetAvailableCampingPlaces(this.GetCampingPlaces());
+            this.SetAvailableCampingPlaces();
 
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
+            ManageCampingPlaceViewModel.CampingPlacesUpdated += ManageCampingPlaceViewModelOnCampingPlacesUpdated;
         }
 
-        private void SetAvailableCampingPlaces(IEnumerable<CampingPlace> campingPlaces)
+        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object? sender, EventArgs e)
+        {
+            this.SetAvailableCampingPlaces();
+        }
+
+        private void SetAvailableCampingPlaces()
         {
             var selectedCampingPlace = this.SelectedCampingPlace;
             
             this.CampingPlaces.Clear();
 
             this.CampingPlaces.Add(selectedCampingPlace);
-            foreach (var campingPlace in campingPlaces)
+            foreach (var campingPlace in this.GetCampingPlaces())
             {
                 this.CampingPlaces.Add(campingPlace);
             }
