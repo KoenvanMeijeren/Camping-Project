@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using SystemCore;
 
 namespace Model
 {
@@ -39,7 +41,7 @@ namespace Model
         }
 
         /// <inheritdoc/>
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is Accommodation accommodation)
             {
@@ -48,7 +50,25 @@ namespace Model
 
             return false;
         }
+        
+        public bool HasCampingPlaceTypes()
+        {
+            return this.HasCampingPlaceTypes(this);
+        }
 
+        public bool HasCampingPlaceTypes(Accommodation accommodation)
+        {
+            string queryString = this.BaseSelectQuery();
+            queryString += $" INNER JOIN {CampingPlaceType.TableName} CP ON CP.{CampingPlaceType.ColumnAccommodation} = BT.{ColumnId} ";
+            queryString += $" WHERE BT.{ColumnId} = @{ColumnId} ";
+
+            Query query = new Query(queryString);
+            query.AddParameter(ColumnId, accommodation.Id);
+            var results = query.Select();
+
+            return results != null && results.Any();
+        }
+        
         public bool Update(string prefix, string name)
         {
             return base.Update(Accommodation.ToDictionary(prefix, name));
