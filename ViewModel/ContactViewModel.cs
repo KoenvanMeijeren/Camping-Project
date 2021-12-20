@@ -18,10 +18,9 @@ namespace ViewModel
     public class ContactViewModel : ObservableObject
     {
         #region Fields
-        private int _campingAddressID = 2;
-        private string _facebookLink = "https://www.facebook.com";
-        private string _twitterLink = "https://www.twitter.com";
-        private string _instagramLink = "https://www.instagram.com";
+        private string _facebookLink;
+        private string _twitterLink;
+        private string _instagramLink;
         #endregion
 
         #region Properties
@@ -62,23 +61,31 @@ namespace ViewModel
         #endregion
 
         #region Social media buttons
+        // Defined this way so it is possible to add parameters to function in a RelayCommand
         public ICommand FacebookButton => new RelayCommand<object>((x) => ExecuteLink(_facebookLink));
         public ICommand InstagramButton => new RelayCommand<object>((x) => ExecuteLink(_instagramLink));
         public ICommand TwitterButton => new RelayCommand<object>((x) => ExecuteLink(_twitterLink));
+
         public static event EventHandler<LinkEventArgs> LinkEvent;
         #endregion
 
         public ContactViewModel()
         {
             Camping campingModel = new Camping();
-            Camping camping = campingModel.SelectById(_campingAddressID);
+            Camping camping = campingModel.SelectLast();
 
             this.ContactPageAddress = $"{camping.Address.Street}, {camping.Address.Place}";
             this.ContactPostalCode = camping.Address.PostalCode;
             this.ContactPagePhoneNumber = camping.PhoneNumber;
             this.ContactPageEmailAddress = camping.Email;
+            this._facebookLink = camping.Facebook;
+            this._twitterLink = camping.Twitter;
+            this._instagramLink = camping.Instagram;
         }
 
+        /// <summary>
+        /// EVEnt that fires the go to chat
+        /// </summary>
         #region Chat
         private void ExecuteGoToChat()
         {
