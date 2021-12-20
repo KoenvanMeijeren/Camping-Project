@@ -22,6 +22,25 @@ namespace SystemCoreTests
         }
 
         [Test]
+        public void TestValidIsInputBelowMaxLength()
+        {
+            Assert.IsTrue(Validation.IsInputBelowMaxLength("Test", 5));
+            Assert.IsTrue(Validation.IsInputBelowMaxLength("Test", 4));
+            Assert.IsTrue(Validation.IsInputBelowMaxLength("Hallo1", 7));
+            Assert.IsTrue(Validation.IsInputBelowMaxLength("Hallo1", 6));
+            Assert.IsTrue(Validation.IsInputBelowMaxLength("123", 4));
+            Assert.IsTrue(Validation.IsInputBelowMaxLength("123", 3));
+            Assert.IsTrue(Validation.IsInputBelowMaxLength("", 0));
+        }
+        
+        [Test]
+        public void TestInvalidIsInputBelowMaxLength()
+        {
+            Assert.IsFalse(Validation.IsInputBelowMaxLength("test", 2));
+            Assert.IsFalse(Validation.IsInputBelowMaxLength(null, 2));
+        }
+        
+        [Test]
         public void TestIsBirthdateValid()
         {
             Assert.IsTrue(Validation.IsBirthdateValid(DateTime.Now.AddYears(-20)));

@@ -108,6 +108,10 @@ namespace ViewModel
                 {
                     this.AccommodationError = "Prefix is een verplicht veld";
                 }
+                else if (!Validation.IsInputBelowMaxLength(this._prefix, 2))
+                {
+                    this.AccommodationError = "Prefix mag maximaal 2 letters bevatten";
+                }
             }
         }
 

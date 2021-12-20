@@ -11,6 +11,11 @@ namespace SystemCore
             return !string.IsNullOrEmpty(input) && input.Length != 0;
         }
 
+        public static bool IsInputBelowMaxLength(string input, int max)
+        {
+            return input != null && input.Length <= max;
+        }
+        
         public static bool IsNumber(string input)
         {
             return int.TryParse(input, out int result);
