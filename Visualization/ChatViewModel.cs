@@ -118,6 +118,7 @@ namespace Visualization
         private void ExecuteSendingMessageToServer()
         {
             this._server.SendMessageToServer(this.Message);
+            this.Message = "";//set textbox empty
         }
 
         private bool CanExecuteSendingMessageToServer()

@@ -18,7 +18,7 @@
             <ListView Height="480" ItemsSource="{Binding Messages}"/>
 
             <StackPanel Orientation="Horizontal">
-                <TextBox Height="55" Width="765" VerticalContentAlignment="Center" Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Name="InputTextbox" Height="55" Width="765" VerticalContentAlignment="Center" Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}"/>
                 <Button Width="60" Content="Send" Command="{Binding SendMessageICommand}"/>
             </StackPanel>
 
