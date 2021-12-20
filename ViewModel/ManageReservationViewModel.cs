@@ -151,7 +151,7 @@ namespace ViewModel
             this.SetAvailableCampingPlaces();
 
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
-            ManageCampingPlaceViewModel.CampingPlacesUpdated += ManageCampingPlaceViewModelOnCampingPlacesUpdated;
+            ManageCampingPlaceViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
         }
 
         private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object? sender, EventArgs e)
