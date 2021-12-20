@@ -51,7 +51,7 @@ namespace Model
         }
 
         /// <inheritdoc/>
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is CampingPlaceType campingPlaceType)
             {
@@ -59,6 +59,11 @@ namespace Model
             }
 
             return false;
+        }
+        
+        public bool HasCampingPlaces()
+        {
+            return this.HasCampingPlaces(this);
         }
 
         public bool HasCampingPlaces(CampingPlaceType campingPlaceType)

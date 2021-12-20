@@ -303,7 +303,7 @@ namespace ViewModel
         }
         private bool CanExecuteDelete()
         {
-            return this.SelectedCampingPlaceType != null && !this._campingPlaceTypeModel.HasCampingPlaces(this.SelectedCampingPlaceType);
+            return this.SelectedCampingPlaceType != null && !this.SelectedCampingPlaceType.HasCampingPlaces();
         }
 
         public ICommand Delete => new RelayCommand(ExecuteDelete, CanExecuteDelete);
