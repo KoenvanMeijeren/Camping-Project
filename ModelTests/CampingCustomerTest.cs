@@ -20,6 +20,7 @@ namespace ModelTests
             Assert.AreEqual(campingCustomer.PhoneNumber, "testPhoneNumber");
             Assert.AreEqual(campingCustomer.FirstName, "testFirstName");
             Assert.AreEqual(campingCustomer.LastName, "testLastName");
+            Assert.AreEqual(campingCustomer.FullName, "testFirstName testLastName");
         }
         
         [Test]
@@ -34,6 +35,7 @@ namespace ModelTests
             Assert.AreEqual(campingCustomer.PhoneNumber, "testPhoneNumber");
             Assert.AreEqual(campingCustomer.FirstName, "testFirstName");
             Assert.AreEqual(campingCustomer.LastName, "testLastName");
+            Assert.AreEqual(campingCustomer.FullName, "testFirstName testLastName");
         }
 
         [Test]
@@ -46,6 +48,7 @@ namespace ModelTests
             Assert.AreEqual(campingCustomer.PhoneNumber, null);
             Assert.AreEqual(campingCustomer.FirstName, null);
             Assert.AreEqual(campingCustomer.LastName, null);
+            Assert.AreEqual(campingCustomer.FullName, null);
         }
     }
 }

@@ -9,12 +9,16 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ManageCampingCustomerPage" Height="634.04" Width="820" MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
 
+    <Page.DataContext>
+        <viewModel:ManageCampingCustomerViewModel/>
+    </Page.DataContext>
+
     <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,62,30,38" CornerRadius="15,15,15,15" Background="White">
-            <ListView SelectedItem="{Binding SelectedCampingPlace}" ItemsSource="{Binding CampingPlaces}"  Margin="23,48,607,39" Background="White" FontFamily="Century Gothic" FontWeight="Bold" >
+            <ListView SelectedItem="{Binding SelectedCampingCustomer}" ItemsSource="{Binding CampingCustomers}"  Margin="23,48,607,39" Background="White" FontFamily="Century Gothic" FontWeight="Bold" >
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Klant" Width="75" DisplayMemberBinding="{Binding Id}" />
+                        <GridViewColumn Header="Klant" DisplayMemberBinding="{Binding FullName}" />
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -22,7 +26,7 @@
 
         <Label Content="Campingklanten beheer" HorizontalAlignment="Left" Margin="46,74,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="34"/>
         <Label Content="Campingklant toevoegen" HorizontalAlignment="Left" Margin="231,108,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
-        <Label Content="{Binding CampingPlaceError}" HorizontalAlignment="Left" Margin="563,148,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12"/>
+        <Label Content="{Binding CampingCustomerError}" HorizontalAlignment="Left" Margin="563,148,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12"/>
         <Button Command="{Binding Delete}" x:Name="DeleteButton" Content="Verwijder" Margin="421,524,259,76"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
 
         <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Opslaan" Margin="604,524,76,77"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
