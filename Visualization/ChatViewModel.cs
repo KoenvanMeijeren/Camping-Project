@@ -63,28 +63,29 @@ namespace Visualization
         {
             this._users = new();
             this._messages = new();
-            _server = new ServerCommunicator();
-            _server.connectedEvent += UserConnected;
-            _server.msgReceivedEvent += MessageReceived;
-            _server.UserDisconnectedEvent += RemoveUser;
+            this._server = new ServerCommunicator();
+            this._server.connectedEvent += UserConnected;
+            this._server.msgReceivedEvent += MessageReceived;
+            this._server.UserDisconnectedEvent += RemoveUser;
 
-            _messages.Add("Start de chat wanneer u wil chatten");
+            Messages.Add("Start de chat wanneer u wil chatten");
         }
 
         private void RemoveUser()
         {
-            var uid = _server._packetReader.ReadMessage();
+            var uid = this._server._packetReader.ReadMessage();
 
             var disconnectedUser = _users.Where(u => u.UID.ToString() == uid).FirstOrDefault();
-            Application.Current.Dispatcher.Invoke(() => _users.Remove(disconnectedUser));//will remove the user overal
+            //Remove user to WPF control from non-mainthread (UI thread)
+            Application.Current.Dispatcher.Invoke(() => _users.Remove(disconnectedUser));
         }
 
         private void MessageReceived()
         {
-            var msg = _server._packetReader.ReadMessage();
+            var msg = this._server._packetReader.ReadMessage();
 
-            //updating wpf
-            Application.Current.Dispatcher.Invoke(() => _messages.Add(msg));
+            //Adding message to WPF control from non-mainthread (UI thread)
+            Application.Current.Dispatcher.Invoke(() => Messages.Add(msg));
         }
 
 
@@ -95,20 +96,20 @@ namespace Visualization
         {
             var user = new Client
             {
-                UID = _server._packetReader.ReadMessage()
+                UID = this._server._packetReader.ReadMessage()
             };
 
             //check if client isn't in userslist
             if (!Users.Any(x => x.UID == user.UID))
             {
-                //add user also in other thread => client
+                //Adding user to WPF control from non-mainthread (UI thread)
                 Application.Current.Dispatcher.Invoke(() => Users.Add(user));
             }
         }
 
         private void ExecuteConnectingToServer()
         {
-            _server.ConnectToServer();
+            this._server.ConnectToServer();
         }
 
         public ICommand ConnectToServerICommand => new RelayCommand(ExecuteConnectingToServer);
@@ -116,15 +117,14 @@ namespace Visualization
 
         private void ExecuteSendingMessageToServer()
         {
-            _server.SendMessageToServer(this.Message);
+            this._server.SendMessageToServer(this.Message);
         }
 
         private bool CanExecuteSendingMessageToServer()
         {
-            return !string.IsNullOrEmpty(this.Message) && _server.isConnected();//cannot send 'message' is empty
+            return !string.IsNullOrEmpty(this.Message) && this._server.isConnected();//cannot send 'message' if empty and no serverconnection
         }
 
         public ICommand SendMessageICommand => new RelayCommand(ExecuteSendingMessageToServer, CanExecuteSendingMessageToServer);
-
     }
 }
