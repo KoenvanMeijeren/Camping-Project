@@ -10,15 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="MapComponents\CampingFieldImage-Add.png" />
     <None Remove="MapComponents\CampingFieldImage-Bungalow.png" />
     <None Remove="MapComponents\CampingFieldImage-Camper.png" />
     <None Remove="MapComponents\CampingFieldImage-Caravan.png" />
     <None Remove="MapComponents\CampingFieldImage-Chalet.png" />
     <None Remove="MapComponents\CampingFieldImage-Tent.png" />
+    <None Remove="MapComponents\CampingFieldImage-Unknown.png" />
     <None Remove="MapComponents\CampingPlattegrond.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="MapComponents\CampingFieldImage-Add.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="MapComponents\CampingFieldImage-Bungalow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -29,6 +34,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="MapComponents\CampingFieldImage-Tent.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MapComponents\CampingFieldImage-Unknown.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="MapComponents\CampingPlattegrond.png">
