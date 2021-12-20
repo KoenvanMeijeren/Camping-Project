@@ -18,12 +18,12 @@ namespace SystemCore
         
         public static bool IsNumber(string input)
         {
-            return int.TryParse(input, out int result);
+            return int.TryParse(input, out _);
         }
         
         public static bool IsDecimalNumber(string input)
         {
-            return float.TryParse(input, out float result);
+            return double.TryParse(input, out _);
         }
 
         public static bool IsBirthdateValid(DateTime birthdate)
