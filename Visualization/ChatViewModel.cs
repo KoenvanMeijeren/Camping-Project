@@ -67,7 +67,8 @@ namespace Visualization
             this._server.connectedEvent += UserConnected;
             this._server.msgReceivedEvent += MessageReceived;
             this._server.UserDisconnectedEvent += RemoveUser;
-
+            
+            
             Messages.Add("Start de chat wanneer u wil chatten");
         }
 
@@ -75,9 +76,9 @@ namespace Visualization
         {
             var uid = this._server._packetReader.ReadIncomingMessage();
 
-            var disconnectedUser = _users.Where(u => u.UID.ToString() == uid).FirstOrDefault();
+            var disconnectedUser = this.Users.Where(u => u.UID.ToString() == uid).FirstOrDefault();
             //Remove user to WPF control from non-mainthread (UI thread)
-            Application.Current.Dispatcher.Invoke(() => _users.Remove(disconnectedUser));
+            Application.Current.Dispatcher.Invoke(() => this._users.Remove(disconnectedUser));
         }
 
         private void MessageReceived()
@@ -94,16 +95,23 @@ namespace Visualization
         /// </summary>
         private void UserConnected()
         {
-            var user = new Client
+            bool isSuperUser = false;
+            if(CurrentUser.CampingCustomer != null)
+            {
+                isSuperUser = true;
+            }
+
+            var user = new Client(isSuperUser)
             {
                 UID = this._server._packetReader.ReadIncomingMessage()
             };
 
+
             //check if client isn't in userslist
-            if (!Users.Any(x => x.UID == user.UID))
+            if (!this.Users.Any(x => x.UID == user.UID))
             {
                 //Adding user to WPF control from non-mainthread (UI thread)
-                Application.Current.Dispatcher.Invoke(() => Users.Add(user));
+                Application.Current.Dispatcher.Invoke(() => this._users.Add(user));
             }
         }
 

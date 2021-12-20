@@ -48,7 +48,7 @@ namespace ChatServer
                     var opcode = _packetReader.ReadByte();
                     switch (opcode)
                     {
-                        case 5:
+                        case 6:
                             var msg = _packetReader.ReadMessage();
                             Console.WriteLine($"[{DateTime.Now}] : Message received! {msg} ");
                             Program.ShowAllMessages($"[{DateTime.Now}]: {msg}");

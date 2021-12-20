@@ -9,5 +9,12 @@ namespace ViewModel
     public class Client
     {
         public string UID { get; set; }
+        public bool IsSuperUser { get; private set; }
+
+        public Client(bool issuperuser)
+        {
+            this.IsSuperUser = issuperuser;
+        }
+
     }
 }

@@ -19,7 +19,7 @@ namespace Visualization
         public event Action UserDisconnectedEvent;
         public ServerCommunicator()
         {
-            _client = new TcpClient();
+            this._client = new TcpClient();
         }
 
         public void ConnectToServer()
@@ -27,8 +27,7 @@ namespace Visualization
             if (!this._client.Connected)
             {
                 this._client.Connect(ServerCommunicator.IpAdress, ServerCommunicator.port);
-                _packetReader = new PacketReader(this._client.GetStream());
-
+                this._packetReader = new PacketReader(this._client.GetStream());
 
                 ReadPackets();
             }
@@ -41,16 +40,16 @@ namespace Visualization
             {
                 while (true)
                 {
-                    var taskCode = _packetReader.ReadByte();//get first packet
+                    var taskCode = this._packetReader.ReadByte();//get first packet
                     switch (taskCode)
                     {
-                        case 1:
+                        case 2:
                             connectedEvent?.Invoke();
                             break;
-                        case 5:
+                        case 6:
                             msgReceivedEvent?.Invoke();
                             break;
-                        case 10:
+                        case 9:
                             UserDisconnectedEvent?.Invoke();
                             break;
                         default:
@@ -65,9 +64,9 @@ namespace Visualization
         public void SendMessageToServer(string message)
         {
             Packetbuilder messagePacket = new Packetbuilder();
-            messagePacket.WriteTaskTypeToMemoryStream(5);
+            messagePacket.WriteTaskTypeToMemoryStream(6);
             messagePacket.WriteMessageToStream(message);
-            _client.Client.Send(messagePacket.GetPacketBytes());
+            this._client.Client.Send(messagePacket.GetPacketBytes());
         }
 
         public bool isConnected()

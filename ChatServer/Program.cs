@@ -10,7 +10,7 @@ namespace ChatServer
     {        
         static TcpListener _listener;
         public static string IpAdress = "127.0.0.1";
-        public static int port = 3360;
+        public static int port = 3360;//Port used for TCP data transfer
         static List<Client> _users;
         private static Client CampingOwner { get; set; }
 
@@ -46,7 +46,7 @@ namespace ChatServer
             foreach (var user in _users)
             {
                 var msgPacket = new PacketBuilder();
-                msgPacket.WriteTypeOfMessage(5);
+                msgPacket.WriteTypeOfMessage(6);
                 msgPacket.WriteMessage(message);
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
             }
@@ -63,7 +63,7 @@ namespace ChatServer
            /* foreach (var user in _users)
             {
                 var msgPacket = new PacketBuilder();
-                msgPacket.WriteTypeOfMessage(10);
+                msgPacket.WriteTypeOfMessage(9);
                 msgPacket.WriteMessage(uidParam);
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
             }
