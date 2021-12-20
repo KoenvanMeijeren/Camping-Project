@@ -245,16 +245,16 @@ namespace ViewModel
 
         #region Commands
         
-        private void ExecuteCancel()
+        private void ExecuteCancelEditAction()
         {
             this.ResetInput();
         }
-        private bool CanExecuteCancel()
+        private bool CanExecuteCancelEditAction()
         {
             return Validation.IsInputFilled(this.GuestLimit) || Validation.IsInputFilled(this.StandardNightPrice) || this.SelectedAccommodation != null;
         }
 
-        public ICommand Cancel => new RelayCommand(ExecuteCancel, CanExecuteCancel);
+        public ICommand CancelEditAction => new RelayCommand(ExecuteCancelEditAction, CanExecuteCancelEditAction);
         
         private void ExecuteEditSave()
         {
