@@ -3,7 +3,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Model;
 
-namespace ViewModel.EventArguments
+namespace Model.EventArguments
 {
     public class PageEvents : PdfPageEventHelper
     {

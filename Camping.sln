@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModelTests", "ViewModel
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemCoreTests", "SystemCoreTests\SystemCoreTests.csproj", "{EF621655-96E9-4814-9373-CFB89D7114BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatServer", "ChatServer\ChatServer.csproj", "{DB3522DE-2DC6-4A52-A253-217B487E697F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{EF621655-96E9-4814-9373-CFB89D7114BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF621655-96E9-4814-9373-CFB89D7114BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF621655-96E9-4814-9373-CFB89D7114BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB3522DE-2DC6-4A52-A253-217B487E697F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB3522DE-2DC6-4A52-A253-217B487E697F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB3522DE-2DC6-4A52-A253-217B487E697F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB3522DE-2DC6-4A52-A253-217B487E697F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

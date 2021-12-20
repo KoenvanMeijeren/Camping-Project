@@ -10,9 +10,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
-using ViewModel.EventArguments;
+using Model.EventArguments;
 
-namespace ViewModel
+namespace Model
 {
     public class ReservationCampingPlaceFormViewModel : ObservableObject
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Model;
 
-namespace ViewModel.EventArguments
+namespace Model.EventArguments
 {
 
     public class ReservationEventArgs : EventArgs

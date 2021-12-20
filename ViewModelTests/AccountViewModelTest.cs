@@ -1,7 +1,7 @@
 ﻿using Model;
 using Moq;
 using NUnit.Framework;
-using ViewModel;
+using Model;
 
 namespace ViewModelTests
 {

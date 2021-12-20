@@ -10,9 +10,9 @@ using Model;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using SystemCore;
-using ViewModel.EventArguments;
+using Model.EventArguments;
 
-namespace ViewModel
+namespace Model
 {
     public class ReservationCampingGuestViewModel : ObservableObject
     {

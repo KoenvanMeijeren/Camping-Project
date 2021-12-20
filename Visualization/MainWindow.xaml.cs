@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using ViewModel;
-using ViewModel.EventArguments;
+using Model;
+using Model.EventArguments;
 
 namespace Visualization
 {

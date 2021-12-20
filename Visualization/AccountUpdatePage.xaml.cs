@@ -12,8 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ViewModel;
-using ViewModel.EventArguments;
+using Model;
+using Model.EventArguments;
 
 namespace Visualization
 {

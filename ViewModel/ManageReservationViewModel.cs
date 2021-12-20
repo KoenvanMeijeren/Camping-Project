@@ -13,9 +13,9 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using SystemCore;
-using ViewModel.EventArguments;
+using Model.EventArguments;
 
-namespace ViewModel
+namespace Model
 {
     public class ManageReservationViewModel : ObservableObject
     {

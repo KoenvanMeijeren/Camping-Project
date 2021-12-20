@@ -12,9 +12,9 @@ using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using System.Collections.Generic;
 using System.Globalization;
-using ViewModel.EventArguments;
+using Model.EventArguments;
 
-namespace ViewModel
+namespace Model
 {
     public class ReservationCollectionViewModel : ObservableObject
     {

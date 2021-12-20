@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using ViewModel;
+using Model;
 using Model;
 using Moq;
 

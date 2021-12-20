@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using SystemCore;
 
-namespace ViewModel
+namespace Model
 {
     public class AccountUpdateViewModel : ObservableObject
     {

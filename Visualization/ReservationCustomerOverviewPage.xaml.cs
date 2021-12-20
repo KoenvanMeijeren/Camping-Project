@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Data;
 using System.Windows.Controls;
-using ViewModel;
+using Model;
 using Model;
 
 namespace Visualization
