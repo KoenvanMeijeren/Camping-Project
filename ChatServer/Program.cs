@@ -1,38 +1,37 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 
 namespace ChatServer
 {
     class Program
-    {
-        static void Main(string[] args)
-        {
-            static TcpListener _listener;
+    {        
+        static TcpListener _listener;
         public static string IpAdress = "127.0.0.1";
         public static int port = 3360;
-        static List<ClientServerSide> _users;
-        private static ClientServerSide CampingOwner { get; set; }
+        static List<Client> _users;
+        private static Client CampingOwner { get; set; }
 
         static void Main(string[] args)
         {
-            _users = new List<ClientServerSide>();
+            _users = new List<Client>();
             _listener = new TcpListener(IPAddress.Parse(IpAdress), port);
             _listener.Start();
 
-            //campingowner toevoegen?
-
-            //_users.Add(new Client(_listener.AcceptTcpClient(), true));
             //altijd luisteren naar nieuw clients
             while (true)
             {
                 int index = _users.FindIndex(user => user.IsSuperClient == true);//kijk of er al een camping eigenaar is
                 if (index >= 0)//als campingowner nog niet bestaat
                 {
-                    var client = new ClientServerSide(_listener.AcceptTcpClient(), false);
+                    var client = new Client(_listener.AcceptTcpClient(), false);
                     _users.Add(client);
                 }
                 else
                 {
-                    var superClient = new ClientServerSide(_listener.AcceptTcpClient(), true);
+                    var superClient = new Client(_listener.AcceptTcpClient(), true);
                     Program.CampingOwner = superClient;
                     _users.Add(superClient);
                 }
@@ -50,42 +49,21 @@ namespace ChatServer
             {
                 if (user != CampingOwner)
                 {
-                    var broadcastPacket = new Packetbuilder();
-                    broadcastPacket.WriteTypeOfMessage(1);//wat ga je doen? verschil tussen packages
+                    var broadcastPacket = new PacketBuilder();
+                    broadcastPacket.WriteTypeOfMessage(1);//Verschil tussen packages
                     broadcastPacket.WriteMessage(user.Username);
                     broadcastPacket.WriteMessage(user.UID.ToString());
                     CampingOwner.ClientSocket.Client.Send(broadcastPacket.GetPacketBytes());
                 }
             }
 
-            /*  foreach (var user in _users)    
-              {
-                  foreach (var usr in _users) 
-                  {
-                      if(usr != user)
-                      {
-                          var broadcastPacket = new Packetbuilder();
-                          broadcastPacket.WriteTypeOfMessage(1);//wat ga je doen? verschil tussen packages
-                          broadcastPacket.WriteMessage(usr.Username);
-                          broadcastPacket.WriteMessage(usr.UID.ToString());
-                          user.ClientSocket.Client.Send(broadcastPacket.GetPacketBytes());
-                      }
-
-                  }
-              }*/
         }
 
         public static void ShowAllMessages(string message)
         {
-            /* var msgPacket = new Packetbuilder();
-             msgPacket.WriteTypeOfMessage(5);
-             msgPacket.WriteMessage(message);
-             CampingOwner.ClientSocket.Client.Send(msgPacket.GetPacketBytes());*/
-
-
             foreach (var user in _users)
             {
-                var msgPacket = new Packetbuilder();
+                var msgPacket = new PacketBuilder();
                 msgPacket.WriteTypeOfMessage(5);
                 msgPacket.WriteMessage(message);
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
@@ -102,7 +80,7 @@ namespace ChatServer
 
             foreach (var user in _users)
             {
-                var msgPacket = new Packetbuilder();
+                var msgPacket = new PacketBuilder();
                 msgPacket.WriteTypeOfMessage(10);
                 msgPacket.WriteMessage(uidParam);
                 user.ClientSocket.Client.Send(msgPacket.GetPacketBytes());
@@ -114,4 +92,4 @@ namespace ChatServer
         }
     }
 }
-}
+

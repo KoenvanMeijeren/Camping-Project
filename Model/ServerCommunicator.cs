@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    class ServerCommunicator
+    public class ServerCommunicator
     {
         private TcpClient _client;
         public static string IpAdress = "127.0.0.1";

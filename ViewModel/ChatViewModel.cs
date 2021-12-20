@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Windows;
 using Model;
 
 namespace Model
@@ -45,7 +46,7 @@ namespace Model
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-        private Server _server;
+        private ServerCommunicator _server;
         private string _message;
         public string Message
         {
@@ -61,29 +62,12 @@ namespace Model
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-        /*       private string _username;
-
-               public string Username
-               {
-                   get => _username;
-                   set
-                   {
-                       if (Equals(value, this._username))
-                       {
-                           return;
-                       }
-                       this._username = value; 
-
-                       this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                   }
-               }*/
-
 
         public ChatViewModel()
         {
             this._users = new();
             this._messages = new();
-            _server = new Server();
+            _server = new ServerCommunicator();
             _server.connectedEvent += UserConnected;
             _server.msgReceivedEvent += MessageReceived;
             _server.UserDisconnectedEvent += RemoveUser;
@@ -96,14 +80,14 @@ namespace Model
             var uid = _server._packetReader.ReadMessage();
 
             var disconnectedUser = _users.Where(u => u.UID.ToString() == uid).FirstOrDefault();
-            Application.Current.Dispatcher.Invoke(() => _users.Remove(disconnectedUser));//will remove the user overal
+            //Application.Current.Dispatcher.Invoke(() => _users.Remove(disconnectedUser));//will remove the user overal
         }
 
         private void MessageReceived()
         {
             var msg = _server._packetReader.ReadMessage();
             //explain this line code
-            Application.Current.Dispatcher.Invoke(() => _messages.Add(msg));
+            //Application.Current.Dispatcher.Invoke(() => _messages.Add(msg));
         }
 
 
@@ -112,7 +96,7 @@ namespace Model
         /// </summary>
         private void UserConnected()
         {
-            var user = new UserModel
+            var user = new Client
             {
                 UID = _server._packetReader.ReadMessage()
             };
@@ -121,7 +105,7 @@ namespace Model
             if (!Users.Any(x => x.UID == user.UID))
             {
                 //add user also in other thread => client
-                Application.Current.Dispatcher.Invoke(() => Users.Add(user));
+                //Application.Current.Dispatcher.Invoke(() => Users.Add(user));
             }
         }
 
@@ -130,8 +114,6 @@ namespace Model
             _server.ConnectToServer();
         }
 
-        /*        public ICommand ConnectToServerICommand => new RelayCommand(ExecuteConnectingToServer, CanExecuteConnectingToServer);
-        */
         public ICommand ConnectToServerICommand => new RelayCommand(ExecuteConnectingToServer);
 
 

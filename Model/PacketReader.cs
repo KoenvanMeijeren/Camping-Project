@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Model
 {
-    class PacketReader : BinaryReader
+    public class PacketReader : BinaryReader
     { 
         private Stream _networkStream;
         public PacketReader(Stream ns) : base(ns)
