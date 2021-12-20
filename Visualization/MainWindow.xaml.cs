@@ -61,6 +61,7 @@ namespace Visualization
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
+            this.Dataconnection.Visibility = Visibility.Collapsed;
         }
 
         private void OnReserveEvent(object sender, ReservationEventArgs args)
@@ -90,6 +91,7 @@ namespace Visualization
             this.OverviewMenuButton.Visibility = Visibility.Visible;
             this.ReserveMenuButton.Visibility = Visibility.Visible;
             this.AccountMenuButton.Visibility = Visibility.Visible;
+            this.Dataconnection.Visibility = Visibility.Visible;
             this.SignInMenuButton.Visibility = Visibility.Collapsed;
             this.SignUpMenuButton.Visibility = Visibility.Collapsed;
         }
@@ -137,9 +139,14 @@ namespace Visualization
             this.MainFrame.Content = this._reservationCampingPlaceForm;
         }
 
+        private void DataConnection_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._testPage;
+        }
+
         private void AccountMenuButton_Checked(object sender, RoutedEventArgs e)
         {
-            this.MainFrame.Content = this._accountPage;
+            this.MainFrame.Content = this._accountPage;           
         }
 
         private void SignInMenuButton_Checked(object sender, RoutedEventArgs e)
@@ -177,9 +184,5 @@ namespace Visualization
             this.AccountMenuButton_Checked(sender, null);
         }
 
-        private void Dataconnection_Click(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._testPage.Content;
-        }
     }
 }

@@ -9,12 +9,25 @@ namespace ViewModel
     public class Client
     {
         public string UID { get; set; }
-        public bool IsSuperUser { get; private set; }
+        public Type ClientType { get; private set; }
 
         public Client(bool issuperuser)
         {
-            this.IsSuperUser = issuperuser;
+            if (issuperuser)
+            {
+                this.ClientType = Type.CampingOwner;
+            }
+
+            this.ClientType = Type.CampingCustomer;
+            
         }
 
     }
+
+    public enum Type
+    { 
+        CampingOwner,
+        CampingCustomer
+    }
+
 }
