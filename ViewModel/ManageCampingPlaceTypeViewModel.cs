@@ -196,6 +196,13 @@ namespace ViewModel
          
             this.SetAccommodations();
             this.SetCampingPlaceTypes();
+            
+            ManageAccommodationViewModel.AccommodationsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+        }
+
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object? sender, EventArgs e)
+        {
+            this.SetAccommodations();
         }
 
         private void SetAccommodations()
@@ -245,16 +252,16 @@ namespace ViewModel
 
         #region Commands
         
-        private void ExecuteCancel()
+        private void ExecuteCancelEditAction()
         {
             this.ResetInput();
         }
-        private bool CanExecuteCancel()
+        private bool CanExecuteCancelEditAction()
         {
             return Validation.IsInputFilled(this.GuestLimit) || Validation.IsInputFilled(this.StandardNightPrice) || this.SelectedAccommodation != null;
         }
 
-        public ICommand Cancel => new RelayCommand(ExecuteCancel, CanExecuteCancel);
+        public ICommand CancelEditAction => new RelayCommand(ExecuteCancelEditAction, CanExecuteCancelEditAction);
         
         private void ExecuteEditSave()
         {
@@ -303,7 +310,7 @@ namespace ViewModel
         }
         private bool CanExecuteDelete()
         {
-            return this.SelectedCampingPlaceType != null && !this._campingPlaceTypeModel.HasCampingPlaces(this.SelectedCampingPlaceType);
+            return this.SelectedCampingPlaceType != null && !this.SelectedCampingPlaceType.HasCampingPlaces();
         }
 
         public ICommand Delete => new RelayCommand(ExecuteDelete, CanExecuteDelete);

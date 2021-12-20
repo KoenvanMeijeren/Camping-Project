@@ -18,16 +18,18 @@ namespace ViewModel
     {
         #region Fields
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
+        private readonly Accommodation _accommodationModel = new Accommodation();
+        private readonly Reservation _reservationModel = new Reservation();
         
         public const string SelectAll = "Alle";
 
         private ObservableCollection<CampingPlace> _campingPlaces;
-        
-        private readonly ObservableCollection<string> _campingPlaceTypes;
         private CampingPlace _selectedCampingPlace;
+        
+        private readonly ObservableCollection<string> _accommodations;
 
         private DateTime _checkOutDate, _checkInDate;
-        private string _minNightPrice, _maxNightPrice, _selectedCampingPlaceType, _guests;
+        private string _minNightPrice, _maxNightPrice, _selectedAccommodation, _guests;
 
         public static event EventHandler<ReservationDurationEventArgs> ReserveEvent;
         
@@ -45,7 +47,7 @@ namespace ViewModel
                 }
 
                 this._minNightPrice = value;
-                this.SetOverview(this.GetCampingPlaces());
+                this.SetOverview();
 
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
@@ -62,7 +64,7 @@ namespace ViewModel
                 }
 
                 this._guests = value;
-                this.SetOverview(this.GetCampingPlaces());
+                this.SetOverview();
 
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
@@ -79,7 +81,7 @@ namespace ViewModel
                 }
 
                 this._maxNightPrice = value;
-                this.SetOverview(this.GetCampingPlaces());
+                this.SetOverview();
 
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
@@ -99,7 +101,7 @@ namespace ViewModel
                 int daysDifference = this._checkOutDate.Subtract(this._checkInDate).Days;
                 
                 this._checkInDate = value;
-                this.SetOverview(this.GetCampingPlaces());
+                this.SetOverview();
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 if (daysDifference > 0)
@@ -120,7 +122,7 @@ namespace ViewModel
                 }
 
                 this._checkOutDate = value;
-                this.SetOverview(this.GetCampingPlaces());
+                this.SetOverview();
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 if (this._checkOutDate < this.CheckInDate)
@@ -160,34 +162,35 @@ namespace ViewModel
             }
         }
         
-        public ObservableCollection<string> CampingPlaceTypes
+        public ObservableCollection<string> Accommodations
         {
-            get => this._campingPlaceTypes;
+            get => this._accommodations;
             private init
             {
-                if (Equals(value, this._campingPlaceTypes))
+                if (Equals(value, this._accommodations))
                 {
                     return;
                 }
                 
-                this._campingPlaceTypes = value;
+                this._accommodations = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
-        public string SelectedCampingPlaceType
+        public string SelectedAccommodation
         {
-            get => this._selectedCampingPlaceType;
+            get => this._selectedAccommodation;
             set
             {
-                if (Equals(value, this._selectedCampingPlaceType))
+                if (Equals(value, this._selectedAccommodation))
                 {
                     return;
                 }
 
-                this._selectedCampingPlaceType = value;
-                this.SetOverview(this.GetCampingPlaces());
+                this._selectedAccommodation = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                
+                this.SetOverview();
             }
         }
 
@@ -198,35 +201,46 @@ namespace ViewModel
         public ReservationCampingPlaceFormViewModel()
         {
             this.CampingPlaces = new ObservableCollection<CampingPlace>();
-            this.CampingPlaceTypes = new ObservableCollection<string> {
-                SelectAll
-            };
-
-            //Loop through rows in Accommodation table
-            foreach (var accommodationDatabaseRow in new Accommodation().Select())
-            {
-                this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);
-            }
+            this.Accommodations = new ObservableCollection<string>();
             
-            this.SelectedCampingPlaceType = SelectAll;
+            this.SetAccommodations();
+            this.SelectedAccommodation = SelectAll;
             this.CheckInDate = DateTime.Today;
             this.CheckOutDate = DateTime.Today.AddDays(1);
             
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.ReservationCampingGuestViewModelOnReservationConfirmedEvent;
-            ManageCampingPlaceViewModel.CampingPlacesUpdated += ManageCampingPlaceViewModelOnCampingPlacesUpdated;
+            ManageCampingPlaceViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
+            ManageAccommodationViewModel.AccommodationsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
         }
 
-        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object? sender, EventArgs e)
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, EventArgs e)
         {
-            this.SetOverview(this.GetCampingPlaces());
+            this.SetAccommodations();
+            this.SelectedAccommodation = SelectAll;
+        }
+
+        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object sender, EventArgs e)
+        {
+            this.SetOverview();
         }
 
         private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object sender, ReservationEventArgs e)
         {
-            this.SetOverview(this.GetCampingPlaces());
+            this.SetOverview();
         }
 
-        private void SetOverview(IEnumerable<CampingPlace> campingPlaceItems)
+        private void SetAccommodations()
+        {
+            this.Accommodations.Clear();
+
+            this.Accommodations.Add(SelectAll);
+            foreach (var accommodation in this.GetAccommodations())
+            {
+                this.Accommodations.Add(accommodation.Name);
+            }
+        }
+
+        private void SetOverview()
         {
             if (this.CampingPlaces == null)
             {
@@ -237,12 +251,12 @@ namespace ViewModel
             this.CampingPlaces.Clear();
 
             bool CampingPlaceFilter(CampingPlace campingPlace) => 
-                (this._selectedCampingPlaceType.Equals(SelectAll) || campingPlace.Type.Accommodation.Name.Equals(this._selectedCampingPlaceType)) 
+                (this._selectedAccommodation != null && (this._selectedAccommodation.Equals(SelectAll) || campingPlace.Type.Accommodation.Name.Equals(this._selectedAccommodation))) 
                 && (!int.TryParse(this.MinNightPrice, out int min) || campingPlace.TotalPrice >= min) 
                 && (!int.TryParse(this.MaxNightPrice, out int max) || campingPlace.TotalPrice <= max) 
                 && (!int.TryParse(this.Guests, out int guests) || campingPlace.Type.GuestLimit >= guests);
 
-            campingPlaceItems = campingPlaceItems.Where(CampingPlaceFilter);
+            var campingPlaceItems = this.GetCampingPlaces().Where(CampingPlaceFilter);
             foreach (CampingPlace item in campingPlaceItems)
             {
                 this.CampingPlaces.Add(item);
@@ -255,7 +269,7 @@ namespace ViewModel
 
         private void ResetInput()
         {
-            this.SelectedCampingPlaceType = SelectAll;
+            this.SelectedAccommodation = SelectAll;
             this.SelectedCampingPlace = null;
             this.CheckInDate = DateTime.Today;
             this.CheckOutDate = DateTime.Today.AddDays(1);
@@ -290,10 +304,8 @@ namespace ViewModel
 
         public virtual IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> campingPlaceList, DateTime checkInDate, DateTime checkOutDate)
         {
-            var reservations = this.GetReservationModel();
-
             // Removes reserved camping places from the list.
-            foreach (Reservation reservation in reservations)
+            foreach (Reservation reservation in this.GetReservations())
             {
                 if (reservation.CheckInDatetime.Date <= checkOutDate.Date && checkInDate.Date <= reservation.CheckOutDatetime.Date)
                 {
@@ -304,10 +316,14 @@ namespace ViewModel
             return campingPlaceList;
         }
 
-        public virtual IEnumerable<Reservation> GetReservationModel()
+        public virtual IEnumerable<Reservation> GetReservations()
         {
-            Reservation reservationModel = new Reservation();
-            return reservationModel.Select();
+            return this._reservationModel.Select();
+        }
+        
+        public virtual IEnumerable<Accommodation> GetAccommodations()
+        {
+            return this._accommodationModel.Select();
         }
 
         #endregion    
