@@ -17,7 +17,7 @@ using ViewModel.EventArguments;
 
 namespace ViewModel
 {
-    public class ReservationCampingMapViewModel : ObservableObject
+    public class ReservationCampingMapViewModel : CampingMapViewModelBase
     {
         #region Fields
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
@@ -34,42 +34,7 @@ namespace ViewModel
 
         private DateTime _checkOutDate, _checkInDate;
         private string _minNightPrice, _maxNightPrice, _selectedAccommodation, _guests;
-
-        private CampingMapItemViewModel
-            _campingField1,
-            _campingField2,
-            _campingField3,
-            _campingField4,
-            _campingField5,
-            _campingField6,
-            _campingField7,
-            _campingField8,
-            _campingField9,
-            _campingField10,
-            _campingField11,
-            _campingField12,
-            _campingField13,
-            _campingField14,
-            _campingField15,
-            _campingField16,
-            _campingField17,
-            _campingField18,
-            _campingField19,
-            _campingField20,
-            _campingField21,
-            _campingField22,
-            _campingField23,
-            _campingField24,
-            _campingField25,
-            _campingField26,
-            _campingField27,
-            _campingField28,
-            _campingField29,
-            _campingField30,
-            _campingField31,
-            _campingField32,
-            _campingField33,
-            _campingField34;
+        
         #endregion
         
         #region Properties
@@ -203,346 +168,7 @@ namespace ViewModel
                 this.FilterFields();
             }
         }
-
-        public CampingMapItemViewModel CampingField1
-        {
-            get => this._campingField1;
-            set
-            {
-                this._campingField1 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField2
-        {
-            get => this._campingField2;
-            set
-            {
-                this._campingField2 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField3
-        {
-            get => this._campingField3;
-            set
-            {
-                this._campingField3 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField4
-        {
-            get => this._campingField4;
-            set
-            {
-                this._campingField4 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField5
-        {
-            get => this._campingField5;
-            set
-            {
-                this._campingField5 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField6
-        {
-            get => this._campingField6;
-            set
-            {
-                this._campingField6 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField7
-        {
-            get => this._campingField7;
-            set
-            {
-                this._campingField7 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField8
-        {
-            get => this._campingField8;
-            set
-            {
-                this._campingField8 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField9
-        {
-            get => this._campingField9;
-            set
-            {
-                this._campingField9 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField10
-        {
-            get => this._campingField10;
-            set
-            {
-                this._campingField10 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField11
-        {
-            get => this._campingField11;
-            set
-            {
-                this._campingField11 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField12
-        {
-            get => this._campingField12;
-            set
-            {
-                this._campingField12 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField13
-        {
-            get => this._campingField13;
-            set
-            {
-                this._campingField13 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField14
-        {
-            get => this._campingField14;
-            set
-            {
-                this._campingField14 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField15
-        {
-            get => this._campingField15;
-            set
-            {
-                this._campingField15 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField16
-        {
-            get => this._campingField16;
-            set
-            {
-                this._campingField16 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField17
-        {
-            get => this._campingField17;
-            set
-            {
-                this._campingField17 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField18
-        {
-            get => this._campingField18;
-            set
-            {
-                this._campingField18 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField19
-        {
-            get => this._campingField19;
-            set
-            {
-                this._campingField19 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField20
-        {
-            get => this._campingField20;
-            set
-            {
-                this._campingField20 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField21
-        {
-            get => this._campingField21;
-            set
-            {
-                this._campingField21 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField22
-        {
-            get => this._campingField22;
-            set
-            {
-                this._campingField22 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField23
-        {
-            get => this._campingField23;
-            set
-            {
-                this._campingField23 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField24
-        {
-            get => this._campingField24;
-            set
-            {
-                this._campingField24 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField25
-        {
-            get => this._campingField25;
-            set
-            {
-                this._campingField25 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField26
-        {
-            get => this._campingField26;
-            set
-            {
-                this._campingField26 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField27
-        {
-            get => this._campingField27;
-            set
-            {
-                this._campingField27 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField28
-        {
-            get => this._campingField28;
-            set
-            {
-                this._campingField28 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField29
-        {
-            get => this._campingField29;
-            set
-            {
-                this._campingField29 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField30
-        {
-            get => this._campingField30;
-            set
-            {
-                this._campingField30 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField31
-        {
-            get => this._campingField31;
-            set
-            {
-                this._campingField31 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField32
-        {
-            get => this._campingField32;
-            set
-            {
-                this._campingField32 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField33
-        {
-            get => this._campingField33;
-            set
-            {
-                this._campingField33 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public CampingMapItemViewModel CampingField34
-        {
-            get => this._campingField34;
-            set
-            {
-                this._campingField34 = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
+        
         #endregion
 
         #region Events
@@ -695,7 +321,7 @@ namespace ViewModel
             this.ResetInput();
         }
 
-        public CampingMapItemViewModel GetSelectedCampingField(string selectedImage)
+        private CampingMapItemViewModel GetSelectedCampingField(string selectedImage)
         {
             CampingMapItemViewModel selectedCampingField = selectedImage switch
             {
@@ -785,6 +411,11 @@ namespace ViewModel
             return this._accommodationModel.Select();
         }
 
+        protected override CampingPlace GetCampingPlaceByNumber(CampingMapItemViewModel campingField)
+        {
+            return this._campingPlaceModel.SelectByPlaceNumber(campingField.LocationNumber);
+        }
+        
         #endregion    
     }
 }
