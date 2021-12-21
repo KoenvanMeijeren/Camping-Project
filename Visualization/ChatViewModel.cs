@@ -121,7 +121,7 @@ namespace Visualization
             this._server.ConnectToServer();
         }
 
-        public ICommand ConnectToServerICommand => new RelayCommand(ExecuteConnectingToServer, CanExecuteConnectingToServer);
+        public ICommand ConnectToServerICommand => new RelayCommand(ExecuteConnectingToServer);
 
 
         private void ExecuteSendingMessageToServer()
