@@ -9,7 +9,7 @@ using Model;
 
 namespace ViewModel
 {
-    public class CampingField : ObservableObject
+    public class CampingMapItemViewModel : ObservableObject
     {
         #region Fields
 
@@ -75,7 +75,7 @@ namespace ViewModel
 
         #endregion
 
-        public CampingField(int locationNumber, string backgroundColor, string imageResource)
+        public CampingMapItemViewModel(int locationNumber, string backgroundColor, string imageResource)
         {
             this.LocationNumber = locationNumber;
             this.BackgroundColor = backgroundColor;

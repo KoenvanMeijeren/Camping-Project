@@ -24,18 +24,18 @@ namespace ViewModel
 
         #region Fields
 
-        private Dictionary<int, CampingField> _campingFields;
+        private Dictionary<int, CampingMapItemViewModel> _campingFields;
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
         private readonly CampingPlaceType _campingPlaceTypeModel = new CampingPlaceType();
         
         private ObservableCollection<CampingPlaceType> _campingPlaceTypes = new ObservableCollection<CampingPlaceType>();
         private CampingPlaceType _selectedCampingPlaceType;
 
-        private CampingField _selectedCampingField;
+        private CampingMapItemViewModel _selectedCampingMapItemViewModel;
         
         private string _number, _surface, _extraNightPrice, _campingPlaceError, _editTitle;
 
-        private CampingField
+        private CampingMapItemViewModel
             _campingField1,
             _campingField2,
             _campingField3,
@@ -75,17 +75,17 @@ namespace ViewModel
 
         #region Properties
 
-        public CampingField SelectedCampingField 
+        public CampingMapItemViewModel SelectedCampingMapItemViewModel 
         {
-            get => this._selectedCampingField;
+            get => this._selectedCampingMapItemViewModel;
             set
             {
-                if (value == this._selectedCampingField)
+                if (value == this._selectedCampingMapItemViewModel)
                 {
                     return;
                 }
 
-                this._selectedCampingField = value;
+                this._selectedCampingMapItemViewModel = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -231,7 +231,7 @@ namespace ViewModel
             }
         }
         
-        public CampingField CampingField1
+        public CampingMapItemViewModel CampingField1
         {
             get => this._campingField1;
             set
@@ -241,7 +241,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField2
+        public CampingMapItemViewModel CampingField2
         {
             get => this._campingField2;
             set
@@ -251,7 +251,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField3
+        public CampingMapItemViewModel CampingField3
         {
             get => this._campingField3;
             set
@@ -261,7 +261,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField4
+        public CampingMapItemViewModel CampingField4
         {
             get => this._campingField4;
             set
@@ -271,7 +271,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField5
+        public CampingMapItemViewModel CampingField5
         {
             get => this._campingField5;
             set
@@ -281,7 +281,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField6
+        public CampingMapItemViewModel CampingField6
         {
             get => this._campingField6;
             set
@@ -291,7 +291,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField7
+        public CampingMapItemViewModel CampingField7
         {
             get => this._campingField7;
             set
@@ -301,7 +301,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField8
+        public CampingMapItemViewModel CampingField8
         {
             get => this._campingField8;
             set
@@ -311,7 +311,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField9
+        public CampingMapItemViewModel CampingField9
         {
             get => this._campingField9;
             set
@@ -321,7 +321,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField10
+        public CampingMapItemViewModel CampingField10
         {
             get => this._campingField10;
             set
@@ -331,7 +331,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField11
+        public CampingMapItemViewModel CampingField11
         {
             get => this._campingField11;
             set
@@ -341,7 +341,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField12
+        public CampingMapItemViewModel CampingField12
         {
             get => this._campingField12;
             set
@@ -351,7 +351,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField13
+        public CampingMapItemViewModel CampingField13
         {
             get => this._campingField13;
             set
@@ -361,7 +361,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField14
+        public CampingMapItemViewModel CampingField14
         {
             get => this._campingField14;
             set
@@ -371,7 +371,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField15
+        public CampingMapItemViewModel CampingField15
         {
             get => this._campingField15;
             set
@@ -381,7 +381,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField16
+        public CampingMapItemViewModel CampingField16
         {
             get => this._campingField16;
             set
@@ -391,7 +391,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField17
+        public CampingMapItemViewModel CampingField17
         {
             get => this._campingField17;
             set
@@ -401,7 +401,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField18
+        public CampingMapItemViewModel CampingField18
         {
             get => this._campingField18;
             set
@@ -411,7 +411,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField19
+        public CampingMapItemViewModel CampingField19
         {
             get => this._campingField19;
             set
@@ -421,7 +421,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField20
+        public CampingMapItemViewModel CampingField20
         {
             get => this._campingField20;
             set
@@ -431,7 +431,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField21
+        public CampingMapItemViewModel CampingField21
         {
             get => this._campingField21;
             set
@@ -441,7 +441,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField22
+        public CampingMapItemViewModel CampingField22
         {
             get => this._campingField22;
             set
@@ -451,7 +451,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField23
+        public CampingMapItemViewModel CampingField23
         {
             get => this._campingField23;
             set
@@ -461,7 +461,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField24
+        public CampingMapItemViewModel CampingField24
         {
             get => this._campingField24;
             set
@@ -471,7 +471,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField25
+        public CampingMapItemViewModel CampingField25
         {
             get => this._campingField25;
             set
@@ -481,7 +481,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField26
+        public CampingMapItemViewModel CampingField26
         {
             get => this._campingField26;
             set
@@ -491,7 +491,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField27
+        public CampingMapItemViewModel CampingField27
         {
             get => this._campingField27;
             set
@@ -501,7 +501,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField28
+        public CampingMapItemViewModel CampingField28
         {
             get => this._campingField28;
             set
@@ -511,7 +511,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField29
+        public CampingMapItemViewModel CampingField29
         {
             get => this._campingField29;
             set
@@ -521,7 +521,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField30
+        public CampingMapItemViewModel CampingField30
         {
             get => this._campingField30;
             set
@@ -531,7 +531,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField31
+        public CampingMapItemViewModel CampingField31
         {
             get => this._campingField31;
             set
@@ -541,7 +541,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField32
+        public CampingMapItemViewModel CampingField32
         {
             get => this._campingField32;
             set
@@ -551,7 +551,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField33
+        public CampingMapItemViewModel CampingField33
         {
             get => this._campingField33;
             set
@@ -561,7 +561,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField34
+        public CampingMapItemViewModel CampingField34
         {
             get => this._campingField34;
             set
@@ -634,16 +634,16 @@ namespace ViewModel
             this.ExtraNightPrice = campingPlace.ExtraNightPrice.ToString(CultureInfo.InvariantCulture);
         }
         
-        private void FillFieldsForSelectedCampingField(CampingField campingField)
+        private void FillFieldsForSelectedCampingField(CampingMapItemViewModel campingMapItemViewModel)
         {
-            if (campingField == null)
+            if (campingMapItemViewModel == null)
             {
                 this.ResetInput();
                 return;
             }
             
-            this.FillFields(campingField.CampingPlace);
-            this.Number = campingField.LocationNumber.ToString(CultureInfo.InvariantCulture);
+            this.FillFields(campingMapItemViewModel.CampingPlace);
+            this.Number = campingMapItemViewModel.LocationNumber.ToString(CultureInfo.InvariantCulture);
         }
 
         private void ResetInput()
@@ -658,48 +658,48 @@ namespace ViewModel
 
         private void InitializeCampingFields()
         {
-            this._campingFields = new Dictionary<int, CampingField>
+            this._campingFields = new Dictionary<int, CampingMapItemViewModel>
             {
-                {1, this.CampingField1 = new CampingField(1, CampingField.UnselectedColor, null)},
-                {2, this.CampingField2 = new CampingField(2, CampingField.UnselectedColor, null)},
-                {3, this.CampingField3 = new CampingField(3, CampingField.UnselectedColor, null)},
-                {4, this.CampingField4 = new CampingField(4, CampingField.UnselectedColor, null)},
-                {5, this.CampingField5 = new CampingField(5, CampingField.UnselectedColor, null)},
-                {6, this.CampingField6 = new CampingField(6, CampingField.UnselectedColor, null)},
-                {7, this.CampingField7 = new CampingField(7, CampingField.UnselectedColor, null)},
-                {8, this.CampingField8 = new CampingField(8, CampingField.UnselectedColor, null)},
-                {9, this.CampingField9 = new CampingField(9, CampingField.UnselectedColor, null)},
-                {10, this.CampingField10 = new CampingField(10, CampingField.UnselectedColor, null)},
-                {11, this.CampingField11 = new CampingField(11, CampingField.UnselectedColor, null)},
-                {12, this.CampingField12 = new CampingField(12, CampingField.UnselectedColor, null)},
-                {13, this.CampingField13 = new CampingField(13, CampingField.UnselectedColor, null)},
-                {14, this.CampingField14 = new CampingField(14, CampingField.UnselectedColor, null)},
-                {15, this.CampingField15 = new CampingField(15, CampingField.UnselectedColor, null)},
-                {16, this.CampingField16 = new CampingField(16, CampingField.UnselectedColor, null)},
-                {17, this.CampingField17 = new CampingField(17, CampingField.UnselectedColor, null)},
-                {18, this.CampingField18 = new CampingField(18, CampingField.UnselectedColor, null)},
-                {19, this.CampingField19 = new CampingField(19, CampingField.UnselectedColor, null)},
-                {20, this.CampingField20 = new CampingField(20, CampingField.UnselectedColor, null)},
-                {21, this.CampingField21 = new CampingField(21, CampingField.UnselectedColor, null)},
-                {22, this.CampingField22 = new CampingField(22, CampingField.UnselectedColor, null)},
-                {23, this.CampingField23 = new CampingField(23, CampingField.UnselectedColor, null)},
-                {24, this.CampingField24 = new CampingField(24, CampingField.UnselectedColor, null)},
-                {25, this.CampingField25 = new CampingField(25, CampingField.UnselectedColor, null)},
-                {26, this.CampingField26 = new CampingField(26, CampingField.UnselectedColor, null)},
-                {27, this.CampingField27 = new CampingField(27, CampingField.UnselectedColor, null)},
-                {28, this.CampingField28 = new CampingField(28, CampingField.UnselectedColor, null)},
-                {29, this.CampingField29 = new CampingField(29, CampingField.UnselectedColor, null)},
-                {30, this.CampingField30 = new CampingField(30, CampingField.UnselectedColor, null)},
-                {31, this.CampingField31 = new CampingField(31, CampingField.UnselectedColor, null)},
-                {32, this.CampingField32 = new CampingField(32, CampingField.UnselectedColor, null)},
-                {33, this.CampingField33 = new CampingField(33, CampingField.UnselectedColor, null)},
-                {34, this.CampingField34 = new CampingField(34, CampingField.UnselectedColor, null)}
+                {1, this.CampingField1 = new CampingMapItemViewModel(1, CampingMapItemViewModel.UnselectedColor, null)},
+                {2, this.CampingField2 = new CampingMapItemViewModel(2, CampingMapItemViewModel.UnselectedColor, null)},
+                {3, this.CampingField3 = new CampingMapItemViewModel(3, CampingMapItemViewModel.UnselectedColor, null)},
+                {4, this.CampingField4 = new CampingMapItemViewModel(4, CampingMapItemViewModel.UnselectedColor, null)},
+                {5, this.CampingField5 = new CampingMapItemViewModel(5, CampingMapItemViewModel.UnselectedColor, null)},
+                {6, this.CampingField6 = new CampingMapItemViewModel(6, CampingMapItemViewModel.UnselectedColor, null)},
+                {7, this.CampingField7 = new CampingMapItemViewModel(7, CampingMapItemViewModel.UnselectedColor, null)},
+                {8, this.CampingField8 = new CampingMapItemViewModel(8, CampingMapItemViewModel.UnselectedColor, null)},
+                {9, this.CampingField9 = new CampingMapItemViewModel(9, CampingMapItemViewModel.UnselectedColor, null)},
+                {10, this.CampingField10 = new CampingMapItemViewModel(10, CampingMapItemViewModel.UnselectedColor, null)},
+                {11, this.CampingField11 = new CampingMapItemViewModel(11, CampingMapItemViewModel.UnselectedColor, null)},
+                {12, this.CampingField12 = new CampingMapItemViewModel(12, CampingMapItemViewModel.UnselectedColor, null)},
+                {13, this.CampingField13 = new CampingMapItemViewModel(13, CampingMapItemViewModel.UnselectedColor, null)},
+                {14, this.CampingField14 = new CampingMapItemViewModel(14, CampingMapItemViewModel.UnselectedColor, null)},
+                {15, this.CampingField15 = new CampingMapItemViewModel(15, CampingMapItemViewModel.UnselectedColor, null)},
+                {16, this.CampingField16 = new CampingMapItemViewModel(16, CampingMapItemViewModel.UnselectedColor, null)},
+                {17, this.CampingField17 = new CampingMapItemViewModel(17, CampingMapItemViewModel.UnselectedColor, null)},
+                {18, this.CampingField18 = new CampingMapItemViewModel(18, CampingMapItemViewModel.UnselectedColor, null)},
+                {19, this.CampingField19 = new CampingMapItemViewModel(19, CampingMapItemViewModel.UnselectedColor, null)},
+                {20, this.CampingField20 = new CampingMapItemViewModel(20, CampingMapItemViewModel.UnselectedColor, null)},
+                {21, this.CampingField21 = new CampingMapItemViewModel(21, CampingMapItemViewModel.UnselectedColor, null)},
+                {22, this.CampingField22 = new CampingMapItemViewModel(22, CampingMapItemViewModel.UnselectedColor, null)},
+                {23, this.CampingField23 = new CampingMapItemViewModel(23, CampingMapItemViewModel.UnselectedColor, null)},
+                {24, this.CampingField24 = new CampingMapItemViewModel(24, CampingMapItemViewModel.UnselectedColor, null)},
+                {25, this.CampingField25 = new CampingMapItemViewModel(25, CampingMapItemViewModel.UnselectedColor, null)},
+                {26, this.CampingField26 = new CampingMapItemViewModel(26, CampingMapItemViewModel.UnselectedColor, null)},
+                {27, this.CampingField27 = new CampingMapItemViewModel(27, CampingMapItemViewModel.UnselectedColor, null)},
+                {28, this.CampingField28 = new CampingMapItemViewModel(28, CampingMapItemViewModel.UnselectedColor, null)},
+                {29, this.CampingField29 = new CampingMapItemViewModel(29, CampingMapItemViewModel.UnselectedColor, null)},
+                {30, this.CampingField30 = new CampingMapItemViewModel(30, CampingMapItemViewModel.UnselectedColor, null)},
+                {31, this.CampingField31 = new CampingMapItemViewModel(31, CampingMapItemViewModel.UnselectedColor, null)},
+                {32, this.CampingField32 = new CampingMapItemViewModel(32, CampingMapItemViewModel.UnselectedColor, null)},
+                {33, this.CampingField33 = new CampingMapItemViewModel(33, CampingMapItemViewModel.UnselectedColor, null)},
+                {34, this.CampingField34 = new CampingMapItemViewModel(34, CampingMapItemViewModel.UnselectedColor, null)}
             };
         }
 
         private void SetCampingPlacesToFields()
         {
-            foreach (CampingField campingField in this._campingFields.Values)
+            foreach (CampingMapItemViewModel campingField in this._campingFields.Values)
             {
                 campingField.CampingPlace = this._campingPlaceModel.SelectByPlaceNumber(campingField.LocationNumber);
             }
@@ -707,12 +707,12 @@ namespace ViewModel
 
         public void SetSelectedCampingField(string selectedImageComponent)
         {
-            if (SelectedCampingField != null)
+            if (SelectedCampingMapItemViewModel != null)
             {
-                this.SelectedCampingField.BackgroundColor = CampingField.UnselectedColor;
+                this.SelectedCampingMapItemViewModel.BackgroundColor = CampingMapItemViewModel.UnselectedColor;
             }
 
-            this.SelectedCampingField = selectedImageComponent switch
+            this.SelectedCampingMapItemViewModel = selectedImageComponent switch
             {
                 "CampingFieldImage1" => this.CampingField1,
                 "CampingFieldImage2" => this.CampingField2,
@@ -748,16 +748,16 @@ namespace ViewModel
                 "CampingFieldImage32" => this.CampingField32,
                 "CampingFieldImage33" => this.CampingField33,
                 "CampingFieldImage34" => this.CampingField34,
-                _ => this.SelectedCampingField
+                _ => this.SelectedCampingMapItemViewModel
             };
 
-            if (this.SelectedCampingField == null)
+            if (this.SelectedCampingMapItemViewModel == null)
             {
                 return;
             }
 
-            this.SelectedCampingField.BackgroundColor = CampingField.SelectedColor;
-            this.FillFieldsForSelectedCampingField(this.SelectedCampingField);
+            this.SelectedCampingMapItemViewModel.BackgroundColor = CampingMapItemViewModel.SelectedColor;
+            this.FillFieldsForSelectedCampingField(this.SelectedCampingMapItemViewModel);
         }
 
         #endregion
@@ -767,8 +767,8 @@ namespace ViewModel
         private void ExecuteCancelEditAction()
         {
             this.ResetInput();
-            this.SelectedCampingField.BackgroundColor = CampingField.UnselectedColor;
-            this.SelectedCampingField = null;
+            this.SelectedCampingMapItemViewModel.BackgroundColor = CampingMapItemViewModel.UnselectedColor;
+            this.SelectedCampingMapItemViewModel = null;
         }
         private bool CanExecuteCancelEditAction()
         {
@@ -782,7 +782,7 @@ namespace ViewModel
         
         private void ExecuteEditSave()
         {
-            if (this.SelectedCampingField.CampingPlace == null)
+            if (this.SelectedCampingMapItemViewModel.CampingPlace == null)
             {
                 CampingPlace campingPlace = new CampingPlace(this.Number, this.Surface, this.ExtraNightPrice,
                     this.SelectedCampingPlaceType);
@@ -792,14 +792,14 @@ namespace ViewModel
             }
             else
             {
-                var campingPlace = this.SelectedCampingField.CampingPlace;
+                var campingPlace = this.SelectedCampingMapItemViewModel.CampingPlace;
                 campingPlace.Update(this.Number, this.Surface, this.ExtraNightPrice, this.SelectedCampingPlaceType);
 
-                this.SelectedCampingField.Update(campingPlace);
+                this.SelectedCampingMapItemViewModel.Update(campingPlace);
             }
             
             this.ResetInput();
-            this.SelectedCampingField.BackgroundColor = CampingField.UnselectedColor;
+            this.SelectedCampingMapItemViewModel.BackgroundColor = CampingMapItemViewModel.UnselectedColor;
             
             ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, EventArgs.Empty);
 
@@ -820,22 +820,22 @@ namespace ViewModel
 
         private void ExecuteDelete()
         {
-            var result = MessageBox.Show($"Weet u zeker dat u de campingplaats {this.SelectedCampingField.CampingPlace} wilt verwijderen?", "Campingplaats verwijderen", MessageBoxButton.YesNo);
+            var result = MessageBox.Show($"Weet u zeker dat u de campingplaats {this.SelectedCampingMapItemViewModel.CampingPlace} wilt verwijderen?", "Campingplaats verwijderen", MessageBoxButton.YesNo);
             if (result != MessageBoxResult.Yes)
             {
                 return;
             }
             
-            this.SelectedCampingField.CampingPlace.Delete();
+            this.SelectedCampingMapItemViewModel.CampingPlace.Delete();
             this.ResetInput();
-            this.SelectedCampingField.BackgroundColor = CampingField.UnselectedColor;
-            this.SelectedCampingField.CampingPlace = null;
+            this.SelectedCampingMapItemViewModel.BackgroundColor = CampingMapItemViewModel.UnselectedColor;
+            this.SelectedCampingMapItemViewModel.CampingPlace = null;
 
             ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, EventArgs.Empty);
         }
         private bool CanExecuteDelete()
         {
-            return this.SelectedCampingField != null && this.SelectedCampingField.CampingPlace != null && !this._campingPlaceModel.HasReservations(this.SelectedCampingField.CampingPlace);
+            return this.SelectedCampingMapItemViewModel != null && this.SelectedCampingMapItemViewModel.CampingPlace != null && !this._campingPlaceModel.HasReservations(this.SelectedCampingMapItemViewModel.CampingPlace);
         }
 
         public ICommand Delete => new RelayCommand(ExecuteDelete, CanExecuteDelete);
