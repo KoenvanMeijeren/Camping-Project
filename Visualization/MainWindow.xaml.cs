@@ -77,6 +77,7 @@ namespace Visualization
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
             this.ContactMenuButton.Visibility = Visibility.Collapsed;
+            this.ManageButton.Visibility = Visibility.Collapsed;
             this.ManageCampingMapMenuButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceTypeButton.Visibility = Visibility.Collapsed;
@@ -120,11 +121,7 @@ namespace Visualization
                 return;
             }
             
-            this.ManageCampingMapMenuButton.Visibility = Visibility.Visible;
-            this.ManageCampingPlaceButton.Visibility = Visibility.Visible;
-            this.ManageCampingPlaceTypeButton.Visibility = Visibility.Visible;
-            this.ManageAccommodationsButton.Visibility = Visibility.Visible;
-            this.ManageCampingCustomerButton.Visibility = Visibility.Visible;
+            this.ManageButton.Visibility = Visibility.Visible;
         }
 
         private void OnSignUpEvent(object sender, AccountEventArgs args)
@@ -142,6 +139,7 @@ namespace Visualization
             this.ReserveMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
             this.ContactMenuButton.Visibility = Visibility.Collapsed;
+            this.ManageButton.Visibility = Visibility.Collapsed;
             this.ManageCampingMapMenuButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceTypeButton.Visibility = Visibility.Collapsed;
@@ -249,6 +247,36 @@ namespace Visualization
         private void OnChatButton(object sender, EventArgs e)
         {
             this.MainFrame.Content = this._chatPage.Content;
+        }
+
+        private void ManageButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.ManageButton.Content = "Beheer ⮝";
+
+            this.ManageCampingMapMenuButton.Visibility = Visibility.Visible;
+            this.ManageCampingPlaceButton.Visibility = Visibility.Visible;
+            this.ManageCampingPlaceTypeButton.Visibility = Visibility.Visible;
+            this.ManageAccommodationsButton.Visibility = Visibility.Visible;
+            this.ManageCampingCustomerButton.Visibility = Visibility.Visible;
+        }
+
+        private void ManageButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if ((bool)this.ManageCampingMapMenuButton.IsChecked ||
+                (bool)this.ManageCampingPlaceButton.IsChecked ||
+                (bool)this.ManageCampingPlaceTypeButton.IsChecked ||
+                (bool)this.ManageAccommodationsButton.IsChecked ||
+                (bool)this.ManageCampingCustomerButton.IsChecked)
+            {
+                return;
+            }
+            this.ManageButton.Content = "Beheer ⮟";
+
+            this.ManageCampingMapMenuButton.Visibility = Visibility.Collapsed;
+            this.ManageCampingPlaceButton.Visibility = Visibility.Collapsed;
+            this.ManageCampingPlaceTypeButton.Visibility = Visibility.Collapsed;
+            this.ManageAccommodationsButton.Visibility = Visibility.Collapsed;
+            this.ManageCampingCustomerButton.Visibility = Visibility.Collapsed;
         }
     }
 }
