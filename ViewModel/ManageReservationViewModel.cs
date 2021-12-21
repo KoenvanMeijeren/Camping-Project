@@ -246,28 +246,8 @@ namespace ViewModel
         }
 
         public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard);
-        {
-            //Is it possible to check this execution?
-            return true;
-        }
-        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
-        {
-            //Is it possible to check this execution?
-            return true;
-        }
-        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
-        {
-            //Is it possible to check this execution?
-            return true;
-        }
-        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
-        {
-            //Is it possible to check this execution?
-            return true;
-        }
-        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
-
-        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard);
+     
+   
 
         /// <summary>
         /// Deletes the reservation in de Reservationtable, reservationdurationtable and reservationcampingGuesttable
@@ -321,7 +301,7 @@ namespace ViewModel
 
         #region Database interaction
 
-        private IEnumerable<CampingPlace> GetCampingPlaces()
+        public IEnumerable<CampingPlace> GetCampingPlaces()
         {
             return this.ToFilteredOnReservedCampingPlaces(SelectCampingPlaces());
         }
