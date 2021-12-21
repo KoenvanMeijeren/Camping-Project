@@ -50,6 +50,9 @@ namespace Visualization
             this._manageCampingPlaceTypePage = new ManageCampingPlaceTypePage();
             this._manageAccommodationPage = new ManageAccommodationPage();
 
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationPayedEvent;
+            ReservationPaymentViewModel.ReservationGuestGoBackEvent += this.OnReservationGuestGoBackEvent;
+            ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent += this.OnReservationGuestsConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestsFormEvent;
@@ -85,12 +88,27 @@ namespace Visualization
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        private void OnReservationGuestsFormEvent(object sender, ReservationGuestEventArgs args)
+        private void OnReservationGuestsFormEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationCampingGuestPage;
+        }
+
+        private void OnReservationPayedEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationConfirmedPage.Content;
+        }
+
+        private void OnReservationGuestGoBackEvent(object sender, ReservationGuestEventArgs args)
         {
             this.MainFrame.Content = this._reservationCampingGuestPage;
         }
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationPaymentPage.Content;
+        }
+
+        private void OnReservationGuestsConfirmedEvent(object sender, ReservationGuestEventArgs args)
         {
             this.MainFrame.Content = this._reservationPaymentPage.Content;
         }

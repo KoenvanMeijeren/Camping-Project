@@ -84,7 +84,8 @@ namespace ViewModel
 
         public ReservationConfirmedViewModel()
         {
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            //ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
         }
 
         private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)

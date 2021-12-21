@@ -17,6 +17,7 @@
     <ItemGroup>
         <PackageReference Include="iTextSharp" Version="5.5.13.2" />
         <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+        <PackageReference Include="Mollie.Api" Version="2.1.0.8" />
         <PackageReference Include="PresentationFramework" Version="4.6.0" />
         <PackageReference Include="Moq" Version="4.16.1" />
     </ItemGroup>
