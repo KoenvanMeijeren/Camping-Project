@@ -79,6 +79,11 @@ namespace Model
 
         public bool HasReservations(CampingPlace campingPlace)
         {
+            if (campingPlace == null)
+            {
+                return false;
+            }
+            
             string queryString = this.BaseSelectQuery();
             queryString += $" INNER JOIN {Reservation.TableName} R ON R.{Reservation.ColumnPlace} = BT.{ColumnId} ";
             queryString += $" WHERE BT.{ColumnId} = @{ColumnId} ";
@@ -114,6 +119,7 @@ namespace Model
             this.Number = successNumber ? numericNumber : 0;
             this.Surface = successSurface ? numericSurface : 0;
             this.ExtraNightPrice = successExtraNightPrice ? numericExtraNightPrice : 0;
+            this.Type = campingPlaceType;
             
             return base.Update(CampingPlace.ToDictionary(numericNumber, numericSurface, numericExtraNightPrice, campingPlaceType));
         }

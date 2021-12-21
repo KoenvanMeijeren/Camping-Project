@@ -22,7 +22,6 @@
 
                 <RadioButton x:Name="ManageButton" Content="Beheer ⮟" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ManageButton_Checked" Unchecked="ManageButton_Unchecked"/>
                 <RadioButton x:Name="ManageCampingMapMenuButton" Content="Campingplaatsen" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageCampingMapMenuButton_Checked" Unchecked="ManageButton_Unchecked"/>
-                <RadioButton x:Name="ManageCampingPlaceButton" Content="Campingplaatsen*" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageCampingPlacesButton_Checked" Unchecked="ManageButton_Unchecked"/>
                 <RadioButton x:Name="ManageCampingPlaceTypeButton" Content="Campingplaatstypes" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageCampingPlaceTypesButton_Checked" Unchecked="ManageButton_Unchecked"/>
                 <RadioButton x:Name="ManageAccommodationsButton" Content="Accommodaties" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageAccommodationsButton_Checked" Unchecked="ManageButton_Unchecked"/>
                 <RadioButton x:Name="ManageCampingCustomerButton" Content="Campingklanten" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageCampingCustomersMenuButton_Checked" Unchecked="ManageButton_Unchecked"/>
