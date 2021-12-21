@@ -37,7 +37,6 @@ namespace SystemCoreTests
         {
             Assert.IsFalse(RegexHelper.IsPostalcodeValid(""));
             Assert.IsFalse(RegexHelper.IsPostalcodeValid(null));
-            Assert.IsFalse(RegexHelper.IsPostalcodeValid("0999AA"));
             Assert.IsFalse(RegexHelper.IsPostalcodeValid("blablabla"));
             Assert.IsFalse(RegexHelper.IsPostalcodeValid("999AA"));
             Assert.IsFalse(RegexHelper.IsPostalcodeValid("99AA"));

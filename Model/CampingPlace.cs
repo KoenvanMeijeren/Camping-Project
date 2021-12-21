@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SystemCore;
 
 namespace Model
 {
@@ -22,6 +23,7 @@ namespace Model
         public float Surface { get; private set; }
         public string SurfaceReadable { get; private set; }
         public float ExtraNightPrice { get; private set; }
+        public string ExtraNightPriceReadable { get; private set; }
         public string Location { get; private set; }
         public float TotalPrice { get; private set; }
         public string TotalPriceReadable { get; private set; }
@@ -38,9 +40,9 @@ namespace Model
         public CampingPlace(string id, string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType): base(TableName, ColumnId)
         {
             bool successId = int.TryParse(id, out int numericId);
-            bool successNumber = int.TryParse(id, out int numericNumber);
-            bool successSurface = float.TryParse(id, out float numericSurface);
-            bool successExtraNightPrice = float.TryParse(id, out float numericExtraNightPrice);
+            bool successNumber = int.TryParse(number, out int numericNumber);
+            bool successSurface = float.TryParse(surface, out float numericSurface);
+            bool successExtraNightPrice = float.TryParse(extraNightPrice, out float numericExtraNightPrice);
 
             float standardNightPrice = 0;
             if (campingPlaceType != null)
@@ -57,6 +59,7 @@ namespace Model
             this.TotalPrice = this.ExtraNightPrice + standardNightPrice;
             this.TotalPriceReadable = $"€ {this.TotalPrice}";
             this.SurfaceReadable = $"{this.Surface} m3";
+            this.ExtraNightPriceReadable = $"€ {this.ExtraNightPrice}";
         }
 
         /// <summary>
@@ -74,19 +77,55 @@ namespace Model
             return this.GetLocation();
         }
 
-        public bool Update(int number, float surface, float extraNightPrice, CampingPlaceType campingPlaceType)
+        public bool HasReservations(CampingPlace campingPlace)
         {
-            this.Number = number;
-            this.Surface = surface;
-            this.ExtraNightPrice = extraNightPrice;
-            this.Type = campingPlaceType;
+            string queryString = this.BaseSelectQuery();
+            queryString += $" INNER JOIN {Reservation.TableName} R ON R.{Reservation.ColumnPlace} = BT.{ColumnId} ";
+            queryString += $" WHERE BT.{ColumnId} = @{ColumnId} ";
+
+            Query query = new Query(queryString);
+            query.AddParameter(ColumnId, campingPlace.Id);
+            var results = query.Select();
+
+            return results != null && results.Any();
+        }
+        
+        /// <inheritdoc/>
+        public override IEnumerable<CampingPlace> Select()
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ColumnId}");
+            var items = query.Select();
+            this.Collection = new List<CampingPlace>();
+            foreach (Dictionary<string, string> dictionary in items)
+            {
+                this.Collection.Add(this.ToModel(dictionary));
+            }
+
+            return this.Collection;
+        }
+
+        public bool Update(string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType)
+        {
+            bool successNumber = int.TryParse(number, out int numericNumber);
+            bool successSurface = float.TryParse(surface, out float numericSurface);
+            bool successExtraNightPrice = float.TryParse(extraNightPrice, out float numericExtraNightPrice);
             
-            return base.Update(CampingPlace.ToDictionary(number, surface, extraNightPrice, campingPlaceType));
+            this.Number = numericNumber;
+            this.Number = successNumber ? numericNumber : 0;
+            this.Surface = successSurface ? numericSurface : 0;
+            this.ExtraNightPrice = successExtraNightPrice ? numericExtraNightPrice : 0;
+            
+            return base.Update(CampingPlace.ToDictionary(numericNumber, numericSurface, numericExtraNightPrice, campingPlaceType));
         }
 
         /// <inheritdoc/>
         protected override CampingPlace ToModel(Dictionary<string, string> dictionary)
         {
+            if (dictionary == null)
+            {
+                return null;
+            }
+
             dictionary.TryGetValue(ColumnId, out string campingPlaceId);
             dictionary.TryGetValue(ColumnType, out string campingPlaceTypeId);
             dictionary.TryGetValue(ColumnNumber, out string placeNumber);
@@ -133,6 +172,13 @@ namespace Model
             query += $" INNER JOIN {Accommodation.TableName} ACM ON ACM.{Accommodation.ColumnId} = CPT.{CampingPlaceType.ColumnAccommodation}";
 
             return query;
+        }
+
+        public CampingPlace SelectByPlaceNumber(int placeNumber)
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnNumber} = @{ColumnNumber}");
+            query.AddParameter(ColumnNumber, placeNumber);
+            return this.ToModel(query.SelectFirst());
         }
 
     }

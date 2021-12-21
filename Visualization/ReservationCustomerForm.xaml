@@ -33,7 +33,7 @@
         <TextBox Text="{Binding PostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="PostalcodeTextbox" HorizontalAlignment="Left" Height="20" Margin="145,484,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <Label x:Name="PlaceLabel" Content="Plaatsnaam*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="283,457,0,0" Height="25"/>
         <TextBox Text="{Binding Place, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="PlaceTextbox" HorizontalAlignment="Left" Height="20" Margin="288,484,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
-        <Label Content="Email*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="467,185,0,0" Height="25"/>
+        <Label x:Name="EmailLabel" Content="Email*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="467,185,0,0" Height="25"/>
         <Label Content="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="EmailTextbox" HorizontalAlignment="Left" Height="32" Margin="469,212,0,0" VerticalAlignment="Top" Width="210" FontFamily="Century Gothic"/>
 
         <Button Command="{Binding AddCustomerReservation}" Name="CustomerReservationConfirmButton" Content="Bevestig" Margin="472,469,138,129"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />

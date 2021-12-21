@@ -10,12 +10,22 @@ namespace ModelTests
         [Test]
         public void TestAccommodationConstructorCorrect()
         {
-            Accommodation accommodation = new Accommodation("1", "testPrefix", "testName");
-            Assert.AreEqual(accommodation.Id, 1);
+            Accommodation accommodation = new Accommodation("testPrefix", "testName");
+            Assert.AreEqual(accommodation.Id, -1);
             Assert.AreEqual(accommodation.Prefix, "testPrefix");
             Assert.AreEqual(accommodation.Name, "testName");
+            Assert.AreEqual(accommodation.Type, AccommodationTypes.Unknown);
         }
 
+        [Test]
+        public void TestAccommodationLongConstructorCorrect()
+        {
+            Accommodation accommodation = new Accommodation("12", "testPrefix", "Bungalow");
+            Assert.AreEqual(accommodation.Id, 12);
+            Assert.AreEqual(accommodation.Prefix, "testPrefix");
+            Assert.AreEqual(accommodation.Name, "Bungalow");
+            Assert.AreEqual(accommodation.Type, AccommodationTypes.Bungalow);
+        }
 
         [Test]
         public void TestAccommodationConstructorIncorrect()
@@ -24,6 +34,7 @@ namespace ModelTests
             Assert.AreEqual(accommodation.Id, -1);
             Assert.AreEqual(accommodation.Prefix, null);
             Assert.AreEqual(accommodation.Name, null);
+            Assert.AreEqual(accommodation.Type, AccommodationTypes.Unknown);
         }
     }
 }

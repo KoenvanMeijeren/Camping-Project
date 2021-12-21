@@ -20,10 +20,7 @@ namespace ViewModel
     public class ManageReservationViewModel : ObservableObject
     {
         #region Fields
-        
-        public static event EventHandler<ReservationEventArgs> FromReservationBackToDashboardEvent;
-        public static event EventHandler<ReservationEventArgs> UpdateReservationCollection;
-        
+
         private readonly Reservation _reservationModel = new Reservation();
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
 
@@ -116,7 +113,7 @@ namespace ViewModel
                 
                 this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
                 
-                this.SetAvailableCampingPlaces(this.GetCampingPlaces());
+                this.SetAvailableCampingPlaces();
             }
         }
 
@@ -133,9 +130,16 @@ namespace ViewModel
                 this._checkOutDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
                 
-                this.SetAvailableCampingPlaces(this.GetCampingPlaces());
+                this.SetAvailableCampingPlaces();
             }
         }
+
+        #endregion
+
+        #region Events
+
+        public static event EventHandler<ReservationEventArgs> FromReservationBackToDashboardEvent;
+        public static event EventHandler<ReservationEventArgs> UpdateReservationCollection;
 
         #endregion
 
@@ -144,12 +148,18 @@ namespace ViewModel
         public ManageReservationViewModel()
         {
             this.CampingPlaces = new ObservableCollection<CampingPlace>();
-            this.SetAvailableCampingPlaces(this.GetCampingPlaces());
+            this.SetAvailableCampingPlaces();
 
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
+            ManageCampingPlaceViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
         }
 
-        private void SetAvailableCampingPlaces(IEnumerable<CampingPlace> campingPlaces)
+        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object? sender, EventArgs e)
+        {
+            this.SetAvailableCampingPlaces();
+        }
+
+        private void SetAvailableCampingPlaces()
         {
             var selectedCampingPlace = this.SelectedCampingPlace;
             if(selectedCampingPlace == null){
@@ -159,7 +169,7 @@ namespace ViewModel
             this.CampingPlaces.Clear();
 
             this.CampingPlaces.Add(selectedCampingPlace);
-            foreach (var campingPlace in campingPlaces)
+            foreach (var campingPlace in this.GetCampingPlaces())
             {
                 //don't insert selected campingplace
                 if(campingPlace.Location != selectedCampingPlace.Location)
@@ -236,7 +246,28 @@ namespace ViewModel
         }
 
         public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard);
+        {
+            //Is it possible to check this execution?
+            return true;
+        }
+        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
+        {
+            //Is it possible to check this execution?
+            return true;
+        }
+        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
+        {
+            //Is it possible to check this execution?
+            return true;
+        }
+        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
+        {
+            //Is it possible to check this execution?
+            return true;
+        }
+        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
 
+        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard);
 
         /// <summary>
         /// Deletes the reservation in de Reservationtable, reservationdurationtable and reservationcampingGuesttable
