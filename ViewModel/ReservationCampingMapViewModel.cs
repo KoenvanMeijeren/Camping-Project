@@ -29,7 +29,7 @@ namespace ViewModel
         public const string SelectAll = "Alle";
 
         public const string ColorAvailable = "#FF68C948";
-        public const string ColorFilteredOut = "4D4D4D";
+        public const string ColorFilteredOut = "#4D4D4D";
         public const string ColorReserved = "#C1272D";
 
         private readonly ObservableCollection<string> _accommodations;
