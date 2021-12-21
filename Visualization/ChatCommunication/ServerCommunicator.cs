@@ -24,14 +24,14 @@ namespace Visualization
             this._client = new TcpClient();
         }
 
-        public void ConnectToServer(int clientType)
+        public void ConnectToServer()
         {
             if (!this._client.Connected)
             {
                 this._client.Connect(ServerCommunicator.IpAdress, ServerCommunicator.port);
                 this._packetReader = new PacketReader(this._client.GetStream());
 
-                SendTypeOfClientToServer(clientType);
+                //SendTypeOfClientToServer(clientType);
 
                 ReadPackets();
             }

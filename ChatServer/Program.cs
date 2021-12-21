@@ -17,23 +17,15 @@ namespace ChatServer
         static void Main(string[] args)
         {
             _users = new List<Client>();
+           // _listener = new TcpListener(IPAddress.Parse(IpAdress), port);
             _listener = new TcpListener(IPAddress.Parse(IpAdress), port);
             _listener.Start();
 
             //Us always listening for clients
             while (true)
             {
-
                 var superClient = new Client(_listener.AcceptTcpClient());               
                 _users.Add(superClient);
-
-
-
-                //luisteren voor bericht
-                if (/*iscampingklant*/)
-                {
-                    Program.CampingOwner = superClient;
-                }
             }
         }
 

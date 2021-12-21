@@ -45,12 +45,12 @@ namespace ChatServer
             this.ClientSocket = client;
             UID = Guid.NewGuid();
             this._packetReader = new PacketReader(this.ClientSocket.GetStream());
+            this.IsSuperClient = false;
 
             //deze code loopt door op een andere thread
             Task.Run(() => Process());
         }
 
-        //methode voor incoming berichten
 
         private void Process()
         {
@@ -61,6 +61,13 @@ namespace ChatServer
                     var opcode = _packetReader.ReadByte();
                     switch (opcode)
                     {
+                        case 0:
+                            Console.WriteLine($"[{DateTime.Now}] : Campingowner has joined the chat");
+                            this.IsSuperClient = true;
+                            break;
+                        case 1:
+                            Console.WriteLine($"[{DateTime.Now}] : Klant has joined the chat");
+                            break;
                         case 6:
                             var msg = _packetReader.ReadMessage();
                             Console.WriteLine($"[{DateTime.Now}] : Message received! {msg} ");

@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using System.Windows.Input;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using ViewModel;
 
 namespace Visualization
@@ -66,9 +66,10 @@ namespace Visualization
             this._users = new();
             this._messages = new();
             this._server = new ServerCommunicator();
-            this._server.connectedEvent += UserConnected;
+            this._server.connectedEvent += CreateConnected;
             this._server.msgReceivedEvent += MessageReceived;
             this._server.UserDisconnectedEvent += RemoveUser;
+            
             
             
             Messages.Add("Start de chat wanneer u wil chatten");
@@ -95,7 +96,7 @@ namespace Visualization
         /// <summary>
         /// Method that adds a new client to the listview
         /// </summary>
-        private void UserConnected()
+        private void CreateConnected()
         {
             bool isSuperUser = false;
             if(CurrentUser.CampingCustomer != null)
@@ -103,7 +104,7 @@ namespace Visualization
                 isSuperUser = true;
             }
 
-            this._currentUser = new Client(isSuperUser)
+            this._currentUser = new Client(isSuperUser)//set property superuser
             {
                 UID = this._server._packetReader.ReadIncomingMessage()
             };
@@ -119,10 +120,15 @@ namespace Visualization
 
         private void ExecuteConnectingToServer()
         {
-            this._server.ConnectToServer((int)this._currentUser.ClientType);
+            this._server.ConnectToServer();
         }
 
-        public ICommand ConnectToServerICommand => new RelayCommand(ExecuteConnectingToServer);
+        private bool CanExecuteConnectingToServer()
+        {
+            return this._currentUser != null;
+        }
+
+        public ICommand ConnectToServerICommand => new RelayCommand(ExecuteConnectingToServer, CanExecuteConnectingToServer);
 
 
         private void ExecuteSendingMessageToServer()
