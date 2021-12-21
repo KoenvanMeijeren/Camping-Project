@@ -19,7 +19,7 @@ namespace ViewModel
 {
     public class ReservationCampingMapViewModel : ObservableObject
     {
-        private Dictionary<int, CampingField> CampingFields { get; set; }
+        private Dictionary<int, CampingField> CampingFields;
 
         #region Fields
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
@@ -27,6 +27,10 @@ namespace ViewModel
         private readonly Reservation _reservationModel = new Reservation();
 
         public const string SelectAll = "Alle";
+
+        public const string ColorAvailable = "#FF68C948";
+        public const string ColorFilteredOut = "4D4D4D";
+        public const string ColorReserved = "#C1272D";
 
         private readonly ObservableCollection<string> _accommodations;
 
@@ -599,40 +603,40 @@ namespace ViewModel
         {
             this.CampingFields = new Dictionary<int, CampingField>
             {
-                {1, this.CampingField1 = new CampingField(1, "#FF68C948", null)},
-                {2, this.CampingField2 = new CampingField(2, "#FF68C948", null)},
-                {3, this.CampingField3 = new CampingField(3, "#FF68C948", null)},
-                {4, this.CampingField4 = new CampingField(4, "#FF68C948", null)},
-                {5, this.CampingField5 = new CampingField(5, "#FF68C948", null)},
-                {6, this.CampingField6 = new CampingField(6, "#FF68C948", null)},
-                {7, this.CampingField7 = new CampingField(7, "#FF68C948", null)},
-                {8, this.CampingField8 = new CampingField(8, "#FF68C948", null)},
-                {9, this.CampingField9 = new CampingField(9, "#FF68C948", null)},
-                {10, this.CampingField10 = new CampingField(10, "#FF68C948", null)},
-                {11, this.CampingField11 = new CampingField(11, "#FF68C948", null)},
-                {12, this.CampingField12 = new CampingField(12, "#FF68C948", null)},
-                {13, this.CampingField13 = new CampingField(13, "#FF68C948", null)},
-                {14, this.CampingField14 = new CampingField(14, "#FF68C948", null)},
-                {15, this.CampingField15 = new CampingField(15, "#FF68C948", null)},
-                {16, this.CampingField16 = new CampingField(16, "#FF68C948", null)},
-                {17, this.CampingField17 = new CampingField(17, "#FF68C948", null)},
-                {18, this.CampingField18 = new CampingField(18, "#FF68C948", null)},
-                {19, this.CampingField19 = new CampingField(19, "#FF68C948", null)},
-                {20, this.CampingField20 = new CampingField(20, "#FF68C948", null)},
-                {21, this.CampingField21 = new CampingField(21, "#FF68C948", null)},
-                {22, this.CampingField22 = new CampingField(22, "#FF68C948", null)},
-                {23, this.CampingField23 = new CampingField(23, "#FF68C948", null)},
-                {24, this.CampingField24 = new CampingField(24, "#FF68C948", null)},
-                {25, this.CampingField25 = new CampingField(25, "#FF68C948", null)},
-                {26, this.CampingField26 = new CampingField(26, "#FF68C948", null)},
-                {27, this.CampingField27 = new CampingField(27, "#FF68C948", null)},
-                {28, this.CampingField28 = new CampingField(28, "#FF68C948", null)},
-                {29, this.CampingField29 = new CampingField(29, "#FF68C948", null)},
-                {30, this.CampingField30 = new CampingField(30, "#FF68C948", null)},
-                {31, this.CampingField31 = new CampingField(31, "#FF68C948", null)},
-                {32, this.CampingField32 = new CampingField(32, "#FF68C948", null)},
-                {33, this.CampingField33 = new CampingField(33, "#FF68C948", null)},
-                {34, this.CampingField34 = new CampingField(34, "#FF68C948", null)}
+                {1, this.CampingField1 = new CampingField(1, ColorAvailable, null)},
+                {2, this.CampingField2 = new CampingField(2, ColorAvailable, null)},
+                {3, this.CampingField3 = new CampingField(3, ColorAvailable, null)},
+                {4, this.CampingField4 = new CampingField(4, ColorAvailable, null)},
+                {5, this.CampingField5 = new CampingField(5, ColorAvailable, null)},
+                {6, this.CampingField6 = new CampingField(6, ColorAvailable, null)},
+                {7, this.CampingField7 = new CampingField(7, ColorAvailable, null)},
+                {8, this.CampingField8 = new CampingField(8, ColorAvailable, null)},
+                {9, this.CampingField9 = new CampingField(9, ColorAvailable, null)},
+                {10, this.CampingField10 = new CampingField(10, ColorAvailable, null)},
+                {11, this.CampingField11 = new CampingField(11, ColorAvailable, null)},
+                {12, this.CampingField12 = new CampingField(12, ColorAvailable, null)},
+                {13, this.CampingField13 = new CampingField(13, ColorAvailable, null)},
+                {14, this.CampingField14 = new CampingField(14, ColorAvailable, null)},
+                {15, this.CampingField15 = new CampingField(15, ColorAvailable, null)},
+                {16, this.CampingField16 = new CampingField(16, ColorAvailable, null)},
+                {17, this.CampingField17 = new CampingField(17, ColorAvailable, null)},
+                {18, this.CampingField18 = new CampingField(18, ColorAvailable, null)},
+                {19, this.CampingField19 = new CampingField(19, ColorAvailable, null)},
+                {20, this.CampingField20 = new CampingField(20, ColorAvailable, null)},
+                {21, this.CampingField21 = new CampingField(21, ColorAvailable, null)},
+                {22, this.CampingField22 = new CampingField(22, ColorAvailable, null)},
+                {23, this.CampingField23 = new CampingField(23, ColorAvailable, null)},
+                {24, this.CampingField24 = new CampingField(24, ColorAvailable, null)},
+                {25, this.CampingField25 = new CampingField(25, ColorAvailable, null)},
+                {26, this.CampingField26 = new CampingField(26, ColorAvailable, null)},
+                {27, this.CampingField27 = new CampingField(27, ColorAvailable, null)},
+                {28, this.CampingField28 = new CampingField(28, ColorAvailable, null)},
+                {29, this.CampingField29 = new CampingField(29, ColorAvailable, null)},
+                {30, this.CampingField30 = new CampingField(30, ColorAvailable, null)},
+                {31, this.CampingField31 = new CampingField(31, ColorAvailable, null)},
+                {32, this.CampingField32 = new CampingField(32, ColorAvailable, null)},
+                {33, this.CampingField33 = new CampingField(33, ColorAvailable, null)},
+                {34, this.CampingField34 = new CampingField(34, ColorAvailable, null)}
             };
         }
 
@@ -680,11 +684,11 @@ namespace ViewModel
             {
                 if (campingField.CampingPlace != null && CampingPlaceFilter(campingField.CampingPlace))
                 {
-                    campingField.BackgroundColor = "#FF68C948";
+                    campingField.BackgroundColor = ColorAvailable;
                 } 
                 else
                 {
-                    campingField.BackgroundColor = "#4D4D4D";
+                    campingField.BackgroundColor = ColorFilteredOut;
                 }
             }
             this.FilterOnReserved();
@@ -696,7 +700,7 @@ namespace ViewModel
         {
             CampingField selectedCampingField = this.GetSelectedCampingField(selectedImage);
 
-            if (selectedCampingField == null || selectedCampingField.BackgroundColor != "#FF68C948")
+            if (selectedCampingField == null || selectedCampingField.BackgroundColor != ColorAvailable)
             {
                 return;
             }
@@ -789,9 +793,9 @@ namespace ViewModel
                 {
                     foreach (CampingField campingField in CampingFields.Values)
                     {
-                        if (campingField.CampingPlace != null && campingField.CampingPlace.Id == reservation.CampingPlace.Id && campingField.BackgroundColor == "#FF68C948")
+                        if (campingField.CampingPlace != null && campingField.CampingPlace.Id == reservation.CampingPlace.Id && campingField.BackgroundColor == ColorAvailable)
                         {
-                            campingField.BackgroundColor = "#C1272D";
+                            campingField.BackgroundColor = ColorReserved;
                         }
                     }
                 }
