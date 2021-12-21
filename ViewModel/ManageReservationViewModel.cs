@@ -290,12 +290,8 @@ namespace ViewModel
             this.ExecuteGoToDashBoard();
         }
 
-        private bool CanExecuteDeleteReservation()
-        {
-            //Is it possible to check this execution?
-            return true;
-        }
-        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation, CanExecuteDeleteReservation);
+ 
+        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation);
 
         #endregion
 
@@ -313,7 +309,7 @@ namespace ViewModel
 
         private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData)
         {
-            var reservations = this.GetReservationModel();
+            var reservations = this.GetReservations();
 
             foreach (Reservation reservation in reservations)
             {
@@ -326,7 +322,7 @@ namespace ViewModel
             return viewData;
         }
 
-        public virtual IEnumerable<Reservation> GetReservationModel()
+        public virtual IEnumerable<Reservation> GetReservations()
         {
             Reservation reservationModel = new Reservation();
             return reservationModel.Select();
