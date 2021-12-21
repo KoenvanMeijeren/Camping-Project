@@ -16,6 +16,18 @@ namespace ChatServer
 
         PacketReader _packetReader;
 
+
+/*        public Client(TcpClient client)
+        {
+            this.ClientSocket = client;
+            UID = Guid.NewGuid();
+            this._packetReader = new PacketReader(this.ClientSocket.GetStream());
+            this.IsSuperClient = false;
+
+            //deze code loopt door op een andere thread
+            Task.Run(() => Process());
+        }*/
+
         public Client(TcpClient client, bool isSuperClient)
         {
             this.ClientSocket = client;
@@ -34,15 +46,6 @@ namespace ChatServer
                 Console.WriteLine($"[{DateTime.Now}]: Client has connected");
             }
 
-        public Client(TcpClient client)
-        {
-            this.ClientSocket = client;
-            UID = Guid.NewGuid();
-            this._packetReader = new PacketReader(this.ClientSocket.GetStream());
-            this.IsSuperClient = false;
-
-            //deze code loopt door op een andere thread
-            Task.Run(() => Process());
         }
 
 
