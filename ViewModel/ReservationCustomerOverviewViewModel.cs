@@ -18,12 +18,17 @@ namespace ViewModel
 {
     public class ReservationCustomerOverviewViewModel : ObservableObject
     {
+        #region Fields
+
         private int _customerId;
         private readonly Reservation _reservationModel = new Reservation();
         
         private ObservableCollection<Reservation> _reservationsCollection;
         private Reservation _selectedReservation;
+        
         private ObservableCollection<ReservationCampingGuest> _campingGuestCollection;
+
+        #endregion
 
         #region Properties
         private string _infoId = "ID: ";
@@ -216,7 +221,7 @@ namespace ViewModel
         }
         #endregion
 
-        #region Delete reservation
+        #region Commands
         /// <summary>
         /// Check if user can delete the reservation
         /// </summary>
@@ -262,7 +267,10 @@ namespace ViewModel
             
             this.ReservationsCollection.Remove(this._selectedReservation);
             
-            this.SelectedReservation = this.ReservationsCollection[0];
+            if (this.ReservationsCollection.Any())
+            {
+                this.SelectedReservation = this.ReservationsCollection[0];
+            }
 
             MessageBox.Show($"Reservering geannuleerd. Het restitutiebedrag van €{restitutionValue},- wordt binnen vijf werkdagen op uw rekening gestort.", "Restitutie", MessageBoxButton.OK, MessageBoxImage.Information);
         }

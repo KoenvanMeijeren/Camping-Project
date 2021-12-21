@@ -9,6 +9,17 @@ namespace ModelTests
         [Test]
         public void TestCampingOwnerConstructorCorrect()
         {
+            Account account = new Account( "admin", "nimda", "1");
+            CampingOwner campingOwner = new CampingOwner(account, "testName", "last");
+            Assert.AreEqual(campingOwner.Id, -1);
+            Assert.AreEqual(campingOwner.Account.Id, -1);
+            Assert.AreEqual(campingOwner.FirstName, "testName");
+            Assert.AreEqual(campingOwner.LastName, "last");
+        }
+        
+        [Test]
+        public void TestCampingOwnerLongConstructorCorrect()
+        {
             Account account = new Account("13", "admin", "nimda", "1");
             CampingOwner campingOwner = new CampingOwner("1", account, "testName", "last");
             Assert.AreEqual(campingOwner.Id, 1);

@@ -129,15 +129,12 @@ namespace ViewModel
         private void SetOverview()
         {
             this._currentAccount = CurrentUser.Account;
+            this.ResetInput();
 
             if (this._currentAccount.Rights == AccountRights.Admin && CurrentUser.CampingOwner != null)
             {
                 this.Name = CurrentUser.CampingOwner.FirstName + " " + CurrentUser.CampingOwner.LastName;
                 this.Mail = CurrentUser.CampingOwner.Account.Email;
-                this.PhoneNumber = "";
-                this.Birthdate = "";
-                this.Street = "";
-                this.Address = "";
             }
             else if (CurrentUser.CampingCustomer != null)
             {
@@ -159,6 +156,16 @@ namespace ViewModel
         {
             this.SetOverview();
         }
+
+        private void ResetInput()
+        {
+            this.Name = string.Empty;
+            this.Mail = string.Empty;
+            this.PhoneNumber = string.Empty;
+            this.Birthdate = string.Empty;
+            this.Street = string.Empty;
+            this.Address = null;
+        }
         
         #endregion
 
@@ -169,13 +176,6 @@ namespace ViewModel
 
         private void ExecuteSignOut()
         {
-            this.Name = "";
-            this.Mail = "";
-            this.PhoneNumber = "";
-            this.Birthdate = "";
-            this.Street = "";
-            this.Address = "";
-
             CurrentUser.EmptyCurrentUser();
             SignOutEvent?.Invoke(this, EventArgs.Empty);
         }
