@@ -30,9 +30,9 @@ namespace Visualization
 
         private void CampingFieldClicked(object sender, MouseButtonEventArgs e)
         {
-            ManageCampingMapViewModel CurrentModel = ((ManageCampingMapViewModel)this.DataContext);
-            String SelectedImage = ((Image)sender).Name;
-            CurrentModel.SetSelectedCampingField(SelectedImage);
+            ManageCampingMapViewModel viewModel = (ManageCampingMapViewModel)this.DataContext;
+            string selectedImage = ((Image)sender).Name;
+            viewModel.SetSelectedCampingField(selectedImage);
         }
     }
 }
