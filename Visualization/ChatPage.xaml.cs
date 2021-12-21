@@ -30,7 +30,7 @@ namespace Visualization
             textblock.Padding = new System.Windows.Thickness(7);
             textblock.FontFamily = new FontFamily("Century Gothic");
 
-            if (e.messageSender.Equals(MessageSender.Reciever))
+            if (e.messageSender.Equals(MessageSender.Receiver))
             {
                 textblock.Background = (Brush)brushConverter.ConvertFrom("#f2f2f2");
                 textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;

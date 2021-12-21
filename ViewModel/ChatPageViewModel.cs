@@ -14,11 +14,13 @@ namespace ViewModel
     public enum MessageSender
     {
         Sender = 0,
-        Reciever = 1
+        Receiver = 1
     }
 
     public class ChatPageViewModel : ObservableObject
     {
+        public string ChatTextInput { get; set; }
+        
         // Close chat button
         public ICommand CloseChatButton => new RelayCommand(ExecuteCloseChat);
         public static event EventHandler FromChatToContactEvent;
@@ -27,28 +29,12 @@ namespace ViewModel
         public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute);
         public static event EventHandler<ChatEventArgs> SendChatEvent;
 
-        // Text input field propties
-        private string _chatTextInput;
-        public string ChatTextInput
-        {
-            get => this._chatTextInput;
-            set
-            {
-                if (value == this._chatTextInput)
-                {
-                    return;
-                }
-
-                this._chatTextInput = value;
-            }
-        }
-
         /// <summary>
-        /// Function that executes when "Verzenden" button has been pressed in Chat View.
+        /// Function that executes when "Send" button has been pressed in Chat View.
         /// </summary>
         private void SendChatButtonExecute()
         {
-            ExecuteSendChatEvent(ChatTextInput, MessageSender.Sender);
+            this.ExecuteSendChatEvent(this.ChatTextInput, MessageSender.Sender);
         }
 
         /// <summary>
@@ -56,7 +42,7 @@ namespace ViewModel
         /// </summary>
         private void ExecuteCloseChat()
         {
-            FromChatToContactEvent?.Invoke(this, null);
+            FromChatToContactEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>

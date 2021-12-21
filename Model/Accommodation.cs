@@ -4,6 +4,16 @@ using SystemCore;
 
 namespace Model
 {
+    public enum AccommodationTypes
+    {
+        Bungalow,
+        Camper,
+        Caravan,
+        Chalet,
+        Tent,
+        Unknown,
+    }
+    
     /// <inheritdoc/>
     public class Accommodation : ModelBase<Accommodation>
     {
@@ -15,6 +25,7 @@ namespace Model
         
         public string Prefix { get; private set; }
         public string Name { get; private set; }
+        public AccommodationTypes Type { get; private set; }
 
         public Accommodation(): base(TableName, ColumnId)
         {
@@ -32,6 +43,16 @@ namespace Model
             this.Id = success ? idNumeric : -1;
             this.Prefix = prefix;
             this.Name = name;
+            
+            this.Type = this.Name switch
+            {
+                "Bungalow" => AccommodationTypes.Bungalow,
+                "Camper" => AccommodationTypes.Camper,
+                "Caravan" => AccommodationTypes.Caravan,
+                "Chalet" => AccommodationTypes.Chalet,
+                "Tent" => AccommodationTypes.Tent,
+                _ => AccommodationTypes.Unknown,
+            };
         }
 
         /// <inheritdoc/>

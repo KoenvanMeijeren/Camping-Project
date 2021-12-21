@@ -21,8 +21,7 @@ namespace ViewModel
     {
         private Dictionary<int, CampingField> CampingFields { get; set; }
         public CampingField SelectedCampingField { get; set; }
-
-
+        
         #region CampingField Fields
 
         private CampingField
@@ -404,6 +403,22 @@ namespace ViewModel
         }
         #endregion
 
+        #region Graphics
+
+        private const string
+            ComponentsFolder = "/MapComponents/",
+            AddButtonImage = "CampingFieldImage-Add.png",
+            BungalowImage = "CampingFieldImage-Bungalow.png",
+            CamperImage = "CampingFieldImage-Camper.png",
+            CaravanImage = "CampingFieldImage-Caravan.png",
+            ChaletImage = "CampingFieldImage-Chalet.png",
+            TentImage = "CampingFieldImage-Tent.png",
+            UnknownImage = "CampingFieldImage-Unknown.png";
+
+        #endregion
+
+        #region View construction
+
         public ManageCampingMapViewModel()
         {
             this.FillCampingFieldColors();
@@ -460,12 +475,12 @@ namespace ViewModel
                 var campingPlace = emptyCampingPlace.SelectByPlaceNumber(campingField.LocationNumber);
                 if (campingPlace != null)
                 {
-                    campingField.ImageResource = this.GetCampingFieldImage(campingPlace.Type.Accommodation);
+                    campingField.ImageResource = ComponentsFolder + GetCampingFieldImage(campingPlace.Type.Accommodation);
                     campingField.CampingPlace = campingPlace;
                 } 
                 else
                 {
-                    campingField.ImageResource = "/MapComponents/CampingFieldImage-Add.png";
+                    campingField.ImageResource = ComponentsFolder + AddButtonImage;
                 }
             }
         }
@@ -477,132 +492,63 @@ namespace ViewModel
                 this.SelectedCampingField.BackgroundColor = "#FF68C948";
             }
 
-            switch (selectedImage)
+            this.SelectedCampingField = selectedImage switch
             {
-                case "CampingFieldImage1":
-                    this.SelectedCampingField = this.CampingField1;
-                    break;
-                case "CampingFieldImage2":
-                    this.SelectedCampingField = this.CampingField2;
-                    break;
-                case "CampingFieldImage3":
-                    this.SelectedCampingField = this.CampingField3;
-                    break;
-                case "CampingFieldImage4":
-                    this.SelectedCampingField = this.CampingField4;
-                    break;
-                case "CampingFieldImage5":
-                    this.SelectedCampingField = this.CampingField5;
-                    break;
-                case "CampingFieldImage6":
-                    this.SelectedCampingField = this.CampingField6;
-                    break;
-                case "CampingFieldImage7":
-                    this.SelectedCampingField = this.CampingField7;
-                    break;
-                case "CampingFieldImage8":
-                    this.SelectedCampingField = this.CampingField8;
-                    break;
-                case "CampingFieldImage9":
-                    this.SelectedCampingField = this.CampingField9;
-                    break;
-                case "CampingFieldImage10":
-                    this.SelectedCampingField = this.CampingField10;
-                    break;
-                case "CampingFieldImage11":
-                    this.SelectedCampingField = this.CampingField11;
-                    break;
-                case "CampingFieldImage12":
-                    this.SelectedCampingField = this.CampingField12;
-                    break;
-                case "CampingFieldImage13":
-                    this.SelectedCampingField = this.CampingField13;
-                    break;
-                case "CampingFieldImage14":
-                    this.SelectedCampingField = this.CampingField14;
-                    break;
-                case "CampingFieldImage15":
-                    this.SelectedCampingField = this.CampingField15;
-                    break;
-                case "CampingFieldImage16":
-                    this.SelectedCampingField = this.CampingField16;
-                    break;
-                case "CampingFieldImage17":
-                    this.SelectedCampingField = this.CampingField17;
-                    break;
-                case "CampingFieldImage18":
-                    this.SelectedCampingField = this.CampingField18;
-                    break;
-                case "CampingFieldImage19":
-                    this.SelectedCampingField = this.CampingField19;
-                    break;
-                case "CampingFieldImage20":
-                    this.SelectedCampingField = this.CampingField20;
-                    break;
-                case "CampingFieldImage21":
-                    this.SelectedCampingField = this.CampingField21;
-                    break;
-                case "CampingFieldImage22":
-                    this.SelectedCampingField = this.CampingField22;
-                    break;
-                case "CampingFieldImage23":
-                    this.SelectedCampingField = this.CampingField23;
-                    break;
-                case "CampingFieldImage24":
-                    this.SelectedCampingField = this.CampingField24;
-                    break;
-                case "CampingFieldImage25":
-                    this.SelectedCampingField = this.CampingField25;
-                    break;
-                case "CampingFieldImage26":
-                    this.SelectedCampingField = this.CampingField26;
-                    break;
-                case "CampingFieldImage27":
-                    this.SelectedCampingField = this.CampingField27;
-                    break;
-                case "CampingFieldImage28":
-                    this.SelectedCampingField = this.CampingField28;
-                    break;
-                case "CampingFieldImage29":
-                    this.SelectedCampingField = this.CampingField29;
-                    break;
-                case "CampingFieldImage30":
-                    this.SelectedCampingField = this.CampingField30;
-                    break;
-                case "CampingFieldImage31":
-                    this.SelectedCampingField = this.CampingField31;
-                    break;
-                case "CampingFieldImage32":
-                    this.SelectedCampingField = this.CampingField32;
-                    break;
-                case "CampingFieldImage33":
-                    this.SelectedCampingField = this.CampingField33;
-                    break;
-                case "CampingFieldImage34":
-                    this.SelectedCampingField = this.CampingField34;
-                    break;
-            }
+                "CampingFieldImage1" => this.CampingField1,
+                "CampingFieldImage2" => this.CampingField2,
+                "CampingFieldImage3" => this.CampingField3,
+                "CampingFieldImage4" => this.CampingField4,
+                "CampingFieldImage5" => this.CampingField5,
+                "CampingFieldImage6" => this.CampingField6,
+                "CampingFieldImage7" => this.CampingField7,
+                "CampingFieldImage8" => this.CampingField8,
+                "CampingFieldImage9" => this.CampingField9,
+                "CampingFieldImage10" => this.CampingField10,
+                "CampingFieldImage11" => this.CampingField11,
+                "CampingFieldImage12" => this.CampingField12,
+                "CampingFieldImage13" => this.CampingField13,
+                "CampingFieldImage14" => this.CampingField14,
+                "CampingFieldImage15" => this.CampingField15,
+                "CampingFieldImage16" => this.CampingField16,
+                "CampingFieldImage17" => this.CampingField17,
+                "CampingFieldImage18" => this.CampingField18,
+                "CampingFieldImage19" => this.CampingField19,
+                "CampingFieldImage20" => this.CampingField20,
+                "CampingFieldImage21" => this.CampingField21,
+                "CampingFieldImage22" => this.CampingField22,
+                "CampingFieldImage23" => this.CampingField23,
+                "CampingFieldImage24" => this.CampingField24,
+                "CampingFieldImage25" => this.CampingField25,
+                "CampingFieldImage26" => this.CampingField26,
+                "CampingFieldImage27" => this.CampingField27,
+                "CampingFieldImage28" => this.CampingField28,
+                "CampingFieldImage29" => this.CampingField29,
+                "CampingFieldImage30" => this.CampingField30,
+                "CampingFieldImage31" => this.CampingField31,
+                "CampingFieldImage32" => this.CampingField32,
+                "CampingFieldImage33" => this.CampingField33,
+                "CampingFieldImage34" => this.CampingField34,
+                _ => this.SelectedCampingField
+            };
 
             this.SelectedCampingField.BackgroundColor = "#C8FFB3";
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
-        public string GetCampingFieldImage(Accommodation accommodation)
+        private static string GetCampingFieldImage(Accommodation accommodation)
         {
-            switch (accommodation.Name)
+            return accommodation.Type switch
             {
-                case "Bungalow":
-                    return "/MapComponents/CampingFieldImage-Bungalow.png";
-                case "Camper":
-                    return "/MapComponents/CampingFieldImage-Camper.png";
-                case "Caravan":
-                    return "/MapComponents/CampingFieldImage-Caravan.png";
-                case "Chalet":
-                    return "/MapComponents/CampingFieldImage-Chalet.png";
-                case "Tent":
-                    return "/MapComponents/CampingFieldImage-Tent.png";
-            }
-            return "/MapComponents/CampingFieldImage-Unknown.png";
+                AccommodationTypes.Bungalow => BungalowImage,
+                AccommodationTypes.Camper => CamperImage,
+                AccommodationTypes.Caravan => CaravanImage,
+                AccommodationTypes.Chalet => ChaletImage,
+                AccommodationTypes.Tent => TentImage,
+                AccommodationTypes.Unknown => UnknownImage,
+                _ => UnknownImage
+            };
         }
+
+        #endregion
     }
 }
