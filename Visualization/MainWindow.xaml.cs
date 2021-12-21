@@ -12,8 +12,8 @@ namespace Visualization
 
     public partial class MainWindow : Window
     {
-        private readonly ReservationCampingPlaceForm _reservationCampingPlaceForm;
         private readonly ReservationCollectionPage _reservationCollectionFrame;
+        private readonly ReservationCampingMapPage _reservationCampingMapPage;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
         private readonly ReservationCampingGuestPage _reservationCampingGuestPage;
@@ -35,8 +35,8 @@ namespace Visualization
         {
             this.InitializeComponent();
             
-            this._reservationCampingPlaceForm = new ReservationCampingPlaceForm();
             this._reservationCustomerForm = new ReservationCustomerForm();
+            this._reservationCampingMapPage = new ReservationCampingMapPage();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
             this._reservationCampingGuestPage = new ReservationCampingGuestPage();
@@ -56,7 +56,7 @@ namespace Visualization
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestsFormEvent;
-            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveDurationEvent;
+            ReservationCampingMapViewModel.ReserveEvent += this.OnReserveDurationEvent;
             SignUpViewModel.SignUpEvent += this.OnSignUpEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             SignInViewModel.SignInEvent += this.OnSignInEvent;
@@ -72,7 +72,7 @@ namespace Visualization
             // Sets the sign up page as the active menu and hides other menu items.
             this.SignInMenuButton.IsChecked = true;
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
-            this.ReserveMenuButton.Visibility = Visibility.Collapsed;
+            this.ReserveMapMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
             this.ContactMenuButton.Visibility = Visibility.Collapsed;
             this.ManageButton.Visibility = Visibility.Collapsed;
@@ -107,7 +107,7 @@ namespace Visualization
             this.OverviewMenuButton_Checked(sender, null);
 
             this.OverviewMenuButton.Visibility = Visibility.Visible;
-            this.ReserveMenuButton.Visibility = Visibility.Visible;
+            this.ReserveMapMenuButton.Visibility = Visibility.Visible;
             this.AccountMenuButton.Visibility = Visibility.Visible;
             this.ContactMenuButton.Visibility = Visibility.Visible;
             this.SignInMenuButton.Visibility = Visibility.Collapsed;
@@ -133,7 +133,7 @@ namespace Visualization
             this.MainFrame.Content = this._signInPage.Content;
 
             this.OverviewMenuButton.Visibility = Visibility.Collapsed;
-            this.ReserveMenuButton.Visibility = Visibility.Collapsed;
+            this.ReserveMapMenuButton.Visibility = Visibility.Collapsed;
             this.AccountMenuButton.Visibility = Visibility.Collapsed;
             this.ContactMenuButton.Visibility = Visibility.Collapsed;
             this.ManageButton.Visibility = Visibility.Collapsed;
@@ -165,9 +165,9 @@ namespace Visualization
             this.MainFrame.Content = this._reservationCustomerOverviewPage;
         }
 
-        private void ReserveMenuButton_Checked(object sender, RoutedEventArgs e)
+        private void ReserveMapMenuButton_Checked(object sender, RoutedEventArgs e)
         {
-            this.MainFrame.Content = this._reservationCampingPlaceForm;
+            this.MainFrame.Content = this._reservationCampingMapPage;
         }
 
         private void AccountMenuButton_Checked(object sender, RoutedEventArgs e)
