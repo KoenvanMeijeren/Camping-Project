@@ -18,10 +18,24 @@ namespace ViewModel
     public class ContactViewModel : ObservableObject
     {
         #region Fields
-        private readonly string _facebookLink, _twitterLink, _instagramLink;
+        public string FacebookLink, TwitterLink, InstagramLink;
+        private Camping _campingModel = new();
+
         #endregion
 
         #region Properties
+
+        private Camping _currentCamping;
+        public Camping CurrentCamping
+        {
+            get => _currentCamping;
+            set
+            {
+                this._currentCamping = value;
+                this.FillContactViewModel(value);
+            }
+        }
+
 
         private string _contactPageAddress = "Adres: ";
         public string ContactPageAddress
@@ -60,27 +74,40 @@ namespace ViewModel
 
         #region Social media buttons
         // Defined this way so it is possible to add parameters to function in a RelayCommand
-        public ICommand FacebookButton => new RelayCommand<object>((x) => ExecuteLink(this._facebookLink));
-        public ICommand InstagramButton => new RelayCommand<object>((x) => ExecuteLink(this._instagramLink));
-        public ICommand TwitterButton => new RelayCommand<object>((x) => ExecuteLink(this._twitterLink));
+        public ICommand FacebookButton => new RelayCommand<object>((x) => ExecuteLink(this.FacebookLink));
+        public ICommand TwitterButton => new RelayCommand<object>((x) => ExecuteLink(this.TwitterLink));
+        public ICommand InstagramButton => new RelayCommand<object>((x) => ExecuteLink(this.InstagramLink));
 
         public static event EventHandler<LinkEventArgs> LinkEvent;
         #endregion
 
         public ContactViewModel()
         {
-            Camping campingModel = new Camping();
-            Camping camping = campingModel.SelectLast();
+            this._currentCamping = this.GetCamping();
+        }
 
+        public void FillContactViewModel(Camping camping)
+        {
             this.ContactPageAddress = $"{camping.Address.Street}, {camping.Address.Place}";
             this.ContactPostalCode = camping.Address.PostalCode;
             this.ContactPagePhoneNumber = camping.PhoneNumber;
             this.ContactPageEmailAddress = camping.Email;
-            this._facebookLink = camping.Facebook;
-            this._twitterLink = camping.Twitter;
-            this._instagramLink = camping.Instagram;
+            this.FacebookLink = camping.Facebook;
+            this.TwitterLink = camping.Twitter;
+            this.InstagramLink = camping.Instagram;
+
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
-        
+
+        /// <summary>
+        /// Returns the camping object.
+        /// </summary>
+        /// <returns>Camping object, latest camping inserted in database (should only be one)</returns>
+        public virtual Camping GetCamping()
+        {
+            return this._campingModel.SelectLast();
+        }
+
         #region Chat
         /// <summary>
         /// Event that fires the go to chat
