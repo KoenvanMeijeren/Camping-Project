@@ -86,7 +86,7 @@ namespace ViewModel
         {
             this.LocationNumber = locationNumber;
             this.BackgroundColor = backgroundColor;
-            this.ImageResource = imageResource;
+            this.ImageResource = ComponentsFolder + imageResource;
         }
 
         public void Update(CampingPlace campingPlace)
