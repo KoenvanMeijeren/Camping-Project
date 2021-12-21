@@ -41,4 +41,10 @@
     <Resource Include="MapComponents\CampingPlattegrond.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Theme\DropdownButtonTheme.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>

@@ -311,7 +311,7 @@ namespace ViewModel
             ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += ReservationCampingGuestViewModelOnReservationGoBackEvent;
             SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
-            AccountViewModel.SignOutEvent += onSignOutEvent;
+            AccountViewModel.SignOutEvent += OnSignOutEvent;
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += OnReservationConfirmedEvent;
         }
 
@@ -332,7 +332,7 @@ namespace ViewModel
             this.ResetInput();
         }
 
-        private void onSignOutEvent(object sender, EventArgs e)
+        private void OnSignOutEvent(object sender, EventArgs e)
         {
             this.ResetInput();
         }
