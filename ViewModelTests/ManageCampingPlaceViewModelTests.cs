@@ -9,14 +9,14 @@ namespace ViewModelTests
 {
     public class ManageCampingPlaceViewModelTests
     {
-        private Mock<ManageCampingPlaceViewModel> _manageCampingPlaceViewModel;
+        private Mock<ManageCampingMapViewModel> _manageCampingPlaceViewModel;
         private List<CampingPlace> _campingPlaces;
         private List<CampingPlaceType> _campingPlaceTypes;
 
         [SetUp]
         public void Setup()
         {
-            this._manageCampingPlaceViewModel = new Mock<ManageCampingPlaceViewModel>();
+            this._manageCampingPlaceViewModel = new Mock<ManageCampingMapViewModel>();
             this._campingPlaces = new List<CampingPlace>
             {
                 new CampingPlace("3", "1", "80", "0", new CampingPlaceType("5", "40", new Accommodation("CA", "Caravan"))),
@@ -44,12 +44,13 @@ namespace ViewModelTests
         [Test]
         public void TestViewConstruction()
         {
-            Assert.AreEqual(this._campingPlaces.Count, this._manageCampingPlaceViewModel.Object.CampingPlaces.Count);
+            Assert.AreEqual(34, this._manageCampingPlaceViewModel.Object.CampingFields.Count);
             Assert.AreEqual(this._campingPlaceTypes.Count, this._manageCampingPlaceViewModel.Object.CampingPlaceTypes.Count);
             
-            Assert.AreEqual("Caravan", this._manageCampingPlaceViewModel.Object.CampingPlaces.First().Type.Accommodation.Name);
+            this._manageCampingPlaceViewModel.Object.CampingFields[0] = new CampingMapItemViewModel(this._campingPlaces.First());
+            Assert.AreEqual("Caravan", this._manageCampingPlaceViewModel.Object.CampingFields[0].CampingPlace.Type.Accommodation.Name);
             
-            Assert.IsNull(this._manageCampingPlaceViewModel.Object.SelectedCampingPlace);
+            Assert.IsNull(this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel);
             Assert.IsNull(this._manageCampingPlaceViewModel.Object.SelectedCampingPlaceType);
             Assert.IsNull(this._manageCampingPlaceViewModel.Object.Number);
             Assert.IsNull(this._manageCampingPlaceViewModel.Object.Surface);
@@ -63,7 +64,7 @@ namespace ViewModelTests
         [Test]
         public void TestSelectedCampingPlace()
         {
-            this._manageCampingPlaceViewModel.Object.SelectedCampingPlace = this._campingPlaces.First();
+            this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel = new CampingMapItemViewModel(this._campingPlaces.First());
             
             Assert.AreEqual("Campingplaats CA-1 bewerken", this._manageCampingPlaceViewModel.Object.EditTitle);
             Assert.AreEqual("1", this._manageCampingPlaceViewModel.Object.Number);
@@ -77,8 +78,8 @@ namespace ViewModelTests
         [Test]
         public void TestDeselectedCampingPlace()
         {
-            this._manageCampingPlaceViewModel.Object.SelectedCampingPlace = this._campingPlaces.First();;
-            this._manageCampingPlaceViewModel.Object.SelectedCampingPlace = null;
+            this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel = new CampingMapItemViewModel(this._campingPlaces.First());
+            this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel = null;
             
             Assert.AreEqual("Campingplaats toevoegen", this._manageCampingPlaceViewModel.Object.EditTitle);
             Assert.IsEmpty(this._manageCampingPlaceViewModel.Object.Number);
@@ -92,7 +93,7 @@ namespace ViewModelTests
         [Test]
         public void TestExecuteCancelAction()
         {
-            this._manageCampingPlaceViewModel.Object.SelectedCampingPlace = this._campingPlaces.First();;
+            this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel = new CampingMapItemViewModel(this._campingPlaces.First());
             this._manageCampingPlaceViewModel.Object.CancelEditAction.Execute(null);
             
             Assert.AreEqual("Campingplaats toevoegen", this._manageCampingPlaceViewModel.Object.EditTitle);

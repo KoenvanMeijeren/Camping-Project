@@ -74,6 +74,13 @@ namespace ViewModel
             UnknownImage = "CampingFieldImage-Unknown.png";
 
         #endregion
+        
+        public CampingMapItemViewModel(CampingPlace campingPlace)
+        {
+            this.CampingPlace = campingPlace;
+            this.LocationNumber = campingPlace.Number;
+            this.BackgroundColor = UnselectedColor;
+        }
 
         public CampingMapItemViewModel(int locationNumber, string backgroundColor, string imageResource)
         {

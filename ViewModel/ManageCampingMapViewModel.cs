@@ -24,7 +24,8 @@ namespace ViewModel
 
         #region Fields
 
-        private Dictionary<int, CampingMapItemViewModel> _campingFields;
+        public Dictionary<int, CampingMapItemViewModel> CampingFields { get; private set; }
+        
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
         private readonly CampingPlaceType _campingPlaceTypeModel = new CampingPlaceType();
         
@@ -87,6 +88,8 @@ namespace ViewModel
 
                 this._selectedCampingMapItemViewModel = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+                this.FillFieldsForSelectedCampingField(value);
             }
         }
         
@@ -644,6 +647,7 @@ namespace ViewModel
             
             this.FillFields(campingMapItemViewModel.CampingPlace);
             this.Number = campingMapItemViewModel.LocationNumber.ToString(CultureInfo.InvariantCulture);
+            this.SelectedCampingMapItemViewModel.BackgroundColor = CampingMapItemViewModel.SelectedColor;
         }
 
         private void ResetInput()
@@ -658,7 +662,7 @@ namespace ViewModel
 
         private void InitializeCampingFields()
         {
-            this._campingFields = new Dictionary<int, CampingMapItemViewModel>
+            this.CampingFields = new Dictionary<int, CampingMapItemViewModel>
             {
                 {1, this.CampingField1 = new CampingMapItemViewModel(1, CampingMapItemViewModel.UnselectedColor, null)},
                 {2, this.CampingField2 = new CampingMapItemViewModel(2, CampingMapItemViewModel.UnselectedColor, null)},
@@ -699,7 +703,7 @@ namespace ViewModel
 
         private void SetCampingPlacesToFields()
         {
-            foreach (CampingMapItemViewModel campingField in this._campingFields.Values)
+            foreach (CampingMapItemViewModel campingField in this.CampingFields.Values)
             {
                 campingField.CampingPlace = this._campingPlaceModel.SelectByPlaceNumber(campingField.LocationNumber);
             }
@@ -750,14 +754,6 @@ namespace ViewModel
                 "CampingFieldImage34" => this.CampingField34,
                 _ => this.SelectedCampingMapItemViewModel
             };
-
-            if (this.SelectedCampingMapItemViewModel == null)
-            {
-                return;
-            }
-
-            this.SelectedCampingMapItemViewModel.BackgroundColor = CampingMapItemViewModel.SelectedColor;
-            this.FillFieldsForSelectedCampingField(this.SelectedCampingMapItemViewModel);
         }
 
         #endregion
@@ -788,7 +784,7 @@ namespace ViewModel
                     this.SelectedCampingPlaceType);
                 campingPlace.Insert();
                 
-                this._campingFields[campingPlace.Number].CampingPlace = campingPlace;
+                this.CampingFields[campingPlace.Number].CampingPlace = campingPlace;
             }
             else
             {
