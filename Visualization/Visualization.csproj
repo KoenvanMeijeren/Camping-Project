@@ -64,4 +64,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Theme\DropdownButtonTheme.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+  </ItemGroup>
+
 </Project>
