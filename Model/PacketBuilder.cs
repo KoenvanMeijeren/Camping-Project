@@ -15,11 +15,6 @@ namespace Visualization
             this._ms = new MemoryStream();
         }
 
-        public void WriteClientTypeToStream(byte data)
-        {
-            this._ms.WriteByte(data);
-        }
-
         public void WriteTaskTypeToMemoryStream(byte data)
         {
             this._ms.WriteByte(data);

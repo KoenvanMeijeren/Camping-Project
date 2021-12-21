@@ -27,8 +27,6 @@ namespace Visualization
             }
         }
 
-        private Client _currentUser;
-
         private ObservableCollection<string> _messages;
         public ObservableCollection<string> Messages
         {
@@ -104,28 +102,23 @@ namespace Visualization
                 isSuperUser = true;
             }
 
-            this._currentUser = new Client(isSuperUser)//set property superuser
+            var user = new Client(isSuperUser)
             {
                 UID = this._server._packetReader.ReadIncomingMessage()
             };
 
 
             //check if client isn't in userslist
-            if (!this.Users.Any(x => x.UID == this._currentUser.UID))
+            if (!this.Users.Any(x => x.UID == user.UID))
             {
                 //Adding user to WPF control from non-mainthread (UI thread)
-                Application.Current.Dispatcher.Invoke(() => this._users.Add(this._currentUser));
+                Application.Current.Dispatcher.Invoke(() => this._users.Add(user));
             }
         }
 
         private void ExecuteConnectingToServer()
         {
             this._server.ConnectToServer();
-        }
-
-        private bool CanExecuteConnectingToServer()
-        {
-            return this._currentUser != null;
         }
 
         public ICommand ConnectToServerICommand => new RelayCommand(ExecuteConnectingToServer, CanExecuteConnectingToServer);

@@ -24,8 +24,19 @@ namespace ChatServer
             //Us always listening for clients
             while (true)
             {
-                var superClient = new Client(_listener.AcceptTcpClient());               
-                _users.Add(superClient);
+                int index = _users.FindIndex(user => user.IsSuperClient == true);
+                if (index >= 0)//If there is no campingowner yet
+                {
+                    var client = new Client(_listener.AcceptTcpClient(), false);
+                    _users.Add(client);
+                }
+                else
+                {
+                    var superClient = new Client(_listener.AcceptTcpClient(), true);
+                    Program.CampingOwner = superClient;
+                    _users.Add(superClient);
+                }
+
             }
         }
 

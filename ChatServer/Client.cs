@@ -10,35 +10,29 @@ namespace ChatServer
     class Client
     {
         public string Username { get; set; }
-        public bool _isSuperClient;//campingowner
-        public bool IsSuperClient
-        {
-            get => this._isSuperClient;
-            private set
-            {
-                if (Equals(value, this._isSuperClient))
-                {
-                    return;
-                }
-
-                if (IsSuperClient)
-                {
-                    this.Username = "Campingeigenaar";
-                    Console.WriteLine($"[{DateTime.Now}]: SUPERClient has connected");
-                }
-                else
-                {
-                    this.Username = "Klant";
-                    Console.WriteLine($"[{DateTime.Now}]: Client has connected");
-                }
-
-                this._isSuperClient = value;
-            }
-        }
+        public bool IsSuperClient { get; private set; }//campingowner
         public Guid UID { get; set; }//global unique identifier => for identifying a client
         public TcpClient ClientSocket { get; set; }
 
         PacketReader _packetReader;
+
+        public Client(TcpClient client, bool isSuperClient)
+        {
+            this.ClientSocket = client;
+            UID = Guid.NewGuid();
+            this._packetReader = new PacketReader(this.ClientSocket.GetStream());
+            this.IsSuperClient = isSuperClient;
+
+            if (IsSuperClient)
+            {
+                this.Username = "Campingeigenaar";
+                Console.WriteLine($"[{DateTime.Now}]: SUPERClient has connected");
+            }
+            else
+            {
+                this.Username = "Klant";
+                Console.WriteLine($"[{DateTime.Now}]: Client has connected");
+            }
 
         public Client(TcpClient client)
         {

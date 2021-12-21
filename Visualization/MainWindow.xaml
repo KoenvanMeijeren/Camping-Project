@@ -24,8 +24,8 @@
 
                 <RadioButton x:Name="SignInMenuButton" Content="Aanmelden" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="SignInMenuButton_Checked"/>
                 <RadioButton x:Name="SignUpMenuButton" Content="Registreren" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="SignUpMenuButton_Checked"/>
-                <RadioButton x:Name="Dataconnection" Content="ConnectionTest" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Style="{StaticResource MenuButtonTheme}" Checked="DataConnection_Checked"/>
             </StackPanel>
+            <Button x:Name="Dataconnection" Content="ConnectionTest" Height="50" FontFamily="Century Gothic" FontSize="16" FontWeight="bold" Click="Dataconnection_Click"/>
         </Grid>
         <Frame x:Name="MainFrame" Margin="180,0,0,0" MinHeight="634.04" MaxHeight="634.04" MinWidth="820" MaxWidth="820" HorizontalAlignment="Center" VerticalAlignment="Center" NavigationUIVisibility="Hidden"/>
     </Grid>

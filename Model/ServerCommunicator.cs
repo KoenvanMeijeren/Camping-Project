@@ -4,8 +4,6 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using ViewModel;
-
 
 namespace Visualization
 {
@@ -30,8 +28,6 @@ namespace Visualization
             {
                 this._client.Connect(ServerCommunicator.IpAdress, ServerCommunicator.port);
                 this._packetReader = new PacketReader(this._client.GetStream());
-
-                //SendTypeOfClientToServer(clientType);
 
                 ReadPackets();
             }
@@ -62,13 +58,6 @@ namespace Visualization
                     }
                 }
             });
-        }
-
-        private void SendTypeOfClientToServer(int clientType)
-        {
-            Packetbuilder messagePacket = new Packetbuilder();
-            messagePacket.WriteClientTypeToStream((byte)clientType);
-            this._client.Client.Send(messagePacket.GetPacketBytes());
         }
 
 
