@@ -33,8 +33,9 @@ namespace ViewModel.EventArguments
                 return;
             }
 
+            int index = models.IndexOf(this.Model);
             models.Remove(this.Model);
-            models.Add(this.Model);
+            models.Insert(index, this.Model);
         }
     }
 }

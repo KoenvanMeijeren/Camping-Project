@@ -178,7 +178,7 @@ namespace Visualization
         }
         #endregion
 
-        private void OnReserveEvent(object sender, ReservationEventArgs args)
+        private void OnReserveEvent(object sender, EventArgs args)
         {
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
@@ -262,7 +262,7 @@ namespace Visualization
             this.MainFrame.Content = this._manageReservationPage.Content;
         }
 
-        private void OnBackToDashboardEvent(object sender, ReservationEventArgs args)
+        private void OnBackToDashboardEvent(object sender, EventArgs args)
         {
             this.OverviewMenuButton_Checked(sender, null);
         }
