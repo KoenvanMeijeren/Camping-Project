@@ -124,11 +124,9 @@ namespace Model
             dictionary.TryGetValue(ColumnOwnerStatus, out string ownerStatus);
             dictionary.TryGetValue(ColumnCustomerStatus, out string customerStatus);
 
-            dictionary.TryGetValue(Account.ColumnId, out string ownerAccountId);
-            dictionary.TryGetValue(Account.ColumnEmail, out string ownerEmail);
-            dictionary.TryGetValue(Account.ColumnPassword, out string ownerPassword);
-            dictionary.TryGetValue(Account.ColumnRights, out string ownerRights);
-            Account ownerAccount = new Account(ownerAccountId, ownerEmail, ownerPassword, ownerRights);
+            // Fetch owner account
+            CampingOwner campingOwnerModel = new();
+            CampingOwner campingOwner = campingOwnerModel.SelectLast();
 
             dictionary.TryGetValue(Account.ColumnId, out string customerAccountId);
             dictionary.TryGetValue(Account.ColumnEmail, out string customerEmail);
@@ -136,7 +134,7 @@ namespace Model
             dictionary.TryGetValue(Account.ColumnRights, out string customerRights);
             Account customerAccount = new Account(customerAccountId, customerEmail, customerPassword, customerRights);
 
-            return new Chat(id, ownerAccount, customerAccount, messages, DateTimeParser.TryParse(lastMessageSeenOwner), DateTimeParser.TryParse(lastMessageSeenCustomer), (ChatStatus)Int32.Parse(ownerStatus), (ChatStatus)Int32.Parse(customerStatus));
+            return new Chat(id, campingOwner.Account, customerAccount, messages, DateTimeParser.TryParse(lastMessageSeenOwner), DateTimeParser.TryParse(lastMessageSeenCustomer), (ChatStatus)Int32.Parse(ownerStatus), (ChatStatus)Int32.Parse(customerStatus));
         }
 
         /// <inheritdoc/>
@@ -165,8 +163,7 @@ namespace Model
         protected override string BaseSelectQuery()
         {
             string query = $"SELECT * FROM {TableName} CH ";
-            query += $" LEFT JOIN {Account.TableName} AC on CH.{Chat.ColumnOwnerAccount} = AC.{Account.ColumnId}";
-            query += $" LEFT JOIN {Account.TableName} AC2 on CH.{Chat.ColumnCustomerAccount} = AC2.{Account.ColumnId}";
+            query += $" LEFT JOIN {Account.TableName} AC on CH.{Chat.ColumnCustomerAccount} = AC.{Account.ColumnId}";
 
             return query;
         }
