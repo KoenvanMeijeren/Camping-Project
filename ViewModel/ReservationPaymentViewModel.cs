@@ -28,8 +28,6 @@ namespace ViewModel
         private Reservation _reservation;
         private CampingCustomer _campingCustomer;
         private ObservableCollection<CampingGuest> _campingGuests;
-        private Timer paymentTimer;
-        private string paymentResponseLink;
 
         public Reservation Reservation
         {
@@ -87,37 +85,45 @@ namespace ViewModel
 
         private async Task CreateReservationPaymentRequest()
         {
+            //creates payment request and opens paymentlink
             IPaymentClient paymentClient = new PaymentClient("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
 
             PaymentRequest paymentRequest = new PaymentRequest()
             {
-                Amount = new Amount(Currency.EUR, 1),
-                Description = "Test payment of the example project",
-                RedirectUrl = "http://google.com",
-                Method = Mollie.Api.Models.Payment.PaymentMethod.Ideal // instead of "Ideal"
-
+                Amount = new Amount(Currency.EUR, (int)Reservation.CampingPlace.TotalPrice),
+                Description = Reservation.CampingPlace.Type.Accommodation.Name,
+                RedirectUrl = "https://www.ideal.nl/",
+                
+                Method = PaymentMethod.Ideal // instead of "Ideal"
             };
-
-            PaymentLinkClient client = new PaymentLinkClient("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
             PaymentResponse paymentResponse = await paymentClient.CreatePaymentAsync(paymentRequest);
 
             Process.Start(new ProcessStartInfo(paymentResponse.Links.Checkout.Href)
             {
                 UseShellExecute = true
             });
+
         }
 
-        public void ExecuteCreateReservationPaymentTest()
+        public async void ExecuteCreateReservationPaymentTest()
         {
-            CreateReservationPaymentRequest().GetAwaiter().GetResult();
-            //ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(Reservation));
-        }
+            // run a method in another thread
+            await CreateReservationPaymentRequest();
 
-        /*private bool CanExecuteCreateReservationPayment()
-        {
-            //return if payment is done.
-            return true;
-        }*/
+            //insert Reservation and campingGuests
+            this.Reservation.Insert();
+            var lastReservation = this.Reservation.SelectLast();
+            CampingGuest campingGuest = new CampingGuest();
+
+            foreach (var guest in this.CampingGuests)
+            {
+                guest.Insert();
+                var lastGuest = campingGuest.SelectLast();
+                (new ReservationCampingGuest(lastReservation, lastGuest)).Insert();
+            }
+
+            ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(Reservation));
+        }
 
         private void ExecuteCustomerPaymenGoBackReservation()
         {

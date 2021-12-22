@@ -302,18 +302,7 @@ namespace ViewModel
         /// </summary>
         private void ExecuteCustomerGuestReservation()
         {
-            //this.Reservation.Insert();
-            var lastReservation = this.Reservation.SelectLast();
-            CampingGuest campingGuest = new CampingGuest();
-
-            foreach (var guest in this.CampingGuests)
-            {
-                /*guest.Insert();
-                var lastGuest = campingGuest.SelectLast();
-                (new ReservationCampingGuest(lastReservation, lastGuest)).Insert();*/
-            }
-
-            ReservationGuestsConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(lastReservation,CampingGuests));
+            ReservationGuestsConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(Reservation,CampingGuests));
             CampingGuests.Clear();
 
             this.ResetInput();
