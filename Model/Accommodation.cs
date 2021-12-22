@@ -72,6 +72,20 @@ namespace Model
             return false;
         }
         
+        public bool IsPrefixUnique(string prefix)
+        {
+            if (string.IsNullOrEmpty(prefix))
+            {
+                return false;
+            }
+            
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE BT.{ColumnPrefix} = @{ColumnPrefix}");
+            query.AddParameter(ColumnPrefix, prefix);
+            var results = query.Select();
+
+            return results == null || !results.Any();
+        }
+        
         public bool HasCampingPlaceTypes()
         {
             return this.HasCampingPlaceTypes(this);
@@ -92,6 +106,9 @@ namespace Model
         
         public bool Update(string prefix, string name)
         {
+            this.Prefix = prefix;
+            this.Name = name;
+            
             return base.Update(Accommodation.ToDictionary(prefix, name));
         }
 
