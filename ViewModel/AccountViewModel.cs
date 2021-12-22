@@ -15,102 +15,24 @@ namespace ViewModel
     public class AccountViewModel : ObservableObject
     {
         #region Fields
-        
-        private string _name , _birthdate, _street, _address, _mail, _phoneNumber;
+
         private Account _currentAccount;
 
         #endregion
         
         #region Properties
-        public string Name
-        {
-            get => this._name;
-            set
-            {
-                if (value == this._name)
-                {
-                    return;
-                }
+        public string Name { get; private set; }
 
-                this._name = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
+        public string Birthdate { get; private set; }
 
-        public string Birthdate
-        {
-            get => this._birthdate;
-            set
-            {
-                if (value == this._birthdate)
-                {
-                    return;
-                }
+        public string Street { get; private set; }
 
-                this._birthdate = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
+        public string Address { get; private set; }
 
-        public string Street
-        {
-            get => this._street;
-            set
-            {
-                if (value == this._street)
-                {
-                    return;
-                }
+        public string Mail { get; private set; }
 
-                this._street = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
+        public string PhoneNumber { get; private set; }
 
-        public string Address
-        {
-            get => this._address;
-            set
-            {
-                if (value == this._address)
-                {
-                    return;
-                }
-
-                this._address = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public string Mail
-        {
-            get => this._mail;
-            set
-            {
-                if (value == this._mail)
-                {
-                    return;
-                }
-
-                this._mail = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
-        public string PhoneNumber
-        {
-            get => this._phoneNumber;
-            set
-            {
-                if (value == this._phoneNumber)
-                {
-                    return;
-                }
-
-                this._phoneNumber = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
         #endregion
 
         #region Events
@@ -145,6 +67,8 @@ namespace ViewModel
                 this.Street = CurrentUser.CampingCustomer.Address.Street;
                 this.Address = CurrentUser.CampingCustomer.Address.PostalCode + " " + CurrentUser.CampingCustomer.Address.Place;
             }
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         private void OnCurrentUserSetEvent(object sender, EventArgs e)
@@ -165,6 +89,8 @@ namespace ViewModel
             this.Birthdate = string.Empty;
             this.Street = string.Empty;
             this.Address = null;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
         
         #endregion
