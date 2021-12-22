@@ -245,21 +245,25 @@ namespace ViewModel
                 return;
             }
 
-            this.EditTitle = $"Campingplaatstype {campingPlaceType} bewerken";
+            this._editTitle = $"Campingplaatstype {campingPlaceType} bewerken";
             
-            this.SelectedAccommodation = campingPlaceType.Accommodation;
-            this.GuestLimit = campingPlaceType.GuestLimit.ToString(CultureInfo.InvariantCulture);
-            this.StandardNightPrice = campingPlaceType.StandardNightPrice.ToString(CultureInfo.InvariantCulture);
+            this._selectedAccommodation = campingPlaceType.Accommodation;
+            this._guestLimit = campingPlaceType.GuestLimit.ToString(CultureInfo.InvariantCulture);
+            this._standardNightPrice = campingPlaceType.StandardNightPrice.ToString(CultureInfo.InvariantCulture);
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         private void ResetInput()
         {
-            this.EditTitle = "Campingplaatstype toevoegen";
-            this.SelectedAccommodation = null;
-            this.SelectedCampingPlaceType = null;
-            this.GuestLimit = string.Empty;
-            this.StandardNightPrice = string.Empty;
-            this.CampingPlaceTypeError = string.Empty;
+            this._editTitle = "Campingplaatstype toevoegen";
+            this._selectedAccommodation = null;
+            this._selectedCampingPlaceType = null;
+            this._guestLimit = string.Empty;
+            this._standardNightPrice = string.Empty;
+            this._campingPlaceTypeError = string.Empty;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion
