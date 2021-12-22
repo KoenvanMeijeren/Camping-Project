@@ -54,7 +54,7 @@ namespace ViewModelTests
             Assert.AreEqual("Accommodatie Caravan bewerken", this._manageAccommodationViewModel.Object.EditTitle);
             Assert.AreEqual("CA", this._manageAccommodationViewModel.Object.Prefix);
             Assert.AreEqual("Caravan", this._manageAccommodationViewModel.Object.Name);
-            Assert.IsEmpty(this._manageAccommodationViewModel.Object.AccommodationError);
+            Assert.IsNull(this._manageAccommodationViewModel.Object.AccommodationError);
             Assert.IsTrue(this._manageAccommodationViewModel.Object.EditSave.CanExecute(null));
         }
         

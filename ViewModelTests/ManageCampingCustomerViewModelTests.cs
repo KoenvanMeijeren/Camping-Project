@@ -65,7 +65,7 @@ namespace ViewModelTests
             Assert.AreEqual("testAddress", this._manageCampingCustomerViewModel.Object.Street);
             Assert.AreEqual("testPostalCode", this._manageCampingCustomerViewModel.Object.PostalCode);
             Assert.AreEqual("testPlace", this._manageCampingCustomerViewModel.Object.Place);
-            Assert.IsEmpty(this._manageCampingCustomerViewModel.Object.CampingCustomerError);
+            Assert.IsNull(this._manageCampingCustomerViewModel.Object.CampingCustomerError);
             Assert.IsTrue(this._manageCampingCustomerViewModel.Object.EditSave.CanExecute(null));
         }
         
