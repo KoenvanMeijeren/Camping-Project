@@ -17,7 +17,7 @@ namespace ViewModel
     {
         #region Fields
 
-        private Accommodation _accommodationModel = new Accommodation();
+        private readonly Accommodation _accommodationModel = new Accommodation();
 
         private ObservableCollection<Accommodation> _accommodations = new ObservableCollection<Accommodation>();
         private Accommodation _selectedAccommodation;
@@ -111,6 +111,16 @@ namespace ViewModel
                 else if (!Validation.IsInputBelowMaxLength(this._prefix, 2))
                 {
                     this.AccommodationError = "Prefix mag maximaal 2 letters bevatten";
+                }
+
+                if ((this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix == value))
+                {
+                    return;
+                }
+                
+                if (!this.IsPrefixUnique(value))
+                {
+                    this.AccommodationError = "Prefix moet uniek zijn";
                 }
             }
         }
@@ -222,6 +232,12 @@ namespace ViewModel
         }
         private bool CanExecuteEditSave()
         {
+            if (this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix != this.Prefix && !this.IsPrefixUnique(this.Prefix) 
+                || (this.SelectedAccommodation == null && !this.IsPrefixUnique(this.Prefix)))
+            {
+                return false;
+            }
+
             return Validation.IsInputFilled(this.Name) 
                    && Validation.IsInputFilled(this.Prefix);
         }
@@ -258,6 +274,11 @@ namespace ViewModel
             return this._accommodationModel.Select();
         }
 
+        public virtual bool IsPrefixUnique(string prefix)
+        {
+            return this._accommodationModel.IsPrefixUnique(prefix);
+        }
+        
         #endregion
         
     }
