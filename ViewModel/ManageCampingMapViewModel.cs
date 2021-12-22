@@ -211,7 +211,7 @@ namespace ViewModel
             }
         }
 
-        private void FillFields(CampingPlace campingPlace)
+        public void FillFields(CampingPlace campingPlace)
         {
             if (campingPlace == null)
             {
