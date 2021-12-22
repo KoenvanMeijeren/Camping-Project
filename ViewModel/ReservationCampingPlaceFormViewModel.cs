@@ -256,7 +256,7 @@ namespace ViewModel
                 && (!int.TryParse(this.MaxNightPrice, out int max) || campingPlace.TotalPrice <= max) 
                 && (!int.TryParse(this.Guests, out int guests) || campingPlace.Type.GuestLimit >= guests);
 
-            var campingPlaceItems = this.GetFilteredCampingPlaces().Where(CampingPlaceFilter);
+            var campingPlaceItems = this.ToFilteredOnReservedCampingPlaces().Where(CampingPlaceFilter);
             foreach (CampingPlace item in campingPlaceItems)
             {
                 this.CampingPlaces.Add(item);
@@ -297,9 +297,10 @@ namespace ViewModel
         
         #region Database interaction
         
+        //is nog wel nodig?
         public virtual IEnumerable<CampingPlace> GetFilteredCampingPlaces()
         {
-            return this.ToFilteredOnReservedCampingPlaces(GetCampingplaces());
+            return this.ToFilteredOnReservedCampingPlaces();
         }
 
         public virtual IEnumerable<CampingPlace> GetCampingplaces()
@@ -307,8 +308,9 @@ namespace ViewModel
             return this._campingPlaceModel.Select();
         }
 
-        public virtual IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> campingPlaceList)
+        public virtual IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces()
         {
+            var campingPlaceList = GetCampingplaces();
             var reservations = this.GetReservations();
             // Removes reserved camping places from the list.
             foreach (Reservation reservation in reservations)

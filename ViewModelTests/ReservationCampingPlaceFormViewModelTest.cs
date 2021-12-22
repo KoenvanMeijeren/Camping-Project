@@ -57,7 +57,7 @@ namespace ViewModelTests
             _reservations.Add(new Reservation("2", campingCustomer, this._testCampingPlaceThree, this._checkInDate.ToString(CultureInfo.InvariantCulture), this._checkOutDate.ToString(CultureInfo.InvariantCulture)));
           
       
-            this._campingPlacesMock.Setup(x => x.GetFilteredCampingPlaces()).Returns(this._campingPlaceList);
+            //this._campingPlacesMock.Setup(x => x.GetFilteredCampingPlaces()).Returns(this._campingPlaceList);
             this._campingPlacesMock.Setup(x => x.GetReservations()).Returns(this._reservations);
             this._campingPlacesMock.Setup(x => x.GetCampingplaces()).Returns(this._campingPlaceList);
             this._campingPlacesMock.Object.SelectedAccommodation = ReservationCampingPlaceFormViewModel.SelectAll;
@@ -71,36 +71,21 @@ namespace ViewModelTests
         [Test]
         public void TestInitializeViewModel()
         {
-            var mockListFilterOnDate = this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList);
-            var mockListGetCampingPlaces = this._campingPlacesMock.Object.GetFilteredCampingPlaces();
+            var mockListFilterOnDate = this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces();
+            //var mockListGetCampingPlaces = this._campingPlacesMock.Object.GetFilteredCampingPlaces();
             var mockListGetReservations = this._campingPlacesMock.Object.GetReservations();
             string expectedSelectedPlaceType = ReservationCampingPlaceFormViewModel.SelectAll;
 
             Assert.AreEqual(this._campingPlacesMock.Object.SelectedAccommodation, expectedSelectedPlaceType);
             Assert.IsTrue(this._campingPlacesMock.Object.Accommodations.Any());
-            var list = ToFilteredOnReservedCampingPlaces(this._campingPlaceList);
-            Assert.IsTrue(list.Any());
             Assert.IsTrue(mockListFilterOnDate.Any());
-            Assert.IsTrue(mockListGetCampingPlaces.Any());
+            //Assert.IsTrue(mockListGetCampingPlaces.Any());
             Assert.AreEqual(this._campingPlacesMock.Object.CheckInDate, DateTime.Today);
             Assert.AreEqual(this._campingPlacesMock.Object.CheckOutDate, DateTime.Today.AddDays(3));
             Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Any());            
         }
 
-        public virtual IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> campingPlaceList)
-        {
-            var reservations = this._campingPlacesMock.Object.GetReservations();
-            // Removes reserved camping places from the list.
-            foreach (Reservation reservation in reservations)
-            {
-                if (reservation.CheckInDatetime.Date <= this._checkOutDate.Date && this._checkInDate.Date <= reservation.CheckOutDatetime.Date)
-                {
-                    campingPlaceList = campingPlaceList.Where(campingPlace => campingPlace.Id != reservation.CampingPlace.Id).ToList();
-                }
-            }
 
-            return campingPlaceList;
-        }
 
         [Test]
         public void TestFilterCampingPlaceType()
@@ -158,7 +143,7 @@ namespace ViewModelTests
             //var testTwee = this._campingPlacesMock.Object.GetReservations();
             //var test = this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList, this._checkInDate, this._checkOutDate).Count();
             //-------------------------------------------------------------------------
-            Assert.AreEqual(0, this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList).Count());
+            Assert.AreEqual(0, this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces().Count());
         }
     }
 }
