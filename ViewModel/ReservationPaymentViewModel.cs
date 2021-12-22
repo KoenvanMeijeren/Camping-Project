@@ -8,13 +8,16 @@ using Mollie.Api.Models;
 using Mollie.Api.Models.Payment;
 using Mollie.Api.Models.Payment.Request;
 using Mollie.Api.Models.Payment.Response;
+using Mollie.Api.Models.PaymentLink.Request;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Input;
 using ViewModel.EventArguments;
 
@@ -25,6 +28,8 @@ namespace ViewModel
         private Reservation _reservation;
         private CampingCustomer _campingCustomer;
         private ObservableCollection<CampingGuest> _campingGuests;
+        private Timer paymentTimer;
+        private string paymentResponseLink;
 
         public Reservation Reservation
         {
@@ -80,18 +85,39 @@ namespace ViewModel
             this.CampingCustomer = CurrentUser.CampingCustomer;
         }
 
-        private void ExecuteCreateReservationPayment()
+        private async Task CreateReservationPaymentRequest()
         {
-            /*PaymentRequest paymentRequest = new PaymentRequest()
+            IPaymentClient paymentClient = new PaymentClient("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
+
+            PaymentRequest paymentRequest = new PaymentRequest()
             {
-                Amount = new Amount(Currency.EUR, 10),
-                Description = "Description",
-                RedirectUrl = "http://www.mollie.com",
-                Method = PaymentMethod.Ideal
+                Amount = new Amount(Currency.EUR, 1),
+                Description = "Test payment of the example project",
+                RedirectUrl = "http://google.com",
+                Method = Mollie.Api.Models.Payment.PaymentMethod.Ideal // instead of "Ideal"
+
             };
-            IPaymentClient paymentClient = new PaymentClient("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");*/
-            ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(Reservation));
+
+            PaymentLinkClient client = new PaymentLinkClient("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
+            PaymentResponse paymentResponse = await paymentClient.CreatePaymentAsync(paymentRequest);
+
+            Process.Start(new ProcessStartInfo(paymentResponse.Links.Checkout.Href)
+            {
+                UseShellExecute = true
+            });
         }
+
+        public void ExecuteCreateReservationPaymentTest()
+        {
+            CreateReservationPaymentRequest().GetAwaiter().GetResult();
+            //ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(Reservation));
+        }
+
+        /*private bool CanExecuteCreateReservationPayment()
+        {
+            //return if payment is done.
+            return true;
+        }*/
 
         private void ExecuteCustomerPaymenGoBackReservation()
         {
@@ -99,7 +125,7 @@ namespace ViewModel
             CampingGuests.Clear();
         }
 
-        public ICommand CreateReservationPayment => new RelayCommand(ExecuteCreateReservationPayment);
+        public ICommand CreateReservationPayment => new RelayCommand(ExecuteCreateReservationPaymentTest);
 
         public ICommand CustomerPaymentGoBackReservation => new RelayCommand(ExecuteCustomerPaymenGoBackReservation);
 
