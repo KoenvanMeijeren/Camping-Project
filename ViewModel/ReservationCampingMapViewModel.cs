@@ -225,7 +225,7 @@ namespace ViewModel
             campingField.CampingPlace = e.Model;
         }
 
-        private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object sender, ReservationEventArgs e)
+        private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> e)
         {
             this.InitializeOverview();
         }

@@ -226,9 +226,9 @@ namespace ViewModel
             this.SelectedAccommodation = SelectAll;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> args)
         {
-            this.Reservations.Add(args.Reservation);
+            args.UpdateCollection(this.Reservations);
         }
 
         /// <summary>

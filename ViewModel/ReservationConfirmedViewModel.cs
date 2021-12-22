@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Model;
 using ViewModel.EventArguments;
 
 namespace ViewModel
@@ -87,15 +88,17 @@ namespace ViewModel
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> args)
         {
-            this.FirstName = args.Reservation.CampingCustomer.FirstName;
-            this.LastName = args.Reservation.CampingCustomer.LastName;
-            this.CheckInDate = args.Reservation.CheckInDatetime;
-            this.CheckOutDate = args.Reservation.CheckOutDatetime;
+            this._firstName = args.Model.CampingCustomer.FirstName;
+            this._lastName = args.Model.CampingCustomer.LastName;
+            this._checkInDate = args.Model.CheckInDatetime;
+            this._checkOutDate = args.Model.CheckOutDatetime;
 
-            this.Title = $"Gefeliciteerd {this.FirstName} {this.LastName},";
-            this.ConfirmationText = $"Uw reservering van {this.CheckInDate.Date.ToShortDateString()} tot {this.CheckOutDate.Date.ToShortDateString()}";
+            this._title = $"Gefeliciteerd {this.FirstName} {this.LastName},";
+            this._confirmationText = $"Uw reservering van {this.CheckInDate.Date.ToShortDateString()} tot {this.CheckOutDate.Date.ToShortDateString()}";
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion

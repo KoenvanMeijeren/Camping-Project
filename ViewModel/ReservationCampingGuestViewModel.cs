@@ -178,7 +178,7 @@ namespace ViewModel
 
         #region Events
 
-        public static event EventHandler<ReservationEventArgs> ReservationConfirmedEvent;
+        public static event EventHandler<UpdateModelEventArgs<Reservation>> ReservationConfirmedEvent;
         public static event EventHandler<ReservationEventArgs> ReservationGoBackEvent;
 
         #endregion
@@ -314,7 +314,7 @@ namespace ViewModel
                 (new ReservationCampingGuest(lastReservation, guest)).Insert();
             }
 
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent?.Invoke(this, new ReservationEventArgs(lastReservation));
+            ReservationCampingGuestViewModel.ReservationConfirmedEvent?.Invoke(this, new UpdateModelEventArgs<Reservation>(this.Reservation.SelectLast(), true, false));
 
             this.ResetInput();
             this.CampingGuests.Clear();

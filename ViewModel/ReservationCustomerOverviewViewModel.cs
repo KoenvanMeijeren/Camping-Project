@@ -155,10 +155,21 @@ namespace ViewModel
         {
             this._customerId = CurrentUser.CampingCustomer != null ? CurrentUser.CampingCustomer.Id : -1;
             
-            this.ReservationCustomerFormViewModelOnReservationConfirmedEvent(sender, null);
+            this.InitializeReservations();
         }
 
-        private void ReservationCustomerFormViewModelOnReservationConfirmedEvent(object sender, ReservationEventArgs e)
+        private void ReservationCustomerFormViewModelOnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> e)
+        {
+            e.UpdateCollection(this.ReservationsCollection);
+
+            this.SelectedReservation = e.Model;
+        }
+
+        /// <summary>
+        /// Sets the available reservations. Calling this method should be avoided, because this is a heavy
+        /// method.
+        /// </summary>
+        private void InitializeReservations()
         {
             this.ReservationsCollection.Clear();
             

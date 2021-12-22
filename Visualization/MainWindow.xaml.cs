@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
+using Model;
 using ViewModel;
 using ViewModel.EventArguments;
 
@@ -193,7 +194,7 @@ namespace Visualization
             this.MainFrame.Content = this._reservationCampingGuestPage;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> args)
         {
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
