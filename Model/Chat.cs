@@ -19,8 +19,8 @@ namespace Model
         public const string
             TableName = "Chat",
             ColumnId = "ChatID",
-            ColumnOwner = "OwnerID",
-            ColumnCustomer = "CustomerID",
+            ColumnOwnerAccount = "OwnerAccountID",
+            ColumnCustomerAccount = "CustomerAccountID",
             ColumnMessage = "Messages",
             ColumnLastMessageSeenOwner = "OwnerLastSeen",
             ColumnLastMessageSeenCustomer = "CustomerLastSeen",
@@ -45,6 +45,8 @@ namespace Model
 
         public Chat(string id, Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus) : base(TableName, ColumnId)
         {
+            bool success = int.TryParse(id, out int idNumeric);
+            this.Id = success ? idNumeric : -1;
             this.Owner = owner;
             this.Customer = customer;
             this.Messages = messages;
@@ -52,6 +54,44 @@ namespace Model
             this.LastMessageSeenCustomer = customerLastSeen;
             this.OwnerStatus = ownerStatus;
             this.CustomerStatus = customerStatus;
+        }
+
+        /// <summary>
+        /// Selects the chat of the given user OR creates a new (empty) chat for this user.
+        /// </summary>
+        /// <param name="customer">Object of the camping user</param>
+        /// <returns>All chat data for the given user</returns>
+        public Chat SelectOrCreateNewChatForLoggedInUser(CampingCustomer customer)
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomerAccount} = @campingCustomerId");
+            query.AddParameter("campingCustomerId", customer.Account.Id);
+            var result = query.SelectFirst();
+
+            // Check there isn't a chat created yet
+            if (result == null)
+            {
+                CampingOwner campingOwner = new CampingOwner();
+                CampingCustomer campingCustomer = new CampingCustomer();
+
+                this.Owner = campingOwner.SelectLast().Account;
+                this.Customer = customer.Account;
+                // Empty JSON
+                this.Messages = "[]";
+                this.LastMessageSeenOwner = DateTime.Now;
+                this.LastMessageSeenCustomer = DateTime.Now;
+                this.OwnerStatus = ChatStatus.Offline;
+                this.CustomerStatus = ChatStatus.Offline;
+
+                this.Insert();
+                return this;
+            }
+
+            return this.ToModel(result);
+        }
+
+        public bool UpdateChat(string json)
+        {
+            return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus));
         }
 
         public bool Update(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus)
@@ -76,8 +116,8 @@ namespace Model
             }
 
             dictionary.TryGetValue(ColumnId, out string id);
-            dictionary.TryGetValue(ColumnOwner, out string owner);
-            dictionary.TryGetValue(ColumnCustomer, out string customer);
+            dictionary.TryGetValue(ColumnOwnerAccount, out string owner);
+            dictionary.TryGetValue(ColumnCustomerAccount, out string customer);
             dictionary.TryGetValue(ColumnMessage, out string messages);
             dictionary.TryGetValue(ColumnLastMessageSeenOwner, out string lastMessageSeenOwner);
             dictionary.TryGetValue(ColumnLastMessageSeenCustomer, out string lastMessageSeenCustomer);
@@ -109,13 +149,13 @@ namespace Model
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
-                {ColumnCustomer, owner.Id.ToString()},
-                {ColumnCustomer, customer.Id.ToString()},
+                {ColumnOwnerAccount, owner.Id.ToString()},
+                {ColumnCustomerAccount, customer.Id.ToString()},
                 {ColumnMessage, messages},
                 {ColumnLastMessageSeenOwner, DateTimeParser.TryParseToDatabaseDateTimeFormat(ownerLastSeen)},
                 {ColumnLastMessageSeenCustomer, DateTimeParser.TryParseToDatabaseDateTimeFormat(customerLastSeen)},
-                {ColumnOwnerStatus, ownerStatus.ToString()},
-                {ColumnCustomerStatus, customerStatus.ToString()}
+                {ColumnOwnerStatus, ((int)ownerStatus).ToString()},
+                {ColumnCustomerStatus, ((int)customerStatus).ToString()}
             };
 
             return dictionary;
@@ -124,9 +164,9 @@ namespace Model
         /// <inheritdoc/>
         protected override string BaseSelectQuery()
         {
-            string query = $"SELECT * FROM {TableName} R ";
-            query += $" LEFT JOIN {Account.TableName} AC on CC.{Chat.ColumnOwner} = AC.{Account.ColumnId}";
-            query += $" LEFT JOIN {Account.TableName} AC on CC.{Chat.ColumnCustomer} = AC.{Account.ColumnId}";
+            string query = $"SELECT * FROM {TableName} CH ";
+            query += $" LEFT JOIN {Account.TableName} AC on CH.{Chat.ColumnOwnerAccount} = AC.{Account.ColumnId}";
+            query += $" LEFT JOIN {Account.TableName} AC2 on CH.{Chat.ColumnCustomerAccount} = AC2.{Account.ColumnId}";
 
             return query;
         }
