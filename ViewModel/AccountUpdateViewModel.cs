@@ -259,7 +259,7 @@ namespace ViewModel
 
         private void ExecuteUpdateCancel()
         {
-            UpdateCancelEvent?.Invoke(this, EventArgs.Empty);
+            AccountUpdateViewModel.UpdateCancelEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private bool CanExecuteUpdateConfirm()
@@ -300,7 +300,7 @@ namespace ViewModel
                 CurrentUser.SetCurrentUser(CurrentUser.Account, CurrentUser.CampingCustomer);
             }
 
-            UpdateConfirmEvent?.Invoke(this, EventArgs.Empty);
+            AccountUpdateViewModel.UpdateConfirmEvent?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion
