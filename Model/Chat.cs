@@ -35,6 +35,7 @@ namespace Model
         public DateTime LastMessageSeenCustomer { get; private set; }
         public ChatStatus OwnerStatus { get; private set; }
         public ChatStatus CustomerStatus { get; private set; }
+        public int IsSolved { get; private set; }
 
         public Chat() : base(TableName, ColumnId)
         {
