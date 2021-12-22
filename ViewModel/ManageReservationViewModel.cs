@@ -154,22 +154,9 @@ namespace ViewModel
             ManageCampingMapViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
         }
 
-        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object sender, UpdateCampingPlaceEventArgs e)
+        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object sender, UpdateModelEventArgs<CampingPlace> e)
         {
-            if (e.Inserted)
-            {
-                this.CampingPlaces.Add(e.CampingPlace);
-                return;
-            }
-
-            if (e.Removed)
-            {
-                this.CampingPlaces.Remove(e.CampingPlace);
-                return;
-            }
-
-            this.CampingPlaces.Remove(e.CampingPlace);
-            this.CampingPlaces.Add(e.CampingPlace);
+            e.UpdateObservableCollection(this.CampingPlaces);
         }
 
         /// <summary>

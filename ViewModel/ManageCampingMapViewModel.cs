@@ -174,7 +174,7 @@ namespace ViewModel
         
         #region Events
 
-        public static event EventHandler<UpdateCampingPlaceEventArgs> CampingPlacesUpdated;
+        public static event EventHandler<UpdateModelEventArgs<CampingPlace>> CampingPlacesUpdated;
 
         #endregion
 
@@ -280,7 +280,7 @@ namespace ViewModel
                 campingPlace.Insert();
                 
                 this.CampingFields[campingPlace.Number].CampingPlace = campingPlace;
-                ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, new UpdateCampingPlaceEventArgs(campingPlace.SelectLast(), true, false));
+                ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, new UpdateModelEventArgs<CampingPlace>(campingPlace.SelectLast(), true, false));
             }
             else
             {
@@ -288,7 +288,7 @@ namespace ViewModel
                 campingPlace.Update(this.Number, this.Surface, this.ExtraNightPrice, this.SelectedCampingPlaceType);
 
                 this.SelectedCampingMapItemViewModel.Update(campingPlace);
-                ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, new UpdateCampingPlaceEventArgs(campingPlace, false, false));
+                ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, new UpdateModelEventArgs<CampingPlace>(campingPlace, false, false));
             }
             
             this.ResetInput();
@@ -321,7 +321,7 @@ namespace ViewModel
             this.ResetInput();
             this.SelectedCampingMapItemViewModel.BackgroundColor = CampingMapItemViewModel.UnselectedColor;
 
-            ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, new UpdateCampingPlaceEventArgs(this.SelectedCampingMapItemViewModel.CampingPlace, false, true));
+            ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, new UpdateModelEventArgs<CampingPlace>(this.SelectedCampingMapItemViewModel.CampingPlace, false, true));
             
             this.SelectedCampingMapItemViewModel.CampingPlace = null;
         }
