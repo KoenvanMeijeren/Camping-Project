@@ -3,6 +3,9 @@ using System;
 
 namespace SystemCore
 {
+    /// <summary>
+    /// This class defines each chat message sent by the user or owner of the camping.
+    /// </summary>
     public class MessageJSON
     {
         public string Message;
