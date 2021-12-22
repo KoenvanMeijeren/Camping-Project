@@ -199,9 +199,21 @@ namespace ViewModel
             this.SelectedAccommodation = SelectAll;
         }
 
-        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object sender, EventArgs e)
+        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object sender, UpdateCampingPlaceEventArgs e)
         {
-            this.SetOverview();
+            var campingField = this.CampingFields[e.CampingPlace.Number];
+            if (campingField == null)
+            {
+                return;
+            }
+            
+            if (e.Removed)
+            {
+                campingField.CampingPlace = null;
+                return;
+            }
+            
+            campingField.CampingPlace = e.CampingPlace;
         }
 
         private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object sender, ReservationEventArgs e)

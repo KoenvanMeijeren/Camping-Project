@@ -154,11 +154,27 @@ namespace ViewModel
             ManageCampingMapViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
         }
 
-        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object? sender, EventArgs e)
+        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object sender, UpdateCampingPlaceEventArgs e)
         {
-            this.SetAvailableCampingPlaces();
+            if (e.Inserted)
+            {
+                this.CampingPlaces.Add(e.CampingPlace);
+                return;
+            }
+
+            if (e.Removed)
+            {
+                this.CampingPlaces.Remove(e.CampingPlace);
+                return;
+            }
+
+            this.CampingPlaces.Remove(e.CampingPlace);
+            this.CampingPlaces.Add(e.CampingPlace);
         }
 
+        /// <summary>
+        /// Sets the available camping places. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
         private void SetAvailableCampingPlaces()
         {
             var selectedCampingPlace = this.SelectedCampingPlace;

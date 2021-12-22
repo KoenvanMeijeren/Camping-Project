@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
 using SystemCore;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {
@@ -173,7 +174,7 @@ namespace ViewModel
         
         #region Events
 
-        public static event EventHandler CampingPlacesUpdated;
+        public static event EventHandler<UpdateCampingPlaceEventArgs> CampingPlacesUpdated;
 
         #endregion
 
@@ -279,6 +280,7 @@ namespace ViewModel
                 campingPlace.Insert();
                 
                 this.CampingFields[campingPlace.Number].CampingPlace = campingPlace;
+                ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, new UpdateCampingPlaceEventArgs(campingPlace.SelectLast(), true, false));
             }
             else
             {
@@ -286,12 +288,11 @@ namespace ViewModel
                 campingPlace.Update(this.Number, this.Surface, this.ExtraNightPrice, this.SelectedCampingPlaceType);
 
                 this.SelectedCampingMapItemViewModel.Update(campingPlace);
+                ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, new UpdateCampingPlaceEventArgs(campingPlace, false, false));
             }
             
             this.ResetInput();
             this.SelectedCampingMapItemViewModel.BackgroundColor = CampingMapItemViewModel.UnselectedColor;
-            
-            ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, EventArgs.Empty);
 
             MessageBox.Show("De campingplaatsen zijn succesvol bijgewerkt.", "Campingplaatsen bewerken");
         }
@@ -319,9 +320,10 @@ namespace ViewModel
             this.SelectedCampingMapItemViewModel.CampingPlace.Delete();
             this.ResetInput();
             this.SelectedCampingMapItemViewModel.BackgroundColor = CampingMapItemViewModel.UnselectedColor;
-            this.SelectedCampingMapItemViewModel.CampingPlace = null;
 
-            ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, EventArgs.Empty);
+            ManageCampingMapViewModel.CampingPlacesUpdated?.Invoke(this, new UpdateCampingPlaceEventArgs(this.SelectedCampingMapItemViewModel.CampingPlace, false, true));
+            
+            this.SelectedCampingMapItemViewModel.CampingPlace = null;
         }
         private bool CanExecuteDelete()
         {
