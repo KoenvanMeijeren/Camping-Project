@@ -108,10 +108,13 @@ namespace ViewModel
                 if (!Validation.IsInputFilled(this._prefix))
                 {
                     this.AccommodationError = "Prefix is een verplicht veld";
+                    return;
                 }
-                else if (!Validation.IsInputBelowMaxLength(this._prefix, 2))
+
+                if (!Validation.IsInputBelowMaxLength(this._prefix, 2))
                 {
                     this.AccommodationError = "Prefix mag maximaal 2 letters bevatten";
+                    return;
                 }
 
                 if ((this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix == value))
@@ -119,7 +122,7 @@ namespace ViewModel
                     return;
                 }
                 
-                if (!this.IsPrefixUnique(value))
+                if (!this.IsPrefixUnique())
                 {
                     this.AccommodationError = "Prefix moet uniek zijn";
                 }
@@ -248,8 +251,8 @@ namespace ViewModel
         }
         private bool CanExecuteEditSave()
         {
-            if (this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix != this.Prefix && !this.IsPrefixUnique(this.Prefix) 
-                || (this.SelectedAccommodation == null && !this.IsPrefixUnique(this.Prefix)))
+            if (this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix != this.Prefix && !this.IsPrefixUnique() 
+                || (this.SelectedAccommodation == null && !this.IsPrefixUnique()))
             {
                 return false;
             }
@@ -290,9 +293,9 @@ namespace ViewModel
             return this._accommodationModel.Select();
         }
 
-        public virtual bool IsPrefixUnique(string prefix)
+        public virtual bool IsPrefixUnique()
         {
-            return this._accommodationModel.IsPrefixUnique(prefix);
+            return this._accommodationModel.IsPrefixUnique(this._prefix);
         }
         
         #endregion

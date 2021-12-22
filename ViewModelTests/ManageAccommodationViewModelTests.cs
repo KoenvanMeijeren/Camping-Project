@@ -27,6 +27,7 @@ namespace ViewModelTests
             };
             
             this._manageAccommodationViewModel.Setup(x => x.GetAccommodations()).Returns(this._accommodations);
+            this._manageAccommodationViewModel.Setup(x => x.IsPrefixUnique()).Returns(true);
         }
 
         [Test]
@@ -95,7 +96,7 @@ namespace ViewModelTests
             this._manageAccommodationViewModel.Object.Prefix = "HTH";
             Assert.AreEqual("Prefix mag maximaal 2 letters bevatten", this._manageAccommodationViewModel.Object.AccommodationError);
             
-            this._manageAccommodationViewModel.Object.Prefix = "BH";
+            this._manageAccommodationViewModel.Object.Prefix = "QQ";
             Assert.IsEmpty(this._manageAccommodationViewModel.Object.AccommodationError);
             
             this._manageAccommodationViewModel.Object.Name = "";
