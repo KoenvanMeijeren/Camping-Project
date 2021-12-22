@@ -11,22 +11,45 @@ using ViewModel.EventArguments;
 using SystemCore;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace ViewModel
 {
     public class MultipleChatPageViewModel : ObservableObject
     {
+        private Chat _selectedChat;
+
+
         public string ChatTextInput { get; set; }
-        //niet nodig bij owner?
-        public List<MessageJSON> ChatMessages { get; private set; }
+        public List<MessageJSON> ShownChatMessages { get; private set; }
+        public string CurrenCustomerName { get; private set; }
         public ObservableCollection<Chat> Chats { get; private set; }
+        public Chat SelectedChat
+        {
+            get => this._selectedChat;
+            set
+            {
+                if (value == this._selectedChat)
+                {
+                    return;
+                }
+
+                this._selectedChat = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
 
         // TODO: Fetch database row, loop through and display it
         public MultipleChatPageViewModel()
         {
-            //TODO: fetch all chats from database
+            //TODO: fetch all chats from database, where unsolved?
             Chat chat = new Chat();
             this.Chats = new ObservableCollection<Chat>(chat.Select());
+        }
+
+        private void ShowChatMessages()
+        {
+            
         }
 
         /// <summary>
@@ -35,7 +58,7 @@ namespace ViewModel
         /// <returns>String in JSON format with all messages in current chat</returns>
         public string ChatToJSON()
         {
-            return JsonConvert.SerializeObject(ChatMessages, Formatting.Indented);
+            return JsonConvert.SerializeObject(ShownChatMessages, Formatting.Indented);
         }
 
         // Close chat button
@@ -54,7 +77,7 @@ namespace ViewModel
             this.ExecuteSendChatEvent(this.ChatTextInput, MessageSender.Sender);
 
             //TODO: DOesnt work in constructor yet :p
-            foreach (MessageJSON message in ChatMessages)
+            foreach (MessageJSON message in ShownChatMessages)
             {
                 this.ExecuteSendChatEvent(message.Message, (MessageSender)Convert.ToInt32(message.UserRole));
             }

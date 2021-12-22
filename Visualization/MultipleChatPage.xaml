@@ -21,7 +21,7 @@
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="15,37,0,23" CornerRadius="15,15,15,15" Padding="15, 15, 15, 15" Background="White">
             <StackPanel Grid.Column="1" Margin="0,-5,0,-2">
                 <Label Margin="0,0,0,0" Content="Chats" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="29"  VerticalContentAlignment="Center"/>
-                <ListView Background="White" ItemsSource="{Binding Chats}" FontFamily="Century Gothic" FontWeight="Bold" Height="518">
+                <ListView Background="White" SelectedItem="{Binding SelectedChat, Mode=TwoWay}" ItemsSource="{Binding Chats}" FontFamily="Century Gothic" FontWeight="Bold" Height="518">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Width="162" DisplayMemberBinding="{Binding CustomerName}" />
