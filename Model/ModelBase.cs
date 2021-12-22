@@ -32,6 +32,17 @@ namespace Model
             this.PrimaryKey = primaryKey;
         }
 
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            if (obj is IModel model)
+            {
+                return model.Id == this.Id;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Selects all records from table.
         /// </summary>
