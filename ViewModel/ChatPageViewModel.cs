@@ -72,7 +72,7 @@ namespace ViewModel
             string sentMessage = this.ChatTextInput;
 
             //Check if the message was sent by guest or owner
-            MessageSender sndr = (ChatConversation.Customer.Id.Equals(CurrentUser.Account.Id)) ? MessageSender.Receiver : MessageSender.Sender;
+            MessageSender sndr = (ChatConversation.Customer.Id.Equals(CurrentUser.Account.Id)) ? MessageSender.Sender : MessageSender.Receiver;
 
             // Displays message on screen
             this.ExecuteSendChatEvent(sentMessage, sndr);
@@ -83,23 +83,11 @@ namespace ViewModel
             this.UpdateChatInDatabase();
         }
 
+        /// <summary>
+        /// Updates the chat converstion.
+        /// </summary>
         private void UpdateChatInDatabase()
         {
-            DateTime? LastMessageSeenOwner;
-            DateTime? LastMessageSeenCustomer;
-
-            // Check if message was sent by owner, if yes update his time
-            if (CurrentUser.Account.Id == ChatConversation.Owner.Id)
-            {
-                LastMessageSeenOwner = DateTime.Now;
-            }
-
-            // Check if message was sent by customer, if yes update his time
-            if (CurrentUser.Account.Id == ChatConversation.Customer.Id)
-            {
-                LastMessageSeenCustomer = DateTime.Now;
-            }
-
             // List of text messages to JSON
             var messagesListToJson = JsonConvert.SerializeObject(ChatMessages, Formatting.Indented);
             ChatConversation.UpdateChat(messagesListToJson);
