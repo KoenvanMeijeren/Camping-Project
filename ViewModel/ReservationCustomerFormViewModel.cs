@@ -33,9 +33,6 @@ namespace ViewModel
             _amountOfGuests,
             _selectedCampingPlace;
 
-        private bool
-            _emailEnabled;
-        
         private DateTime _birthdate, _checkInDateTime, _checkOutDateTime;
 
         private CampingPlace _campingPlace;
@@ -234,16 +231,6 @@ namespace ViewModel
             }
         }
 
-        public bool EmailEnabled
-        {
-            get => this._emailEnabled;
-            set
-            {
-                this._emailEnabled = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
         public string AmountOfGuests {
             get => this._amountOfGuests;
             set
@@ -375,8 +362,6 @@ namespace ViewModel
             this._street = campingCustomer.Address.Street;
             this._place = campingCustomer.Address.Place;
             this._postalCode = campingCustomer.Address.PostalCode;
-
-            this._emailEnabled = campingCustomer.Account.Id != -1;
             
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
