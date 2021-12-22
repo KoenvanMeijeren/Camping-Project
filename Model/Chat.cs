@@ -95,6 +95,15 @@ namespace Model
             return this.ToModel(result);
         }
 
+        public string GetChatMessagesForCampingGuest(Account account)
+        {
+            Query query = new Query($"SELECT {ColumnMessage} FROM {TableName} WHERE {ColumnCustomerAccount} = @campingCustomerId");
+            query.AddParameter("campingCustomerId", account.Id);
+            var result = query.SelectFirst();
+
+            return result[$"{ColumnMessage}"];
+        }
+
         public bool UpdateChat(string json)
         {
             return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus));

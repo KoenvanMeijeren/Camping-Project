@@ -10,6 +10,7 @@ using System.Windows.Input;
 using ViewModel.EventArguments;
 using SystemCore;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace ViewModel
 {
@@ -27,6 +28,8 @@ namespace ViewModel
         private Chat _chatModel = new Chat();
         public Chat ChatConversation { get; private set; }
 
+        private int _refreshRateInMilliseconds = 2000;
+
         public ChatPageViewModel()
         {
             // Executes when user has logged in
@@ -39,9 +42,40 @@ namespace ViewModel
             this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this.ChatConversation.Messages);
 
             // Loops through all 'old'/already sent messages
+
             foreach(var message in ChatMessages)
             {
                 OpenChatEvent?.Invoke(this, new ChatEventArgs(message.Message, (MessageSender)Convert.ToInt32(message.UserRole)));
+            }
+
+            this.RefreshChatMessages();
+        }
+
+        /// <summary>
+        /// Async function that checks for new messages
+        /// </summary>
+        /// <returns>Nothing</returns>
+        public async Task RefreshChatMessages()
+        {
+            // Automatically updating chat
+            while (true)
+            {
+                string GetChatMessages = ChatConversation.GetChatMessagesForCampingGuest(CurrentUser.CampingCustomer.Account);
+                List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
+
+                // Check if the current chat does NOT match with chats in database (aka new message)
+                if (!this.ChatMessages.Count.Equals(GetChatMessagesToList.Count))
+                {
+                    int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - this.ChatMessages.Count;
+                    for (int i = this.ChatMessages.Count; i < GetChatMessagesToList.Count; i++)
+                    {
+                        MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
+                        this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
+                    }
+                    this.ChatMessages = GetChatMessagesToList;
+                }
+
+                await Task.Delay(_refreshRateInMilliseconds);
             }
         }
 
