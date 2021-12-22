@@ -13,6 +13,7 @@ namespace Visualization
         public ChatPage()
         {
             this.InitializeComponent();
+            ChatPageViewModel.OpenChatEvent += this.CreateChatTextBlocKEvent;
             ChatPageViewModel.SendChatEvent += this.CreateChatTextBlocKEvent;
         }
 
