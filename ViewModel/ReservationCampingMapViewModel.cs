@@ -182,21 +182,30 @@ namespace ViewModel
             this.Accommodations = new ObservableCollection<string>();
 
             this.InitializeInternalCampingFields();
-            this.SetOverview();
-            this.SetAccommodations();
+            this.InitializeOverview();
+            this.InitializeAccommodations();
             this.SelectedAccommodation = SelectAll;
             this.CheckInDate = DateTime.Today;
             this.CheckOutDate = DateTime.Today.AddDays(1);
 
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.ReservationCampingGuestViewModelOnReservationConfirmedEvent;
             ManageCampingMapViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
-            ManageAccommodationViewModel.AccommodationsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+            ManageAccommodationViewModel.AccommodationStringsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
         }
 
-        private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, EventArgs e)
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
         {
-            this.SetAccommodations();
+            if (e.Inserted)
+            {
+                this.Accommodations.Add(e.Model.ToString());
+            }
+            else if (e.Removed)
+            {
+                this.Accommodations.Remove(e.Model.ToString());
+            }
+
             this.SelectedAccommodation = SelectAll;
+            this.FilterOverview();
         }
 
         private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object sender, UpdateModelEventArgs<CampingPlace> e)
@@ -218,10 +227,13 @@ namespace ViewModel
 
         private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object sender, ReservationEventArgs e)
         {
-            this.SetOverview();
+            this.InitializeOverview();
         }
 
-        private void SetAccommodations()
+        /// <summary>
+        /// Sets the available accommodations. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
+        private void InitializeAccommodations()
         {
             this.Accommodations.Clear();
 
@@ -232,7 +244,10 @@ namespace ViewModel
             }
         }
 
-        private void SetOverview()
+        /// <summary>
+        /// Sets the available camping places. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
+        private void InitializeOverview()
         {
             this.SetCampingPlacesToFields();
             

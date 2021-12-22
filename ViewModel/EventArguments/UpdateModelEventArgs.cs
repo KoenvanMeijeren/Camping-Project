@@ -19,7 +19,7 @@ namespace ViewModel.EventArguments
             this.Removed = removed;
         }
 
-        public void UpdateObservableCollection(Collection<T> models)
+        public void UpdateCollection(Collection<T> models)
         {
             if (this.Inserted)
             {

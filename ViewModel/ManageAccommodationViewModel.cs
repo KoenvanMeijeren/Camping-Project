@@ -10,6 +10,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using SystemCore;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {
@@ -150,7 +151,8 @@ namespace ViewModel
         
         #region Events
 
-        public static event EventHandler AccommodationsUpdated;
+        public static event EventHandler<UpdateModelEventArgs<Accommodation>> AccommodationsUpdated;
+        public static event EventHandler<UpdateModelEventArgs<Accommodation>> AccommodationStringsUpdated;
 
         #endregion
 
@@ -160,10 +162,20 @@ namespace ViewModel
         {
             this.EditTitle = "Accommodatie toevoegen";
          
-            this.SetAccommodations();
+            this.InitializeAccommodations();
+            
+            ManageAccommodationViewModel.AccommodationsUpdated += ManageAccommodationViewModelOnAccommodationsUpdated;
         }
 
-        private void SetAccommodations()
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
+        {
+            e.UpdateCollection(this.Accommodations);
+        }
+
+        /// <summary>
+        /// Sets the available accommodations. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
+        private void InitializeAccommodations()
         {
             this.Accommodations.Clear();
             foreach (var accommodation in this.GetAccommodations())
@@ -216,18 +228,22 @@ namespace ViewModel
             {
                 Accommodation accommodation = new Accommodation(this.Prefix, this.Name);
                 accommodation.Insert();
+                accommodation = accommodation.SelectLast();
                 
-                this.Accommodations.Add(accommodation);
+                ManageAccommodationViewModel.AccommodationsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(accommodation, true, false));
+                ManageAccommodationViewModel.AccommodationStringsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(accommodation, true, false));
             }
             else
             {
+                ManageAccommodationViewModel.AccommodationStringsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(this.SelectedAccommodation, false, true));
+                
                 this.SelectedAccommodation.Update(this.Prefix, this.Name);
+                
+                ManageAccommodationViewModel.AccommodationStringsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(this.SelectedAccommodation, true, false));
+                ManageAccommodationViewModel.AccommodationsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(this.SelectedAccommodation, false, false));
             }
             
-            this.SetAccommodations();
             this.ResetInput();
-            ManageAccommodationViewModel.AccommodationsUpdated?.Invoke(this, EventArgs.Empty);
-
             MessageBox.Show("De accommodaties zijn succesvol bijgewerkt.", "Accommodatie bewerken");
         }
         private bool CanExecuteEditSave()
@@ -251,12 +267,12 @@ namespace ViewModel
             {
                 return;
             }
-            
-            this.SelectedAccommodation.Delete();
-            this.Accommodations.Remove(this.SelectedAccommodation);
-            this.SelectedAccommodation = null;
-            
-            ManageAccommodationViewModel.AccommodationsUpdated?.Invoke(this, EventArgs.Empty);
+
+            var accommodation = this.SelectedAccommodation;
+            ManageAccommodationViewModel.AccommodationsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(accommodation, false, true));
+            ManageAccommodationViewModel.AccommodationStringsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(accommodation, false, true));
+
+            accommodation.Delete();
         }
         private bool CanExecuteDelete()
         {

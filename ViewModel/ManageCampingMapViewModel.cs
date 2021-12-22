@@ -185,25 +185,29 @@ namespace ViewModel
             this.EditTitle = "Campingplaats toevoegen";
          
             this.InitializeCampingPlaces();
-            this.SetCampingPlaceTypes();
+            this.InitializeCampingPlaceTypes();
             
             ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated += this.ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated;
             ManageAccommodationViewModel.AccommodationsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
         }
         
-        private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, EventArgs e)
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
         {
-            this.SetCampingPlaceTypes();
+            this.InitializeCampingPlaceTypes();
             this.ResetInput();
         }
 
-        private void ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated(object sender, EventArgs e)
+        private void ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated(object sender, UpdateModelEventArgs<CampingPlaceType> e)
         {
-            this.SetCampingPlaceTypes();
+            e.UpdateCollection(this.CampingPlaceTypes);
             this.ResetInput();
         }
 
-        private void SetCampingPlaceTypes()
+        /// <summary>
+        /// Sets the available camping place types. Calling this method should be avoided, because this is a heavy
+        /// method.
+        /// </summary>
+        private void InitializeCampingPlaceTypes()
         {
             this.CampingPlaceTypes.Clear();
             foreach (var campingPlaceType in this.GetCampingPlaceTypes())
