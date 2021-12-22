@@ -321,11 +321,13 @@ namespace ViewModel
 
         private void ResetInput()
         {
-            this.SelectedAccommodation = SelectAll;
-            this.CheckInDate = DateTime.Today;
-            this.CheckOutDate = DateTime.Today.AddDays(1);
-            this.MinNightPrice = "";
-            this.MaxNightPrice = "";
+            this._selectedAccommodation = SelectAll;
+            this._checkInDate = DateTime.Today;
+            this._checkOutDate = DateTime.Today.AddDays(1);
+            this._minNightPrice = "";
+            this._maxNightPrice = "";
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion
