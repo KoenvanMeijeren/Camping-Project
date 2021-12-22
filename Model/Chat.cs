@@ -25,7 +25,8 @@ namespace Model
             ColumnLastMessageSeenOwner = "OwnerLastSeen",
             ColumnLastMessageSeenCustomer = "CustomerLastSeen",
             ColumnCustomerStatus = "CustomerStatus",
-            ColumnOwnerStatus = "OwnerStatus";
+            ColumnOwnerStatus = "OwnerStatus",
+            ColumnIsSolved = "IsSolved";
 
         public Account Owner { get; private set; }
         public Account Customer { get; private set; }
