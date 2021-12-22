@@ -113,7 +113,7 @@ namespace ViewModel
                 
                 this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
                 
-                this.SetAvailableCampingPlaces();
+                this.InitializeAvailableCampingPlaces();
             }
         }
 
@@ -130,7 +130,7 @@ namespace ViewModel
                 this._checkOutDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
                 
-                this.SetAvailableCampingPlaces();
+                this.InitializeAvailableCampingPlaces();
             }
         }
 
@@ -148,18 +148,21 @@ namespace ViewModel
         public ManageReservationViewModel()
         {
             this.CampingPlaces = new ObservableCollection<CampingPlace>();
-            this.SetAvailableCampingPlaces();
+            this.InitializeAvailableCampingPlaces();
 
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
             ManageCampingMapViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
         }
 
-        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object? sender, EventArgs e)
+        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object sender, UpdateModelEventArgs<CampingPlace> e)
         {
-            this.SetAvailableCampingPlaces();
+            e.UpdateCollection(this.CampingPlaces);
         }
 
-        private void SetAvailableCampingPlaces()
+        /// <summary>
+        /// Sets the available camping places. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
+        private void InitializeAvailableCampingPlaces()
         {
             var selectedCampingPlace = this.SelectedCampingPlace;
             
@@ -221,22 +224,18 @@ namespace ViewModel
             MessageBox.Show(context, caption, MessageBoxButton.OK);
 
             //update page?
-            ExecuteGoToDashBoard();
+            this.GoBackToDashboard.Execute(null);
         }
-        private bool CanExecuteUpdateReservation()
-        {
-            return true;
-        }
-        public ICommand UpdateReservation => new RelayCommand(ExecuteUpdateReservation, CanExecuteUpdateReservation);
         
+        public ICommand UpdateReservation => new RelayCommand(ExecuteUpdateReservation);
 
         /// <summary>
         /// This method fires event to go to (an updated) the dashboard page.
         /// </summary>
         private void ExecuteGoToDashBoard()
         {
-            UpdateReservationCollection?.Invoke(this, new ReservationEventArgs(this._reservation));
-            FromReservationBackToDashboardEvent?.Invoke(this, new ReservationEventArgs(_reservation));
+            ManageReservationViewModel.UpdateReservationCollection?.Invoke(this, new ReservationEventArgs(this._reservation));
+            ManageReservationViewModel.FromReservationBackToDashboardEvent?.Invoke(this, new ReservationEventArgs(_reservation));
         }
 
         public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard);
@@ -282,12 +281,7 @@ namespace ViewModel
             this.ExecuteGoToDashBoard();
         }
 
-        private bool CanExecuteDeleteReservation()
-        {
-            //Is it possible to check this execution?
-            return true;
-        }
-        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation, CanExecuteDeleteReservation);
+        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation);
 
         #endregion
 

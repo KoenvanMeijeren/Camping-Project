@@ -10,6 +10,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using SystemCore;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {
@@ -184,7 +185,7 @@ namespace ViewModel
         
         #region Events
 
-        public static event EventHandler CampingPlaceTypesUpdated;
+        public static event EventHandler<UpdateModelEventArgs<CampingPlaceType>> CampingPlaceTypesUpdated;
 
         #endregion
 
@@ -194,18 +195,27 @@ namespace ViewModel
         {
             this.EditTitle = "Campingplaatstype toevoegen";
          
-            this.SetAccommodations();
-            this.SetCampingPlaceTypes();
+            this.InitializeAccommodations();
+            this.InitializeCampingPlaceTypes();
             
             ManageAccommodationViewModel.AccommodationsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated += ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated;
         }
 
-        private void ManageAccommodationViewModelOnAccommodationsUpdated(object? sender, EventArgs e)
+        private void ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated(object sender, UpdateModelEventArgs<CampingPlaceType> e)
         {
-            this.SetAccommodations();
+            e.UpdateCollection(this.CampingPlaceTypes);
         }
 
-        private void SetAccommodations()
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
+        {
+            e.UpdateCollection(this.Accommodations);
+        }
+
+        /// <summary>
+        /// Sets the available accommodations. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
+        private void InitializeAccommodations()
         {
             this.Accommodations.Clear();
             foreach (var accommodation in this.GetAccommodations())
@@ -214,7 +224,11 @@ namespace ViewModel
             }
         }
 
-        private void SetCampingPlaceTypes()
+        /// <summary>
+        /// Sets the available camping place types. Calling this method should be avoided, because this is a heavy
+        /// method.
+        /// </summary>
+        private void InitializeCampingPlaceTypes()
         {
             this.CampingPlaceTypes.Clear();
             foreach (var campingPlaceType in this.GetCampingPlaceTypes())
@@ -270,17 +284,16 @@ namespace ViewModel
                 CampingPlaceType campingPlaceType = new CampingPlaceType(this.GuestLimit, this.StandardNightPrice, this.SelectedAccommodation);
                 campingPlaceType.Insert();
                 
-                this.CampingPlaceTypes.Add(campingPlaceType);
+                ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated?.Invoke(this, new UpdateModelEventArgs<CampingPlaceType>(campingPlaceType.SelectLast(), true, false));
             }
             else
             {
                 this.SelectedCampingPlaceType.Update(this.GuestLimit, this.StandardNightPrice, this.SelectedAccommodation);
+                
+                ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated?.Invoke(this, new UpdateModelEventArgs<CampingPlaceType>(this.SelectedCampingPlaceType, false, false));
             }
             
-            this.SetCampingPlaceTypes();
             this.ResetInput();
-            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated?.Invoke(this, EventArgs.Empty);
-
             MessageBox.Show("De campingplaatstypes zijn succesvol bijgewerkt.", "Campingplaatstype bewerken");
         }
         private bool CanExecuteEditSave()
@@ -301,12 +314,10 @@ namespace ViewModel
             {
                 return;
             }
-            
-            this.SelectedCampingPlaceType.Delete();
-            this.CampingPlaceTypes.Remove(this.SelectedCampingPlaceType);
-            this.SelectedCampingPlaceType = null;
-            
-            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated?.Invoke(this, EventArgs.Empty);
+
+            var campingPlaceType = this.SelectedCampingPlaceType;
+            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated?.Invoke(this, new UpdateModelEventArgs<CampingPlaceType>(campingPlaceType, false, true));
+            campingPlaceType.Delete();
         }
         private bool CanExecuteDelete()
         {
