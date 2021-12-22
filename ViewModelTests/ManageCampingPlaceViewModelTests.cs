@@ -65,6 +65,7 @@ namespace ViewModelTests
         public void TestSelectedCampingPlace()
         {
             this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel = new CampingMapItemViewModel(this._campingPlaces.First());
+            this._manageCampingPlaceViewModel.Object.FillFields(this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel.CampingPlace);
             
             Assert.AreEqual("Campingplaats CA-1 bewerken", this._manageCampingPlaceViewModel.Object.EditTitle);
             Assert.AreEqual("1", this._manageCampingPlaceViewModel.Object.Number);
@@ -79,7 +80,9 @@ namespace ViewModelTests
         public void TestDeselectedCampingPlace()
         {
             this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel = new CampingMapItemViewModel(this._campingPlaces.First());
+            this._manageCampingPlaceViewModel.Object.FillFields(this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel.CampingPlace);
             this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel = null;
+            this._manageCampingPlaceViewModel.Object.FillFields(null);
             
             Assert.AreEqual("Campingplaats toevoegen", this._manageCampingPlaceViewModel.Object.EditTitle);
             Assert.IsEmpty(this._manageCampingPlaceViewModel.Object.Number);
@@ -94,7 +97,9 @@ namespace ViewModelTests
         public void TestExecuteCancelAction()
         {
             this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel = new CampingMapItemViewModel(this._campingPlaces.First());
+            this._manageCampingPlaceViewModel.Object.FillFields(this._manageCampingPlaceViewModel.Object.SelectedCampingMapItemViewModel.CampingPlace);
             this._manageCampingPlaceViewModel.Object.CancelEditAction.Execute(null);
+            this._manageCampingPlaceViewModel.Object.FillFields(null);
             
             Assert.AreEqual("Campingplaats toevoegen", this._manageCampingPlaceViewModel.Object.EditTitle);
             Assert.IsEmpty(this._manageCampingPlaceViewModel.Object.Number);
