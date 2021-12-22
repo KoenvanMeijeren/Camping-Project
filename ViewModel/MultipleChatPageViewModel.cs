@@ -27,14 +27,6 @@ namespace ViewModel
             //TODO: fetch all chats from database
             Chat chat = new Chat();
             this.Chats = new ObservableCollection<Chat>(chat.Select());
-
-            /*this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>("[]");
-
-            ChatMessages.Add(new MessageJSON("Message tekst", "1"));
-            ChatMessages.Add(new MessageJSON("Bericht terug", "0"));
-            ChatMessages.Add(new MessageJSON("Heen en weer", "1"));
-            ChatMessages.Add(new MessageJSON("Weer en heen", "0"));
-            var convertedJson = JsonConvert.SerializeObject(ChatMessages, Formatting.Indented);*/
         }
 
         /// <summary>

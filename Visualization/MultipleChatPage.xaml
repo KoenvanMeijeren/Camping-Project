@@ -24,7 +24,7 @@
                 <ListView Background="White" ItemsSource="{Binding Chats}" FontFamily="Century Gothic" FontWeight="Bold" Height="518">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="E-mail" Width="162" DisplayMemberBinding="{Binding Customer.Email}" />
+                            <GridViewColumn Width="162" DisplayMemberBinding="{Binding CustomerName}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
