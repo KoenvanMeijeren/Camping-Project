@@ -57,7 +57,7 @@
         <Label Content="Min&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="87,66,0,0" Height="25" Grid.Column="1"/>
         <Label Content="Max&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="87,92,0,0" Height="25" Grid.Column="1"/>
 
-        <Button Command="{Binding StartReservation}" Content="Reserveer" Margin="103,547,54,59"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Grid.Column="1" />
+        <Button Command="{Binding StartReservation}" Content="Reserveer" Margin="103,547,54,59"  Style="{StaticResource DefaultButtonTheme}" Grid.Column="1" />
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="490,29,190,506" CornerRadius="15,15,15,15" Background="White" Grid.ColumnSpan="2" Width="140">
             <Label Content="Personen" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Margin="10,9,0,0"/>
         </Border>

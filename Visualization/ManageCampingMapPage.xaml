@@ -111,9 +111,9 @@
         
         <Label Content="Extra dagtarief" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="466,515,0,0" Height="25"/>
         <TextBox Text="{Binding ExtraNightPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="ExtraNightPriceTextBox" HorizontalAlignment="Left" Height="20" Margin="471,550,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
-        
-        <Button Command="{Binding Delete}" x:Name="DeleteButton" Content="Verwijder" Margin="613,364,67,238"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
-        <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Opslaan" Margin="613,500,67,100"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
-        <Button Command="{Binding CancelEditAction}" x:Name="Cancel" Content="Annuleer" Margin="613,545,67,55"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+
+        <Button Command="{Binding Delete}" x:Name="DeleteButton" Content="Verwijder" Margin="613,364,67,238"  Style="{StaticResource DefaultButtonTheme}"/>
+        <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Opslaan" Margin="613,500,67,100"  Style="{StaticResource DefaultButtonTheme}"/>
+        <Button Command="{Binding CancelEditAction}" x:Name="Cancel" Content="Annuleer" Margin="613,545,67,55"  Style="{StaticResource DefaultButtonTheme}"/>
     </Grid>
 </Page>

@@ -20,11 +20,11 @@
                 <RadioButton x:Name="OverviewMenuButton" Content="Overzicht" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="OverviewMenuButton_Checked"/>
                 <RadioButton x:Name="ReserveMapMenuButton" Content="Reserveren" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ReserveMapMenuButton_Checked"/>
 
-                <RadioButton x:Name="ManageButton" Content="Beheer ⮟" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ManageButton_Checked" Unchecked="ManageButton_Unchecked"/>
-                <RadioButton x:Name="ManageCampingMapMenuButton" Content="Campingplaatsen" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageCampingMapMenuButton_Checked" Unchecked="ManageButton_Unchecked"/>
-                <RadioButton x:Name="ManageCampingPlaceTypeButton" Content="Campingplaatstypes" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageCampingPlaceTypesButton_Checked" Unchecked="ManageButton_Unchecked"/>
-                <RadioButton x:Name="ManageAccommodationsButton" Content="Accommodaties" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageAccommodationsButton_Checked" Unchecked="ManageButton_Unchecked"/>
-                <RadioButton x:Name="ManageCampingCustomerButton" Content="Campingklanten" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageCampingCustomersMenuButton_Checked" Unchecked="ManageButton_Unchecked"/>
+                <RadioButton x:Name="ManageButton" Content="Beheer ⮟" Height="50" Style="{StaticResource MenuButtonTheme}" Click="ManageButton_Clicked"/>
+                <RadioButton x:Name="ManageCampingMapMenuButton" Content="Campingplaatsen" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageCampingMapMenuButton_Checked"/>
+                <RadioButton x:Name="ManageCampingPlaceTypeButton" Content="Campingplaatstypes" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageCampingPlaceTypesButton_Checked"/>
+                <RadioButton x:Name="ManageAccommodationsButton" Content="Accommodaties" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageAccommodationsButton_Checked"/>
+                <RadioButton x:Name="ManageCampingCustomerButton" Content="Campingklanten" Height="40" Style="{StaticResource DropdownButtonTheme}" Checked="ManageCampingCustomersMenuButton_Checked"/>
 
                 <RadioButton x:Name="AccountMenuButton" Content="Account" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="AccountMenuButton_Checked"/>
                 <RadioButton x:Name="ContactMenuButton" Content="Contact" Height="50" Style="{StaticResource MenuButtonTheme}" Checked="ContactMenuButton_Checked"/>
