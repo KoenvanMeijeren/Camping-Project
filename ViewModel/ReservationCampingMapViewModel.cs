@@ -254,6 +254,25 @@ namespace ViewModel
             this.FilterOverview();
         }
 
+        protected override void SetCampingPlacesToFields()
+        {
+            if (this.CampingFields == null || !this.CampingFields.Any())
+            {
+                this.InitializeInternalCampingFields();
+            }
+            
+            foreach (CampingMapItemViewModel campingField in this.CampingFields.Values)
+            {
+                var campingPlace = this.GetCampingPlaceByNumber(campingField);
+                if (campingPlace == null)
+                {
+                    continue;
+                }
+                
+                campingField.CampingPlace = campingPlace;
+            }
+        }
+
         private void FilterOverview()
         {
             if (this.CampingFields == null)

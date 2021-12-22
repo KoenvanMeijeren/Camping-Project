@@ -36,7 +36,7 @@
         <Label x:Name="EmailLabel" Content="Email*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="467,185,0,0" Height="25"/>
         <Label Content="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="EmailTextbox" HorizontalAlignment="Left" Height="32" Margin="469,212,0,0" VerticalAlignment="Top" Width="210" FontFamily="Century Gothic"/>
 
-        <Button Command="{Binding AddCustomerReservation}" Name="CustomerReservationConfirmButton" Content="Bevestig" Margin="472,469,138,129"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
+        <Button Command="{Binding AddCustomerReservation}" Name="CustomerReservationConfirmButton" Content="Bevestig" Margin="472,469,138,129"  Style="{StaticResource DefaultButtonTheme}" />
 
         <Label Content="{Binding CustomerReservationError}" x:Name="ErrorText"  HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="372,130,0,0" Height="25" Foreground="#FFD00000" HorizontalContentAlignment="Right" Width="310"/>
     </Grid>

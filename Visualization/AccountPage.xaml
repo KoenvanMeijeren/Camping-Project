@@ -23,8 +23,8 @@
         <Label Content="{Binding Street}" x:Name="UserStreetLabel"  HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,323,0,0" FontSize="14" Width="210" MaxWidth="210"/>
         <Label Content="{Binding Address}" x:Name="UserAdressLabel" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Normal" Margin="0,353,0,0" FontSize="14" Width="210" MaxWidth="210"/>
 
-        <Button Command="{Binding ToUpdate}" x:Name="ToUpdateButton" Content="Gegevens aanpassen" Margin="278,421,278,178"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
-        <Button Command="{Binding SignOut}" Name="SignOutButton" Content="Log uit" Margin="278,470,278,129"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
+        <Button Command="{Binding ToUpdate}" x:Name="ToUpdateButton" Content="Gegevens aanpassen" Margin="278,421,278,178" Style="{StaticResource DefaultButtonTheme}"/>
+        <Button Command="{Binding SignOut}" Name="SignOutButton" Content="Log uit" Margin="278,470,278,129" Style="{StaticResource DefaultButtonTheme}"/>
         
     </Grid>
 </Page>

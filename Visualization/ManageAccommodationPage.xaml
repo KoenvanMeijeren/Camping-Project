@@ -47,7 +47,7 @@
         <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="LocationNumberTextBox" HorizontalAlignment="Left" Height="20" Margin="195,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <TextBox Text="{Binding Prefix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="53,532,0,0" HorizontalAlignment="Left" Height="20" Width="96" VerticalAlignment="Top" TextWrapping="Wrap" Visibility="Visible" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black" />
 
-        <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Opslaan" Margin="613,476,67,125"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
-        <Button Command="{Binding CancelEditAction}" x:Name="Cancel" Content="Annuleer" Margin="613,521,67,80"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+        <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Opslaan" Margin="613,476,67,125" Style="{StaticResource DefaultButtonTheme}"/>
+        <Button Command="{Binding CancelEditAction}" x:Name="Cancel" Content="Annuleer" Margin="613,521,67,80" Style="{StaticResource DefaultButtonTheme}"/>
     </Grid>
 </Page>

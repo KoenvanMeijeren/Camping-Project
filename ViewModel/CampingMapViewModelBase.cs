@@ -462,7 +462,7 @@ namespace ViewModel
             };
         }
 
-        protected void SetCampingPlacesToFields()
+        protected virtual void SetCampingPlacesToFields()
         {
             if (this.CampingFields == null || !this.CampingFields.Any())
             {
