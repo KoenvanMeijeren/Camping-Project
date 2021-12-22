@@ -60,21 +60,28 @@ namespace ViewModel
             // Automatically updating chat
             while (true)
             {
+                // Fetch the messages from the database
                 string GetChatMessages = ChatConversation.GetChatMessagesForCampingGuest(CurrentUser.CampingCustomer.Account);
+                // Convert database JSON value to List<MesssageJson>
                 List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
 
                 // Check if the current chat does NOT match with chats in database (aka new message)
                 if (!this.ChatMessages.Count.Equals(GetChatMessagesToList.Count))
                 {
+                    // Calculate the amount of new messages
                     int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - this.ChatMessages.Count;
+
+                    // Loop from first new message, to last new message
                     for (int i = this.ChatMessages.Count; i < GetChatMessagesToList.Count; i++)
                     {
                         MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
                         this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
                     }
+                    // Overwrite the old list with messages to the full new list with messages
                     this.ChatMessages = GetChatMessagesToList;
                 }
 
+                // Async wait before executing this again
                 await Task.Delay(_refreshRateInMilliseconds);
             }
         }
