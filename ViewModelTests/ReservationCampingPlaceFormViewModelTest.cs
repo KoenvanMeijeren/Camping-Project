@@ -31,12 +31,12 @@ namespace ViewModelTests
 
             this._campingPlaceList = new List<CampingPlace>
             {
-                new CampingPlace("3", "1", "80", "0", new CampingPlaceType("5", "40", new Accommodation("CR", "Caravan"))),
-                new CampingPlace("4", "1", "80", "30", new CampingPlaceType("2", "80", new Accommodation("CH", "Chalet"))),
-                new CampingPlace("5", "2", "80", "30", new CampingPlaceType("10", "80", new Accommodation("CH", "Chalet"))),
-                new CampingPlace("6", "1", "80", "10", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper"))),
-                new CampingPlace("7", "2", "80", "10", new CampingPlaceType("1", "50", new Accommodation("CA", "Camper"))),
-                new CampingPlace("8", "3", "80", "0", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper")))
+                new CampingPlace("3", "1", "80", "0", new CampingPlaceType("1","5", "40", new Accommodation("CR", "Caravan"))),
+                new CampingPlace("4", "1", "80", "30", new CampingPlaceType("2","2", "80", new Accommodation("CH", "Chalet"))),
+                new CampingPlace("5", "2", "80", "30", new CampingPlaceType("2","10", "80", new Accommodation("CH", "Chalet"))),
+                new CampingPlace("6", "1", "80", "10", new CampingPlaceType("3","2", "50", new Accommodation("CA", "Camper"))),
+                new CampingPlace("7", "2", "80", "10", new CampingPlaceType("3","1", "50", new Accommodation("CA", "Camper"))),
+                new CampingPlace("8", "3", "80", "0", new CampingPlaceType("3","2", "50", new Accommodation("CA", "Camper")))
             };
 
 
@@ -45,9 +45,9 @@ namespace ViewModelTests
             CampingPlace _selectedCampingPlace = new CampingPlace("15", "15", "80", "0", new CampingPlaceType("5", "40", new Accommodation("CA", "Caravan")));
             CampingCustomer campingCustomer = new CampingCustomer("1", account, address, "19/10/21", "testPhoneNumber", "testFirstName", "testLastName");
 
-            this._testCampingPlaceOne = new CampingPlace("3", "1", "80", "0", new CampingPlaceType("5", "40", new Accommodation("CR", "Caravan")));
-            this._testCampingPlaceTwo = new CampingPlace("5", "1", "80", "30", new CampingPlaceType("10", "80", new Accommodation("CH", "Chalet")));
-            this._testCampingPlaceThree = new CampingPlace("8", "2", "80", "0", new CampingPlaceType("2", "50", new Accommodation("CA", "Camper")));
+            this._testCampingPlaceOne = new CampingPlace("3", "1", "80", "0", new CampingPlaceType("1", "5", "40", new Accommodation("CR", "Caravan")));
+            this._testCampingPlaceTwo = new CampingPlace("5", "2", "80", "30", new CampingPlaceType("2", "10", "80", new Accommodation("CH", "Chalet")));
+            this._testCampingPlaceThree = new CampingPlace("8", "3", "80", "0", new CampingPlaceType("3", "2", "50", new Accommodation("CA", "Camper")));
 
 
 
@@ -57,8 +57,9 @@ namespace ViewModelTests
             _reservations.Add(new Reservation("2", campingCustomer, this._testCampingPlaceThree, this._checkInDate.ToString(CultureInfo.InvariantCulture), this._checkOutDate.ToString(CultureInfo.InvariantCulture)));
           
       
-            this._campingPlacesMock.Setup(x => x.GetCampingPlaces()).Returns(this._campingPlaceList);
+            this._campingPlacesMock.Setup(x => x.GetFilteredCampingPlaces()).Returns(this._campingPlaceList);
             this._campingPlacesMock.Setup(x => x.GetReservations()).Returns(this._reservations);
+            this._campingPlacesMock.Setup(x => x.GetCampingplaces()).Returns(this._campingPlaceList);
             this._campingPlacesMock.Object.SelectedAccommodation = ReservationCampingPlaceFormViewModel.SelectAll;
             this._campingPlacesMock.Object.MinNightPrice = "0";
             this._campingPlacesMock.Object.MaxNightPrice = "2000";
@@ -70,19 +71,35 @@ namespace ViewModelTests
         [Test]
         public void TestInitializeViewModel()
         {
-            var mockListFilterOnDate = this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList, this._checkInDate, this._checkOutDate);
-            var mockListGetCampingPlaces = this._campingPlacesMock.Object.GetCampingPlaces();
+            var mockListFilterOnDate = this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList);
+            var mockListGetCampingPlaces = this._campingPlacesMock.Object.GetFilteredCampingPlaces();
             var mockListGetReservations = this._campingPlacesMock.Object.GetReservations();
             string expectedSelectedPlaceType = ReservationCampingPlaceFormViewModel.SelectAll;
 
             Assert.AreEqual(this._campingPlacesMock.Object.SelectedAccommodation, expectedSelectedPlaceType);
             Assert.IsTrue(this._campingPlacesMock.Object.Accommodations.Any());
+            var list = ToFilteredOnReservedCampingPlaces(this._campingPlaceList);
+            Assert.IsTrue(list.Any());
             Assert.IsTrue(mockListFilterOnDate.Any());
             Assert.IsTrue(mockListGetCampingPlaces.Any());
             Assert.AreEqual(this._campingPlacesMock.Object.CheckInDate, DateTime.Today);
             Assert.AreEqual(this._campingPlacesMock.Object.CheckOutDate, DateTime.Today.AddDays(3));
-            Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Any());
-            
+            Assert.IsTrue(this._campingPlacesMock.Object.CampingPlaces.Any());            
+        }
+
+        public virtual IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> campingPlaceList)
+        {
+            var reservations = this._campingPlacesMock.Object.GetReservations();
+            // Removes reserved camping places from the list.
+            foreach (Reservation reservation in reservations)
+            {
+                if (reservation.CheckInDatetime.Date <= this._checkOutDate.Date && this._checkInDate.Date <= reservation.CheckOutDatetime.Date)
+                {
+                    campingPlaceList = campingPlaceList.Where(campingPlace => campingPlace.Id != reservation.CampingPlace.Id).ToList();
+                }
+            }
+
+            return campingPlaceList;
         }
 
         [Test]
@@ -141,7 +158,7 @@ namespace ViewModelTests
             //var testTwee = this._campingPlacesMock.Object.GetReservations();
             //var test = this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList, this._checkInDate, this._checkOutDate).Count();
             //-------------------------------------------------------------------------
-            Assert.AreEqual(0, this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList, this._checkInDate, this._checkOutDate).Count());
+            Assert.AreEqual(0, this._campingPlacesMock.Object.ToFilteredOnReservedCampingPlaces(this._campingPlaceList).Count());
         }
     }
 }

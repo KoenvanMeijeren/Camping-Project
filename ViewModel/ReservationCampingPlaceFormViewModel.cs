@@ -256,7 +256,7 @@ namespace ViewModel
                 && (!int.TryParse(this.MaxNightPrice, out int max) || campingPlace.TotalPrice <= max) 
                 && (!int.TryParse(this.Guests, out int guests) || campingPlace.Type.GuestLimit >= guests);
 
-            var campingPlaceItems = this.GetCampingPlaces().Where(CampingPlaceFilter);
+            var campingPlaceItems = this.GetFilteredCampingPlaces().Where(CampingPlaceFilter);
             foreach (CampingPlace item in campingPlaceItems)
             {
                 this.CampingPlaces.Add(item);
@@ -297,17 +297,23 @@ namespace ViewModel
         
         #region Database interaction
         
-        public virtual IEnumerable<CampingPlace> GetCampingPlaces()
+        public virtual IEnumerable<CampingPlace> GetFilteredCampingPlaces()
         {
-            return this.ToFilteredOnReservedCampingPlaces(this._campingPlaceModel.Select(), this.CheckInDate, this.CheckOutDate);
+            return this.ToFilteredOnReservedCampingPlaces(GetCampingplaces());
         }
 
-        public virtual IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> campingPlaceList, DateTime checkInDate, DateTime checkOutDate)
+        public virtual IEnumerable<CampingPlace> GetCampingplaces()
         {
+            return this._campingPlaceModel.Select();
+        }
+
+        public virtual IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> campingPlaceList)
+        {
+            var reservations = this.GetReservations();
             // Removes reserved camping places from the list.
-            foreach (Reservation reservation in this.GetReservations())
+            foreach (Reservation reservation in reservations)
             {
-                if (reservation.CheckInDatetime.Date <= checkOutDate.Date && checkInDate.Date <= reservation.CheckOutDatetime.Date)
+                if (reservation.CheckInDatetime.Date <= this.CheckOutDate.Date && this.CheckInDate.Date <= reservation.CheckOutDatetime.Date)
                 {
                     campingPlaceList = campingPlaceList.Where(campingPlace => campingPlace.Id != reservation.CampingPlace.Id).ToList();
                 }
