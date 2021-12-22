@@ -69,9 +69,11 @@ namespace ViewModel
 
         public MainWindowViewModel()
         {
-            this.Title = ConfigReader.GetSetting("Title");
-            this.Subtitle = ConfigReader.GetSetting("Subtitle");
-            this.SubSubtitle = ConfigReader.GetSetting("SubSubtitle");
+            this._title = ConfigReader.GetSetting("Title");
+            this._subtitle = ConfigReader.GetSetting("Subtitle");
+            this._subSubtitle = ConfigReader.GetSetting("SubSubtitle");
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
     }

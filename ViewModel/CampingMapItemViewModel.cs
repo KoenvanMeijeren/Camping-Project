@@ -77,16 +77,20 @@ namespace ViewModel
         
         public CampingMapItemViewModel(CampingPlace campingPlace)
         {
-            this.CampingPlace = campingPlace;
             this.LocationNumber = campingPlace.Number;
-            this.BackgroundColor = UnselectedColor;
+            this._backgroundColor = UnselectedColor;
+            
+            // Setting this property calls the on property changed event.
+            this.CampingPlace = campingPlace;
         }
 
         public CampingMapItemViewModel(int locationNumber, string backgroundColor, string imageResource)
         {
             this.LocationNumber = locationNumber;
-            this.BackgroundColor = backgroundColor;
             this.ImageResource = ComponentsFolder + imageResource;
+            
+            // Setting this property calls the on property changed event.
+            this.BackgroundColor = backgroundColor;
         }
 
         public void Update(CampingPlace campingPlace)

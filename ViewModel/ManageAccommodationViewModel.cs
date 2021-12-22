@@ -195,19 +195,23 @@ namespace ViewModel
                 return;
             }
 
-            this.EditTitle = $"Accommodatie {accommodation} bewerken";
+            this._editTitle = $"Accommodatie {accommodation} bewerken";
 
-            this.Prefix = accommodation.Prefix;
-            this.Name = accommodation.Name;
+            this._prefix = accommodation.Prefix;
+            this._name = accommodation.Name;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         private void ResetInput()
         {
-            this.EditTitle = "Accommodatie toevoegen";
-            this.SelectedAccommodation = null;
-            this.Prefix = string.Empty;
-            this.Name = string.Empty;
-            this.AccommodationError = string.Empty;
+            this._editTitle = "Accommodatie toevoegen";
+            this._selectedAccommodation = null;
+            this._prefix = string.Empty;
+            this._name = string.Empty;
+            this._accommodationError = string.Empty;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion
