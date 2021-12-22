@@ -19,28 +19,63 @@ namespace ViewModel
 {
     public class ReservationCampingMapViewModel : ObservableObject
     {
-        private Dictionary<int, CampingField> CampingFields;
-
         #region Fields
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
         private readonly Accommodation _accommodationModel = new Accommodation();
         private readonly Reservation _reservationModel = new Reservation();
 
-        public const string SelectAll = "Alle";
-
-        public const string ColorAvailable = "#FF68C948";
-        public const string ColorFilteredOut = "#4D4D4D";
-        public const string ColorReserved = "#C1272D";
+        public const string 
+            SelectAll = "Alle",
+            ColorAvailable = "#FF68C948",
+            ColorFilteredOut = "#4D4D4D",
+            ColorReserved = "#C1272D";
 
         private readonly ObservableCollection<string> _accommodations;
 
         private DateTime _checkOutDate, _checkInDate;
         private string _minNightPrice, _maxNightPrice, _selectedAccommodation, _guests;
 
-        public static event EventHandler<ReservationDurationEventArgs> ReserveEvent;
+        private CampingMapItemViewModel
+            _campingField1,
+            _campingField2,
+            _campingField3,
+            _campingField4,
+            _campingField5,
+            _campingField6,
+            _campingField7,
+            _campingField8,
+            _campingField9,
+            _campingField10,
+            _campingField11,
+            _campingField12,
+            _campingField13,
+            _campingField14,
+            _campingField15,
+            _campingField16,
+            _campingField17,
+            _campingField18,
+            _campingField19,
+            _campingField20,
+            _campingField21,
+            _campingField22,
+            _campingField23,
+            _campingField24,
+            _campingField25,
+            _campingField26,
+            _campingField27,
+            _campingField28,
+            _campingField29,
+            _campingField30,
+            _campingField31,
+            _campingField32,
+            _campingField33,
+            _campingField34;
         #endregion
-
+        
         #region Properties
+        
+        public Dictionary<int, CampingMapItemViewModel> CampingFields { get; private set; }
+        
         public string MinNightPrice
         {
             get => this._minNightPrice;
@@ -168,49 +203,8 @@ namespace ViewModel
                 this.FilterFields();
             }
         }
-        #endregion
 
-        #region CampingField Fields
-
-        private CampingField
-        _campingField1,
-        _campingField2,
-        _campingField3,
-        _campingField4,
-        _campingField5,
-        _campingField6,
-        _campingField7,
-        _campingField8,
-        _campingField9,
-        _campingField10,
-        _campingField11,
-        _campingField12,
-        _campingField13,
-        _campingField14,
-        _campingField15,
-        _campingField16,
-        _campingField17,
-        _campingField18,
-        _campingField19,
-        _campingField20,
-        _campingField21,
-        _campingField22,
-        _campingField23,
-        _campingField24,
-        _campingField25,
-        _campingField26,
-        _campingField27,
-        _campingField28,
-        _campingField29,
-        _campingField30,
-        _campingField31,
-        _campingField32,
-        _campingField33,
-        _campingField34;
-        #endregion
-
-        #region CampingField Properties
-        public CampingField CampingField1
+        public CampingMapItemViewModel CampingField1
         {
             get => this._campingField1;
             set
@@ -220,7 +214,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField2
+        public CampingMapItemViewModel CampingField2
         {
             get => this._campingField2;
             set
@@ -230,7 +224,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField3
+        public CampingMapItemViewModel CampingField3
         {
             get => this._campingField3;
             set
@@ -240,7 +234,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField4
+        public CampingMapItemViewModel CampingField4
         {
             get => this._campingField4;
             set
@@ -250,7 +244,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField5
+        public CampingMapItemViewModel CampingField5
         {
             get => this._campingField5;
             set
@@ -260,7 +254,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField6
+        public CampingMapItemViewModel CampingField6
         {
             get => this._campingField6;
             set
@@ -270,7 +264,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField7
+        public CampingMapItemViewModel CampingField7
         {
             get => this._campingField7;
             set
@@ -280,7 +274,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField8
+        public CampingMapItemViewModel CampingField8
         {
             get => this._campingField8;
             set
@@ -290,7 +284,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField9
+        public CampingMapItemViewModel CampingField9
         {
             get => this._campingField9;
             set
@@ -300,7 +294,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField10
+        public CampingMapItemViewModel CampingField10
         {
             get => this._campingField10;
             set
@@ -310,7 +304,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField11
+        public CampingMapItemViewModel CampingField11
         {
             get => this._campingField11;
             set
@@ -320,7 +314,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField12
+        public CampingMapItemViewModel CampingField12
         {
             get => this._campingField12;
             set
@@ -330,7 +324,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField13
+        public CampingMapItemViewModel CampingField13
         {
             get => this._campingField13;
             set
@@ -340,7 +334,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField14
+        public CampingMapItemViewModel CampingField14
         {
             get => this._campingField14;
             set
@@ -350,7 +344,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField15
+        public CampingMapItemViewModel CampingField15
         {
             get => this._campingField15;
             set
@@ -360,7 +354,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField16
+        public CampingMapItemViewModel CampingField16
         {
             get => this._campingField16;
             set
@@ -370,7 +364,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField17
+        public CampingMapItemViewModel CampingField17
         {
             get => this._campingField17;
             set
@@ -380,7 +374,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField18
+        public CampingMapItemViewModel CampingField18
         {
             get => this._campingField18;
             set
@@ -390,7 +384,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField19
+        public CampingMapItemViewModel CampingField19
         {
             get => this._campingField19;
             set
@@ -400,7 +394,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField20
+        public CampingMapItemViewModel CampingField20
         {
             get => this._campingField20;
             set
@@ -410,7 +404,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField21
+        public CampingMapItemViewModel CampingField21
         {
             get => this._campingField21;
             set
@@ -420,7 +414,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField22
+        public CampingMapItemViewModel CampingField22
         {
             get => this._campingField22;
             set
@@ -430,7 +424,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField23
+        public CampingMapItemViewModel CampingField23
         {
             get => this._campingField23;
             set
@@ -440,7 +434,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField24
+        public CampingMapItemViewModel CampingField24
         {
             get => this._campingField24;
             set
@@ -450,7 +444,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField25
+        public CampingMapItemViewModel CampingField25
         {
             get => this._campingField25;
             set
@@ -460,7 +454,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField26
+        public CampingMapItemViewModel CampingField26
         {
             get => this._campingField26;
             set
@@ -470,7 +464,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField27
+        public CampingMapItemViewModel CampingField27
         {
             get => this._campingField27;
             set
@@ -480,7 +474,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField28
+        public CampingMapItemViewModel CampingField28
         {
             get => this._campingField28;
             set
@@ -490,7 +484,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField29
+        public CampingMapItemViewModel CampingField29
         {
             get => this._campingField29;
             set
@@ -500,7 +494,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField30
+        public CampingMapItemViewModel CampingField30
         {
             get => this._campingField30;
             set
@@ -510,7 +504,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField31
+        public CampingMapItemViewModel CampingField31
         {
             get => this._campingField31;
             set
@@ -520,7 +514,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField32
+        public CampingMapItemViewModel CampingField32
         {
             get => this._campingField32;
             set
@@ -530,7 +524,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField33
+        public CampingMapItemViewModel CampingField33
         {
             get => this._campingField33;
             set
@@ -540,7 +534,7 @@ namespace ViewModel
             }
         }
 
-        public CampingField CampingField34
+        public CampingMapItemViewModel CampingField34
         {
             get => this._campingField34;
             set
@@ -551,20 +545,12 @@ namespace ViewModel
         }
         #endregion
 
-        #region Graphics
+        #region Events
 
-        private const string
-            ComponentsFolder = "/MapComponents/",
-            AddButtonImage = "CampingFieldImage-Add.png",
-            BungalowImage = "CampingFieldImage-Bungalow.png",
-            CamperImage = "CampingFieldImage-Camper.png",
-            CaravanImage = "CampingFieldImage-Caravan.png",
-            ChaletImage = "CampingFieldImage-Chalet.png",
-            TentImage = "CampingFieldImage-Tent.png",
-            UnknownImage = "CampingFieldImage-Unknown.png";
+        public static event EventHandler<ReservationDurationEventArgs> ReserveEvent;
 
         #endregion
-
+        
         #region View construction
 
         public ReservationCampingMapViewModel()
@@ -579,7 +565,7 @@ namespace ViewModel
             this.CheckOutDate = DateTime.Today.AddDays(1);
 
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.ReservationCampingGuestViewModelOnReservationConfirmedEvent;
-            ManageCampingPlaceViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
+            ManageCampingMapViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
             ManageAccommodationViewModel.AccommodationsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
         }
 
@@ -601,42 +587,42 @@ namespace ViewModel
 
         private void FillCampingFields()
         {
-            this.CampingFields = new Dictionary<int, CampingField>
+            this.CampingFields = new Dictionary<int, CampingMapItemViewModel>
             {
-                {1, this.CampingField1 = new CampingField(1, ColorAvailable, null)},
-                {2, this.CampingField2 = new CampingField(2, ColorAvailable, null)},
-                {3, this.CampingField3 = new CampingField(3, ColorAvailable, null)},
-                {4, this.CampingField4 = new CampingField(4, ColorAvailable, null)},
-                {5, this.CampingField5 = new CampingField(5, ColorAvailable, null)},
-                {6, this.CampingField6 = new CampingField(6, ColorAvailable, null)},
-                {7, this.CampingField7 = new CampingField(7, ColorAvailable, null)},
-                {8, this.CampingField8 = new CampingField(8, ColorAvailable, null)},
-                {9, this.CampingField9 = new CampingField(9, ColorAvailable, null)},
-                {10, this.CampingField10 = new CampingField(10, ColorAvailable, null)},
-                {11, this.CampingField11 = new CampingField(11, ColorAvailable, null)},
-                {12, this.CampingField12 = new CampingField(12, ColorAvailable, null)},
-                {13, this.CampingField13 = new CampingField(13, ColorAvailable, null)},
-                {14, this.CampingField14 = new CampingField(14, ColorAvailable, null)},
-                {15, this.CampingField15 = new CampingField(15, ColorAvailable, null)},
-                {16, this.CampingField16 = new CampingField(16, ColorAvailable, null)},
-                {17, this.CampingField17 = new CampingField(17, ColorAvailable, null)},
-                {18, this.CampingField18 = new CampingField(18, ColorAvailable, null)},
-                {19, this.CampingField19 = new CampingField(19, ColorAvailable, null)},
-                {20, this.CampingField20 = new CampingField(20, ColorAvailable, null)},
-                {21, this.CampingField21 = new CampingField(21, ColorAvailable, null)},
-                {22, this.CampingField22 = new CampingField(22, ColorAvailable, null)},
-                {23, this.CampingField23 = new CampingField(23, ColorAvailable, null)},
-                {24, this.CampingField24 = new CampingField(24, ColorAvailable, null)},
-                {25, this.CampingField25 = new CampingField(25, ColorAvailable, null)},
-                {26, this.CampingField26 = new CampingField(26, ColorAvailable, null)},
-                {27, this.CampingField27 = new CampingField(27, ColorAvailable, null)},
-                {28, this.CampingField28 = new CampingField(28, ColorAvailable, null)},
-                {29, this.CampingField29 = new CampingField(29, ColorAvailable, null)},
-                {30, this.CampingField30 = new CampingField(30, ColorAvailable, null)},
-                {31, this.CampingField31 = new CampingField(31, ColorAvailable, null)},
-                {32, this.CampingField32 = new CampingField(32, ColorAvailable, null)},
-                {33, this.CampingField33 = new CampingField(33, ColorAvailable, null)},
-                {34, this.CampingField34 = new CampingField(34, ColorAvailable, null)}
+                {1, this.CampingField1 = new CampingMapItemViewModel(1, ColorAvailable, null)},
+                {2, this.CampingField2 = new CampingMapItemViewModel(2, ColorAvailable, null)},
+                {3, this.CampingField3 = new CampingMapItemViewModel(3, ColorAvailable, null)},
+                {4, this.CampingField4 = new CampingMapItemViewModel(4, ColorAvailable, null)},
+                {5, this.CampingField5 = new CampingMapItemViewModel(5, ColorAvailable, null)},
+                {6, this.CampingField6 = new CampingMapItemViewModel(6, ColorAvailable, null)},
+                {7, this.CampingField7 = new CampingMapItemViewModel(7, ColorAvailable, null)},
+                {8, this.CampingField8 = new CampingMapItemViewModel(8, ColorAvailable, null)},
+                {9, this.CampingField9 = new CampingMapItemViewModel(9, ColorAvailable, null)},
+                {10, this.CampingField10 = new CampingMapItemViewModel(10, ColorAvailable, null)},
+                {11, this.CampingField11 = new CampingMapItemViewModel(11, ColorAvailable, null)},
+                {12, this.CampingField12 = new CampingMapItemViewModel(12, ColorAvailable, null)},
+                {13, this.CampingField13 = new CampingMapItemViewModel(13, ColorAvailable, null)},
+                {14, this.CampingField14 = new CampingMapItemViewModel(14, ColorAvailable, null)},
+                {15, this.CampingField15 = new CampingMapItemViewModel(15, ColorAvailable, null)},
+                {16, this.CampingField16 = new CampingMapItemViewModel(16, ColorAvailable, null)},
+                {17, this.CampingField17 = new CampingMapItemViewModel(17, ColorAvailable, null)},
+                {18, this.CampingField18 = new CampingMapItemViewModel(18, ColorAvailable, null)},
+                {19, this.CampingField19 = new CampingMapItemViewModel(19, ColorAvailable, null)},
+                {20, this.CampingField20 = new CampingMapItemViewModel(20, ColorAvailable, null)},
+                {21, this.CampingField21 = new CampingMapItemViewModel(21, ColorAvailable, null)},
+                {22, this.CampingField22 = new CampingMapItemViewModel(22, ColorAvailable, null)},
+                {23, this.CampingField23 = new CampingMapItemViewModel(23, ColorAvailable, null)},
+                {24, this.CampingField24 = new CampingMapItemViewModel(24, ColorAvailable, null)},
+                {25, this.CampingField25 = new CampingMapItemViewModel(25, ColorAvailable, null)},
+                {26, this.CampingField26 = new CampingMapItemViewModel(26, ColorAvailable, null)},
+                {27, this.CampingField27 = new CampingMapItemViewModel(27, ColorAvailable, null)},
+                {28, this.CampingField28 = new CampingMapItemViewModel(28, ColorAvailable, null)},
+                {29, this.CampingField29 = new CampingMapItemViewModel(29, ColorAvailable, null)},
+                {30, this.CampingField30 = new CampingMapItemViewModel(30, ColorAvailable, null)},
+                {31, this.CampingField31 = new CampingMapItemViewModel(31, ColorAvailable, null)},
+                {32, this.CampingField32 = new CampingMapItemViewModel(32, ColorAvailable, null)},
+                {33, this.CampingField33 = new CampingMapItemViewModel(33, ColorAvailable, null)},
+                {34, this.CampingField34 = new CampingMapItemViewModel(34, ColorAvailable, null)}
             };
         }
 
@@ -655,15 +641,15 @@ namespace ViewModel
         {
             CampingPlace emptyCampingPlace = new CampingPlace();
 
-            foreach (CampingField campingField in this.CampingFields.Values)
+            foreach (CampingMapItemViewModel campingField in this.CampingFields.Values)
             {
                 var campingPlace = emptyCampingPlace.SelectByPlaceNumber(campingField.LocationNumber);
                 if (campingPlace != null)
                 {
-                    campingField.ImageResource = ComponentsFolder + GetCampingFieldImage(campingPlace.Type.Accommodation);
                     campingField.CampingPlace = campingPlace;
                 }
             }
+            
             this.FilterFields();
         }
 
@@ -680,7 +666,7 @@ namespace ViewModel
                 && (!int.TryParse(this.MaxNightPrice, out int max) || campingPlace.TotalPrice <= max)
                 && (!int.TryParse(this.Guests, out int guests) || campingPlace.Type.GuestLimit >= guests);
 
-            foreach (CampingField campingField in CampingFields.Values)
+            foreach (CampingMapItemViewModel campingField in CampingFields.Values)
             {
                 if (campingField.CampingPlace != null && CampingPlaceFilter(campingField.CampingPlace))
                 {
@@ -698,7 +684,7 @@ namespace ViewModel
 
         public void StartReservation(string selectedImage)
         {
-            CampingField selectedCampingField = this.GetSelectedCampingField(selectedImage);
+            CampingMapItemViewModel selectedCampingField = this.GetSelectedCampingField(selectedImage);
 
             if (selectedCampingField == null || selectedCampingField.BackgroundColor != ColorAvailable)
             {
@@ -709,9 +695,9 @@ namespace ViewModel
             this.ResetInput();
         }
 
-        public CampingField GetSelectedCampingField(string selectedImage)
+        public CampingMapItemViewModel GetSelectedCampingField(string selectedImage)
         {
-            CampingField selectedCampingField = selectedImage switch
+            CampingMapItemViewModel selectedCampingField = selectedImage switch
             {
                 "CampingFieldImage1" => this.CampingField1,
                 "CampingFieldImage2" => this.CampingField2,
@@ -752,21 +738,6 @@ namespace ViewModel
             return selectedCampingField;
         }
 
-
-            private static string GetCampingFieldImage(Accommodation accommodation)
-        {
-            return accommodation.Type switch
-            {
-                AccommodationTypes.Bungalow => BungalowImage,
-                AccommodationTypes.Camper => CamperImage,
-                AccommodationTypes.Caravan => CaravanImage,
-                AccommodationTypes.Chalet => ChaletImage,
-                AccommodationTypes.Tent => TentImage,
-                AccommodationTypes.Unknown => UnknownImage,
-                _ => UnknownImage
-            };
-        }
-
         #endregion
 
         #region Input
@@ -784,19 +755,21 @@ namespace ViewModel
 
         #region Database interaction
 
-        public virtual void FilterOnReserved()
+        private void FilterOnReserved()
         {
             // Removes reserved camping places from the list.
             foreach (Reservation reservation in this.GetReservations())
             {
-                if (reservation.CheckInDatetime.Date <= CheckOutDate.Date && CheckInDate.Date <= reservation.CheckOutDatetime.Date)
+                if (reservation.CheckInDatetime.Date > CheckOutDate.Date || CheckInDate.Date > reservation.CheckOutDatetime.Date)
                 {
-                    foreach (CampingField campingField in CampingFields.Values)
+                    continue;
+                }
+                
+                foreach (CampingMapItemViewModel campingField in CampingFields.Values)
+                {
+                    if (campingField.CampingPlace != null && campingField.CampingPlace.Id == reservation.CampingPlace.Id && campingField.BackgroundColor == ColorAvailable)
                     {
-                        if (campingField.CampingPlace != null && campingField.CampingPlace.Id == reservation.CampingPlace.Id && campingField.BackgroundColor == ColorAvailable)
-                        {
-                            campingField.BackgroundColor = ColorReserved;
-                        }
+                        campingField.BackgroundColor = ColorReserved;
                     }
                 }
             }

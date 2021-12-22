@@ -18,7 +18,6 @@ namespace Visualization
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
         private readonly ReservationCampingGuestPage _reservationCampingGuestPage;
         private readonly AccountPage _accountPage;
-        private readonly ManageCampingPlacePage _manageCampingPlacePage;
         private readonly ManageCampingMapPage _manageCampingMapPage;
         private readonly ManageCampingCustomerPage _manageCampingCustomerPage;
 
@@ -42,7 +41,6 @@ namespace Visualization
             this._reservationConfirmedPage = new ReservationConfirmedPage();
             this._reservationCampingGuestPage = new ReservationCampingGuestPage();
             this._accountPage = new AccountPage();
-            this._manageCampingPlacePage = new ManageCampingPlacePage();
             this._manageCampingMapPage = new ManageCampingMapPage();
             this._manageCampingCustomerPage = new ManageCampingCustomerPage();
             this._signInPage = new SignInPage();
@@ -79,7 +77,6 @@ namespace Visualization
             this.ContactMenuButton.Visibility = Visibility.Collapsed;
             this.ManageButton.Visibility = Visibility.Collapsed;
             this.ManageCampingMapMenuButton.Visibility = Visibility.Collapsed;
-            this.ManageCampingPlaceButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceTypeButton.Visibility = Visibility.Collapsed;
             this.ManageAccommodationsButton.Visibility = Visibility.Collapsed;
             this.ManageCampingCustomerButton.Visibility = Visibility.Collapsed;
@@ -141,7 +138,6 @@ namespace Visualization
             this.ContactMenuButton.Visibility = Visibility.Collapsed;
             this.ManageButton.Visibility = Visibility.Collapsed;
             this.ManageCampingMapMenuButton.Visibility = Visibility.Collapsed;
-            this.ManageCampingPlaceButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceTypeButton.Visibility = Visibility.Collapsed;
             this.ManageAccommodationsButton.Visibility = Visibility.Collapsed;
             this.ManageCampingCustomerButton.Visibility = Visibility.Collapsed;
@@ -177,11 +173,6 @@ namespace Visualization
         private void AccountMenuButton_Checked(object sender, RoutedEventArgs e)
         {
             this.MainFrame.Content = this._accountPage;
-        }
-
-        private void ManageCampingPlacesButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._manageCampingPlacePage;
         }
         
         private void ManageCampingPlaceTypesButton_Checked(object sender, RoutedEventArgs e)
@@ -254,7 +245,6 @@ namespace Visualization
             this.ManageButton.Content = "Beheer ⮝";
 
             this.ManageCampingMapMenuButton.Visibility = Visibility.Visible;
-            this.ManageCampingPlaceButton.Visibility = Visibility.Visible;
             this.ManageCampingPlaceTypeButton.Visibility = Visibility.Visible;
             this.ManageAccommodationsButton.Visibility = Visibility.Visible;
             this.ManageCampingCustomerButton.Visibility = Visibility.Visible;
@@ -263,7 +253,6 @@ namespace Visualization
         private void ManageButton_Unchecked(object sender, RoutedEventArgs e)
         {
             if ((bool)this.ManageCampingMapMenuButton.IsChecked ||
-                (bool)this.ManageCampingPlaceButton.IsChecked ||
                 (bool)this.ManageCampingPlaceTypeButton.IsChecked ||
                 (bool)this.ManageAccommodationsButton.IsChecked ||
                 (bool)this.ManageCampingCustomerButton.IsChecked)
@@ -273,7 +262,6 @@ namespace Visualization
             this.ManageButton.Content = "Beheer ⮟";
 
             this.ManageCampingMapMenuButton.Visibility = Visibility.Collapsed;
-            this.ManageCampingPlaceButton.Visibility = Visibility.Collapsed;
             this.ManageCampingPlaceTypeButton.Visibility = Visibility.Collapsed;
             this.ManageAccommodationsButton.Visibility = Visibility.Collapsed;
             this.ManageCampingCustomerButton.Visibility = Visibility.Collapsed;

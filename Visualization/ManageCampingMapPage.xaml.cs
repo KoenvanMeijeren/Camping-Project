@@ -25,7 +25,7 @@ namespace Visualization
     {
         public ManageCampingMapPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void CampingFieldClicked(object sender, MouseButtonEventArgs e)
