@@ -1,5 +1,4 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,25 +13,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ViewModel;
-using ViewModel.EventArguments;
 
 namespace Visualization
 {
     /// <summary>
-    /// Interaction logic for ManageCampingMapPage.xaml
+    /// Interaction logic for ReservationCampingMapPage.xaml
     /// </summary>
-    public partial class ManageCampingMapPage : Page
+    public partial class ReservationCampingMapPage : Page
     {
-        public ManageCampingMapPage()
+        public ReservationCampingMapPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void CampingFieldClicked(object sender, MouseButtonEventArgs e)
         {
-            ManageCampingMapViewModel viewModel = (ManageCampingMapViewModel)this.DataContext;
+            ReservationCampingMapViewModel viewModel = (ReservationCampingMapViewModel)this.DataContext;
             string selectedImage = ((Image)sender).Name;
-            viewModel.SetSelectedCampingField(selectedImage);
+            viewModel.StartReservation(selectedImage);
         }
     }
 }

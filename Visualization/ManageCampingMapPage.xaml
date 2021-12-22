@@ -97,14 +97,23 @@
         <Image x:Name="CampingFieldImage33" HorizontalAlignment="Left" Height="46" Margin="39,213,0,0" VerticalAlignment="Top" Width="68" Stretch="Uniform" StretchDirection="Both" Source="{Binding CampingField33.ImageResource}" MouseLeftButtonDown="CampingFieldClicked"/>
         <Image x:Name="CampingFieldImage34" HorizontalAlignment="Left" Height="46" Margin="39,267,0,0" VerticalAlignment="Top" Width="68" Stretch="Uniform" StretchDirection="Both" Source="{Binding CampingField34.ImageResource}" MouseLeftButtonDown="CampingFieldClicked"/>
         
-        <Label Content="Campingplaats bewerken" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Margin="47,483,0,0" Height="34" RenderTransformOrigin="0.5,0.5" Width="211"/>
-        <Label Content="Verblijf" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="48,521,0,0" Height="25"/>
-        <ComboBox SelectedItem="{Binding SelectedCampingPlaceType}" ItemsSource="{Binding CampingPlaceTypes}" Margin="53,550,671,56" VerticalContentAlignment="Center" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White" />
-        <Label Content="Oppervlakte" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="206,521,0,0" Height="25"/>
-        <TextBox Text="{Binding Surface, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="SurfaceTextBox" HorizontalAlignment="Left" Height="20" Margin="211,558,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
-        <Label Content="Extra dagtarief" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="355,521,0,0" Height="25"/>
-        <TextBox Text="{Binding ExtraNightPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="ExtraNightPriceTextBox" HorizontalAlignment="Left" Height="20" Margin="360,558,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
+        <Label Content="{Binding EditTitle}" HorizontalAlignment="Left" Margin="46,483,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+        <Label Content="{Binding CampingPlaceError}" HorizontalAlignment="Left" Margin="500,483,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12"/>
+        
+        <Label Content="Locatienummer" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="190,515,0,0" Height="25"/>
+        <TextBox Text="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="LocationNumberTextBox" HorizontalAlignment="Left" Height="20" Margin="195,550,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
+        
+        <Label Content="Verblijf" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="48,515,0,0" Height="25"/>
+        <ComboBox SelectedItem="{Binding SelectedCampingPlaceType}" ItemsSource="{Binding CampingPlaceTypes}" Margin="53,550,671,56" HorizontalAlignment="Left" Height="25" Width="110" VerticalContentAlignment="Top" BorderThickness="0,0,0,0" Visibility="Visible" BorderBrush="White" Background="White" />
+        
+        <Label Content="Oppervlakte" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="327,515,0,0" Height="25"/>
+        <TextBox Text="{Binding Surface, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="SurfaceTextBox" HorizontalAlignment="Left" Height="20" Margin="332,550,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
+        
+        <Label Content="Extra dagtarief" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="466,515,0,0" Height="25"/>
+        <TextBox Text="{Binding ExtraNightPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="ExtraNightPriceTextBox" HorizontalAlignment="Left" Height="20" Margin="471,550,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
+        
+        <Button Command="{Binding Delete}" x:Name="DeleteButton" Content="Verwijder" Margin="613,364,67,238"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
         <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Opslaan" Margin="613,500,67,100"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
-        <Button Command="{Binding DeleteEditAction}" x:Name="Cancel" Content="Verwijder" Margin="613,545,67,55"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+        <Button Command="{Binding CancelEditAction}" x:Name="Cancel" Content="Annuleer" Margin="613,545,67,55"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
     </Grid>
 </Page>
