@@ -40,7 +40,6 @@ namespace ViewModel
 
         private void OnSignOutEvent(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
             //TODO: stop running task
         }
 

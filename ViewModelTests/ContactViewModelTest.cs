@@ -25,7 +25,7 @@ namespace ViewModelTests
             Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
             Account account = new Account("1", "admin", "nimda", "0");
             CampingOwner campingOwner = new CampingOwner("1", account, "Jan", "Janssen");
-            this._camping = new Camping("2", "Wildhoeve", address, campingOwner, "0612312312", "test@hotmail.com", "https://www.facebook.com", "https://www.twitter.com", "https://www.instagram.com");
+            this._camping = new Camping("2", "Wildhoeve", address, campingOwner, "0612312312", "test@hotmail.com", "https://www.facebook.com", "https://www.twitter.com", "https://www.instagram.com", "000000");
             
             this._campingModelMock.Setup(x => x.GetCamping()).Returns(this._camping);
             this._campingModelMock.Object.CurrentCamping = this._camping;
