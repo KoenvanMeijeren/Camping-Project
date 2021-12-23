@@ -72,7 +72,7 @@ namespace ViewModelTests
             Assert.AreEqual("80", this._manageCampingPlaceViewModel.Object.Surface);
             Assert.AreEqual("0", this._manageCampingPlaceViewModel.Object.ExtraNightPrice);
             Assert.AreEqual(this._campingPlaceTypes.First(), this._manageCampingPlaceViewModel.Object.SelectedCampingPlaceType);
-            Assert.IsEmpty(this._manageCampingPlaceViewModel.Object.CampingPlaceError);
+            Assert.IsNull(this._manageCampingPlaceViewModel.Object.CampingPlaceError);
             Assert.IsTrue(this._manageCampingPlaceViewModel.Object.EditSave.CanExecute(null));
         }
         

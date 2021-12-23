@@ -61,17 +61,6 @@ namespace Model
             return this.Name;
         }
 
-        /// <inheritdoc/>
-        public override bool Equals(object obj)
-        {
-            if (obj is Accommodation accommodation)
-            {
-                return accommodation.Id == this.Id;
-            }
-
-            return false;
-        }
-        
         public bool IsPrefixUnique(string prefix)
         {
             if (string.IsNullOrEmpty(prefix))

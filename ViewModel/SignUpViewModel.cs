@@ -37,7 +37,7 @@ namespace ViewModel
         public string RegisterError
         {
             get => this._registerError;
-            set
+            private set
             {
                 if (value == this._registerError)
                 {
@@ -112,7 +112,7 @@ namespace ViewModel
             }
         }
 
-        public string Postalcode
+        public string PostalCode
         {
             get => this._postalCode;
             set
@@ -193,7 +193,7 @@ namespace ViewModel
                     return;
                 }
 
-                this._email = value;
+                this._email = value.ToLower();
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.RegisterError = "";
@@ -295,16 +295,18 @@ namespace ViewModel
         
         private void ResetInput()
         {
-            this.FirstName = "";
-            this.LastName = "";
-            this.Street = "";
-            this.Postalcode = "";
-            this.Place = "";
-            this.PhoneNumber = "";
-            this.Email = "";
-            this.Password = "";
-            this.ConfirmPassword = "";
-            this.RegisterError = "";
+            this._firstName = string.Empty;
+            this._lastName = string.Empty;
+            this._street = string.Empty;
+            this._postalCode = string.Empty;
+            this._place = string.Empty;
+            this._phoneNumber = string.Empty;
+            this._email = string.Empty;
+            this._password = string.Empty;
+            this._confirmPassword = string.Empty;
+            this._registerError = string.Empty;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
         #endregion
 
@@ -322,7 +324,7 @@ namespace ViewModel
             accountModel.Insert();
             var insertedAccount = accountModel.SelectByEmail(this.Email);
 
-            Address addressModel = new Address(this.Street, this.Postalcode, this.Place);
+            Address addressModel = new Address(this.Street, this.PostalCode, this.Place);
             var address = addressModel.FirstAndUpdateOrInsert();
 
             CampingCustomer campingCustomer = new CampingCustomer(insertedAccount, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName, this.LastName);
@@ -335,20 +337,19 @@ namespace ViewModel
 
         private bool CanExecuteRegister()
         {
-           return  Validation.IsInputFilled(_firstName) &&
-                    Validation.IsInputFilled(_lastName) &&
-                    Validation.IsInputFilled(_street) &&
-                    Validation.IsInputFilled(_postalCode) &&
-                    RegexHelper.IsPostalcodeValid(_postalCode) &&
-                    Validation.IsInputFilled(_place) &&
-                    Validation.IsInputFilled(_phoneNumber) &&
-                    Validation.IsNumber(_phoneNumber) &&
-                    Validation.IsNumber(_phoneNumber) &&
-                    Validation.IsInputFilled(_email) &&
-                    RegexHelper.IsEmailValid(_email) &&
-                    Validation.IsInputFilled(this._password) &&
-                    Validation.IsInputFilled(this._confirmPassword) &&
-                    _confirmPassword == _password;
+           return  Validation.IsInputFilled(this.FirstName) &&
+                    Validation.IsInputFilled(this.LastName) &&
+                    Validation.IsInputFilled(this.Street) &&
+                    Validation.IsInputFilled(this.PostalCode) &&
+                    RegexHelper.IsPostalcodeValid(this.PostalCode) &&
+                    Validation.IsInputFilled(this.Place) &&
+                    Validation.IsInputFilled(this.PhoneNumber) &&
+                    Validation.IsNumber(this.PhoneNumber) &&
+                    Validation.IsInputFilled(this.Email) &&
+                    RegexHelper.IsEmailValid(this.Email) &&
+                    Validation.IsInputFilled(this.Password) &&
+                    Validation.IsInputFilled(this.ConfirmPassword) &&
+                    this.ConfirmPassword == this.Password;
         }
 
         public ICommand Register => new RelayCommand(ExecuteRegister, CanExecuteRegister);

@@ -50,17 +50,6 @@ namespace Model
             return this.Accommodation.ToString() + $" ({this.Id})";
         }
 
-        /// <inheritdoc/>
-        public override bool Equals(object obj)
-        {
-            if (obj is CampingPlaceType campingPlaceType)
-            {
-                return campingPlaceType.Id == this.Id;
-            }
-
-            return false;
-        }
-        
         public bool HasCampingPlaces()
         {
             return this.HasCampingPlaces(this);

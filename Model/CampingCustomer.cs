@@ -29,6 +29,8 @@ namespace Model
         public string LastName { get; private set; }
         public string FullName { get; private set; }
         
+        public string BirthdateReadable { get; private set; }
+        
         public CampingCustomer(): base(TableName, ColumnId)
         {
             
@@ -51,6 +53,7 @@ namespace Model
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;
+            this.BirthdateReadable = this.Birthdate.ToShortDateString();
 
             if (firstName == null || lastName == null)
             {

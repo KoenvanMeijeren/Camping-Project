@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
+using Model;
 using ViewModel;
 using ViewModel.EventArguments;
 
@@ -16,7 +17,9 @@ namespace Visualization
         private readonly ReservationCampingMapPage _reservationCampingMapPage;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
+        private readonly ReservationFailedPage _reservationFailedPage;
         private readonly ReservationCampingGuestPage _reservationCampingGuestPage;
+        private readonly ReservationPaymentPage _reservationPaymentPage;
         private readonly AccountPage _accountPage;
         private readonly ManageCampingMapPage _manageCampingMapPage;
         private readonly ManageCampingPage _manageCampingPage;
@@ -29,6 +32,7 @@ namespace Visualization
         private readonly AccountUpdatePage _accountUpdatePage;
         private readonly ContactPage _contactPage;
         private readonly ChatPage _chatPage;
+        private readonly MultipleChatPage _multipleChatPage;
         private readonly ManageCampingPlaceTypePage _manageCampingPlaceTypePage;
         private readonly ManageAccommodationPage _manageAccommodationPage;
 
@@ -40,7 +44,9 @@ namespace Visualization
             this._reservationCampingMapPage = new ReservationCampingMapPage();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
+            this._reservationFailedPage = new ReservationFailedPage();
             this._reservationCampingGuestPage = new ReservationCampingGuestPage();
+            this._reservationPaymentPage = new ReservationPaymentPage();
             this._accountPage = new AccountPage();
             this._manageCampingMapPage = new ManageCampingMapPage();
             this._manageCampingPage = new ManageCampingPage();
@@ -54,8 +60,12 @@ namespace Visualization
             this._manageCampingPlaceTypePage = new ManageCampingPlaceTypePage();
             this._manageAccommodationPage = new ManageAccommodationPage();
             this._chatPage = new ChatPage();
+            this._multipleChatPage = new MultipleChatPage();
 
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ReservationPaymentViewModel.ReservationGuestGoBackEvent += this.OnReservationGuestGoBackEvent;
+            ReservationPaymentViewModel.ReservationFailedEvent += this.OnReservationFailedEvent;
+            ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent += this.OnReservationGuestsConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestsFormEvent;
             ReservationCampingMapViewModel.ReserveEvent += this.OnReserveDurationEvent;
@@ -70,6 +80,7 @@ namespace Visualization
             AccountUpdateViewModel.UpdateConfirmEvent += this.OnUpdateConfirmEvent;
             ContactViewModel.FromContactToChatEvent += this.OnChatButton;
             ChatPageViewModel.FromChatToContactEvent += this.ContactMenuButton_Checked;
+            MultipleChatPageViewModel.FromChatToContactEvent += this.ContactMenuButton_Checked;
 
             // Sets the sign up page as the active menu and hides other menu items.
             this.SignInMenuButton.IsChecked = true;
@@ -187,7 +198,7 @@ namespace Visualization
         }
         #endregion
 
-        private void OnReserveEvent(object sender, ReservationEventArgs args)
+        private void OnReserveEvent(object sender, EventArgs args)
         {
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
@@ -197,14 +208,29 @@ namespace Visualization
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        private void OnReservationGuestsFormEvent(object sender, ReservationGuestEventArgs args)
+        private void OnReservationGuestsFormEvent(object sender, ReservationEventArgs args)
         {
             this.MainFrame.Content = this._reservationCampingGuestPage;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
+        private void OnReservationGuestGoBackEvent(object sender, ReservationGuestEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationCampingGuestPage;
+        }
+
+        private void OnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> args)
         {
             this.MainFrame.Content = this._reservationConfirmedPage.Content;
+        }
+
+        private void OnReservationFailedEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationFailedPage.Content;
+        }
+
+        private void OnReservationGuestsConfirmedEvent(object sender, ReservationGuestEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationPaymentPage.Content;
         }
 
         private void OnSignInEvent(object sender, AccountEventArgs args)
@@ -259,9 +285,6 @@ namespace Visualization
             this.SignUpMenuButton.IsChecked = true;
         }
 
-
-
-
         private void OnToAccountUpdatePageEvent(object sender, EventArgs e)
         {
             this.MainFrame.Content = this._accountUpdatePage.Content;
@@ -272,7 +295,7 @@ namespace Visualization
             this.MainFrame.Content = this._manageReservationPage.Content;
         }
 
-        private void OnBackToDashboardEvent(object sender, ReservationEventArgs args)
+        private void OnBackToDashboardEvent(object sender, EventArgs args)
         {
             this.OverviewMenuButton_Checked(sender, null);
         }
@@ -289,7 +312,7 @@ namespace Visualization
 
         private void OnChatButton(object sender, EventArgs e)
         {
-            this.MainFrame.Content = this._chatPage.Content;
+            this.MainFrame.Content = CurrentUser.Account.Rights == AccountRights.Customer ? this._chatPage.Content : this._multipleChatPage.Content;
         }
 
         

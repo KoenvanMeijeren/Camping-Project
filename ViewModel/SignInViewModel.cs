@@ -32,7 +32,7 @@ namespace ViewModel
                     return; 
                 }
 
-                this._email = value;
+                this._email = value.ToLower();
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.SignInError = "";
@@ -93,9 +93,11 @@ namespace ViewModel
 
         private void ResetInput()
         {
-            this.Email = "";
-            this.Password = "";
-            this.SignInError = "";
+            this._email = string.Empty;
+            this._password = string.Empty;
+            this._singInError = string.Empty;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion

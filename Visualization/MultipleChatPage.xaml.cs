@@ -1,20 +1,33 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using ViewModel;
 using ViewModel.EventArguments;
 
 namespace Visualization
 {
     /// <summary>
-    /// Interaction logic for ChatPage.xaml
+    /// Interaction logic for MultipleChatPage.xaml
     /// </summary>
-    public partial class ChatPage : Page
+    public partial class MultipleChatPage : Page
     {
-        public ChatPage()
+        public MultipleChatPage()
         {
-            this.InitializeComponent();
-            ChatPageViewModel.OpenChatEvent += this.CreateChatTextBlocKEvent;
-            ChatPageViewModel.SendChatEvent += this.CreateChatTextBlocKEvent;
+            InitializeComponent();
+            MultipleChatPageViewModel.OpenChatEvent += CreateChatTextBlocKEvent;
+            MultipleChatPageViewModel.NewSelectedChatEvent += NewSelectedChateEven;
+            MultipleChatPageViewModel.SendChatEvent += this.CreateChatTextBlocKEvent;
         }
 
         /// <summary>
@@ -45,6 +58,11 @@ namespace Visualization
             }
 
             ChatField.Children.Add(textblock);
+        }
+
+        private void NewSelectedChateEven(object sender, ChatEventArgs e)
+        {
+            ChatField.Children.Clear();
         }
     }
 }

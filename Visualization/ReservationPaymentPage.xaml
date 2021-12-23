@@ -1,0 +1,64 @@
+﻿<Page x:Class="Visualization.ReservationPaymentPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Visualization" xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Betaling" Height="634.04" Width="820" MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
+
+    <Page.DataContext>
+        <viewModel:ReservationPaymentViewModel/>
+    </Page.DataContext>
+
+    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837">
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="45,58,449,87" CornerRadius="15,15,15,15" Background="White"/>
+
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="555,58,65,384" CornerRadius="15,15,15,15" Background="White" Width="200"/>
+        <Label Content="Uw Reservering:" HorizontalAlignment="Left" Margin="568,64,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="14" Height="31" Width="174" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" RenderTransformOrigin="0.328,0.587"/>
+        <Label Content="Start datum:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="568,97,165,513"/>
+        <Label x:Name="StartDate" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="655,97,78,513" Content="{Binding Reservation.CheckInDatetime}"/>
+        <Label Content="Eind datum:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="568,121,165,489"/>
+        <Label x:Name="EndDate" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="655,121,78,489" Content="{Binding Reservation.CheckOutDate}" />
+        <Label Content="Type:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="568,145,165,465"/>
+        <Label x:Name="Type" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="655,145,78,465" Content="{Binding Reservation.CampingPlace.Type.Id}"/>
+        <Label Content="Oppervlakte:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="568,169,165,441" />
+        <Label x:Name="Surface" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="655,169,78,441" Content="{Binding Reservation.CampingPlace.SurfaceReadable}" />
+        <Label Content="Locatie:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="568,193,165,417"/>
+        <Label x:Name="Location"  FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="655,193,78,417" Content="{Binding Reservation.CampingPlace.Location}" />
+        <Label Content="Totale prijs:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="568,217,165,393"/>
+        <Label x:Name="TotalPrice" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="655,217,78,393" Content="{Binding Reservation.TotalPriceString}" />
+
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="555,272,65,88" CornerRadius="15,15,15,15" Background="White" Width="200"/>
+        <Label Content="Uw Gasten:" HorizontalAlignment="Left" Margin="568,287,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="14" Height="31" Width="174" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" RenderTransformOrigin="0.328,0.587"/>
+        <ListView x:Name="GuestList"  Margin="565,323,75,117" Background="White" FontFamily="Century Gothic" FontWeight="Bold" ItemsSource="{Binding CampingGuests}" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Voornaam" Width="80" DisplayMemberBinding="{Binding FirstName}"/>
+                    <GridViewColumn Header="Achternaam" Width="100" DisplayMemberBinding="{Binding LastName}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button x:Name="PaymentReservation" Content="Betalen" HorizontalAlignment="Left" Margin="555,572,0,32" Style="{StaticResource DefaultButtonTheme}" Width="200" Height="30" Command="{Binding CreateReservationPayment, Mode=OneWay}" />
+        <Label Content="Betaalgegevens:" HorizontalAlignment="Left" Margin="58,64,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="14" Height="31" Width="174" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" RenderTransformOrigin="0.328,0.587"/>
+        <Label Content="Voornaam*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,128,665,482"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="68,154,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.FirstName, Mode=OneWay}" />
+        <Label Content="Achternaam*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="212,128,506,482"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="212,154,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.LastName, Mode=OneWay}"/>
+        <Label Content="Telefoonnummer*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="202,272,496,338"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="202,298,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.PhoneNumber, Mode=OneWay}"/>
+        <Label Content="Email*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,200,649,410"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="68,224,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content ="{Binding CampingCustomer.Account.Email, Mode=OneWay}"/>
+        <Label Content="Geboortedatum*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="212,200,486,410"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="212,228,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content ="{Binding CampingCustomer.BirthdateReadable, Mode=OneWay}" />
+        <Label Content="Straat*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,272,630,338"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="68,298,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.Address.Street, Mode=OneWay}"/>
+        <Label Content="Postcode*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,345,631,264"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="68,370,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.Address.PostalCode, Mode=OneWay}"/>
+        <Label Content="Plaats*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="212,345,487,264"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="212,370,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.Address.Place, Mode=OneWay}"/>
+        <Button x:Name="GoBackButton" Content="Terug" HorizontalAlignment="Left" Margin="45,572,0,32" Style="{StaticResource DefaultButtonTheme}" Width="200" Height="30" Command="{Binding CustomerPaymentGoBackReservation, Mode=OneWay}"></Button>
+    </Grid>
+</Page>
