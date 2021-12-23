@@ -12,8 +12,8 @@
         <viewModel:ReservationPaymentViewModel/>
     </Page.DataContext>
 
-    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="45,58,319,87" CornerRadius="15,15,15,15" Background="White"/>
+    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837">
+        <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="45,58,449,87" CornerRadius="15,15,15,15" Background="White"/>
 
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="555,58,65,384" CornerRadius="15,15,15,15" Background="White" Width="200"/>
         <Label Content="Uw Reservering:" HorizontalAlignment="Left" Margin="568,64,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="14" Height="31" Width="174" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" RenderTransformOrigin="0.328,0.587"/>
@@ -44,21 +44,27 @@
         <Button x:Name="PaymentReservation" Content="Betalen" HorizontalAlignment="Left" Margin="555,572,0,32" BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Width="200" Height="30" Command="{Binding CreateReservationPayment, Mode=OneWay}" />
         <Label Content="Betaalgegevens:" HorizontalAlignment="Left" Margin="58,64,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="14" Height="31" Width="174" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" RenderTransformOrigin="0.328,0.587"/>
         <Label Content="Voornaam*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,128,665,482"/>
-        <TextBox x:Name="FirstNameTextbox" HorizontalAlignment="Left" Height="20" Margin="68,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black" Text="{Binding CampingCustomer.FirstName, Mode=OneWay}" />
+        <Label HorizontalAlignment="Left" Height="25" Margin="68,154,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.FirstName, Mode=OneWay}" />
         <Label Content="Achternaam*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="212,128,506,482"/>
-        <TextBox x:Name="LastNameTextbox" HorizontalAlignment="Left" Height="20" Margin="212,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black" Text="{Binding CampingCustomer.LastName, Mode=OneWay}"/>
-        <Label Content="Telefoonnummer*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="354,128,344,482"/>
-        <TextBox x:Name="PhoneNumberTextbox" HorizontalAlignment="Left" Height="20" Margin="354,154,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black" Text="{Binding CampingCustomer.PhoneNumber, Mode=OneWay}"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="212,154,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.LastName, Mode=OneWay}"/>
+        <Label Content="Telefoonnummer*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="202,272,496,338"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="202,298,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.PhoneNumber, Mode=OneWay}"/>
         <Label Content="Email*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,200,649,410"/>
-        <TextBox x:Name="EmailTextbox" HorizontalAlignment="Left" Height="20" Margin="68,224,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black" Text="{Binding CampingCustomer.Account.Email, Mode=OneWay}"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="68,224,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content ="{Binding CampingCustomer.Account.Email, Mode=OneWay}"/>
         <Label Content="Geboortedatum*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="212,200,486,410"/>
-        <DatePicker Height="22" HorizontalAlignment="Left" Margin="212,228,0,0" x:Name="CustomerBirthDate" VerticalAlignment="Top" Width="122" DisplayDate="{Binding CampingCustomer.Birthdate, Mode=OneWay}"  />
-        <Label Content="Straat*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="358,200,340,410"/>
-        <TextBox x:Name="StreetTextbox" HorizontalAlignment="Left" Height="20" Margin="358,224,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black" Text="{Binding CampingCustomer.Address.Street, Mode=OneWay}"/>
-        <Label Content="Postcode*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,286,631,323"/>
-        <TextBox x:Name="PostalCodeTextbox" HorizontalAlignment="Left" Height="20" Margin="68,311,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black" Text="{Binding CampingCustomer.Address.PostalCode, Mode=OneWay}"/>
-        <Label Content="Plaats*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="212,286,487,323"/>
-        <TextBox x:Name="PlaceTextbox" HorizontalAlignment="Left" Height="20" Margin="212,311,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black" Text="{Binding CampingCustomer.Address.Place, Mode=OneWay}"/>
+        <DatePicker Height="22" HorizontalAlignment="Left" Margin="212,228,0,0" x:Name="CustomerBirthDate" VerticalAlignment="Top" Width="122" Text="{Binding CampingCustomer.Birthdate, Mode=OneWay}">
+            <DatePicker.Resources>
+                <Style TargetType="DatePickerTextBox">
+                    <Setter Property="IsReadOnly" Value="True"/>
+                </Style>
+            </DatePicker.Resources>
+        </DatePicker>
+        <Label Content="Straat*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,272,630,338"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="68,298,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.Address.Street, Mode=OneWay}"/>
+        <Label Content="Postcode*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,345,631,264"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="68,370,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.Address.PostalCode, Mode=OneWay}"/>
+        <Label Content="Plaats*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="212,345,487,264"/>
+        <Label HorizontalAlignment="Left" Height="25" Margin="212,370,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.Address.Place, Mode=OneWay}"/>
         <Button x:Name="GoBackButton" Content="Terug" HorizontalAlignment="Left" Margin="45,572,0,32" BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Width="200" Height="30" Command="{Binding CustomerPaymentGoBackReservation, Mode=OneWay}"></Button>
     </Grid>
 </Page>
