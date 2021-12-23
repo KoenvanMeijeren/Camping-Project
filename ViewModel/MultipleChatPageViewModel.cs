@@ -18,12 +18,42 @@ namespace ViewModel
     public class MultipleChatPageViewModel : ObservableObject
     {
         private Chat _selectedChat;
-
+        private ObservableCollection<Chat> _chats;
+        private MessageJSON _selectedChatMessages;
 
         public string ChatTextInput { get; set; }
         public List<MessageJSON> ShownChatMessages { get; private set; }
         public string CurrenCustomerName { get; private set; }
-        public ObservableCollection<Chat> Chats { get; private set; }
+
+
+        public MessageJSON SelectedChatMessages
+        {
+            get => this._selectedChatMessages;
+            set
+            {
+                if (value == this._selectedChatMessages)
+                {
+                    return;
+                }
+
+                this._selectedChatMessages = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+        public ObservableCollection<Chat> Chats
+        {
+            get => this._chats;
+            set
+            {
+                if (value == this._chats)
+                {
+                    return;
+                }
+
+                this._chats = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
         public Chat SelectedChat
         {
             get => this._selectedChat;
@@ -35,7 +65,8 @@ namespace ViewModel
                 }
 
                 this._selectedChat = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                //this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                ShowChatMessages();
             }
         }
 
@@ -44,12 +75,16 @@ namespace ViewModel
         {
             //TODO: fetch all chats from database, where unsolved?
             Chat chat = new Chat();
-            this.Chats = new ObservableCollection<Chat>(chat.Select());
+            this._chats = new ObservableCollection<Chat>(chat.Select());
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            this._selectedChatMessages = new MessageJSON();
         }
 
         private void ShowChatMessages()
         {
+            this.ShownChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
             
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         /// <summary>
