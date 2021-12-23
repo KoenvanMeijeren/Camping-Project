@@ -23,7 +23,7 @@ namespace ViewModel
         private List<MessageJSON> _shownChatMessages;        
         private int _refreshRateInMilliseconds = 2000;
 
-        public string _chatTextInput;
+        private string _chatTextInput;
         public string CurrentCustomerName { get; private set; }
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
         public static event EventHandler<ChatEventArgs> NewChatContentEvent;
@@ -163,9 +163,14 @@ namespace ViewModel
         /// <returns>Nothing</returns>
         public async Task RefreshChatMessages()
         {
-            // Automatically updating chats
-            while (true)
+            //check if currentuser is campingowner
+            if (CurrentUser.Account == null || CurrentUser.Account.Rights == AccountRights.Customer) 
             {
+                return;
+            }
+                // Automatically updating chats
+            while (true)
+            {               
                 foreach (Chat chatConversation in _chats)
                 {
                     List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
