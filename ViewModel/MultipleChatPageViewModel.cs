@@ -26,7 +26,7 @@ namespace ViewModel
         public string ChatTextInput { get; set; }
         public string CurrenCustomerName { get; private set; }
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
-        public static event EventHandler<ChatEventArgs> NewSelectedChatEvent;
+        public static event EventHandler<ChatEventArgs> NewChatContentEvent;
 
 
         #region properties
@@ -71,7 +71,7 @@ namespace ViewModel
 
                 this._selectedChat = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                NewSelectedChatEvent?.Invoke(this, null);
+                NewChatContentEvent?.Invoke(this, null);
                 GetChatConversation();               
             }
         }
@@ -133,8 +133,21 @@ namespace ViewModel
                             MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
                             this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
                         }
+
                         // Overwrite the old list with messages to the full new list with messages
-                        _chatMessagesInApplication = GetChatMessagesToList;
+                        foreach (var chat in this._chats.Where(c => c.Customer.Id == chatConversation.Customer.Id))
+                        {
+                            chat.Messages = ChatToJSON(GetChatMessagesToList); 
+                        }
+
+                        //update chat
+                        NewChatContentEvent?.Invoke(this, null);
+                        if (chatConversation.Customer.Id == this._selectedChat.Customer.Id)
+                        {
+                            GetChatConversation();
+                        }
+
+
                     }
 
                     // Async wait before executing this again
@@ -147,9 +160,10 @@ namespace ViewModel
         /// Converts whole chat into a JSON
         /// </summary>
         /// <returns>String in JSON format with all messages in current chat</returns>
-        public string ChatToJSON()
+        /// 
+        public string ChatToJSON(List<MessageJSON> messages)
         {
-            return JsonConvert.SerializeObject(ShownChatMessages, Formatting.Indented);
+            return JsonConvert.SerializeObject(messages, Formatting.Indented);
         }
 
         // Close chat button
@@ -175,7 +189,8 @@ namespace ViewModel
             this.ExecuteSendChatEvent(sentMessage, sndr);
 
             // Add message to whole conversation
-            this._shownChatMessages .Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
+            this._shownChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
+
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
             this.UpdateChatInDatabase();
