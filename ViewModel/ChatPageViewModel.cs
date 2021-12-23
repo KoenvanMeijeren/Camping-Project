@@ -11,6 +11,7 @@ using ViewModel.EventArguments;
 using SystemCore;
 using Newtonsoft.Json;
 using System.Threading;
+using System.ComponentModel;
 
 namespace ViewModel
 {
@@ -22,7 +23,7 @@ namespace ViewModel
 
     public class ChatPageViewModel : ObservableObject
     {
-        public string ChatTextInput { get; set; }
+        private string _chatTextInput;
         public List<MessageJSON> ChatMessages { get; private set; }
 
         private Chat _chatModel = new Chat();
@@ -30,12 +31,28 @@ namespace ViewModel
 
         private int _refreshRateInMilliseconds = 2000;
 
+        public string ChatTextInput
+        {
+            get => this._chatTextInput;
+            set
+            {
+                if (value == this._chatTextInput)
+                {
+                    return;
+                }
+
+                this._chatTextInput = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
         public ChatPageViewModel()
         {
             // Executes when user has logged in
             SignInViewModel.SignInEvent += ExecuteChatAfterLogin;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
-
+            this.ChatTextInput = "";
+            this.ChatMessages = new List<MessageJSON>();
         }
 
         private void OnSignOutEvent(object sender, EventArgs e)
@@ -111,9 +128,14 @@ namespace ViewModel
         public static event EventHandler FromChatToContactEvent;
 
         // Send chat button
-        public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute);
+        public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute, CanExecuteSendChatButtonExecute);
         public static event EventHandler<ChatEventArgs> SendChatEvent;
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
+
+        private bool CanExecuteSendChatButtonExecute()
+        {
+            return this.ChatTextInput.Length > 0;
+        }
 
         /// <summary>
         /// Function that executes when "Send" button has been pressed in Chat View.

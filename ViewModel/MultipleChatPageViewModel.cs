@@ -23,13 +23,27 @@ namespace ViewModel
         private List<MessageJSON> _shownChatMessages;        
         private int _refreshRateInMilliseconds = 2000;
 
-        public string ChatTextInput { get; set; }
-        public string CurrenCustomerName { get; private set; }
+        private string _chatTextInput;
+        public string CurrentCustomerName { get; private set; }
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
-        public static event EventHandler<ChatEventArgs> NewSelectedChatEvent;
+        public static event EventHandler<ChatEventArgs> NewChatContentEvent;
 
 
         #region properties
+        public string ChatTextInput
+        {
+            get => this._chatTextInput;
+            set
+            {
+                if (value == this._chatTextInput)
+                {
+                    return;
+                }
+
+                this._chatTextInput = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
         public List<MessageJSON> ShownChatMessages
         {
             get => this._shownChatMessages;
@@ -70,8 +84,9 @@ namespace ViewModel
                 }
 
                 this._selectedChat = value;
+                this.CurrentCustomerName = this._selectedChat.CustomerName;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                NewSelectedChatEvent?.Invoke(this, null);
+                NewChatContentEvent?.Invoke(this, null);
                 GetChatConversation();               
             }
         }
@@ -81,12 +96,27 @@ namespace ViewModel
         public MultipleChatPageViewModel()
         {
             //TODO: fetch all chats from database, where unsolved?
-            _chatModel = new Chat();
-            this._chats = new ObservableCollection<Chat>(_chatModel.Select());
+            this._shownChatMessages = new List<MessageJSON>();
+            this.ChatTextInput = "";
+            this._chats = GetAllChats();
+            this.CurrentCustomerName = "Klant";
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             this.RefreshChatMessages();//always listen for new chat messages?
+            this.RefreshChats();
         }
 
+        /// <summary>
+        /// Get all chats from database
+        /// </summary>
+        /// <returns></returns>
+        private ObservableCollection<Chat> GetAllChats()
+        {
+            return new ObservableCollection<Chat>(_chatModel.Select());
+        }
+
+        /// <summary>
+        /// This method will load the messages in a textblock on the screen
+        /// </summary>
         public void DisplayMessages()
         {
             // Loops through all 'old'/already sent messages
@@ -96,12 +126,35 @@ namespace ViewModel
             }            
         }
 
+        /// <summary>
+        /// Updates messages list and display new list
+        /// </summary>
         private void GetChatConversation()
         {
-            this._shownChatMessages = null;
+            this._shownChatMessages.Clear();
             this.ShownChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
             DisplayMessages();
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+        }
+
+        /// <summary>
+        /// Async function that checks for new chats
+        /// </summary>
+        /// <returns>Nothing</returns>
+        public async Task RefreshChats()
+        {
+            // Automatically updating chats
+            while (true)
+            {
+                ObservableCollection<Chat> chatDb = GetAllChats();
+               if (this._chats.Count != chatDb.Count)//Check for new chats
+               {
+                    this.Chats = chatDb;
+               }
+
+                // Async wait before executing this again
+                await Task.Delay(_refreshRateInMilliseconds);
+            }
         }
 
         /// <summary>
@@ -110,9 +163,15 @@ namespace ViewModel
         /// <returns>Nothing</returns>
         public async Task RefreshChatMessages()
         {
+            //check if currentuser is campingowner
+            if (CurrentUser.Account == null || CurrentUser.Account.Rights == AccountRights.Customer) 
+            {
+                return;
+            }
+
             // Automatically updating chats
             while (true)
-            {
+            {               
                 foreach (Chat chatConversation in _chats)
                 {
                     List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
@@ -133,10 +192,20 @@ namespace ViewModel
                             MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
                             this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
                         }
-                        // Overwrite the old list with messages to the full new list with messages
-                        _chatMessagesInApplication = GetChatMessagesToList;
-                    }
 
+                        // Overwrite the old list with messages to the full new list with messages in chat object
+                        foreach (var chat in this._chats.Where(c => c.Customer.Id == chatConversation.Customer.Id))
+                        {
+                            chat.Messages = ChatToJSON(GetChatMessagesToList); 
+                        }
+
+                        //update chat and displaying messages
+                        NewChatContentEvent?.Invoke(this, null);
+                        if (chatConversation.Customer.Id == this._selectedChat.Customer.Id)
+                        {
+                            GetChatConversation();
+                        }
+                    }
                     // Async wait before executing this again
                     await Task.Delay(_refreshRateInMilliseconds);
                 }
@@ -147,9 +216,10 @@ namespace ViewModel
         /// Converts whole chat into a JSON
         /// </summary>
         /// <returns>String in JSON format with all messages in current chat</returns>
-        public string ChatToJSON()
+        /// 
+        public string ChatToJSON(List<MessageJSON> messages)
         {
-            return JsonConvert.SerializeObject(ShownChatMessages, Formatting.Indented);
+            return JsonConvert.SerializeObject(messages, Formatting.Indented);
         }
 
         // Close chat button
@@ -157,8 +227,13 @@ namespace ViewModel
         public static event EventHandler FromChatToContactEvent;
 
         // Send chat button
-        public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute);
+        public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute, CanExecuteSendChatButtonExecute);
         public static event EventHandler<ChatEventArgs> SendChatEvent;
+
+        private bool CanExecuteSendChatButtonExecute()
+        {
+            return this.ChatTextInput.Length > 0;
+        }
 
         /// <summary>
         /// Function that executes when "Send" button has been pressed in Chat View.
@@ -175,7 +250,8 @@ namespace ViewModel
             this.ExecuteSendChatEvent(sentMessage, sndr);
 
             // Add message to whole conversation
-            this._shownChatMessages .Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
+            this._shownChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
+
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
             this.UpdateChatInDatabase();

@@ -47,7 +47,7 @@ namespace Model
 
         public Account Owner { get; private set; }
         public Account Customer { get; private set; }
-        public string Messages { get; private set; }
+        public string Messages { get; set; }
         public DateTime LastMessageSeenOwner { get; private set; }
         public DateTime LastMessageSeenCustomer { get; private set; }
         public ChatStatus OwnerStatus { get; private set; }

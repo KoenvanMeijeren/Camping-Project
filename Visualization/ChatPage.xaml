@@ -34,7 +34,9 @@
                     <Label Height="29" FontSize="16" FontWeight="Black" FontFamily="Century Gothic">Campingeigenaar</Label>
                 </StackPanel>
 
-                <StackPanel x:Name="ChatField" Height="370" Background="#f8faf7"/>
+                <ScrollViewer Height="350px">
+                    <StackPanel x:Name="ChatField" Background="#f8faf7"/>
+                </ScrollViewer>
 
                 <StackPanel Margin="0, 15, 0, 15" Height="50" Orientation="Horizontal">
                     <TextBox Text="{Binding ChatTextInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="ChatTextBox" TextWrapping="Wrap" Width="630"/>
