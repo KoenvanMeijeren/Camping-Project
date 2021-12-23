@@ -28,7 +28,7 @@ namespace ViewModel
         
         private int _numberOfAddedGuest;
         
-        private readonly Dictionary<string, string> _errorDictionary;
+        private Dictionary<string, string> _errorDictionary;
         
         #endregion
 
@@ -188,7 +188,7 @@ namespace ViewModel
                 {"BirthDate", ""},
             };
 
-            this.CampingGuests = new ObservableCollection<CampingGuest>();
+            this._campingGuests = new ObservableCollection<CampingGuest>();
             this.BirthDate = DateTime.Today.AddYears(-18);
             
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestEvent;
@@ -198,6 +198,13 @@ namespace ViewModel
 
         private void ResetInput()
         {
+            this._errorDictionary = new Dictionary<string, string>
+            {
+                {"FirstName", ""},
+                {"LastName", ""},
+                {"BirthDate", ""},
+            };
+            
             this._firstNameGuest = "";
             this._lastNameGuest = "";
             this._firstNameError = "";
@@ -223,12 +230,13 @@ namespace ViewModel
 
         private void OnReservationGuestGoBackEvent(object sender, ReservationGuestEventArgs args)
         {
-            this.Reservation = args.Reservation;
+            this._reservation = args.Reservation;
             foreach (var campingGuest in args.CampingGuests)
             {
-                this.CampingGuests.Add(campingGuest);
+                this._campingGuests.Add(campingGuest);
             }
-
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion

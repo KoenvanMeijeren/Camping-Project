@@ -52,13 +52,7 @@
         <Label Content="Email*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,200,649,410"/>
         <Label HorizontalAlignment="Left" Height="25" Margin="68,224,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content ="{Binding CampingCustomer.Account.Email, Mode=OneWay}"/>
         <Label Content="Geboortedatum*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="212,200,486,410"/>
-        <DatePicker Height="22" HorizontalAlignment="Left" Margin="212,228,0,0" x:Name="CustomerBirthDate" VerticalAlignment="Top" Width="122" Text="{Binding CampingCustomer.Birthdate, Mode=OneWay}">
-            <DatePicker.Resources>
-                <Style TargetType="DatePickerTextBox">
-                    <Setter Property="IsReadOnly" Value="True"/>
-                </Style>
-            </DatePicker.Resources>
-        </DatePicker>
+        <Label HorizontalAlignment="Left" Height="25" Margin="212,228,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content ="{Binding CampingCustomer.BirthdateReadable, Mode=OneWay}" />
         <Label Content="Straat*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,272,630,338"/>
         <Label HorizontalAlignment="Left" Height="25" Margin="68,298,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.Address.Street, Mode=OneWay}"/>
         <Label Content="Postcode*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,345,631,264"/>
