@@ -17,7 +17,9 @@ namespace Visualization
         private readonly ReservationCampingMapPage _reservationCampingMapPage;
         private readonly ReservationCustomerForm _reservationCustomerForm;
         private readonly ReservationConfirmedPage _reservationConfirmedPage;
+        private readonly ReservationFailedPage _reservationFailedPage;
         private readonly ReservationCampingGuestPage _reservationCampingGuestPage;
+        private readonly ReservationPaymentPage _reservationPaymentPage;
         private readonly AccountPage _accountPage;
         private readonly ManageCampingMapPage _manageCampingMapPage;
         private readonly ManageCampingCustomerPage _manageCampingCustomerPage;
@@ -41,7 +43,9 @@ namespace Visualization
             this._reservationCampingMapPage = new ReservationCampingMapPage();
             this._reservationCollectionFrame = new ReservationCollectionPage();
             this._reservationConfirmedPage = new ReservationConfirmedPage();
+            this._reservationFailedPage = new ReservationFailedPage();
             this._reservationCampingGuestPage = new ReservationCampingGuestPage();
+            this._reservationPaymentPage = new ReservationPaymentPage();
             this._accountPage = new AccountPage();
             this._manageCampingMapPage = new ManageCampingMapPage();
             this._manageCampingCustomerPage = new ManageCampingCustomerPage();
@@ -56,6 +60,10 @@ namespace Visualization
             this._chatPage = new ChatPage();
             this._multipleChatPage = new MultipleChatPage();
 
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationPayedEvent;
+            ReservationPaymentViewModel.ReservationGuestGoBackEvent += this.OnReservationGuestGoBackEvent;
+            ReservationPaymentViewModel.ReservationFailedEvent += this.OnReservationFailedEvent;
+            ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent += this.OnReservationGuestsConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestsFormEvent;
@@ -191,14 +199,34 @@ namespace Visualization
             this.MainFrame.Content = this._reservationCustomerForm.Content;
         }
 
-        private void OnReservationGuestsFormEvent(object sender, ReservationGuestEventArgs args)
+        private void OnReservationGuestsFormEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationCampingGuestPage;
+        }
+
+        private void OnReservationPayedEvent(object sender, ReservationGuestEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationConfirmedPage.Content;
+        }
+
+        private void OnReservationGuestGoBackEvent(object sender, ReservationGuestEventArgs args)
         {
             this.MainFrame.Content = this._reservationCampingGuestPage;
         }
 
         private void OnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> args)
         {
-            this.MainFrame.Content = this._reservationConfirmedPage.Content;
+            this.MainFrame.Content = this._reservationPaymentPage.Content;
+        }
+
+        private void OnReservationFailedEvent(object sender, ReservationEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationFailedPage.Content;
+        }
+
+        private void OnReservationGuestsConfirmedEvent(object sender, ReservationGuestEventArgs args)
+        {
+            this.MainFrame.Content = this._reservationPaymentPage.Content;
         }
 
         private void OnSignInEvent(object sender, AccountEventArgs args)

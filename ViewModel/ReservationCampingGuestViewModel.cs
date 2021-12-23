@@ -179,6 +179,7 @@ namespace ViewModel
         #region Events
 
         public static event EventHandler<UpdateModelEventArgs<Reservation>> ReservationConfirmedEvent;
+        public static event EventHandler<ReservationGuestEventArgs> ReservationGuestsConfirmedEvent;
         public static event EventHandler<ReservationEventArgs> ReservationGoBackEvent;
 
         #endregion
@@ -198,6 +199,7 @@ namespace ViewModel
             this.BirthDate = DateTime.Today.AddYears(-18);
             
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationConfirmedEvent;
+            ReservationPaymentViewModel.ReservationGuestGoBackEvent += this.OnReservationGuestGoBackEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
         }
 
@@ -224,6 +226,16 @@ namespace ViewModel
             this._numberOfAddedGuest = this.CampingGuests.Count();
             
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+        }
+
+        private void OnReservationGuestGoBackEvent(object sender, ReservationGuestEventArgs args)
+        {
+            this.Reservation = args.Reservation;
+            foreach (var campingGuest in args.CampingGuests)
+            {
+                this.CampingGuests.Add(campingGuest);
+            }
+
         }
 
         #endregion
@@ -265,11 +277,8 @@ namespace ViewModel
                 return;
             }
             
-            campingGuest.Insert();
-            var lastCampingGuest = campingGuest.SelectLast();
-            
             this._numberOfAddedGuest++;
-            this.CampingGuests.Add(lastCampingGuest);
+            this.CampingGuests.Add(campingGuest);
 
             this.ResetInput();
         }
@@ -289,7 +298,6 @@ namespace ViewModel
             }
             
             this._numberOfAddedGuest--;
-            this.SelectedCampingGuest.Delete();
             this.CampingGuests.Remove(SelectedCampingGuest);
         }
         /// <summary>
@@ -306,15 +314,7 @@ namespace ViewModel
         /// </summary>
         private void ExecuteCustomerGuestReservation()
         {
-            this.Reservation.Insert();
-            var lastReservation = this.Reservation.SelectLast();
-
-            foreach (var guest in this.CampingGuests)
-            {
-                (new ReservationCampingGuest(lastReservation, guest)).Insert();
-            }
-
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent?.Invoke(this, new UpdateModelEventArgs<Reservation>(this.Reservation.SelectLast(), true, false));
+            ReservationGuestsConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(Reservation, CampingGuests));
 
             this.ResetInput();
             this.CampingGuests.Clear();

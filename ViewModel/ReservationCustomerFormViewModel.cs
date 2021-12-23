@@ -275,7 +275,7 @@ namespace ViewModel
 
         #region Events
 
-        public static event EventHandler<ReservationGuestEventArgs> ReservationGuestEvent;
+        public static event EventHandler<ReservationEventArgs> ReservationGuestEvent;
 
         #endregion
 
@@ -405,7 +405,7 @@ namespace ViewModel
 
             Reservation reservation = new Reservation(this._amountOfGuests, customer, this.CampingPlace, this._checkInDateTime.ToString(CultureInfo.InvariantCulture), this._checkOutDateTime.ToString(CultureInfo.InvariantCulture));
 
-            ReservationGuestEvent?.Invoke(this, new ReservationGuestEventArgs(address, customer, reservation));
+            ReservationGuestEvent?.Invoke(this, new ReservationEventArgs(reservation));
         }
         private bool CanExecuteCustomerDataReservation()
         {
