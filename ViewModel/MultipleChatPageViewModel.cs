@@ -115,36 +115,36 @@ namespace ViewModel
         public async Task RefreshChatMessages()
         {
             // Automatically updating chats
-          /*  while (true)
+            while (true)
             {
                 foreach (Chat chatConversation in _chats)
                 {
-                    List<MessageJSON> _chatMessages = new List<MessageJSON>();
+                    List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
                     // Fetch the messages from the database
-                    string GetChatMessages = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
+                    string GetChatMessagesFromDb = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
                     // Convert database JSON value to List<MesssageJson>
-                    List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
+                    List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessagesFromDb);
 
                     // Check if the current chat does NOT match with chats in database (aka new message)
-                    if (!chatConversation._chatMessages.Count.Equals(GetChatMessagesToList.Count))
+                    if (!_chatMessagesInApplication.Count.Equals(GetChatMessagesToList.Count))
                     {
                         // Calculate the amount of new messages
-                        int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - chatConversation._chatMessages.Count;
+                        int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - _chatMessagesInApplication.Count;
 
                         // Loop from first new message, to last new message
-                        for (int i = chatConversation._chatMessages.Count; i < GetChatMessagesToList.Count; i++)
+                        for (int i = _chatMessagesInApplication.Count; i < GetChatMessagesToList.Count; i++)
                         {
                             MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
                             this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
                         }
                         // Overwrite the old list with messages to the full new list with messages
-                        chatConversation._chatMessages = GetChatMessagesToList;
+                        _chatMessagesInApplication = GetChatMessagesToList;
                     }
 
                     // Async wait before executing this again
                     await Task.Delay(_refreshRateInMilliseconds);
                 }
-            }*/
+            }
         }
 
         /// <summary>
@@ -211,6 +211,7 @@ namespace ViewModel
         private void ExecuteSendChatEvent(string message, MessageSender messageSender)
         {
             SendChatEvent?.Invoke(this, new ChatEventArgs(message, messageSender));
+            this.ChatTextInput = "";
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Visualization
             InitializeComponent();
             MultipleChatPageViewModel.OpenChatEvent += CreateChatTextBlocKEvent;
             MultipleChatPageViewModel.NewSelectedChatEvent += NewSelectedChateEven;
+            MultipleChatPageViewModel.SendChatEvent += this.CreateChatTextBlocKEvent;
         }
 
         /// <summary>
