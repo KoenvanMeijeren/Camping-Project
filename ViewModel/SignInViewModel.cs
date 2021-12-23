@@ -32,7 +32,7 @@ namespace ViewModel
                     return; 
                 }
 
-                this._email = value;
+                this._email = value.ToLower();
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.SignInError = "";
