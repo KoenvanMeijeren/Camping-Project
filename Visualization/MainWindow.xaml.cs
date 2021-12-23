@@ -60,11 +60,10 @@ namespace Visualization
             this._chatPage = new ChatPage();
             this._multipleChatPage = new MultipleChatPage();
 
-            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationPayedEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationPaymentViewModel.ReservationGuestGoBackEvent += this.OnReservationGuestGoBackEvent;
             ReservationPaymentViewModel.ReservationFailedEvent += this.OnReservationFailedEvent;
             ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent += this.OnReservationGuestsConfirmedEvent;
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestsFormEvent;
             ReservationCampingMapViewModel.ReserveEvent += this.OnReserveDurationEvent;
@@ -204,11 +203,6 @@ namespace Visualization
             this.MainFrame.Content = this._reservationCampingGuestPage;
         }
 
-        private void OnReservationPayedEvent(object sender, ReservationGuestEventArgs args)
-        {
-            this.MainFrame.Content = this._reservationConfirmedPage.Content;
-        }
-
         private void OnReservationGuestGoBackEvent(object sender, ReservationGuestEventArgs args)
         {
             this.MainFrame.Content = this._reservationCampingGuestPage;
@@ -216,7 +210,7 @@ namespace Visualization
 
         private void OnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> args)
         {
-            this.MainFrame.Content = this._reservationPaymentPage.Content;
+            this.MainFrame.Content = this._reservationConfirmedPage.Content;
         }
 
         private void OnReservationFailedEvent(object sender, ReservationEventArgs args)
@@ -280,9 +274,6 @@ namespace Visualization
             this.SignUpMenuButton.IsChecked = true;
         }
 
-
-
-
         private void OnToAccountUpdatePageEvent(object sender, EventArgs e)
         {
             this.MainFrame.Content = this._accountUpdatePage.Content;
@@ -310,16 +301,7 @@ namespace Visualization
 
         private void OnChatButton(object sender, EventArgs e)
         {
-            if (CurrentUser.Account.Rights == Model.AccountRights.Customer)
-            {               
-                this.MainFrame.Content = this._chatPage.Content;
-            }
-            else
-            {
-                this.MainFrame.Content = this._multipleChatPage.Content;
-            }
-           
-           
+            this.MainFrame.Content = CurrentUser.Account.Rights == AccountRights.Customer ? this._chatPage.Content : this._multipleChatPage.Content;
         }
 
 

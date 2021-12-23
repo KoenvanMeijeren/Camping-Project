@@ -149,11 +149,6 @@ namespace ViewModel
             get => this._selectedCampingGuest;
             set
             {
-                if (Equals(value, this._selectedCampingGuest))
-                {
-                    return;
-                }
-
                 this._selectedCampingGuest = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
@@ -177,8 +172,6 @@ namespace ViewModel
         #endregion
 
         #region Events
-
-        public static event EventHandler<UpdateModelEventArgs<Reservation>> ReservationConfirmedEvent;
         public static event EventHandler<ReservationGuestEventArgs> ReservationGuestsConfirmedEvent;
         public static event EventHandler<ReservationEventArgs> ReservationGoBackEvent;
 
@@ -198,7 +191,7 @@ namespace ViewModel
             this.CampingGuests = new ObservableCollection<CampingGuest>();
             this.BirthDate = DateTime.Today.AddYears(-18);
             
-            ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationConfirmedEvent;
+            ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestEvent;
             ReservationPaymentViewModel.ReservationGuestGoBackEvent += this.OnReservationGuestGoBackEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
         }
@@ -220,7 +213,7 @@ namespace ViewModel
             this.ResetInput();
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)
+        private void OnReservationGuestEvent(object sender, ReservationEventArgs args)
         {
             this._reservation = args.Reservation;
             this._numberOfAddedGuest = this.CampingGuests.Count();
@@ -298,7 +291,7 @@ namespace ViewModel
             }
             
             this._numberOfAddedGuest--;
-            this.CampingGuests.Remove(SelectedCampingGuest);
+            this.CampingGuests.Remove(this.SelectedCampingGuest);
         }
         /// <summary>
         /// Checks if button can be pressed/
@@ -307,14 +300,13 @@ namespace ViewModel
         private bool CanExecuteRemoveGuestReservation()
         {
             return this.SelectedCampingGuest != null;
-            
         }
         /// <summary>
         /// Inserts Reservation into the database.
         /// </summary>
         private void ExecuteCustomerGuestReservation()
         {
-            ReservationGuestsConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(Reservation, CampingGuests));
+            ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(this.Reservation, this.CampingGuests));
 
             this.ResetInput();
             this.CampingGuests.Clear();

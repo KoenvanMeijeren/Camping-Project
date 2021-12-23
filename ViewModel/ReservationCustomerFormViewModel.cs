@@ -296,10 +296,10 @@ namespace ViewModel
             };
             
             ReservationCampingMapViewModel.ReserveEvent += this.OnReserveEvent;
-            ReservationCampingGuestViewModel.ReservationGoBackEvent += ReservationCampingGuestViewModelOnReservationGoBackEvent;
-            SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
-            AccountViewModel.SignOutEvent += OnSignOutEvent;
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent += OnReservationConfirmedEvent;
+            ReservationCampingGuestViewModel.ReservationGoBackEvent += this.ReservationCampingGuestViewModelOnReservationGoBackEvent;
+            SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
         }
 
         private void ReservationCampingGuestViewModelOnReservationGoBackEvent(object sender, ReservationEventArgs e)
@@ -308,17 +308,18 @@ namespace ViewModel
             this._checkOutDateTime = e.Reservation.CheckOutDatetime;
             this._campingPlace = e.Reservation.CampingPlace;
             this._selectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
-
-            this._currentUserCustomer = CurrentUser.CampingCustomer;
+            
             //Removes the customer from NumberOfPeople.
             this._amountOfGuests = (e.Reservation.NumberOfPeople - 1).ToString();
             
-            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            // This triggers the on property changed event.
+            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
         }
 
         private void OnReservationConfirmedEvent(object sender, EventArgs e)
         {
             this.ResetInput();
+            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
         }
 
         private void OnSignOutEvent(object sender, EventArgs e)
@@ -405,7 +406,7 @@ namespace ViewModel
 
             Reservation reservation = new Reservation(this._amountOfGuests, customer, this.CampingPlace, this._checkInDateTime.ToString(CultureInfo.InvariantCulture), this._checkOutDateTime.ToString(CultureInfo.InvariantCulture));
 
-            ReservationGuestEvent?.Invoke(this, new ReservationEventArgs(reservation));
+            ReservationCustomerFormViewModel.ReservationGuestEvent?.Invoke(this, new ReservationEventArgs(reservation));
         }
         private bool CanExecuteCustomerDataReservation()
         {

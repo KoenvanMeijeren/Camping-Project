@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -15,7 +16,6 @@ namespace ViewModel
         private string _firstName, _lastName, _title, _confirmationText;
         private DateTime _checkInDate, _checkOutDate;
         private Reservation _reservation;
-        private ObservableCollection<CampingGuest> _campingGuests;
 
         #endregion
 
@@ -92,16 +92,6 @@ namespace ViewModel
             }
         }
 
-        public ObservableCollection<CampingGuest> CampingGuests
-        {
-            get => this._campingGuests;
-            set
-            {
-                this._campingGuests = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
         #endregion
 
         #region View construction
@@ -111,43 +101,21 @@ namespace ViewModel
             ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationGuestEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> args)
         {
-            this.Reservation = args.Reservation;
-            this.CampingGuests = new ObservableCollection<CampingGuest>();
-            foreach (var guest in args.CampingGuests)
-            {
-                this.CampingGuests.Add(guest);
-            }
+            this._reservation = args.Model;
 
-            this.FirstName = args.Reservation.CampingCustomer.FirstName;
-            this.LastName = args.Reservation.CampingCustomer.LastName;
-            this.CheckInDate = args.Reservation.CheckInDatetime;
-            this.CheckOutDate = args.Reservation.CheckOutDatetime;
-
-            InsertReservationAndGuests();
-
-            this.Title = $"Gefeliciteerd {this.FirstName} {this.LastName},";
-            this.ConfirmationText = $"Uw reservering van {this.CheckInDate.Date.ToShortDateString()} tot {this.CheckOutDate.Date.ToShortDateString()}";
+            this._firstName = args.Model.CampingCustomer.FirstName;
+            this._lastName = args.Model.CampingCustomer.LastName;
+            this._checkInDate = args.Model.CheckInDatetime;
+            this._checkOutDate = args.Model.CheckOutDatetime;
+            
+            this._title = $"Gefeliciteerd {this.FirstName} {this.LastName},";
+            this._confirmationText = $"Uw reservering van {this.CheckInDate.Date.ToShortDateString()} tot {this.CheckOutDate.Date.ToShortDateString()}";
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion
-
-        /// <summary>
-        /// Inserts Reservation and CampingGuests into the database.
-        /// </summary>
-        public void InsertReservationAndGuests()
-        {
-            this.Reservation.Insert();
-            var lastReservation = this.Reservation.SelectLast();
-            CampingGuest campingGuest = new CampingGuest();
-
-            foreach (var guest in this.CampingGuests)
-            {
-                guest.Insert();
-                var lastGuest = campingGuest.SelectLast();
-                (new ReservationCampingGuest(lastReservation, lastGuest)).Insert();
-            }
-        }
     }
 }

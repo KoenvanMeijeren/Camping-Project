@@ -8,9 +8,9 @@ namespace ViewModel.EventArguments
     public class ReservationGuestEventArgs : EventArgs
     {
         public Reservation Reservation { get; private set; }
-        public ObservableCollection<CampingGuest> CampingGuests { get; private set; }
+        public IEnumerable<CampingGuest> CampingGuests { get; private set; }
 
-        public ReservationGuestEventArgs(Reservation reservation, ObservableCollection<CampingGuest> campingGuests)
+        public ReservationGuestEventArgs(Reservation reservation, IEnumerable<CampingGuest> campingGuests)
         {
             this.Reservation = reservation;
             this.CampingGuests = campingGuests;
