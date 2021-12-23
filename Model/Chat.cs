@@ -177,6 +177,8 @@ namespace Model
             return new Chat(id, campingOwner.Account, customerAccount, messages, DateTimeParser.TryParse(lastMessageSeenOwner), DateTimeParser.TryParse(lastMessageSeenCustomer), (ChatStatus)Int32.Parse(ownerStatus), (ChatStatus)Int32.Parse(customerStatus), name);
         }
 
+
+
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
@@ -202,13 +204,8 @@ namespace Model
         /// <inheritdoc/>
         protected override string BaseSelectQuery()
         {
-            //TODO: kijken welke manier van gegevens ophalen sneller gaat
-            //string query = $"SELECT * FROM {TableName} CH ";
-            string query = $"SELECT CH.{ColumnId}, CH.{ColumnOwnerAccount}, CH.{ColumnCustomerAccount}, CH.{ColumnMessage}," +
-                $" CH.{ColumnLastMessageSeenCustomer}, CH.{ColumnLastMessageSeenOwner}, CH.{ColumnOwnerStatus}, CH.{ColumnCustomerStatus},  CH.{ColumnIsSolved}," +
-                $" CC.{CampingCustomer.ColumnFirstName}, CC.{CampingCustomer.ColumnLastName}";
+            string query = $"SELECT * FROM {TableName} CH ";
             query += $" FROM {TableName} CH ";
-
             query += $" LEFT JOIN {Account.TableName} AC on CH.{Chat.ColumnCustomerAccount} = AC.{Account.ColumnId}";
             query += $" INNER JOIN {CampingCustomer.TableName} CC ON AC.{Account.ColumnId} = CC.{CampingCustomer.ColumnAccount}";
 
