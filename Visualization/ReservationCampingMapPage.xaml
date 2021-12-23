@@ -14,7 +14,7 @@
         <viewModel:ReservationCampingMapViewModel/>
     </Page.DataContext>
 
-    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837">
+    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
         <Rectangle x:Name="CampingFieldBackground1" HorizontalAlignment="Left" Height="50" Margin="36,174,0,0" VerticalAlignment="Top" Width="75" Fill="{Binding CampingField1.BackgroundColor}"/>
         <Rectangle x:Name="CampingFieldBackground2" HorizontalAlignment="Left" Height="50" Margin="112,174,0,0" VerticalAlignment="Top" Width="75" Fill="{Binding CampingField2.BackgroundColor}"/>
         <Rectangle x:Name="CampingFieldBackground3" HorizontalAlignment="Left" Height="50" Margin="187,174,0,0" VerticalAlignment="Top" Width="75" Fill="{Binding CampingField3.BackgroundColor}"/>
