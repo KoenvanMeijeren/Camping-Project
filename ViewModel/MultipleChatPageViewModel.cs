@@ -8,7 +8,6 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using System.Windows.Input;
 using ViewModel.EventArguments;
-using SystemCore;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
