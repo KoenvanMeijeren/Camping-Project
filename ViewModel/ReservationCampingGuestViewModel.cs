@@ -302,7 +302,7 @@ namespace ViewModel
         private void ExecuteCustomerGuestReservation()
         {
             ReservationGuestsConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(Reservation,CampingGuests));
-            CampingGuests.Clear();
+            this.CampingGuests.Clear();
 
             this.ResetInput();
         }

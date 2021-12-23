@@ -70,7 +70,7 @@ namespace ViewModel
         {
             this.CampingGuests = new ObservableCollection<CampingGuest>();
             ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent += this.OnReservationGuestsConfirmedEvent;
-            SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
+            SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
         }
 
         private void OnReservationGuestsConfirmedEvent(object sender, ReservationGuestEventArgs args)
@@ -94,9 +94,9 @@ namespace ViewModel
         private async Task CreateReservationPaymentRequest()
         {
             //creates payment request and opens paymentlink
-            _paymentClient = new PaymentClient("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
+            this._paymentClient = new PaymentClient("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
 
-            _paymentRequest = new PaymentRequest()
+            this._paymentRequest = new PaymentRequest()
             {
                 Amount = new Amount(Currency.EUR, (int)Reservation.CampingPlace.TotalPrice),
                 Description = Reservation.CampingPlace.Type.Accommodation.Name,
@@ -104,7 +104,7 @@ namespace ViewModel
                 
                 Method = PaymentMethod.Ideal // instead of "Ideal"
             };
-            _paymentResponse = await _paymentClient.CreatePaymentAsync(_paymentRequest);
+            this._paymentResponse = await this._paymentClient.CreatePaymentAsync(_paymentRequest);
 
             Process.Start(new ProcessStartInfo(_paymentResponse.Links.Checkout.Href)
             {
@@ -118,8 +118,8 @@ namespace ViewModel
         /// </summary>
         private async Task GetReservationPaymentRequestId()
         {
-            PaymentResponse result = await _paymentClient.GetPaymentAsync(_paymentResponse.Id);
-            _status = result.Status;
+            PaymentResponse result = await this._paymentClient.GetPaymentAsync(_paymentResponse.Id);
+            this._status = result.Status;
         }
 
         /// <summary>
@@ -128,21 +128,21 @@ namespace ViewModel
         public async void ExecuteCreateReservationPaymentTest()
         {
             // run a method in another thread
-            await CreateReservationPaymentRequest();
+            await this.CreateReservationPaymentRequest();
 
             //checks if payment is completed
             bool canContinue = false;
             while (canContinue == false)
             {
-                await GetReservationPaymentRequestId();
-                if (_status.Equals("paid"))
+                await this.GetReservationPaymentRequestId();
+                if (this._status.Equals("paid"))
                 {
-                    ReservationConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(Reservation, CampingGuests));
+                    ReservationConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(this.Reservation, this.CampingGuests));
                     canContinue = true;
                 }
-                if (_status.Equals("failed") || _status.Equals("canceled") || _status.Equals("expired"))
+                if (this._status.Equals("failed") || this._status.Equals("canceled") || this._status.Equals("expired"))
                 {
-                    ReservationFailedEvent?.Invoke(this, new ReservationEventArgs(Reservation));
+                    ReservationFailedEvent?.Invoke(this, new ReservationEventArgs(this.Reservation));
                     canContinue = true;
                 }
             }
@@ -151,8 +151,8 @@ namespace ViewModel
 
         private void ExecuteCustomerPaymenGoBackReservation()
         {
-            ReservationGuestGoBackEvent?.Invoke(this, new ReservationGuestEventArgs(Reservation, CampingGuests));
-            CampingGuests.Clear();
+            ReservationGuestGoBackEvent?.Invoke(this, new ReservationGuestEventArgs(this.Reservation, this.CampingGuests));
+            this.CampingGuests.Clear();
         }
 
         public ICommand CreateReservationPayment => new RelayCommand(ExecuteCreateReservationPaymentTest);
