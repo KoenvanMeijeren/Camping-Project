@@ -168,7 +168,8 @@ namespace ViewModel
             {
                 return;
             }
-                // Automatically updating chats
+
+            // Automatically updating chats
             while (true)
             {               
                 foreach (Chat chatConversation in _chats)
