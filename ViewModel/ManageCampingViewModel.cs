@@ -240,8 +240,8 @@ namespace ViewModel
             this.Camping.Update(this.CampingName, this.Camping.Address, this.Camping.CampingOwner, 
             this.Phonenumber, this.Email, this.Facebook, this.Twitter, this.Instagram, this.Color);
 
-            MessageBox.Show("De camping is succesvol bijgewerkt.", "Camping bewerken");
             CurrentCamping.SetCurrentCamping(this.Camping);
+            MessageBox.Show("De camping is succesvol bijgewerkt.", "Camping bewerken");
         }
 
         private bool CanExecuteEditSave()
