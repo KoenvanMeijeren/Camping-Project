@@ -127,8 +127,8 @@ namespace Model
 
         public bool UpdateChat(string json)
         {
-            //return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus));
-            return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, DateTime.Now, DateTime.Now, this.OwnerStatus, this.CustomerStatus));
+            return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus));
+            //return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, DateTime.Now, DateTime.Now, this.OwnerStatus, this.CustomerStatus));
         }
 
         public bool Update(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus)

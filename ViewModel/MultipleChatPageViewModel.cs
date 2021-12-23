@@ -20,6 +20,7 @@ namespace ViewModel
         private Chat _chat;
         private ObservableCollection<Chat> _chats;
         private List<MessageJSON> _shownChatMessages;
+        
         private int _refreshRateInMilliseconds = 2000;
 
         public string ChatTextInput { get; set; }
@@ -86,7 +87,7 @@ namespace ViewModel
             _chat = new Chat();
             this._chats = new ObservableCollection<Chat>(_chat.Select());
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            //this.RefreshChatMessages();//always listen for new chat messages?
+            this.RefreshChatMessages();//always listen for new chat messages?
         }
 
 
@@ -111,39 +112,40 @@ namespace ViewModel
         /// Async function that checks for new messages
         /// </summary>
         /// <returns>Nothing</returns>
-        /*public async Task RefreshChatMessages()
+        public async Task RefreshChatMessages()
         {
             // Automatically updating chats
-            while (true)
+          /*  while (true)
             {
-                foreach (Chat ChatConversation in _chats)
+                foreach (Chat chatConversation in _chats)
                 {
+                    List<MessageJSON> _chatMessages = new List<MessageJSON>();
                     // Fetch the messages from the database
-                    string GetChatMessages = ChatConversation.GetChatMessagesForCampingGuest(CurrentUser.CampingCustomer.Account);
+                    string GetChatMessages = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
                     // Convert database JSON value to List<MesssageJson>
                     List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
 
                     // Check if the current chat does NOT match with chats in database (aka new message)
-                    if (!ChatConversation.ChatMessages.Count.Equals(GetChatMessagesToList.Count))
+                    if (!chatConversation._chatMessages.Count.Equals(GetChatMessagesToList.Count))
                     {
                         // Calculate the amount of new messages
-                        int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - ChatConversation.ChatMessages.Count;
+                        int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - chatConversation._chatMessages.Count;
 
                         // Loop from first new message, to last new message
-                        for (int i = ChatConversation.ChatMessages.Count; i < GetChatMessagesToList.Count; i++)
+                        for (int i = chatConversation._chatMessages.Count; i < GetChatMessagesToList.Count; i++)
                         {
                             MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
                             this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
                         }
                         // Overwrite the old list with messages to the full new list with messages
-                        ChatConversation.ChatMessages = GetChatMessagesToList;
+                        chatConversation._chatMessages = GetChatMessagesToList;
                     }
 
                     // Async wait before executing this again
                     await Task.Delay(_refreshRateInMilliseconds);
-                }               
-            }
-        }*/
+                }
+            }*/
+        }
 
         /// <summary>
         /// Converts whole chat into a JSON
@@ -167,13 +169,30 @@ namespace ViewModel
         /// </summary>
         private void SendChatButtonExecute()
         {
-            this.ExecuteSendChatEvent(this.ChatTextInput, MessageSender.Sender);
+            // Message that has just been sent
+            string sentMessage = this.ChatTextInput;
 
-            //TODO: DOesnt work in constructor yet :p
-            foreach (MessageJSON message in ShownChatMessages)
-            {
-                this.ExecuteSendChatEvent(message.Message, (MessageSender)Convert.ToInt32(message.UserRole));
-            }
+            //Check if the message was sent by guest or owner
+            MessageSender sndr = (this.SelectedChat.Customer.Id.Equals(CurrentUser.Account.Id)) ? MessageSender.Sender : MessageSender.Receiver;
+
+            // Displays message on screen
+            this.ExecuteSendChatEvent(sentMessage, sndr);
+
+            // Add message to whole conversation
+            this._shownChatMessages .Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+
+            this.UpdateChatInDatabase();
+        }
+
+        /// <summary>
+        /// Updates the chat converstion.
+        /// </summary>
+        private void UpdateChatInDatabase()
+        {
+            // List of text messages to JSON
+            var messagesListToJson = JsonConvert.SerializeObject(this._shownChatMessages, Formatting.Indented);
+            this._selectedChat.UpdateChat(messagesListToJson);
         }
 
         /// <summary>
