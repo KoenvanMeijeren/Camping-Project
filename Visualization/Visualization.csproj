@@ -22,6 +22,10 @@
     <None Remove="MapComponents\CampingFieldImage-Unknown.png" />
     <None Remove="MapComponents\CampingPlattegrond.png" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.2.0" />
+  </ItemGroup>
 	
   <ItemGroup>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj" />

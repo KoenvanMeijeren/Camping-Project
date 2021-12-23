@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using SystemCore;
 
@@ -9,9 +10,8 @@ namespace ViewModel
 
         #region Fields
         
-        private string _title;
-        private string _subtitle;
-        private string _subSubtitle;
+        private string _title, _subtitle, _subSubtitle, _color;
+
         
         #endregion
 
@@ -20,7 +20,7 @@ namespace ViewModel
         public string Title
         {
             get => this._title;
-            private init
+            private set
             {
                 if (Equals(value, this._title))
                 {
@@ -36,7 +36,7 @@ namespace ViewModel
         public string Subtitle
         {
             get => this._subtitle;
-            private init
+            private set
             {
                 if (Equals(value, this._subtitle))
                 {
@@ -52,7 +52,7 @@ namespace ViewModel
         public string SubSubtitle
         {
             get => this._subSubtitle;
-            private init
+            private set
             {
                 if (Equals(value, this._subSubtitle))
                 {
@@ -64,17 +64,44 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-        
+
+        public string Color
+        {
+            get => this._color;
+            private set
+            {
+                if (Equals(value, this._color))
+                {
+                    return;
+                }
+
+                this._color = value;
+
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
         #endregion
 
         public MainWindowViewModel()
         {
-            this._title = ConfigReader.GetSetting("Title");
             this._subtitle = ConfigReader.GetSetting("Subtitle");
             this._subSubtitle = ConfigReader.GetSetting("SubSubtitle");
-            
+            this._title = this.Subtitle + " " + this.SubSubtitle;
+            this._color = "#000000";
+
+            CurrentCamping.CurrentCampingSetEvent += OnCurrentCampingSetEvent;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
+        public void OnCurrentCampingSetEvent(object sender, EventArgs e)
+        {
+            this._subtitle = ConfigReader.GetSetting("Subtitle");
+            this._subSubtitle = "\n" + CurrentCamping.Camping.Name;
+            this._title = this.Subtitle + " " + this.SubSubtitle;
+            this._color = CurrentCamping.Camping.Color;
+
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+        }
     }
 }

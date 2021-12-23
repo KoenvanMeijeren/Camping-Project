@@ -13,7 +13,7 @@
         <viewModel:ManageAccommodationViewModel/>
     </Page.DataContext>
     
-    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837">
+    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,62,30,219" CornerRadius="15,15,15,15" Background="White">
             <ListView SelectedItem="{Binding SelectedAccommodation}" ItemsSource="{Binding Accommodations}" Margin="23,48,23,68" Background="White" FontFamily="Century Gothic" FontWeight="Bold" >
                 <ListView.View>
@@ -41,9 +41,9 @@
         <Label Content="{Binding AccommodationError}" HorizontalAlignment="Left" Margin="500,452,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12"/>
         <Button Command="{Binding Delete}" x:Name="DeleteButton" Content="Verwijder" Margin="53,364,647,238"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
 
-        <Label Content="Prefix" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="48,495,0,0" Height="25"/>
+        <Label Content="Prefix*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="48,495,0,0" Height="25"/>
 
-        <Label Content="Naam" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="190,495,0,0" Height="25"/>
+        <Label Content="Naam*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="190,495,0,0" Height="25"/>
         <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="LocationNumberTextBox" HorizontalAlignment="Left" Height="20" Margin="195,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <TextBox Text="{Binding Prefix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="53,532,0,0" HorizontalAlignment="Left" Height="20" Width="96" VerticalAlignment="Top" TextWrapping="Wrap" Visibility="Visible" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black" />
 
