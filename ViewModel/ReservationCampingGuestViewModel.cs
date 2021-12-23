@@ -19,7 +19,6 @@ namespace ViewModel
         #region Fields
 
         private string _firstNameGuest, _lastNameGuest, _amountOfPeopleError, _firstNameError, _lastNameError, _birthDateError;
-        //private readonly List<CampingGuest> _campingGuestsList;
         private DateTime _birthDate;
         private Reservation _reservation;
         private int _numberOfAddedGuest;
