@@ -41,7 +41,7 @@
             </ListView.View>
         </ListView>
 
-        <Button x:Name="PaymentReservation" Content="Betalen" HorizontalAlignment="Left" Margin="555,572,0,32" BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Width="200" Height="30" Command="{Binding CreateReservationPayment, Mode=OneWay}" />
+        <Button x:Name="PaymentReservation" Content="Betalen" HorizontalAlignment="Left" Margin="555,572,0,32" Style="{StaticResource DefaultButtonTheme}" Width="200" Height="30" Command="{Binding CreateReservationPayment, Mode=OneWay}" />
         <Label Content="Betaalgegevens:" HorizontalAlignment="Left" Margin="58,64,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="14" Height="31" Width="174" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" RenderTransformOrigin="0.328,0.587"/>
         <Label Content="Voornaam*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="68,128,665,482"/>
         <Label HorizontalAlignment="Left" Height="25" Margin="68,154,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.FirstName, Mode=OneWay}" />
@@ -65,6 +65,6 @@
         <Label HorizontalAlignment="Left" Height="25" Margin="68,370,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.Address.PostalCode, Mode=OneWay}"/>
         <Label Content="Plaats*:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="212,345,487,264"/>
         <Label HorizontalAlignment="Left" Height="25" Margin="212,370,0,0" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" Content="{Binding CampingCustomer.Address.Place, Mode=OneWay}"/>
-        <Button x:Name="GoBackButton" Content="Terug" HorizontalAlignment="Left" Margin="45,572,0,32" BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Width="200" Height="30" Command="{Binding CustomerPaymentGoBackReservation, Mode=OneWay}"></Button>
+        <Button x:Name="GoBackButton" Content="Terug" HorizontalAlignment="Left" Margin="45,572,0,32" Style="{StaticResource DefaultButtonTheme}" Width="200" Height="30" Command="{Binding CustomerPaymentGoBackReservation, Mode=OneWay}"></Button>
     </Grid>
 </Page>
