@@ -65,7 +65,7 @@ namespace ViewModel
             while (true)
             {
                 // Fetch the messages from the database
-                string GetChatMessages = ChatConversation.GetChatMessagesForCampingGuest(CurrentUser.CampingCustomer.Account);
+                string GetChatMessages = ChatConversation.GetChatMessagesForCampingCustomer(CurrentUser.CampingCustomer.Account);
                 // Convert database JSON value to List<MesssageJson>
                 List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
 
@@ -124,7 +124,7 @@ namespace ViewModel
 
             // Add message to whole conversation
             this.ChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
-
+            var test = CurrentUser.CampingCustomer.Account;
             this.UpdateChatInDatabase();
         }
 

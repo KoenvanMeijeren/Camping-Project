@@ -59,7 +59,7 @@ namespace Model
         {
         }
 
-        public Chat(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus) : this("-1", owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus , "Klant")
+        public Chat(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus) : this("-1", owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus, "Klant")
         {
         }
 
@@ -75,7 +75,6 @@ namespace Model
             this.OwnerStatus = ownerStatus;
             this.CustomerStatus = customerStatus;
             this.CustomerName = name;
-            this.IsSolved = 0;
         }
 
         /// <summary>
@@ -117,7 +116,7 @@ namespace Model
             return this.ToModel(result);
         }
 
-        public string GetChatMessagesForCampingGuest(Account account)
+        public string GetChatMessagesForCampingCustomer(Account account)
         {
             Query query = new Query($"SELECT {ColumnMessage} FROM {TableName} WHERE {ColumnCustomerAccount} = @campingCustomerId");
             query.AddParameter("campingCustomerId", account.Id);
@@ -128,10 +127,11 @@ namespace Model
 
         public bool UpdateChat(string json)
         {
-            return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus, this.IsSolved));
+            //return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus));
+            return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, DateTime.Now, DateTime.Now, this.OwnerStatus, this.CustomerStatus));
         }
 
-        public bool Update(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus, int isSolved)
+        public bool Update(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus)
         {
             this.Owner = owner;
             this.Customer = customer;
@@ -141,7 +141,7 @@ namespace Model
             this.OwnerStatus = ownerStatus;
             this.CustomerStatus = customerStatus;
 
-            return base.Update(Chat.ToDictionary(owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus, isSolved));
+            return base.Update(Chat.ToDictionary(owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus));
         }
 
         /// <inheritdoc/>
@@ -180,10 +180,10 @@ namespace Model
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Chat.ToDictionary(this.Owner, this.Customer, this.Messages, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus, this.IsSolved);
+            return Chat.ToDictionary(this.Owner, this.Customer, this.Messages, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus);
         }
 
-        private static Dictionary<string, string> ToDictionary(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus, int isSolved)
+        private static Dictionary<string, string> ToDictionary(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
@@ -193,8 +193,7 @@ namespace Model
                 {ColumnLastMessageSeenOwner, DateTimeParser.TryParseToDatabaseDateTimeFormat(ownerLastSeen)},
                 {ColumnLastMessageSeenCustomer, DateTimeParser.TryParseToDatabaseDateTimeFormat(customerLastSeen)},
                 {ColumnOwnerStatus, ((int)ownerStatus).ToString()},
-                {ColumnCustomerStatus, ((int)customerStatus).ToString()},
-                {ColumnIsSolved, isSolved.ToString() }
+                {ColumnCustomerStatus, ((int)customerStatus).ToString()}
             };
 
             return dictionary;

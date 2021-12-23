@@ -123,6 +123,7 @@ namespace Model
                 query.AddParameter(keyValuePair.Key, keyValuePair.Value);
             }
             
+            Console.WriteLine();
             query.Execute();
 
             return query.IsSuccessFullyExecuted();
