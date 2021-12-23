@@ -84,6 +84,102 @@ namespace Visualization
             this.ManageCampingCustomerButton.Visibility = Visibility.Collapsed;
         }
 
+        #region Menubutton checked events
+        private void SignInMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.CollapseManageDropdown();
+            this.MainFrame.Content = this._signInPage;
+        }
+
+        private void SignUpMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.CollapseManageDropdown();
+            this.MainFrame.Content = this._signUpPage.Content;
+        }
+
+        private void OverviewMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.CollapseManageDropdown();
+
+            this.OverviewMenuButton.IsChecked = true;
+            if (CurrentUser.Account.Rights == Model.AccountRights.Admin)
+            {
+                this.MainFrame.Content = this._reservationCollectionFrame;
+                return;
+            }
+
+            this.MainFrame.Content = this._reservationCustomerOverviewPage;
+        }
+
+        private void ReserveMapMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.CollapseManageDropdown();
+            this.MainFrame.Content = this._reservationCampingMapPage;
+        }
+
+        private void AccountMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.CollapseManageDropdown();
+            this.MainFrame.Content = this._accountPage;
+        }
+
+        private void ContactMenuButton_Checked(object sender, EventArgs e)
+        {
+            this.CollapseManageDropdown();
+            this.MainFrame.Content = this._contactPage.Content;
+        }
+        #endregion
+
+        #region Managebutton checked events
+
+        private void CollapseManageDropdown()
+        {
+            this.ManageButton.Content = "Beheer ⮟";
+
+            this.ManageCampingMapMenuButton.Visibility = Visibility.Collapsed;
+            this.ManageCampingPlaceTypeButton.Visibility = Visibility.Collapsed;
+            this.ManageAccommodationsButton.Visibility = Visibility.Collapsed;
+            this.ManageCampingCustomerButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void ManageButton_Clicked(object sender, RoutedEventArgs e)
+        {
+            if ((string)this.ManageButton.Content == "Beheer ⮝")
+            {
+                this.CollapseManageDropdown();
+                return;
+            }
+
+            this.ManageButton.Content = "Beheer ⮝";
+
+            this.ManageCampingMapMenuButton.Visibility = Visibility.Visible;
+            this.ManageCampingPlaceTypeButton.Visibility = Visibility.Visible;
+            this.ManageAccommodationsButton.Visibility = Visibility.Visible;
+            this.ManageCampingCustomerButton.Visibility = Visibility.Visible;
+        }
+
+
+        private void ManageCampingPlaceTypesButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._manageCampingPlaceTypePage;
+        }
+
+        private void ManageAccommodationsButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._manageAccommodationPage;
+        }
+
+        private void ManageCampingCustomersMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._manageCampingCustomerPage;
+        }
+
+        private void ManageCampingMapMenuButton_Checked(object sender, RoutedEventArgs e)
+        {
+            this.MainFrame.Content = this._manageCampingMapPage;
+        }
+        #endregion
+
         private void OnReserveEvent(object sender, ReservationEventArgs args)
         {
             this.MainFrame.Content = this._reservationCustomerForm.Content;
@@ -155,57 +251,8 @@ namespace Visualization
             this.SignUpMenuButton.IsChecked = true;
         }
 
-        private void OverviewMenuButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.OverviewMenuButton.IsChecked = true;
-            if (CurrentUser.Account.Rights == Model.AccountRights.Admin)
-            {
-                this.MainFrame.Content = this._reservationCollectionFrame;
-                return;
-            }
 
-            this.MainFrame.Content = this._reservationCustomerOverviewPage;
-        }
 
-        private void ReserveMapMenuButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._reservationCampingMapPage;
-        }
-
-        private void AccountMenuButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._accountPage;
-        }
-        
-        private void ManageCampingPlaceTypesButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._manageCampingPlaceTypePage;
-        }
-        
-        private void ManageAccommodationsButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._manageAccommodationPage;
-        }
-        
-        private void ManageCampingCustomersMenuButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._manageCampingCustomerPage;
-        }
-
-        private void ManageCampingMapMenuButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._manageCampingMapPage;
-        }
-
-        private void SignInMenuButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._signInPage;
-        }
-
-        private void SignUpMenuButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.MainFrame.Content = this._signUpPage.Content;
-        }
 
         private void OnToAccountUpdatePageEvent(object sender, EventArgs e)
         {
@@ -220,11 +267,6 @@ namespace Visualization
         private void OnBackToDashboardEvent(object sender, ReservationEventArgs args)
         {
             this.OverviewMenuButton_Checked(sender, null);
-        }
-
-        private void ContactMenuButton_Checked(object sender, EventArgs e)
-        {
-            this.MainFrame.Content = this._contactPage.Content;
         }
 
         private void OnUpdateCancelEvent(object sender, EventArgs e)
@@ -251,31 +293,6 @@ namespace Visualization
            
         }
 
-        private void ManageButton_Checked(object sender, RoutedEventArgs e)
-        {
-            this.ManageButton.Content = "Beheer ⮝";
 
-            this.ManageCampingMapMenuButton.Visibility = Visibility.Visible;
-            this.ManageCampingPlaceTypeButton.Visibility = Visibility.Visible;
-            this.ManageAccommodationsButton.Visibility = Visibility.Visible;
-            this.ManageCampingCustomerButton.Visibility = Visibility.Visible;
-        }
-
-        private void ManageButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if ((bool)this.ManageCampingMapMenuButton.IsChecked ||
-                (bool)this.ManageCampingPlaceTypeButton.IsChecked ||
-                (bool)this.ManageAccommodationsButton.IsChecked ||
-                (bool)this.ManageCampingCustomerButton.IsChecked)
-            {
-                return;
-            }
-            this.ManageButton.Content = "Beheer ⮟";
-
-            this.ManageCampingMapMenuButton.Visibility = Visibility.Collapsed;
-            this.ManageCampingPlaceTypeButton.Visibility = Visibility.Collapsed;
-            this.ManageAccommodationsButton.Visibility = Visibility.Collapsed;
-            this.ManageCampingCustomerButton.Visibility = Visibility.Collapsed;
-        }
     }
 }

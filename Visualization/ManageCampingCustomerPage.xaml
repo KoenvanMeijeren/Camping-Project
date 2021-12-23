@@ -27,10 +27,10 @@
         <Label Content="Campingklanten beheer" HorizontalAlignment="Left" Margin="46,74,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="34"/>
         <Label Content="{Binding EditTitle}" HorizontalAlignment="Left" Margin="231,108,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
         <Label Content="{Binding CampingCustomerError}" HorizontalAlignment="Left" Margin="563,148,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12"/>
-        <Button Command="{Binding Delete}" x:Name="DeleteButton" Content="Verwijder" Margin="421,524,259,76"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
+        <Button Command="{Binding Delete}" x:Name="DeleteButton" Content="Verwijder" Margin="421,524,259,76"  Style="{StaticResource DefaultButtonTheme}"/>
 
-        <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Opslaan" Margin="604,524,76,77"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
-        <Button Command="{Binding CancelEditAction}" x:Name="Cancel" Content="Annuleer" Margin="231,525,449,76"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+        <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Opslaan" Margin="604,524,76,77"  Style="{StaticResource DefaultButtonTheme}"/>
+        <Button Command="{Binding CancelEditAction}" x:Name="Cancel" Content="Annuleer" Margin="231,525,449,76"  Style="{StaticResource DefaultButtonTheme}"/>
         <Label Content="Voornaam*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="232,153,0,0" Height="25"/>
         <TextBox Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="FirstNameTextbox" HorizontalAlignment="Left" Height="20" Margin="237,183,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <Label Content="Achternaam*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="379,153,0,0" Height="25"/>

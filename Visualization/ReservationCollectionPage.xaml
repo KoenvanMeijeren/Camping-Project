@@ -61,6 +61,6 @@
             <Label Content="Personen" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Margin="10,9,0,0"/>
         </Border>
         <TextBox Text="{Binding Guests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="21" Margin="503,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="115" Grid.ColumnSpan="2" />
-        <Button x:Name="CreatePdf" Command="{Binding CreatePdf}" Content="Maak PDF" Height="30" Width="100" Margin="87,533,60,71"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Grid.Column="1"/>
+        <Button x:Name="CreatePdf" Command="{Binding CreatePdf}" Content="Maak PDF" Height="30" Width="100" Margin="87,533,60,71"  Style="{StaticResource DefaultButtonTheme}" Grid.Column="1"/>
     </Grid>
 </Page>

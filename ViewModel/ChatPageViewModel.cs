@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,8 +42,7 @@ namespace ViewModel
             this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this.ChatConversation.Messages);
 
             // Loops through all 'old'/already sent messages
-
-            foreach (var message in ChatMessages)
+            foreach(var message in ChatMessages)
             {
                 OpenChatEvent?.Invoke(this, new ChatEventArgs(message.Message, (MessageSender)Convert.ToInt32(message.UserRole)));
             }
@@ -119,7 +118,7 @@ namespace ViewModel
             this.ExecuteSendChatEvent(sentMessage, sndr);
 
             // Add message to whole conversation
-            ChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
+            this.ChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
 
             this.UpdateChatInDatabase();
         }
@@ -131,7 +130,7 @@ namespace ViewModel
         {
             // List of text messages to JSON
             var messagesListToJson = JsonConvert.SerializeObject(ChatMessages, Formatting.Indented);
-            ChatConversation.UpdateChat(messagesListToJson);
+            this.ChatConversation.UpdateChat(messagesListToJson);
         }
 
         /// <summary>

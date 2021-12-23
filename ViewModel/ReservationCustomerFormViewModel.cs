@@ -308,7 +308,7 @@ namespace ViewModel
                 {"EmailAddress", ""},
             };
             
-            ReservationCampingPlaceFormViewModel.ReserveEvent += this.OnReserveEvent;
+            ReservationCampingMapViewModel.ReserveEvent += this.OnReserveEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += ReservationCampingGuestViewModelOnReservationGoBackEvent;
             SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
             AccountViewModel.SignOutEvent += OnSignOutEvent;
