@@ -29,6 +29,7 @@ namespace Visualization
         private readonly AccountUpdatePage _accountUpdatePage;
         private readonly ContactPage _contactPage;
         private readonly ChatPage _chatPage;
+        private readonly MultipleChatPage _multipleChatPage;
         private readonly ManageCampingPlaceTypePage _manageCampingPlaceTypePage;
         private readonly ManageAccommodationPage _manageAccommodationPage;
 
@@ -53,6 +54,7 @@ namespace Visualization
             this._manageCampingPlaceTypePage = new ManageCampingPlaceTypePage();
             this._manageAccommodationPage = new ManageAccommodationPage();
             this._chatPage = new ChatPage();
+            this._multipleChatPage = new MultipleChatPage();
 
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationCampingGuestViewModel.ReservationGoBackEvent += this.OnReserveEvent;
@@ -280,7 +282,16 @@ namespace Visualization
 
         private void OnChatButton(object sender, EventArgs e)
         {
-            this.MainFrame.Content = this._chatPage.Content;
+            if (CurrentUser.Account.Rights == Model.AccountRights.Customer)
+            {               
+                this.MainFrame.Content = this._chatPage.Content;
+            }
+            else
+            {
+                this.MainFrame.Content = this._multipleChatPage.Content;
+            }
+           
+           
         }
 
 

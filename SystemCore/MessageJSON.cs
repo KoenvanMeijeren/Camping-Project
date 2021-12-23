@@ -10,8 +10,8 @@ namespace SystemCore
     {
         public string Message;
         public string MessageSentTime;
-        public string UserRole;
-
+        public string UserRole; 
+        
         public MessageJSON(string message, string userRole)
         {
             this.Message = message;
