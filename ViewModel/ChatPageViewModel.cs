@@ -63,9 +63,6 @@ namespace ViewModel
             this.RefreshChatMessages();
         }
 
-   
-        
-
         /// <summary>
         /// Async function that checks for new messages
         /// </summary>

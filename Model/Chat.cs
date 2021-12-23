@@ -132,7 +132,7 @@ namespace Model
         public bool UpdateChat(string json)
         {
             return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus));
-            //return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, DateTime.Now, DateTime.Now, this.OwnerStatus, this.CustomerStatus));
+            
         }
 
         public bool Update(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus)
@@ -180,8 +180,6 @@ namespace Model
 
             return new Chat(id, campingOwner.Account, customerAccount, messages, DateTimeParser.TryParse(lastMessageSeenOwner), DateTimeParser.TryParse(lastMessageSeenCustomer), (ChatStatus)Int32.Parse(ownerStatus), (ChatStatus)Int32.Parse(customerStatus), name);
         }
-
-
 
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()

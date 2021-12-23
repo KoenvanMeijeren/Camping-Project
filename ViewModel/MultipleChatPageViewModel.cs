@@ -20,20 +20,16 @@ namespace ViewModel
         private readonly Chat _chatModel = new Chat();
         
         private ObservableCollection<Chat> _chats;
-        private List<MessageJSON> _shownChatMessages;
-        
+        private List<MessageJSON> _shownChatMessages;        
         private int _refreshRateInMilliseconds = 2000;
 
         public string ChatTextInput { get; set; }
-
-        public string ChatTextInput { get; set; }
-        public List<MessageJSON> ShownChatMessages { get; private set; }
         public string CurrenCustomerName { get; private set; }
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
         public static event EventHandler<ChatEventArgs> NewSelectedChatEvent;
 
 
-        #region property
+        #region properties
         public List<MessageJSON> ShownChatMessages
         {
             get => this._shownChatMessages;
@@ -76,8 +72,7 @@ namespace ViewModel
                 this._selectedChat = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
                 NewSelectedChatEvent?.Invoke(this, null);
-                GetChatConversation();
-               
+                GetChatConversation();               
             }
         }
         #endregion
@@ -86,12 +81,11 @@ namespace ViewModel
         public MultipleChatPageViewModel()
         {
             //TODO: fetch all chats from database, where unsolved?
-            _chat = new Chat();
-            this._chats = new ObservableCollection<Chat>(_chat.Select());
+            _chatModel = new Chat();
+            this._chats = new ObservableCollection<Chat>(_chatModel.Select());
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             this.RefreshChatMessages();//always listen for new chat messages?
         }
-
 
         public void DisplayMessages()
         {
