@@ -10,7 +10,41 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\maps.PNG" />
+    <None Remove="Images\user_stock.png" />
+    <None Remove="Images\caravan-solid.png" />
+    <None Remove="MapComponents\CampingFieldImage-Add.png" />
+    <None Remove="MapComponents\CampingFieldImage-Bungalow.png" />
+    <None Remove="MapComponents\CampingFieldImage-Camper.png" />
+    <None Remove="MapComponents\CampingFieldImage-Caravan.png" />
+    <None Remove="MapComponents\CampingFieldImage-Chalet.png" />
+    <None Remove="MapComponents\CampingFieldImage-Tent.png" />
+    <None Remove="MapComponents\CampingFieldImage-Unknown.png" />
+    <None Remove="MapComponents\CampingPlattegrond.png" />
+  </ItemGroup>
+	
+  <ItemGroup>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\maps.PNG" />
+    <Resource Include="Images\user_stock.png" />
+    <Resource Include="Images\caravan-solid.png" />
+    <Resource Include="MapComponents\CampingFieldImage-Add.png" />
+    <Resource Include="MapComponents\CampingFieldImage-Bungalow.png" />
+    <Resource Include="MapComponents\CampingFieldImage-Camper.png" />
+    <Resource Include="MapComponents\CampingFieldImage-Caravan.png" />
+    <Resource Include="MapComponents\CampingFieldImage-Chalet.png" />
+    <Resource Include="MapComponents\CampingFieldImage-Tent.png" />
+    <Resource Include="MapComponents\CampingFieldImage-Unknown.png" />
+    <Resource Include="MapComponents\CampingPlattegrond.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Theme\DropdownButtonTheme.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
   </ItemGroup>
 
 </Project>

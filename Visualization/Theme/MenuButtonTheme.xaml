@@ -18,7 +18,7 @@
                                        Foreground="{TemplateBinding Foreground}"
                                        VerticalAlignment="Center"
                                        FontFamily="Century Gothic" FontSize="16" FontWeight="bold"
-                                       Margin="10,0,0,0"/>
+                                       Margin="30,0,0,0"/>
 
                         </Grid>
                     </ControlTemplate>
@@ -32,6 +32,10 @@
 
         <Style.Triggers>
             <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="#FF006837"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+            <Trigger Property="Content" Value="Beheer ⮝">
                 <Setter Property="Background" Value="#FF006837"/>
                 <Setter Property="Foreground" Value="White"/>
             </Trigger>

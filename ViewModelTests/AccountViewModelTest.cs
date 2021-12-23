@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using System;
+using Model;
 using Moq;
 using NUnit.Framework;
 using ViewModel;
@@ -9,12 +10,21 @@ namespace ViewModelTests
     {
         private AccountViewModel _accountViewModel;
 
+        private bool _triggeredSignOutEvent;
+        
         [SetUp]
         public void Setup()
         {
             this._accountViewModel = new AccountViewModel();
+            
+            AccountViewModel.SignOutEvent += AccountViewModelOnSignOutEvent;
         }
-        
+
+        private void AccountViewModelOnSignOutEvent(object? sender, EventArgs e)
+        {
+            this._triggeredSignOutEvent = true;
+        }
+
         [Test]
         public void TestTheCampingCustomerOverview()
         {
@@ -52,6 +62,21 @@ namespace ViewModelTests
         public void TestNoCurrentUser()
         {
             CurrentUser.EmptyCurrentUser();
+            
+            Assert.IsNull(this._accountViewModel.Address);
+            Assert.IsNull(this._accountViewModel.Name);
+            Assert.IsNull(this._accountViewModel.PhoneNumber);
+            Assert.IsNull(this._accountViewModel.Street);
+            Assert.IsNull(this._accountViewModel.Mail);
+            Assert.IsNull(this._accountViewModel.Birthdate);
+        }
+        
+        [Test]
+        public void TestSignOutCurrentUser()
+        {
+            Assert.IsFalse(this._triggeredSignOutEvent);
+            this._accountViewModel.SignOut.Execute(null);
+            Assert.IsTrue(this._triggeredSignOutEvent);
             
             Assert.IsNull(this._accountViewModel.Address);
             Assert.IsNull(this._accountViewModel.Name);

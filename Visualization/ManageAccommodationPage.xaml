@@ -4,13 +4,18 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Visualization"
+      xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="ManageCampingPlacePage" Height="634.04" Width="820" MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
+      Title="ManageAccommodationPage" Height="634.04" Width="820" MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
 
+    <Page.DataContext>
+        <viewModel:ManageAccommodationViewModel/>
+    </Page.DataContext>
+    
     <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="30,62,30,219" CornerRadius="15,15,15,15" Background="White">
-            <ListView SelectedItem="{Binding SelectedCampingPlace}"  Margin="23,48,23,68" Background="White" FontFamily="Century Gothic" FontWeight="Bold" >
+            <ListView SelectedItem="{Binding SelectedAccommodation}" ItemsSource="{Binding Accommodations}" Margin="23,48,23,68" Background="White" FontFamily="Century Gothic" FontWeight="Bold" >
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ID" Width="75" DisplayMemberBinding="{Binding Id}" />
@@ -18,7 +23,6 @@
                         <GridViewColumn Header="Naam" Width="125" DisplayMemberBinding="{Binding Name}" />
                     </GridView>
                 </ListView.View>
-                <DataGrid Height="100" Width="100"/>
             </ListView>
         </Border>
 
@@ -33,9 +37,9 @@
                 </TransformGroup>
             </Border.RenderTransform>
         </Border>
-        <Label Content="Accommodatie toevoegen&#xA;" HorizontalAlignment="Left" Margin="46,452,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+        <Label Content="{Binding EditTitle}" HorizontalAlignment="Left" Margin="46,452,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16"/>
+        <Label Content="{Binding AccommodationError}" HorizontalAlignment="Left" Margin="500,452,0,0" Foreground="Red" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12"/>
         <Button Command="{Binding Delete}" x:Name="DeleteButton" Content="Verwijder" Margin="53,364,647,238"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
-        <Button Command="{Binding Edit}" x:Name="EditButton" Content="Bewerken" Margin="195,364,506,238"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
 
         <Label Content="Prefix" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="48,495,0,0" Height="25"/>
 
@@ -43,7 +47,7 @@
         <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="LocationNumberTextBox" HorizontalAlignment="Left" Height="20" Margin="195,532,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <TextBox Text="{Binding Prefix, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="53,532,0,0" HorizontalAlignment="Left" Height="20" Width="96" VerticalAlignment="Top" TextWrapping="Wrap" Visibility="Visible" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black" />
 
-        <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Bevestig" Margin="613,476,67,125"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
-        <Button Command="{Binding Cancel}" x:Name="Cancel" Content="Annuleer" Margin="613,521,67,80"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
+        <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Opslaan" Margin="613,476,67,125" Style="{StaticResource DefaultButtonTheme}"/>
+        <Button Command="{Binding CancelEditAction}" x:Name="Cancel" Content="Annuleer" Margin="613,521,67,80" Style="{StaticResource DefaultButtonTheme}"/>
     </Grid>
 </Page>

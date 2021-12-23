@@ -27,6 +27,7 @@ namespace Model
         public string PhoneNumber  { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
+        public string FullName { get; private set; }
         
         public CampingCustomer(): base(TableName, ColumnId)
         {
@@ -50,8 +51,38 @@ namespace Model
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;
+
+            if (firstName == null || lastName == null)
+            {
+                return;
+            }
+            
+            this.FullName = firstName + " " + lastName;
         }
 
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.FullName;
+        }
+
+        public bool HasReservations()
+        {
+            return this.HasReservations(this);
+        }
+
+        public bool HasReservations(CampingCustomer campingCustomer)
+        {
+            string queryString = $"SELECT * FROM {Reservation.TableName}";
+            queryString += $" WHERE {Reservation.ColumnCustomer} = @{ColumnId} ";
+
+            Query query = new Query(queryString);
+            query.AddParameter(ColumnId, campingCustomer.Id);
+            var results = query.Select();
+
+            return results != null && results.Any();
+        }
+        
         public bool Update()
         {
             return base.Update(CampingCustomer.ToDictionary(this.Account, this.Address, this.Birthdate, this.PhoneNumber, this.FirstName, this.LastName));
@@ -65,6 +96,7 @@ namespace Model
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;
+            this.FullName = firstName + " " + lastName;
 
             return base.Update(CampingCustomer.ToDictionary(account, address, birthdate, phoneNumber, firstName, lastName));
         }
@@ -116,7 +148,7 @@ namespace Model
                 {ColumnLastName, lastName}
             };
 
-            if (account != null)
+            if (account != null && account.Id != -1)
             {
                 dictionary.Add(ColumnAccount, account.Id.ToString());
             }

@@ -20,10 +20,7 @@ namespace ViewModel
     public class ManageReservationViewModel : ObservableObject
     {
         #region Fields
-        
-        public static event EventHandler<ReservationEventArgs> FromReservationBackToDashboardEvent;
-        public static event EventHandler<ReservationEventArgs> UpdateReservationCollection;
-        
+
         private readonly Reservation _reservationModel = new Reservation();
         private readonly CampingPlace _campingPlaceModel = new CampingPlace();
 
@@ -116,7 +113,7 @@ namespace ViewModel
                 
                 this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
                 
-                this.SetAvailableCampingPlaces(this.GetCampingPlaces());
+                this.InitializeAvailableCampingPlaces();
             }
         }
 
@@ -133,9 +130,16 @@ namespace ViewModel
                 this._checkOutDate = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
                 
-                this.SetAvailableCampingPlaces(this.GetCampingPlaces());
+                this.InitializeAvailableCampingPlaces();
             }
         }
+
+        #endregion
+
+        #region Events
+
+        public static event EventHandler<ReservationEventArgs> FromReservationBackToDashboardEvent;
+        public static event EventHandler<ReservationEventArgs> UpdateReservationCollection;
 
         #endregion
 
@@ -144,19 +148,28 @@ namespace ViewModel
         public ManageReservationViewModel()
         {
             this.CampingPlaces = new ObservableCollection<CampingPlace>();
-            this.SetAvailableCampingPlaces(this.GetCampingPlaces());
+            this.InitializeAvailableCampingPlaces();
 
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
+            ManageCampingMapViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
         }
 
-        private void SetAvailableCampingPlaces(IEnumerable<CampingPlace> campingPlaces)
+        private void ManageCampingPlaceViewModelOnCampingPlacesUpdated(object sender, UpdateModelEventArgs<CampingPlace> e)
+        {
+            e.UpdateCollection(this.CampingPlaces);
+        }
+
+        /// <summary>
+        /// Sets the available camping places. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
+        private void InitializeAvailableCampingPlaces()
         {
             var selectedCampingPlace = this.SelectedCampingPlace;
             
             this.CampingPlaces.Clear();
 
             this.CampingPlaces.Add(selectedCampingPlace);
-            foreach (var campingPlace in campingPlaces)
+            foreach (var campingPlace in this.GetCampingPlaces())
             {
                 this.CampingPlaces.Add(campingPlace);
             }
@@ -211,31 +224,21 @@ namespace ViewModel
             MessageBox.Show(context, caption, MessageBoxButton.OK);
 
             //update page?
-            ExecuteGoToDashBoard();
+            this.GoBackToDashboard.Execute(null);
         }
-        private bool CanExecuteUpdateReservation()
-        {
-            return true;
-        }
-        public ICommand UpdateReservation => new RelayCommand(ExecuteUpdateReservation, CanExecuteUpdateReservation);
         
+        public ICommand UpdateReservation => new RelayCommand(ExecuteUpdateReservation);
 
         /// <summary>
         /// This method fires event to go to (an updated) the dashboard page.
         /// </summary>
         private void ExecuteGoToDashBoard()
         {
-            UpdateReservationCollection?.Invoke(this, new ReservationEventArgs(this._reservation));
-            FromReservationBackToDashboardEvent?.Invoke(this, new ReservationEventArgs(_reservation));
+            ManageReservationViewModel.UpdateReservationCollection?.Invoke(this, new ReservationEventArgs(this._reservation));
+            ManageReservationViewModel.FromReservationBackToDashboardEvent?.Invoke(this, new ReservationEventArgs(_reservation));
         }
 
-        private bool CanExecuteGoToDashboard()
-        {
-            //Is it possible to check this execution?
-            return true;
-        }
-        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard, CanExecuteGoToDashboard);
-
+        public ICommand GoBackToDashboard => new RelayCommand(ExecuteGoToDashBoard);
 
         /// <summary>
         /// Deletes the reservation in de Reservationtable, reservationdurationtable and reservationcampingGuesttable
@@ -278,12 +281,7 @@ namespace ViewModel
             this.ExecuteGoToDashBoard();
         }
 
-        private bool CanExecuteDeleteReservation()
-        {
-            //Is it possible to check this execution?
-            return true;
-        }
-        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation, CanExecuteDeleteReservation);
+        public ICommand DeleteReservation => new RelayCommand(ExecuteDeleteReservation);
 
         #endregion
 
@@ -291,12 +289,18 @@ namespace ViewModel
 
         private IEnumerable<CampingPlace> GetCampingPlaces()
         {
-            return this.ToFilteredOnReservedCampingPlaces(this._campingPlaceModel.Select());
+            return this.ToFilteredOnReservedCampingPlaces(SelectCampingPlaces());
+        }
+
+        public virtual IEnumerable<CampingPlace> SelectCampingPlaces()
+        {
+            return this._campingPlaceModel.Select();
         }
 
         private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData)
         {
-            var reservations = this._reservationModel.Select();
+            var reservations = this.GetReservationModel();
+
             foreach (Reservation reservation in reservations)
             {
                 if (reservation.CheckInDatetime.Date < this.CheckOutDate.Date && this.CheckInDate.Date < reservation.CheckOutDatetime.Date)
@@ -307,6 +311,12 @@ namespace ViewModel
 
             return viewData;
         }
+
+        public virtual IEnumerable<Reservation> GetReservationModel()
+        {
+            return this._reservationModel.Select();
+        }
+
 
         #endregion
 

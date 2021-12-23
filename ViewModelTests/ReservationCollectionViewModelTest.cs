@@ -55,19 +55,19 @@ namespace ViewModelTests
         [Test]
         public void TestFilterCampingPlaceType()
         {
-            this._reservationCollectionMock.Object.SelectedCampingPlaceType = "Caravan";
+            this._reservationCollectionMock.Object.SelectedAccommodation = "Caravan";
             Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 1);
 
-            this._reservationCollectionMock.Object.SelectedCampingPlaceType = "Chalet";
+            this._reservationCollectionMock.Object.SelectedAccommodation = "Chalet";
             Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 2);
 
-            this._reservationCollectionMock.Object.SelectedCampingPlaceType = "Camper";
+            this._reservationCollectionMock.Object.SelectedAccommodation = "Camper";
             Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 2);
 
-            this._reservationCollectionMock.Object.SelectedCampingPlaceType = "Tent";
+            this._reservationCollectionMock.Object.SelectedAccommodation = "Tent";
             Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 1);
 
-            this._reservationCollectionMock.Object.SelectedCampingPlaceType = "Bungalow";
+            this._reservationCollectionMock.Object.SelectedAccommodation = "Bungalow";
             Assert.AreEqual(this._reservationCollectionMock.Object.Reservations.Count(), 0);
         }
 

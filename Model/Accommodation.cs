@@ -1,7 +1,19 @@
 using System.Collections.Generic;
+using System.Linq;
+using SystemCore;
 
 namespace Model
 {
+    public enum AccommodationTypes
+    {
+        Bungalow,
+        Camper,
+        Caravan,
+        Chalet,
+        Tent,
+        Unknown,
+    }
+    
     /// <inheritdoc/>
     public class Accommodation : ModelBase<Accommodation>
     {
@@ -13,6 +25,7 @@ namespace Model
         
         public string Prefix { get; private set; }
         public string Name { get; private set; }
+        public AccommodationTypes Type { get; private set; }
 
         public Accommodation(): base(TableName, ColumnId)
         {
@@ -30,10 +43,72 @@ namespace Model
             this.Id = success ? idNumeric : -1;
             this.Prefix = prefix;
             this.Name = name;
+            
+            this.Type = this.Name switch
+            {
+                "Bungalow" => AccommodationTypes.Bungalow,
+                "Camper" => AccommodationTypes.Camper,
+                "Caravan" => AccommodationTypes.Caravan,
+                "Chalet" => AccommodationTypes.Chalet,
+                "Tent" => AccommodationTypes.Tent,
+                _ => AccommodationTypes.Unknown,
+            };
         }
 
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return this.Name;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            if (obj is Accommodation accommodation)
+            {
+                return accommodation.Id == this.Id;
+            }
+
+            return false;
+        }
+        
+        public bool IsPrefixUnique(string prefix)
+        {
+            if (string.IsNullOrEmpty(prefix))
+            {
+                return false;
+            }
+            
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE BT.{ColumnPrefix} = @{ColumnPrefix}");
+            query.AddParameter(ColumnPrefix, prefix);
+            var results = query.Select();
+
+            return results == null || !results.Any();
+        }
+        
+        public bool HasCampingPlaceTypes()
+        {
+            return this.HasCampingPlaceTypes(this);
+        }
+
+        public bool HasCampingPlaceTypes(Accommodation accommodation)
+        {
+            string queryString = this.BaseSelectQuery();
+            queryString += $" INNER JOIN {CampingPlaceType.TableName} CP ON CP.{CampingPlaceType.ColumnAccommodation} = BT.{ColumnId} ";
+            queryString += $" WHERE BT.{ColumnId} = @{ColumnId} ";
+
+            Query query = new Query(queryString);
+            query.AddParameter(ColumnId, accommodation.Id);
+            var results = query.Select();
+
+            return results != null && results.Any();
+        }
+        
         public bool Update(string prefix, string name)
         {
+            this.Prefix = prefix;
+            this.Name = name;
+            
             return base.Update(Accommodation.ToDictionary(prefix, name));
         }
 
