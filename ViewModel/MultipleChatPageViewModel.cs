@@ -17,7 +17,8 @@ namespace ViewModel
     public class MultipleChatPageViewModel : ObservableObject
     {
         private Chat _selectedChat;
-        private Chat _chat;
+        private readonly Chat _chatModel = new Chat();
+        
         private ObservableCollection<Chat> _chats;
         private List<MessageJSON> _shownChatMessages;
         
@@ -25,6 +26,8 @@ namespace ViewModel
 
         public string ChatTextInput { get; set; }
 
+        public string ChatTextInput { get; set; }
+        public List<MessageJSON> ShownChatMessages { get; private set; }
         public string CurrenCustomerName { get; private set; }
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
         public static event EventHandler<ChatEventArgs> NewSelectedChatEvent;
@@ -80,7 +83,6 @@ namespace ViewModel
         #endregion
 
 
-        // TODO: Fetch database row, loop through and display it
         public MultipleChatPageViewModel()
         {
             //TODO: fetch all chats from database, where unsolved?

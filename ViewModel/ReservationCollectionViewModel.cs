@@ -191,17 +191,27 @@ namespace ViewModel
         public ReservationCollectionViewModel()
         {
             this.Reservations = new ObservableCollection<Reservation>();
-            this.Accommodations = new ObservableCollection<string>();
+            this._accommodations = new ObservableCollection<string>();
             
             this.InitializeAccommodations();
-            this.SelectedAccommodation = SelectAll;
             DateTime date = DateTime.Today;
-            this.CheckInDate = new DateTime(date.Year, date.Month, 1);
-            this.CheckOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
+            this._checkInDate = new DateTime(date.Year, date.Month, 1);
+            this._checkOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
+            
+            // This calls the on property changed event.
+            this.SelectedAccommodation = SelectAll;
 
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            ManageReservationViewModel.UpdateReservationCollection += this.OnReservationConfirmedEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ManageAccommodationViewModel.AccommodationStringsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+            ManageReservationViewModel.ReservationUpdated += this.ManageReservationViewModelOnReservationUpdated;
+        }
+
+        private void ManageReservationViewModelOnReservationUpdated(object sender, UpdateModelEventArgs<Reservation> e)
+        {
+            e.UpdateCollection(this.Reservations);
+            
+            this._selectedReservation = e.Model;
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
@@ -215,12 +225,13 @@ namespace ViewModel
                 this.Accommodations.Remove(e.Model.ToString());
             }
             
+            // This calls the on property changed event.
             this.SelectedAccommodation = SelectAll;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> args)
         {
-            this.SetOverview();
+            args.UpdateCollection(this.Reservations);
         }
 
         /// <summary>
@@ -313,8 +324,6 @@ namespace ViewModel
                 
                 document.Add(campingGuestTable);
             }
-
-    
 
             document.Close();
 

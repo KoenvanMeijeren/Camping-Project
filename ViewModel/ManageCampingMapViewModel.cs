@@ -182,7 +182,7 @@ namespace ViewModel
 
         public ManageCampingMapViewModel()
         {
-            this.EditTitle = "Campingplaats toevoegen";
+            this._editTitle = "Campingplaats toevoegen";
          
             this.InitializeCampingPlaces();
             this.InitializeCampingPlaceTypes();
@@ -224,12 +224,14 @@ namespace ViewModel
                 return;
             }
 
-            this.EditTitle = $"Campingplaats {campingPlace} bewerken";
+            this._editTitle = $"Campingplaats {campingPlace} bewerken";
             
-            this.SelectedCampingPlaceType = campingPlace.Type;
-            this.Number = campingPlace.Number.ToString(CultureInfo.InvariantCulture);
-            this.Surface = campingPlace.Surface.ToString(CultureInfo.InvariantCulture);
-            this.ExtraNightPrice = campingPlace.ExtraNightPrice.ToString(CultureInfo.InvariantCulture);
+            this._selectedCampingPlaceType = campingPlace.Type;
+            this._number = campingPlace.Number.ToString(CultureInfo.InvariantCulture);
+            this._surface = campingPlace.Surface.ToString(CultureInfo.InvariantCulture);
+            this._extraNightPrice = campingPlace.ExtraNightPrice.ToString(CultureInfo.InvariantCulture);
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
         
         protected override void FillFieldsForSelectedCampingField(CampingMapItemViewModel campingMapItemViewModel)
@@ -247,12 +249,14 @@ namespace ViewModel
 
         private void ResetInput()
         {
-            this.EditTitle = "Campingplaats toevoegen";
-            this.SelectedCampingPlaceType = null;
-            this.Number = string.Empty;
-            this.Surface = string.Empty;
-            this.ExtraNightPrice = string.Empty;
-            this.CampingPlaceError = string.Empty;
+            this._editTitle = "Campingplaats toevoegen";
+            this._selectedCampingPlaceType = null;
+            this._number = string.Empty;
+            this._surface = string.Empty;
+            this._extraNightPrice = string.Empty;
+            this._campingPlaceError = string.Empty;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion

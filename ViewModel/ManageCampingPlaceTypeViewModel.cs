@@ -18,8 +18,8 @@ namespace ViewModel
     {
         #region Fields
 
-        private Accommodation _accommodationModel = new Accommodation();
-        private CampingPlaceType _campingPlaceTypeModel = new CampingPlaceType();
+        private readonly Accommodation _accommodationModel = new Accommodation();
+        private readonly CampingPlaceType _campingPlaceTypeModel = new CampingPlaceType();
         
         private ObservableCollection<CampingPlaceType> _campingPlaceTypes = new ObservableCollection<CampingPlaceType>();
         private CampingPlaceType _selectedCampingPlaceType;
@@ -89,8 +89,8 @@ namespace ViewModel
                 }
 
                 this._selectedCampingPlaceType = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
+                // This calls the on property changed event.
                 this.FillFields(this._selectedCampingPlaceType);
             }
         }
@@ -193,7 +193,7 @@ namespace ViewModel
 
         public ManageCampingPlaceTypeViewModel()
         {
-            this.EditTitle = "Campingplaatstype toevoegen";
+            this._editTitle = "Campingplaatstype toevoegen";
          
             this.InitializeAccommodations();
             this.InitializeCampingPlaceTypes();
@@ -245,21 +245,25 @@ namespace ViewModel
                 return;
             }
 
-            this.EditTitle = $"Campingplaatstype {campingPlaceType} bewerken";
+            this._editTitle = $"Campingplaatstype {campingPlaceType} bewerken";
             
-            this.SelectedAccommodation = campingPlaceType.Accommodation;
-            this.GuestLimit = campingPlaceType.GuestLimit.ToString(CultureInfo.InvariantCulture);
-            this.StandardNightPrice = campingPlaceType.StandardNightPrice.ToString(CultureInfo.InvariantCulture);
+            this._selectedAccommodation = campingPlaceType.Accommodation;
+            this._guestLimit = campingPlaceType.GuestLimit.ToString(CultureInfo.InvariantCulture);
+            this._standardNightPrice = campingPlaceType.StandardNightPrice.ToString(CultureInfo.InvariantCulture);
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         private void ResetInput()
         {
-            this.EditTitle = "Campingplaatstype toevoegen";
-            this.SelectedAccommodation = null;
-            this.SelectedCampingPlaceType = null;
-            this.GuestLimit = string.Empty;
-            this.StandardNightPrice = string.Empty;
-            this.CampingPlaceTypeError = string.Empty;
+            this._editTitle = "Campingplaatstype toevoegen";
+            this._selectedAccommodation = null;
+            this._selectedCampingPlaceType = null;
+            this._guestLimit = string.Empty;
+            this._standardNightPrice = string.Empty;
+            this._campingPlaceTypeError = string.Empty;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion

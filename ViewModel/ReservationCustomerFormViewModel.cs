@@ -33,9 +33,6 @@ namespace ViewModel
             _amountOfGuests,
             _selectedCampingPlace;
 
-        private bool
-            _emailEnabled;
-        
         private DateTime _birthdate, _checkInDateTime, _checkOutDateTime;
 
         private CampingPlace _campingPlace;
@@ -234,16 +231,6 @@ namespace ViewModel
             }
         }
 
-        public bool EmailEnabled
-        {
-            get => this._emailEnabled;
-            set
-            {
-                this._emailEnabled = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            }
-        }
-
         public string AmountOfGuests {
             get => this._amountOfGuests;
             set
@@ -309,27 +296,30 @@ namespace ViewModel
             };
             
             ReservationCampingMapViewModel.ReserveEvent += this.OnReserveEvent;
-            ReservationCampingGuestViewModel.ReservationGoBackEvent += ReservationCampingGuestViewModelOnReservationGoBackEvent;
-            SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
-            AccountViewModel.SignOutEvent += OnSignOutEvent;
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent += OnReservationConfirmedEvent;
+            ReservationCampingGuestViewModel.ReservationGoBackEvent += this.ReservationCampingGuestViewModelOnReservationGoBackEvent;
+            SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
         }
 
         private void ReservationCampingGuestViewModelOnReservationGoBackEvent(object sender, ReservationEventArgs e)
         {
             this._checkInDateTime = e.Reservation.CheckInDatetime;
             this._checkOutDateTime = e.Reservation.CheckOutDatetime;
-            this.CampingPlace = e.Reservation.CampingPlace;
-            this.SelectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
-
-            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
+            this._campingPlace = e.Reservation.CampingPlace;
+            this._selectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
+            
             //Removes the customer from NumberOfPeople.
-            this.AmountOfGuests = (e.Reservation.NumberOfPeople - 1).ToString();
+            this._amountOfGuests = (e.Reservation.NumberOfPeople - 1).ToString();
+            
+            // This triggers the on property changed event.
+            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
         }
 
         private void OnReservationConfirmedEvent(object sender, EventArgs e)
         {
             this.ResetInput();
+            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
         }
 
         private void OnSignOutEvent(object sender, EventArgs e)
@@ -346,10 +336,12 @@ namespace ViewModel
         {
             this._checkInDateTime = args.CheckInDatetime;
             this._checkOutDateTime = args.CheckOutDatetime;
-            this.CampingPlace = args.CampingPlace;
+            this._campingPlace = args.CampingPlace;
             
-            this.CurrentUserCustomer = CurrentUser.CampingCustomer;
-            this.SelectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
+            this._currentUserCustomer = CurrentUser.CampingCustomer;
+            this._selectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion
@@ -363,31 +355,33 @@ namespace ViewModel
                 return;
             }
 
-            this.FirstName = campingCustomer.FirstName;
-            this.LastName = campingCustomer.LastName;
-            this.Birthdate = campingCustomer.Birthdate;
-            this.Email = campingCustomer.Account.Email;
-            this.PhoneNumber = campingCustomer.PhoneNumber;
-            this.Street = campingCustomer.Address.Street;
-            this.Place = campingCustomer.Address.Place;
-            this.PostalCode = campingCustomer.Address.PostalCode;
-
-            this.EmailEnabled = campingCustomer.Account.Id != -1;
+            this._firstName = campingCustomer.FirstName;
+            this._lastName = campingCustomer.LastName;
+            this._birthdate = campingCustomer.Birthdate;
+            this._email = campingCustomer.Account.Email;
+            this._phoneNumber = campingCustomer.PhoneNumber;
+            this._street = campingCustomer.Address.Street;
+            this._place = campingCustomer.Address.Place;
+            this._postalCode = campingCustomer.Address.PostalCode;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
         
         private void ResetInput()
         {
-            this.FirstName = "";
-            this.LastName = "";
-            this.Birthdate = DateTime.MinValue;
-            this.Email = "";
-            this.PhoneNumber = "";
-            this.Street = "";
-            this.AmountOfGuests = "";
-            this.Place = "";
-            this.PostalCode = "";
+            this._firstName = "";
+            this._lastName = "";
+            this._birthdate = DateTime.MinValue;
+            this._email = "";
+            this._phoneNumber = "";
+            this._street = "";
+            this._amountOfGuests = "";
+            this._place = "";
+            this._postalCode = "";
             this._errorDictionary.Clear();
             this._customerReservationError = "";
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
         #endregion
 
@@ -412,7 +406,7 @@ namespace ViewModel
 
             Reservation reservation = new Reservation(this._amountOfGuests, customer, this.CampingPlace, this._checkInDateTime.ToString(CultureInfo.InvariantCulture), this._checkOutDateTime.ToString(CultureInfo.InvariantCulture));
 
-            ReservationGuestEvent?.Invoke(this, new ReservationEventArgs(reservation));
+            ReservationCustomerFormViewModel.ReservationGuestEvent?.Invoke(this, new ReservationEventArgs(reservation));
         }
         private bool CanExecuteCustomerDataReservation()
         {

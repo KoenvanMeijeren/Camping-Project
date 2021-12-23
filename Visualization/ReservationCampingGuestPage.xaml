@@ -18,9 +18,9 @@
             <ListView x:Name="GuestList"  Margin="29,63,28,62" Background="White" FontFamily="Century Gothic" FontWeight="Bold" ItemsSource="{Binding CampingGuests}" SelectedItem="{Binding SelectedCampingGuest}"  >
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Voornaam" Width="90" DisplayMemberBinding="{Binding FirstName, Mode=OneWay}" />
-                        <GridViewColumn Header="Achternaam" Width="90" DisplayMemberBinding="{Binding LastName, Mode=OneWay}" />
-                        <GridViewColumn Header="Geboortedatum" Width="120" DisplayMemberBinding="{Binding BirthdateReadable , Mode=OneWay}" />
+                        <GridViewColumn Header="Voornaam" Width="90" DisplayMemberBinding="{Binding FirstName}" />
+                        <GridViewColumn Header="Achternaam" Width="90" DisplayMemberBinding="{Binding LastName}" />
+                        <GridViewColumn Header="Geboortedatum" Width="120" DisplayMemberBinding="{Binding BirthdateReadable}" />
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -36,8 +36,8 @@
         <Label x:Name="EndDate" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CheckOutDate, Mode=OneWay}" Margin="604,100,129,510"/>
         <Label Content="Type:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,124,216,486"/>
         <Label x:Name="Type" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Type.Accommodation.Name, Mode=OneWay}" Margin="604,124,129,486"/>
-        <Label Content="Oppervlakte:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,148,216,462"/>
-        <Label x:Name="Surface" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Surface, Mode=OneWay}" Margin="604,148,129,462"/>
+        <Label Content="Gasten limiet:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,148,216,462"/>
+        <Label x:Name="Surface" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Type.GuestLimit, Mode=OneWay}" Margin="604,148,129,462"/>
         <Label Content="Locatie:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,172,216,438"/>
         <Label x:Name="Location"  FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Location, Mode=OneWay}" Margin="604,172,129,438"/>
         <Label Content="Totale prijs:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,196,216,414"/>
