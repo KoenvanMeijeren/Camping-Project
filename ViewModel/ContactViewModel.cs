@@ -85,7 +85,12 @@ namespace ViewModel
 
         public ContactViewModel()
         {
-            this.CurrentCamping = this.GetCamping();
+            ViewModel.CurrentCamping.CurrentCampingSetEvent += this.CurrentCampingOnCurrentCampingSetEvent;
+        }
+
+        private void CurrentCampingOnCurrentCampingSetEvent(object sender, UpdateModelEventArgs<Camping> e)
+        {
+            this.CurrentCamping = e.Model;
         }
 
         private void FillContactViewModel(Camping camping)

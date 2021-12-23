@@ -203,19 +203,28 @@ namespace ViewModel
         #region ViewConstruction
         public ManageCampingViewModel()
         {
-            CurrentCamping.SetCurrentCamping(_camping.SelectLast());
-            this.Camping = CurrentCamping.Camping;
+            CurrentCamping.CurrentCampingSetEvent += CurrentCampingOnCurrentCampingSetEvent;
+        }
+
+        private void CurrentCampingOnCurrentCampingSetEvent(object? sender, UpdateModelEventArgs<Camping> e)
+        {
+            this.Camping = e.Model;
         }
 
         private void FillFields(Camping camping)
         {
-            this.CampingName = _camping.Name;
-            this.Email = _camping.Email;
-            this.Phonenumber = _camping.PhoneNumber;
-            this.Facebook = _camping.Facebook;
-            this.Twitter = _camping.Twitter;
-            this.Instagram = _camping.Instagram;
-            this.Color = _camping.Color;
+            if (camping == null)
+            {
+                return;
+            }
+            
+            this.CampingName = camping.Name;
+            this.Email = camping.Email;
+            this.Phonenumber = camping.PhoneNumber;
+            this.Facebook = camping.Facebook;
+            this.Twitter = camping.Twitter;
+            this.Instagram = camping.Instagram;
+            this.Color = camping.Color;
         }
         #endregion
 

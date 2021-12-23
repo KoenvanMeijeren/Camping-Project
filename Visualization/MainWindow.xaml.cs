@@ -61,6 +61,9 @@ namespace Visualization
             this._manageAccommodationPage = new ManageAccommodationPage();
             this._chatPage = new ChatPage();
             this._multipleChatPage = new MultipleChatPage();
+            
+            // Sets the current camping for the application.
+            CurrentCamping.SetCurrentCamping((new Camping()).SelectLast());
 
             ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ReservationPaymentViewModel.ReservationGuestGoBackEvent += this.OnReservationGuestGoBackEvent;
