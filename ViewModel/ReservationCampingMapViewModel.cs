@@ -238,6 +238,8 @@ namespace ViewModel
             {
                 this.Accommodations.Add(accommodation.Name);
             }
+
+            this.SelectedAccommodation = SelectAll;
         }
 
         /// <summary>
