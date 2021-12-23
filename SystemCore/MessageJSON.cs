@@ -8,9 +8,9 @@ namespace SystemCore
     /// </summary>
     public class MessageJSON
     {
-        public string Message { get; set; }
-        public string MessageSentTime { get; set;}
-        public string UserRole { get; set; }  
+        public string Message;
+        public string MessageSentTime;
+        public string UserRole; 
         
         public MessageJSON(string message, string userRole)
         {

@@ -320,8 +320,7 @@ namespace ViewModel
 
         public virtual IEnumerable<Reservation> GetReservationModel()
         {
-            Reservation reservationModel = new Reservation();
-            return reservationModel.Select();
+            return this._reservationModel.Select();
         }
 
 

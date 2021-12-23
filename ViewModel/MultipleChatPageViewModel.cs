@@ -18,10 +18,11 @@ namespace ViewModel
     public class MultipleChatPageViewModel : ObservableObject
     {
         private Chat _selectedChat;
+        private Chat _chat;
         private ObservableCollection<Chat> _chats;
         private MessageJSON _selectedChatMessages;
 
-        public string ChatTextInput { get; set; }
+        public string ChatTextInput { get; private set; }
         public List<MessageJSON> ShownChatMessages { get; private set; }
         public string CurrenCustomerName { get; private set; }
 
@@ -74,8 +75,8 @@ namespace ViewModel
         public MultipleChatPageViewModel()
         {
             //TODO: fetch all chats from database, where unsolved?
-            Chat chat = new Chat();
-            this._chats = new ObservableCollection<Chat>(chat.Select());
+            _chat = new Chat();
+            this._chats = new ObservableCollection<Chat>(_chat.Select());
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 

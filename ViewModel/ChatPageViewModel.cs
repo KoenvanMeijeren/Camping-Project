@@ -38,7 +38,7 @@ namespace ViewModel
 
         public void ExecuteChatAfterLogin(object o, AccountEventArgs accountEventArgs)
         {
-           /* this.ChatConversation = _chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
+            this.ChatConversation = _chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
             this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this.ChatConversation.Messages);
 
             // Loops through all 'old'/already sent messages
@@ -48,7 +48,7 @@ namespace ViewModel
                 OpenChatEvent?.Invoke(this, new ChatEventArgs(message.Message, (MessageSender)Convert.ToInt32(message.UserRole)));
             }
 
-            this.RefreshChatMessages();*/
+            this.RefreshChatMessages();
         }
 
         /// <summary>
