@@ -16,13 +16,13 @@ using System.Windows.Shapes;
 namespace Visualization
 {
     /// <summary>
-    /// Interaction logic for ManageCampingPlacePage.xaml
+    /// Interaction logic for MultipleChatPage.xaml
     /// </summary>
-    public partial class ManageCampingPlacePage : Page
+    public partial class MultipleChatPage : Page
     {
-        public ManageCampingPlacePage()
+        public MultipleChatPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

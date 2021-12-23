@@ -96,6 +96,7 @@ namespace Model
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;
+            this.FullName = firstName + " " + lastName;
 
             return base.Update(CampingCustomer.ToDictionary(account, address, birthdate, phoneNumber, firstName, lastName));
         }

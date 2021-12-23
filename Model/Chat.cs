@@ -42,7 +42,8 @@ namespace Model
             ColumnLastMessageSeenOwner = "OwnerLastSeen",
             ColumnLastMessageSeenCustomer = "CustomerLastSeen",
             ColumnCustomerStatus = "CustomerStatus",
-            ColumnOwnerStatus = "OwnerStatus";
+            ColumnOwnerStatus = "OwnerStatus",
+            ColumnIsSolved = "IsSolved";
 
         public Account Owner { get; private set; }
         public Account Customer { get; private set; }
@@ -51,16 +52,18 @@ namespace Model
         public DateTime LastMessageSeenCustomer { get; private set; }
         public ChatStatus OwnerStatus { get; private set; }
         public ChatStatus CustomerStatus { get; private set; }
+        public int IsSolved { get; private set; }
+        public string CustomerName { get; private set; }
 
         public Chat() : base(TableName, ColumnId)
         {
         }
 
-        public Chat(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus) : this("-1", owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus)
+        public Chat(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus) : this("-1", owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus , "Klant")
         {
         }
 
-        public Chat(string id, Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus) : base(TableName, ColumnId)
+        public Chat(string id, Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus, string name) : base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int idNumeric);
             this.Id = success ? idNumeric : -1;
@@ -71,6 +74,7 @@ namespace Model
             this.LastMessageSeenCustomer = customerLastSeen;
             this.OwnerStatus = ownerStatus;
             this.CustomerStatus = customerStatus;
+            this.CustomerName = name;
         }
 
         /// <summary>
@@ -155,6 +159,9 @@ namespace Model
             dictionary.TryGetValue(ColumnLastMessageSeenCustomer, out string lastMessageSeenCustomer);
             dictionary.TryGetValue(ColumnOwnerStatus, out string ownerStatus);
             dictionary.TryGetValue(ColumnCustomerStatus, out string customerStatus);
+            dictionary.TryGetValue(CampingCustomer.ColumnFirstName, out string firstname);
+            dictionary.TryGetValue(CampingCustomer.ColumnLastName, out string lastname);
+            string name = firstname + " " + lastname;
 
             // Fetch owner account
             CampingOwner campingOwnerModel = new();
@@ -166,7 +173,7 @@ namespace Model
             dictionary.TryGetValue(Account.ColumnRights, out string customerRights);
             Account customerAccount = new Account(customerAccountId, customerEmail, customerPassword, customerRights);
 
-            return new Chat(id, campingOwner.Account, customerAccount, messages, DateTimeParser.TryParse(lastMessageSeenOwner), DateTimeParser.TryParse(lastMessageSeenCustomer), (ChatStatus)Int32.Parse(ownerStatus), (ChatStatus)Int32.Parse(customerStatus));
+            return new Chat(id, campingOwner.Account, customerAccount, messages, DateTimeParser.TryParse(lastMessageSeenOwner), DateTimeParser.TryParse(lastMessageSeenCustomer), (ChatStatus)Int32.Parse(ownerStatus), (ChatStatus)Int32.Parse(customerStatus), name);
         }
 
         /// <inheritdoc/>
@@ -194,10 +201,18 @@ namespace Model
         /// <inheritdoc/>
         protected override string BaseSelectQuery()
         {
-            string query = $"SELECT * FROM {TableName} CH ";
+            //TODO: kijken welke manier van gegevens ophalen sneller gaat
+            //string query = $"SELECT * FROM {TableName} CH ";
+            string query = $"SELECT CH.{ColumnId}, CH.{ColumnOwnerAccount}, CH.{ColumnCustomerAccount}, CH.{ColumnMessage}," +
+                $" CH.{ColumnLastMessageSeenCustomer}, CH.{ColumnLastMessageSeenOwner}, CH.{ColumnOwnerStatus}, CH.{ColumnCustomerStatus},  CH.{ColumnIsSolved}," +
+                $" CC.{CampingCustomer.ColumnFirstName}, CC.{CampingCustomer.ColumnLastName}";
+            query += $" FROM {TableName} CH ";
+
             query += $" LEFT JOIN {Account.TableName} AC on CH.{Chat.ColumnCustomerAccount} = AC.{Account.ColumnId}";
+            query += $" INNER JOIN {CampingCustomer.TableName} CC ON AC.{Account.ColumnId} = CC.{CampingCustomer.ColumnAccount}";
 
             return query;
         }
+
     }
 }

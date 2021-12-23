@@ -339,10 +339,13 @@ namespace ViewModel
             }
             else
             {
-                this.SelectedCampingCustomer.Update(this.SelectedCampingCustomer.Account, address, this.Birthdate, this.PhoneNumber, this.FirstName, this.LastName);
+                var campingCustomer = this.SelectedCampingCustomer.SelectById(this.SelectedCampingCustomer.Id);
+                campingCustomer.Update(campingCustomer.Account, address, this.Birthdate, this.PhoneNumber,
+                    this.FirstName, this.LastName);
+
+                this.CampingCustomers[this.CampingCustomers.IndexOf(this.SelectedCampingCustomer)] = campingCustomer;
             }
             
-            this.SetCampingCustomers();
             this.ResetInput();
             
             MessageBox.Show("De campingklanten zijn succesvol bijgewerkt.", "Campingklanten bewerken");

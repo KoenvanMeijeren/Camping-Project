@@ -37,7 +37,7 @@
         <PasswordBox  KeyUp="PasswordTextChanged" x:Name="Passwordbox" HorizontalAlignment="Left" Height="20" Margin="472,297,0,0" VerticalAlignment="Top" Width="210" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <Label Content="Bevestig wachtwoord*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="467,356,0,0" Height="25"/>
         <PasswordBox  KeyUp="ConfirmPasswordTextChanged" x:Name="ConfirmPasswordbox" HorizontalAlignment="Left" Height="20" Margin="472,383,0,0" VerticalAlignment="Top" Width="210" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
-        <Button Command="{Binding Register}" x:Name="RegisterButton" Content="Registreer" Margin="472,454,138,145"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
+        <Button Command="{Binding Register}" x:Name="RegisterButton" Content="Registreer" Margin="472,454,138,145" Style="{StaticResource DefaultButtonTheme}" />
         <Label Content="{Binding RegisterError}" x:Name="ErrorText"  HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="258,139,0,0" Height="25" Foreground="#FFD00000" HorizontalContentAlignment="Right" Width="424"/>
 
 

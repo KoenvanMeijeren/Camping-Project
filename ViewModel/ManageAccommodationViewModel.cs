@@ -10,6 +10,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
 using SystemCore;
+using ViewModel.EventArguments;
 
 namespace ViewModel
 {
@@ -17,7 +18,7 @@ namespace ViewModel
     {
         #region Fields
 
-        private Accommodation _accommodationModel = new Accommodation();
+        private readonly Accommodation _accommodationModel = new Accommodation();
 
         private ObservableCollection<Accommodation> _accommodations = new ObservableCollection<Accommodation>();
         private Accommodation _selectedAccommodation;
@@ -107,10 +108,23 @@ namespace ViewModel
                 if (!Validation.IsInputFilled(this._prefix))
                 {
                     this.AccommodationError = "Prefix is een verplicht veld";
+                    return;
                 }
-                else if (!Validation.IsInputBelowMaxLength(this._prefix, 2))
+
+                if (!Validation.IsInputBelowMaxLength(this._prefix, 2))
                 {
                     this.AccommodationError = "Prefix mag maximaal 2 letters bevatten";
+                    return;
+                }
+
+                if ((this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix == value))
+                {
+                    return;
+                }
+                
+                if (!this.IsPrefixUnique())
+                {
+                    this.AccommodationError = "Prefix moet uniek zijn";
                 }
             }
         }
@@ -140,7 +154,8 @@ namespace ViewModel
         
         #region Events
 
-        public static event EventHandler AccommodationsUpdated;
+        public static event EventHandler<UpdateModelEventArgs<Accommodation>> AccommodationsUpdated;
+        public static event EventHandler<UpdateModelEventArgs<Accommodation>> AccommodationStringsUpdated;
 
         #endregion
 
@@ -150,10 +165,20 @@ namespace ViewModel
         {
             this.EditTitle = "Accommodatie toevoegen";
          
-            this.SetAccommodations();
+            this.InitializeAccommodations();
+            
+            ManageAccommodationViewModel.AccommodationsUpdated += ManageAccommodationViewModelOnAccommodationsUpdated;
         }
 
-        private void SetAccommodations()
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
+        {
+            e.UpdateCollection(this.Accommodations);
+        }
+
+        /// <summary>
+        /// Sets the available accommodations. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
+        private void InitializeAccommodations()
         {
             this.Accommodations.Clear();
             foreach (var accommodation in this.GetAccommodations())
@@ -206,22 +231,32 @@ namespace ViewModel
             {
                 Accommodation accommodation = new Accommodation(this.Prefix, this.Name);
                 accommodation.Insert();
+                accommodation = accommodation.SelectLast();
                 
-                this.Accommodations.Add(accommodation);
+                ManageAccommodationViewModel.AccommodationsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(accommodation, true, false));
+                ManageAccommodationViewModel.AccommodationStringsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(accommodation, true, false));
             }
             else
             {
+                ManageAccommodationViewModel.AccommodationStringsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(this.SelectedAccommodation, false, true));
+                
                 this.SelectedAccommodation.Update(this.Prefix, this.Name);
+                
+                ManageAccommodationViewModel.AccommodationStringsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(this.SelectedAccommodation, true, false));
+                ManageAccommodationViewModel.AccommodationsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(this.SelectedAccommodation, false, false));
             }
             
-            this.SetAccommodations();
             this.ResetInput();
-            ManageAccommodationViewModel.AccommodationsUpdated?.Invoke(this, EventArgs.Empty);
-
             MessageBox.Show("De accommodaties zijn succesvol bijgewerkt.", "Accommodatie bewerken");
         }
         private bool CanExecuteEditSave()
         {
+            if (this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix != this.Prefix && !this.IsPrefixUnique() 
+                || (this.SelectedAccommodation == null && !this.IsPrefixUnique()))
+            {
+                return false;
+            }
+
             return Validation.IsInputFilled(this.Name) 
                    && Validation.IsInputFilled(this.Prefix);
         }
@@ -235,12 +270,12 @@ namespace ViewModel
             {
                 return;
             }
-            
-            this.SelectedAccommodation.Delete();
-            this.Accommodations.Remove(this.SelectedAccommodation);
-            this.SelectedAccommodation = null;
-            
-            ManageAccommodationViewModel.AccommodationsUpdated?.Invoke(this, EventArgs.Empty);
+
+            var accommodation = this.SelectedAccommodation;
+            ManageAccommodationViewModel.AccommodationsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(accommodation, false, true));
+            ManageAccommodationViewModel.AccommodationStringsUpdated?.Invoke(this, new UpdateModelEventArgs<Accommodation>(accommodation, false, true));
+
+            accommodation.Delete();
         }
         private bool CanExecuteDelete()
         {
@@ -258,6 +293,11 @@ namespace ViewModel
             return this._accommodationModel.Select();
         }
 
+        public virtual bool IsPrefixUnique()
+        {
+            return this._accommodationModel.IsPrefixUnique(this._prefix);
+        }
+        
         #endregion
         
     }

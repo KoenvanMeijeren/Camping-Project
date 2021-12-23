@@ -193,7 +193,7 @@ namespace ViewModel
             this.Reservations = new ObservableCollection<Reservation>();
             this.Accommodations = new ObservableCollection<string>();
             
-            this.SetAccommodations();
+            this.InitializeAccommodations();
             this.SelectedAccommodation = SelectAll;
             DateTime date = DateTime.Today;
             this.CheckInDate = new DateTime(date.Year, date.Month, 1);
@@ -201,12 +201,20 @@ namespace ViewModel
 
             ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ManageReservationViewModel.UpdateReservationCollection += this.OnReservationConfirmedEvent;
-            ManageAccommodationViewModel.AccommodationsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+            ManageAccommodationViewModel.AccommodationStringsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
         }
 
-        private void ManageAccommodationViewModelOnAccommodationsUpdated(object? sender, EventArgs e)
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
         {
-            this.SetAccommodations();
+            if (e.Inserted)
+            {
+                this.Accommodations.Add(e.Model.ToString());
+            }
+            else if (e.Removed)
+            {
+                this.Accommodations.Remove(e.Model.ToString());
+            }
+            
             this.SelectedAccommodation = SelectAll;
         }
 
@@ -215,7 +223,10 @@ namespace ViewModel
             this.SetOverview();
         }
 
-        private void SetAccommodations()
+        /// <summary>
+        /// Sets the available accommodations. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
+        private void InitializeAccommodations()
         {
             this.Accommodations.Clear();
             
