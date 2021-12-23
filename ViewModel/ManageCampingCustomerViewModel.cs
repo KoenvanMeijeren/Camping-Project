@@ -85,8 +85,8 @@ namespace ViewModel
                 }
 
                 this._selectedCampingCustomer = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
                 
+                // This calls the on property changed event.
                 this.FillFields(this._selectedCampingCustomer);
             }
         }
@@ -256,9 +256,10 @@ namespace ViewModel
 
         public ManageCampingCustomerViewModel()
         {
-            this.CampingCustomers = new ObservableCollection<CampingCustomer>();
-            this.EditTitle = "Campingklant toevoegen";
+            this._campingCustomers = new ObservableCollection<CampingCustomer>();
+            this._editTitle = "Campingklant toevoegen";
          
+            // This calls the on property changed event.
             this.InitializeCampingCustomers();
         }
 

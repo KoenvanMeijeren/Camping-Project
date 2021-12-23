@@ -82,7 +82,7 @@ namespace ViewModel
                 int daysDifference = this._checkOutDate.Subtract(this._checkInDate).Days;
                 
                 this._checkInDate = value;
-                this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
+                this._checkOutDate = this._checkInDate.AddDays(daysDifference);
                 
                 // This method calls the on property changed event.
                 this.InitializeAvailableCampingPlaces();

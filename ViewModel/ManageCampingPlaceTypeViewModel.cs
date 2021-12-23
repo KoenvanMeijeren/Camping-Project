@@ -18,8 +18,8 @@ namespace ViewModel
     {
         #region Fields
 
-        private Accommodation _accommodationModel = new Accommodation();
-        private CampingPlaceType _campingPlaceTypeModel = new CampingPlaceType();
+        private readonly Accommodation _accommodationModel = new Accommodation();
+        private readonly CampingPlaceType _campingPlaceTypeModel = new CampingPlaceType();
         
         private ObservableCollection<CampingPlaceType> _campingPlaceTypes = new ObservableCollection<CampingPlaceType>();
         private CampingPlaceType _selectedCampingPlaceType;
@@ -89,8 +89,8 @@ namespace ViewModel
                 }
 
                 this._selectedCampingPlaceType = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
+                // This calls the on property changed event.
                 this.FillFields(this._selectedCampingPlaceType);
             }
         }
@@ -193,7 +193,7 @@ namespace ViewModel
 
         public ManageCampingPlaceTypeViewModel()
         {
-            this.EditTitle = "Campingplaatstype toevoegen";
+            this._editTitle = "Campingplaatstype toevoegen";
          
             this.InitializeAccommodations();
             this.InitializeCampingPlaceTypes();
