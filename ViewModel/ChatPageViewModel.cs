@@ -34,6 +34,14 @@ namespace ViewModel
         {
             // Executes when user has logged in
             SignInViewModel.SignInEvent += ExecuteChatAfterLogin;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+
+        }
+
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+            //TODO: stop running task
         }
 
         public void ExecuteChatAfterLogin(object o, AccountEventArgs accountEventArgs)
@@ -54,6 +62,9 @@ namespace ViewModel
 
             this.RefreshChatMessages();
         }
+
+   
+        
 
         /// <summary>
         /// Async function that checks for new messages

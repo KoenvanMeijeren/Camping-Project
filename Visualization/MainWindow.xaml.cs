@@ -78,6 +78,7 @@ namespace Visualization
             AccountUpdateViewModel.UpdateConfirmEvent += this.OnUpdateConfirmEvent;
             ContactViewModel.FromContactToChatEvent += this.OnChatButton;
             ChatPageViewModel.FromChatToContactEvent += this.ContactMenuButton_Checked;
+            MultipleChatPageViewModel.FromChatToContactEvent += this.ContactMenuButton_Checked;
 
             // Sets the sign up page as the active menu and hides other menu items.
             this.SignInMenuButton.IsChecked = true;

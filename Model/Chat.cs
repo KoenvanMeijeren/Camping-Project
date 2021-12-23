@@ -205,7 +205,6 @@ namespace Model
         protected override string BaseSelectQuery()
         {
             string query = $"SELECT * FROM {TableName} CH ";
-            query += $" FROM {TableName} CH ";
             query += $" LEFT JOIN {Account.TableName} AC on CH.{Chat.ColumnCustomerAccount} = AC.{Account.ColumnId}";
             query += $" INNER JOIN {CampingCustomer.TableName} CC ON AC.{Account.ColumnId} = CC.{CampingCustomer.ColumnAccount}";
 
