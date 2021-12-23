@@ -24,7 +24,7 @@ namespace ViewModel
         private int _refreshRateInMilliseconds = 2000;
 
         public string ChatTextInput { get; set; }
-        public string CurrenCustomerName { get; private set; }
+        public string CurrentCustomerName { get; private set; }
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
         public static event EventHandler<ChatEventArgs> NewChatContentEvent;
 
@@ -70,6 +70,7 @@ namespace ViewModel
                 }
 
                 this._selectedChat = value;
+                this.CurrentCustomerName = this._selectedChat.CustomerName;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
                 NewChatContentEvent?.Invoke(this, null);
                 GetChatConversation();               
@@ -83,6 +84,7 @@ namespace ViewModel
             //TODO: fetch all chats from database, where unsolved?
             this._shownChatMessages = new List<MessageJSON>();
             this._chats = GetAllChats();
+            this.CurrentCustomerName = "Klant";
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             this.RefreshChatMessages();//always listen for new chat messages?
             this.RefreshChats();
