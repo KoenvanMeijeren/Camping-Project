@@ -85,8 +85,8 @@ namespace ViewModel
                 }
 
                 this._selectedAccommodation = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
+
+                // This triggers the on property changed event.
                 this.FillFields(this._selectedAccommodation);
             }
         }
@@ -163,8 +163,9 @@ namespace ViewModel
 
         public ManageAccommodationViewModel()
         {
-            this.EditTitle = "Accommodatie toevoegen";
+            this._editTitle = "Accommodatie toevoegen";
          
+            // This triggers the on property changed event call.
             this.InitializeAccommodations();
             
             ManageAccommodationViewModel.AccommodationsUpdated += ManageAccommodationViewModelOnAccommodationsUpdated;
@@ -231,6 +232,13 @@ namespace ViewModel
         
         private void ExecuteEditSave()
         {
+            if (this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix != this.Prefix && !this.IsPrefixUnique() 
+                || (this.SelectedAccommodation == null && !this.IsPrefixUnique()))
+            {
+                this.AccommodationError = "Prefix moet uniek zijn";
+                return;
+            }
+            
             if (this.SelectedAccommodation == null)
             {
                 Accommodation accommodation = new Accommodation(this.Prefix, this.Name);
@@ -255,12 +263,6 @@ namespace ViewModel
         }
         private bool CanExecuteEditSave()
         {
-            if (this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix != this.Prefix && !this.IsPrefixUnique() 
-                || (this.SelectedAccommodation == null && !this.IsPrefixUnique()))
-            {
-                return false;
-            }
-
             return Validation.IsInputFilled(this.Name) 
                    && Validation.IsInputFilled(this.Prefix);
         }

@@ -182,7 +182,7 @@ namespace ViewModel
 
         public ManageCampingMapViewModel()
         {
-            this.EditTitle = "Campingplaats toevoegen";
+            this._editTitle = "Campingplaats toevoegen";
          
             this.InitializeCampingPlaces();
             this.InitializeCampingPlaceTypes();

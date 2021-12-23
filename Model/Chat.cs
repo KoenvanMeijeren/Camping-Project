@@ -84,6 +84,11 @@ namespace Model
         /// <returns>All chat data for the given user</returns>
         public Chat SelectOrCreateNewChatForLoggedInUser(CampingCustomer customer)
         {
+            if (customer == null)
+            {
+                return null;
+            }
+            
             Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomerAccount} = @campingCustomerId");
             query.AddParameter("campingCustomerId", customer.Account.Id);
             var result = query.SelectFirst();
@@ -95,7 +100,6 @@ namespace Model
             }
 
             CampingOwner campingOwner = new CampingOwner();
-            CampingCustomer campingCustomer = new CampingCustomer();
 
             this.Owner = campingOwner.SelectLast().Account;
             this.Customer = customer.Account;

@@ -65,8 +65,8 @@ namespace ViewModel
                 }
 
                 this._selectedCampingMapItemViewModel = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
+                // This calls the on property changed event.
                 this.FillFieldsForSelectedCampingField(value);
             }
         }

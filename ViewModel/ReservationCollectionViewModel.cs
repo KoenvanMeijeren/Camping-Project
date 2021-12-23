@@ -191,13 +191,15 @@ namespace ViewModel
         public ReservationCollectionViewModel()
         {
             this.Reservations = new ObservableCollection<Reservation>();
-            this.Accommodations = new ObservableCollection<string>();
+            this._accommodations = new ObservableCollection<string>();
             
             this.InitializeAccommodations();
-            this.SelectedAccommodation = SelectAll;
             DateTime date = DateTime.Today;
-            this.CheckInDate = new DateTime(date.Year, date.Month, 1);
-            this.CheckOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
+            this._checkInDate = new DateTime(date.Year, date.Month, 1);
+            this._checkOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
+            
+            // This calls the on property changed event.
+            this.SelectedAccommodation = SelectAll;
 
             ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ManageAccommodationViewModel.AccommodationStringsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
@@ -223,6 +225,7 @@ namespace ViewModel
                 this.Accommodations.Remove(e.Model.ToString());
             }
             
+            // This calls the on property changed event.
             this.SelectedAccommodation = SelectAll;
         }
 
@@ -321,8 +324,6 @@ namespace ViewModel
                 
                 document.Add(campingGuestTable);
             }
-
-    
 
             document.Close();
 
