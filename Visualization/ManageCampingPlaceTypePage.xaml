@@ -21,7 +21,7 @@
                         <GridViewColumn Header="ID" Width="75" DisplayMemberBinding="{Binding Id}" />
                         <GridViewColumn Header="Verblijf" Width="125" DisplayMemberBinding="{Binding Accommodation.Name}" />
                         <GridViewColumn Header="Gasten limiet" Width="125" DisplayMemberBinding="{Binding GuestLimit}" />
-                        <GridViewColumn Header="Dagprijs" Width="125" DisplayMemberBinding="{Binding StandardNightPrice}" />
+                        <GridViewColumn Header="Dagprijs" Width="125" DisplayMemberBinding="{Binding StandardNightPriceReadable}" />
                     </GridView>
                 </ListView.View>
             </ListView>
