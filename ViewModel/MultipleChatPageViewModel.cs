@@ -81,6 +81,7 @@ namespace ViewModel
         public MultipleChatPageViewModel()
         {
             //TODO: fetch all chats from database, where unsolved?
+            this._shownChatMessages = new List<MessageJSON>();
             this._chats = GetAllChats();
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             this.RefreshChatMessages();//always listen for new chat messages?
@@ -103,7 +104,7 @@ namespace ViewModel
 
         private void GetChatConversation()
         {
-            this._shownChatMessages = null;
+            this._shownChatMessages.Clear();
             this.ShownChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
             DisplayMessages();
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
@@ -120,9 +121,12 @@ namespace ViewModel
             {
                 ObservableCollection<Chat> chatDb = GetAllChats();
                if (this._chats.Count != chatDb.Count)//Check for new chats
-                {
+               {
                     this.Chats = chatDb;
-                }
+               }
+
+                // Async wait before executing this again
+                await Task.Delay(_refreshRateInMilliseconds);
             }
         }
 
