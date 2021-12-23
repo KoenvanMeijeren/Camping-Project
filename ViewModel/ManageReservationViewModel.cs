@@ -146,7 +146,8 @@ namespace ViewModel
                 this.CampingPlaces.Add(campingPlace);
             }
 
-            this.SelectedCampingPlace = selectedCampingPlace;
+            this._selectedCampingPlace = selectedCampingPlace;
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         private void OnManageReservationEvent(object sender, ReservationEventArgs args)

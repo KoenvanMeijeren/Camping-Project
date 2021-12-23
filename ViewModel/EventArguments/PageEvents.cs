@@ -33,7 +33,7 @@ namespace ViewModel.EventArguments
             this._templates.Add(templateBottom);
             this._templates.Add(templateTop);
 
-            Image image = Image.GetInstance(".\\Images\\caravan-solid.png");
+            Image image = Image.GetInstance(".\\Icons\\caravan.png");
             image.SetAbsolutePosition(36, 800);
             BaseFont baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
