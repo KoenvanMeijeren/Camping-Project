@@ -17,7 +17,7 @@ namespace ViewModel
     public class ManageCampingViewModel : ObservableObject
     {
         #region Fields
-        private Camping _camping = new Camping();
+        private Camping _camping;
         private string _campingName, _email, _phoneNumber, _facebook, _twitter, _instagram, _color, _error;
         #endregion
 
@@ -35,7 +35,7 @@ namespace ViewModel
                 this._camping = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
-                this.FillFields(_camping);
+                this.FillFields(this._camping);
             }
         }
 
@@ -89,11 +89,11 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.Error = "";
-                if (!Validation.IsInputFilled(_email))
+                if (!Validation.IsInputFilled(this._email))
                 {
                     this.Error = "Email is een verplicht veld";
                 }
-                else if (!RegexHelper.IsEmailValid(_email))
+                else if (!RegexHelper.IsEmailValid(this._email))
                 {
                     this.Error = "Ongeldig email";
                 }
@@ -231,7 +231,7 @@ namespace ViewModel
         #region Commands 
         private void ExecuteCancelEditAction()
         {
-            this.FillFields(_camping);
+            this.FillFields(this._camping);
         }
         public ICommand EditCancel => new RelayCommand(ExecuteCancelEditAction);
 

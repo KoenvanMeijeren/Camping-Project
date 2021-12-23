@@ -85,20 +85,23 @@ namespace ViewModel
 
         public MainWindowViewModel()
         {
-            this.Subtitle = ConfigReader.GetSetting("Subtitle");
-            this.SubSubtitle = ConfigReader.GetSetting("SubSubtitle");
-            this.Title = this.Subtitle + " " + this.SubSubtitle;
-            this.Color = "#000000";
+            this._subtitle = ConfigReader.GetSetting("Subtitle");
+            this._subSubtitle = ConfigReader.GetSetting("SubSubtitle");
+            this._title = this.Subtitle + " " + this.SubSubtitle;
+            this._color = "#000000";
 
             CurrentCamping.CurrentCampingSetEvent += OnCurrentCampingSetEvent;
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         public void OnCurrentCampingSetEvent(object sender, EventArgs e)
         {
-            this.Subtitle = ConfigReader.GetSetting("Subtitle");
-            this.SubSubtitle = "\n" + CurrentCamping.Camping.Name;
-            this.Title = this.Subtitle + " " + this.SubSubtitle;
-            this.Color = CurrentCamping.Camping.Color;
+            this._subtitle = ConfigReader.GetSetting("Subtitle");
+            this._subSubtitle = "\n" + CurrentCamping.Camping.Name;
+            this._title = this.Subtitle + " " + this.SubSubtitle;
+            this._color = CurrentCamping.Camping.Color;
+
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
     }
 }
