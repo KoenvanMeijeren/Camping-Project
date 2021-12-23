@@ -233,21 +233,23 @@ namespace ViewModel
 
             if (this._currentAccount.Rights == AccountRights.Admin)
             {
-                this.FirstName = CurrentUser.CampingOwner.FirstName;
-                this.LastName = CurrentUser.CampingOwner.LastName;
-                this.Email = CurrentUser.CampingOwner.Account.Email;
+                this._firstName = CurrentUser.CampingOwner.FirstName;
+                this._lastName = CurrentUser.CampingOwner.LastName;
+                this._email = CurrentUser.CampingOwner.Account.Email;
             }
             else
             {
-                this.FirstName = CurrentUser.CampingCustomer.FirstName;
-                this.LastName = CurrentUser.CampingCustomer.LastName;
-                this.Email = CurrentUser.CampingCustomer.Account.Email;
-                this.PhoneNumber = CurrentUser.CampingCustomer.PhoneNumber;
-                this.Birthdate = CurrentUser.CampingCustomer.Birthdate;
-                this.Street = CurrentUser.CampingCustomer.Address.Street;
-                this.PostalCode = CurrentUser.CampingCustomer.Address.PostalCode;
-                this.Place = CurrentUser.CampingCustomer.Address.Place;
+                this._firstName = CurrentUser.CampingCustomer.FirstName;
+                this._lastName = CurrentUser.CampingCustomer.LastName;
+                this._email = CurrentUser.CampingCustomer.Account.Email;
+                this._phoneNumber = CurrentUser.CampingCustomer.PhoneNumber;
+                this._birthdate = CurrentUser.CampingCustomer.Birthdate;
+                this._street = CurrentUser.CampingCustomer.Address.Street;
+                this._postalCode = CurrentUser.CampingCustomer.Address.PostalCode;
+                this._place = CurrentUser.CampingCustomer.Address.Place;
             }
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion
@@ -259,7 +261,7 @@ namespace ViewModel
 
         private void ExecuteUpdateCancel()
         {
-            UpdateCancelEvent?.Invoke(this, EventArgs.Empty);
+            AccountUpdateViewModel.UpdateCancelEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private bool CanExecuteUpdateConfirm()
@@ -271,19 +273,19 @@ namespace ViewModel
 
             if (CurrentUser.Account.Rights == AccountRights.Customer)
             {
-                return Validation.IsInputFilled(this._firstName) 
-                       && Validation.IsInputFilled(this._lastName) 
-                       && Validation.IsBirthdateValid(this._birthdate) 
-                       && Validation.IsBirthdateAdult(this._birthdate) 
-                       && Validation.IsInputFilled(this._street) 
-                       && Validation.IsInputFilled(this._postalCode) 
-                       && RegexHelper.IsPostalcodeValid(this._postalCode) 
-                       && Validation.IsInputFilled(this._place) 
-                       && Validation.IsInputFilled(this._phoneNumber) 
-                       && Validation.IsNumber(this._phoneNumber);
+                return Validation.IsInputFilled(this.FirstName) 
+                       && Validation.IsInputFilled(this.LastName) 
+                       && Validation.IsBirthdateValid(this.Birthdate) 
+                       && Validation.IsBirthdateAdult(this.Birthdate) 
+                       && Validation.IsInputFilled(this.Street) 
+                       && Validation.IsInputFilled(this.PostalCode) 
+                       && RegexHelper.IsPostalcodeValid(this.PostalCode) 
+                       && Validation.IsInputFilled(this.Place) 
+                       && Validation.IsInputFilled(this.PhoneNumber) 
+                       && Validation.IsNumber(this.PhoneNumber);
             }
 
-            return Validation.IsInputFilled(this._firstName) && Validation.IsInputFilled(this._lastName);
+            return Validation.IsInputFilled(this.FirstName) && Validation.IsInputFilled(this.LastName);
         }
 
         private void ExecuteUpdateConfirm()
@@ -300,7 +302,7 @@ namespace ViewModel
                 CurrentUser.SetCurrentUser(CurrentUser.Account, CurrentUser.CampingCustomer);
             }
 
-            UpdateConfirmEvent?.Invoke(this, EventArgs.Empty);
+            AccountUpdateViewModel.UpdateConfirmEvent?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

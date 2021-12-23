@@ -18,11 +18,12 @@ namespace ViewModel
     public class MultipleChatPageViewModel : ObservableObject
     {
         private Chat _selectedChat;
-        private Chat _chat;
+        private readonly Chat _chatModel = new Chat();
+        
         private ObservableCollection<Chat> _chats;
         private MessageJSON _selectedChatMessages;
 
-        public string ChatTextInput { get; private set; }
+        public string ChatTextInput { get; set; }
         public List<MessageJSON> ShownChatMessages { get; private set; }
         public string CurrenCustomerName { get; private set; }
 
@@ -71,13 +72,19 @@ namespace ViewModel
             }
         }
 
-        // TODO: Fetch database row, loop through and display it
         public MultipleChatPageViewModel()
         {
-            //TODO: fetch all chats from database, where unsolved?
-            _chat = new Chat();
-            this._chats = new ObservableCollection<Chat>(_chat.Select());
-            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            SignInViewModel.SignInEvent += SignInViewModelOnSignInEvent;
+            
+            this.Chats = new ObservableCollection<Chat>(this._chatModel.Select());
+        }
+
+        private void SignInViewModelOnSignInEvent(object sender, AccountEventArgs e)
+        {
+            foreach (var chat in this._chatModel.Select())
+            {
+                this.Chats.Add(chat);
+            }
         }
 
         private void ShowChatMessages()

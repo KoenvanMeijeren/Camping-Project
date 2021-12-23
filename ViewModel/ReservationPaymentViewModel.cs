@@ -25,6 +25,8 @@ namespace ViewModel
 {
     public class ReservationPaymentViewModel : ObservableObject
     {
+        #region Fields
+
         private Reservation _reservation;
         private CampingCustomer _campingCustomer;
         private ObservableCollection<CampingGuest> _campingGuests;
@@ -32,6 +34,10 @@ namespace ViewModel
         private IPaymentClient _paymentClient;
         private PaymentResponse _paymentResponse;
         private string _status;
+
+        #endregion
+
+        #region Properties
 
         public Reservation Reservation
         {
@@ -62,13 +68,22 @@ namespace ViewModel
             }
         }
 
+        #endregion
+
+        #region Events
+
         public static event EventHandler<ReservationGuestEventArgs> ReservationGuestGoBackEvent;
-        public static event EventHandler<ReservationGuestEventArgs> ReservationConfirmedEvent;
+        public static event EventHandler<UpdateModelEventArgs<Reservation>> ReservationConfirmedEvent;
         public static event EventHandler<ReservationEventArgs> ReservationFailedEvent; 
+
+        #endregion
+
+        #region View construction
 
         public ReservationPaymentViewModel()
         {
             this.CampingGuests = new ObservableCollection<CampingGuest>();
+            
             ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent += this.OnReservationGuestsConfirmedEvent;
             SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
         }
@@ -80,7 +95,6 @@ namespace ViewModel
             {
                 this.CampingGuests.Add(campingGuest);
             }
-
         }
 
         private void SignInViewModelOnSignInEvent(object sender, AccountEventArgs e)
@@ -88,12 +102,15 @@ namespace ViewModel
             this.CampingCustomer = CurrentUser.CampingCustomer;
         }
 
+        #endregion
+
+        #region Commands
+
         /// <summary>
         /// Creates payment request and opens the link.
         /// </summary>
         private async Task CreateReservationPaymentRequest()
         {
-            //creates payment request and opens paymentlink
             this._paymentClient = new PaymentClient("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
 
             this._paymentRequest = new PaymentRequest()
@@ -104,9 +121,9 @@ namespace ViewModel
                 
                 Method = PaymentMethod.Ideal // instead of "Ideal"
             };
-            this._paymentResponse = await this._paymentClient.CreatePaymentAsync(_paymentRequest);
+            this._paymentResponse = await this._paymentClient.CreatePaymentAsync(this._paymentRequest);
 
-            Process.Start(new ProcessStartInfo(_paymentResponse.Links.Checkout.Href)
+            Process.Start(new ProcessStartInfo(this._paymentResponse.Links.Checkout.Href)
             {
                 UseShellExecute = true
             });
@@ -118,14 +135,14 @@ namespace ViewModel
         /// </summary>
         private async Task GetReservationPaymentRequestId()
         {
-            PaymentResponse result = await this._paymentClient.GetPaymentAsync(_paymentResponse.Id);
+            PaymentResponse result = await _paymentClient.GetPaymentAsync(_paymentResponse.Id);
             this._status = result.Status;
         }
 
         /// <summary>
-        /// Opens next page when payment is done.
+        /// Opens next page and inserts the reservation when payment is done.
         /// </summary>
-        public async void ExecuteCreateReservationPaymentTest()
+        private async void ExecuteCreateReservationPaymentTest()
         {
             // run a method in another thread
             await this.CreateReservationPaymentRequest();
@@ -134,30 +151,42 @@ namespace ViewModel
             bool canContinue = false;
             while (canContinue == false)
             {
-                await this.GetReservationPaymentRequestId();
+                await GetReservationPaymentRequestId();
                 if (this._status.Equals("paid"))
                 {
-                    ReservationConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(this.Reservation, this.CampingGuests));
+                    this.Reservation.Insert();
+                    var lastReservation = this.Reservation.SelectLast();
+
+                    foreach (var guest in this.CampingGuests)
+                    {
+                        guest.Insert();
+                
+                        (new ReservationCampingGuest(lastReservation, guest.SelectLast())).Insert();
+                    }
+            
+                    ReservationPaymentViewModel.ReservationConfirmedEvent?.Invoke(this, new UpdateModelEventArgs<Reservation>(lastReservation, true, false));
                     canContinue = true;
                 }
                 if (this._status.Equals("failed") || this._status.Equals("canceled") || this._status.Equals("expired"))
                 {
-                    ReservationFailedEvent?.Invoke(this, new ReservationEventArgs(this.Reservation));
+                    ReservationPaymentViewModel.ReservationFailedEvent?.Invoke(this, new ReservationEventArgs(this.Reservation));
                     canContinue = true;
                 }
             }
 
         }
 
-        private void ExecuteCustomerPaymenGoBackReservation()
+        private void ExecuteCustomerPaymentGoBackReservation()
         {
-            ReservationGuestGoBackEvent?.Invoke(this, new ReservationGuestEventArgs(this.Reservation, this.CampingGuests));
+            ReservationPaymentViewModel.ReservationGuestGoBackEvent?.Invoke(this, new ReservationGuestEventArgs(this.Reservation, this.CampingGuests));
             this.CampingGuests.Clear();
         }
 
         public ICommand CreateReservationPayment => new RelayCommand(ExecuteCreateReservationPaymentTest);
 
-        public ICommand CustomerPaymentGoBackReservation => new RelayCommand(ExecuteCustomerPaymenGoBackReservation);
+        public ICommand CustomerPaymentGoBackReservation => new RelayCommand(ExecuteCustomerPaymentGoBackReservation);
+
+        #endregion
 
     }
 }

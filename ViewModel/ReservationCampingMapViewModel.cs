@@ -188,7 +188,7 @@ namespace ViewModel
             this.CheckInDate = DateTime.Today;
             this.CheckOutDate = DateTime.Today.AddDays(1);
 
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.ReservationCampingGuestViewModelOnReservationConfirmedEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.ReservationCampingGuestViewModelOnReservationConfirmedEvent;
             ManageCampingMapViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
             ManageAccommodationViewModel.AccommodationStringsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
         }
@@ -225,7 +225,7 @@ namespace ViewModel
             campingField.CampingPlace = e.Model;
         }
 
-        private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object sender, ReservationEventArgs e)
+        private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> e)
         {
             this.InitializeOverview();
         }
@@ -321,11 +321,13 @@ namespace ViewModel
 
         private void ResetInput()
         {
-            this.SelectedAccommodation = SelectAll;
-            this.CheckInDate = DateTime.Today;
-            this.CheckOutDate = DateTime.Today.AddDays(1);
-            this.MinNightPrice = "";
-            this.MaxNightPrice = "";
+            this._selectedAccommodation = SelectAll;
+            this._checkInDate = DateTime.Today;
+            this._checkOutDate = DateTime.Today.AddDays(1);
+            this._minNightPrice = "";
+            this._maxNightPrice = "";
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion

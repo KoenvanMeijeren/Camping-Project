@@ -259,10 +259,13 @@ namespace ViewModel
             this.CampingCustomers = new ObservableCollection<CampingCustomer>();
             this.EditTitle = "Campingklant toevoegen";
          
-            this.SetCampingCustomers();
+            this.InitializeCampingCustomers();
         }
 
-        private void SetCampingCustomers()
+        /// <summary>
+        /// Sets the available camping customers. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
+        private void InitializeCampingCustomers()
         {
             this.CampingCustomers.Clear();
             foreach (var campingPlace in this.GetCampingCustomers())
@@ -279,28 +282,32 @@ namespace ViewModel
                 return;
             }
 
-            this.EditTitle = $"Campingklant {campingCustomer} bewerken";
-            this.FirstName = campingCustomer.FirstName;
-            this.LastName = campingCustomer.LastName;
-            this.Birthdate = campingCustomer.Birthdate;
-            this.PhoneNumber = campingCustomer.PhoneNumber;
-            this.Street = campingCustomer.Address.Street;
-            this.PostalCode = campingCustomer.Address.PostalCode;
-            this.Place = campingCustomer.Address.Place;
+            this._editTitle = $"Campingklant {campingCustomer} bewerken";
+            this._firstName = campingCustomer.FirstName;
+            this._lastName = campingCustomer.LastName;
+            this._birthdate = campingCustomer.Birthdate;
+            this._phoneNumber = campingCustomer.PhoneNumber;
+            this._street = campingCustomer.Address.Street;
+            this._postalCode = campingCustomer.Address.PostalCode;
+            this._place = campingCustomer.Address.Place;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         private void ResetInput()
         {
-            this.EditTitle = "Campingklant toevoegen";
-            this.SelectedCampingCustomer = null;
-            this.FirstName = string.Empty;
-            this.LastName = string.Empty;
-            this.Birthdate = DateTime.MinValue;
-            this.PhoneNumber = string.Empty;
-            this.Street = string.Empty;
-            this.PostalCode = string.Empty;
-            this.Place = string.Empty;
-            this.CampingCustomerError = string.Empty;
+            this._editTitle = "Campingklant toevoegen";
+            this._selectedCampingCustomer = null;
+            this._firstName = string.Empty;
+            this._lastName = string.Empty;
+            this._birthdate = DateTime.MinValue;
+            this._phoneNumber = string.Empty;
+            this._street = string.Empty;
+            this._postalCode = string.Empty;
+            this._place = string.Empty;
+            this._campingCustomerError = string.Empty;
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion

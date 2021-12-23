@@ -199,9 +199,17 @@ namespace ViewModel
             this.CheckInDate = new DateTime(date.Year, date.Month, 1);
             this.CheckOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
 
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            ManageReservationViewModel.UpdateReservationCollection += this.OnReservationConfirmedEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
             ManageAccommodationViewModel.AccommodationStringsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+            ManageReservationViewModel.ReservationUpdated += this.ManageReservationViewModelOnReservationUpdated;
+        }
+
+        private void ManageReservationViewModelOnReservationUpdated(object sender, UpdateModelEventArgs<Reservation> e)
+        {
+            e.UpdateCollection(this.Reservations);
+            
+            this._selectedReservation = e.Model;
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
@@ -218,9 +226,9 @@ namespace ViewModel
             this.SelectedAccommodation = SelectAll;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
+        private void OnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> args)
         {
-            this.SetOverview();
+            args.UpdateCollection(this.Reservations);
         }
 
         /// <summary>
