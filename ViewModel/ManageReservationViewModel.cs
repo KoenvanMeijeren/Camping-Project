@@ -39,7 +39,7 @@ namespace ViewModel
 
         public string NumberOfPeople
         {
-            get => _numberOfPeople;
+            get => this._numberOfPeople;
             set
             {
                 if (Equals(value, this._numberOfPeople))
@@ -141,7 +141,7 @@ namespace ViewModel
             this.CampingPlaces.Clear();
 
             this.CampingPlaces.Add(selectedCampingPlace);
-            foreach (var campingPlace in this.GetCampingPlaces())
+            foreach (var campingPlace in this.GetFilteredCampingPlaces())
             {
                 this.CampingPlaces.Add(campingPlace);
             }
@@ -163,9 +163,9 @@ namespace ViewModel
             this._numberOfPeople = this._reservation.NumberOfPeople.ToString();
             this._selectedCampingPlace = this._reservation.CampingPlace;
             this._checkInDate = this._reservation.CheckInDatetime;
-            this._checkOutDate = this._reservation.CheckOutDatetime;
             
-            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            // This triggers the on property changed event.
+            this.CheckOutDate = this._reservation.CheckOutDatetime;
         }
         
         #endregion
@@ -258,19 +258,19 @@ namespace ViewModel
 
         #region Database interaction
 
-        private IEnumerable<CampingPlace> GetCampingPlaces()
+        public IEnumerable<CampingPlace> GetFilteredCampingPlaces()
         {
-            return this.ToFilteredOnReservedCampingPlaces(SelectCampingPlaces());
+            return this.ToFilteredOnReservedCampingPlaces(this.GetCampingPlaces());
         }
 
-        public virtual IEnumerable<CampingPlace> SelectCampingPlaces()
+        public virtual IEnumerable<CampingPlace> GetCampingPlaces()
         {
             return this._campingPlaceModel.Select();
         }
 
         private IEnumerable<CampingPlace> ToFilteredOnReservedCampingPlaces(IEnumerable<CampingPlace> viewData)
         {
-            var reservations = this.GetReservationModel();
+            var reservations = this.GetReservations();
 
             foreach (Reservation reservation in reservations)
             {
@@ -283,7 +283,7 @@ namespace ViewModel
             return viewData;
         }
 
-        public virtual IEnumerable<Reservation> GetReservationModel()
+        public virtual IEnumerable<Reservation> GetReservations()
         {
             return this._reservationModel.Select();
         }

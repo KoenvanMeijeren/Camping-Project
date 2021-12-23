@@ -19,6 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
+using SystemCore;
 using ViewModel.EventArguments;
 
 namespace ViewModel
@@ -112,7 +113,7 @@ namespace ViewModel
         /// </summary>
         private async Task CreateReservationPaymentRequest()
         {
-            this._paymentClient = new PaymentClient("test_sKWktBBCgNax7dGjt8sU6cF92zRuzb");
+            this._paymentClient = new PaymentClient(ConfigReader.GetSetting("mollie_api_key"));
 
             this._paymentRequest = new PaymentRequest()
             {
