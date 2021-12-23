@@ -23,13 +23,27 @@ namespace ViewModel
         private List<MessageJSON> _shownChatMessages;        
         private int _refreshRateInMilliseconds = 2000;
 
-        public string ChatTextInput { get; set; }
+        public string _chatTextInput;
         public string CurrentCustomerName { get; private set; }
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
         public static event EventHandler<ChatEventArgs> NewChatContentEvent;
 
 
         #region properties
+        public string ChatTextInput
+        {
+            get => this._chatTextInput;
+            set
+            {
+                if (value == this._chatTextInput)
+                {
+                    return;
+                }
+
+                this._chatTextInput = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
         public List<MessageJSON> ShownChatMessages
         {
             get => this._shownChatMessages;
@@ -83,6 +97,7 @@ namespace ViewModel
         {
             //TODO: fetch all chats from database, where unsolved?
             this._shownChatMessages = new List<MessageJSON>();
+            this.ChatTextInput = "";
             this._chats = GetAllChats();
             this.CurrentCustomerName = "Klant";
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
@@ -206,8 +221,13 @@ namespace ViewModel
         public static event EventHandler FromChatToContactEvent;
 
         // Send chat button
-        public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute);
+        public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute, CanExecuteSendChatButtonExecute);
         public static event EventHandler<ChatEventArgs> SendChatEvent;
+
+        private bool CanExecuteSendChatButtonExecute()
+        {
+            return this.ChatTextInput.Length > 0;
+        }
 
         /// <summary>
         /// Function that executes when "Send" button has been pressed in Chat View.

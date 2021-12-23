@@ -48,9 +48,9 @@
                     <Image Source="Images/user_stock.PNG" Margin="10, 0, 10, 0"/>
                     <Label Height="29" FontSize="16" FontWeight="Black" FontFamily="Century Gothic" Content="{Binding CurrentCustomerName}"/>
                 </StackPanel>
-
-                <StackPanel x:Name="ChatField" DataContext="{Binding ShownChatMessages}" Height="384" Background="#f8faf7" Margin="0,10,0,0" Width="552"/>
-
+                <ScrollViewer Height="350px">
+                    <StackPanel x:Name="ChatField" Background="#f8faf7" Margin="0,10,0,0" Width="552"/>
+                </ScrollViewer>
 
                 <StackPanel Margin="0, 15, 0, 15" Height="50" Orientation="Horizontal">
                     <TextBox Text="{Binding ChatTextInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="ChatTextBox" TextWrapping="Wrap" Width="478"/>
