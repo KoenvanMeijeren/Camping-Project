@@ -51,8 +51,6 @@ namespace ViewModel
 
                 this._minNightPrice = value;
                 this.FilterOverview();
-
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -68,8 +66,6 @@ namespace ViewModel
 
                 this._guests = value;
                 this.FilterOverview();
-
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -85,8 +81,6 @@ namespace ViewModel
 
                 this._maxNightPrice = value;
                 this.FilterOverview();
-
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -104,13 +98,13 @@ namespace ViewModel
                 int daysDifference = this._checkOutDate.Subtract(this._checkInDate).Days;
 
                 this._checkInDate = value;
-                this.FilterOverview();
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 if (daysDifference > 0)
                 {
-                    this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
+                    this._checkOutDate = this._checkInDate.AddDays(daysDifference);
                 }
+                
+                this.FilterOverview();
             }
         }
 
@@ -125,13 +119,13 @@ namespace ViewModel
                 }
 
                 this._checkOutDate = value;
-                this.FilterOverview();
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 if (this._checkOutDate < this.CheckInDate)
                 {
-                    this.CheckInDate = this._checkOutDate.AddDays(-1);
+                    this._checkInDate = this._checkOutDate.AddDays(-1);
                 }
+                
+                this.FilterOverview();
             }
         }
 
@@ -161,8 +155,6 @@ namespace ViewModel
                 }
 
                 this._selectedAccommodation = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-
                 this.FilterOverview();
             }
         }
@@ -179,14 +171,16 @@ namespace ViewModel
 
         public ReservationCampingMapViewModel()
         {
-            this.Accommodations = new ObservableCollection<string>();
+            this._accommodations = new ObservableCollection<string>();
 
             this.InitializeInternalCampingFields();
             this.InitializeOverview();
             this.InitializeAccommodations();
+            this._checkInDate = DateTime.Today;
+            this._checkOutDate = DateTime.Today.AddDays(1);
+            
+            // This calls the on property changed event.
             this.SelectedAccommodation = SelectAll;
-            this.CheckInDate = DateTime.Today;
-            this.CheckOutDate = DateTime.Today.AddDays(1);
 
             ReservationPaymentViewModel.ReservationConfirmedEvent += this.ReservationCampingGuestViewModelOnReservationConfirmedEvent;
             ManageCampingMapViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
@@ -204,7 +198,9 @@ namespace ViewModel
                 this.Accommodations.Remove(e.Model.ToString());
             }
 
-            this.SelectedAccommodation = SelectAll;
+            this._selectedAccommodation = SelectAll;
+            
+            // This method calls the on property changed event.
             this.FilterOverview();
         }
 
@@ -273,6 +269,9 @@ namespace ViewModel
             }
         }
 
+        /// <summary>
+        /// Filters the overview and triggers the on property changed event after filtering.
+        /// </summary>
         private void FilterOverview()
         {
             if (this.CampingFields == null)
@@ -281,7 +280,7 @@ namespace ViewModel
             }
 
             bool CampingPlaceFilter(CampingPlace campingPlace) =>
-                (this._selectedAccommodation != null && (this._selectedAccommodation.Equals(SelectAll) || campingPlace.Type.Accommodation.Name.Equals(this._selectedAccommodation)))
+                (this.SelectedAccommodation != null && (this.SelectedAccommodation.Equals(SelectAll) || campingPlace.Type.Accommodation.Name.Equals(this.SelectedAccommodation)))
                 && (!int.TryParse(this.MinNightPrice, out int min) || campingPlace.TotalPrice >= min)
                 && (!int.TryParse(this.MaxNightPrice, out int max) || campingPlace.TotalPrice <= max)
                 && (!int.TryParse(this.Guests, out int guests) || campingPlace.Type.GuestLimit >= guests);
@@ -297,8 +296,8 @@ namespace ViewModel
                     campingField.BackgroundColor = ColorFilteredOut;
                 }
             }
+            
             this.FilterOnReserved();
-
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
