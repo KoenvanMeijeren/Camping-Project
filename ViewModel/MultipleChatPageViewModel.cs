@@ -77,7 +77,6 @@ namespace ViewModel
             Chat chat = new Chat();
             this._chats = new ObservableCollection<Chat>(chat.Select());
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            this._selectedChatMessages = new MessageJSON();
         }
 
         private void ShowChatMessages()
