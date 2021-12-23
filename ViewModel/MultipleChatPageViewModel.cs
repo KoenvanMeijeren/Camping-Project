@@ -90,11 +90,18 @@ namespace ViewModel
             this.RefreshChats();
         }
 
+        /// <summary>
+        /// Get all chats from database
+        /// </summary>
+        /// <returns></returns>
         private ObservableCollection<Chat> GetAllChats()
         {
             return new ObservableCollection<Chat>(_chatModel.Select());
         }
 
+        /// <summary>
+        /// This method will load the messages in a textblock on the screen
+        /// </summary>
         public void DisplayMessages()
         {
             // Loops through all 'old'/already sent messages
@@ -104,6 +111,9 @@ namespace ViewModel
             }            
         }
 
+        /// <summary>
+        /// Updates messages list and display new list
+        /// </summary>
         private void GetChatConversation()
         {
             this._shownChatMessages.Clear();
@@ -162,22 +172,19 @@ namespace ViewModel
                             this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
                         }
 
-                        // Overwrite the old list with messages to the full new list with messages
+                        // Overwrite the old list with messages to the full new list with messages in chat object
                         foreach (var chat in this._chats.Where(c => c.Customer.Id == chatConversation.Customer.Id))
                         {
                             chat.Messages = ChatToJSON(GetChatMessagesToList); 
                         }
 
-                        //update chat
+                        //update chat and displaying messages
                         NewChatContentEvent?.Invoke(this, null);
                         if (chatConversation.Customer.Id == this._selectedChat.Customer.Id)
                         {
                             GetChatConversation();
                         }
-
-
                     }
-
                     // Async wait before executing this again
                     await Task.Delay(_refreshRateInMilliseconds);
                 }
