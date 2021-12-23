@@ -168,11 +168,6 @@ namespace ViewModel
             get => _selectedReservation;
             set
             {
-                if (value == null || Equals(value, this._selectedReservation))
-                {
-                    return;
-                }
-
                 this._selectedReservation = value;
                 ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation));
             }
