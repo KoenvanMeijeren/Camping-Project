@@ -38,11 +38,16 @@ namespace ViewModel
 
         public void ExecuteChatAfterLogin(object o, AccountEventArgs accountEventArgs)
         {
-            this.ChatConversation = _chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
+            this.ChatConversation = this._chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
+            if (this.ChatConversation == null)
+            {
+                return;
+            }
+            
             this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this.ChatConversation.Messages);
 
             // Loops through all 'old'/already sent messages
-            foreach(var message in ChatMessages)
+            foreach(var message in this.ChatMessages)
             {
                 OpenChatEvent?.Invoke(this, new ChatEventArgs(message.Message, (MessageSender)Convert.ToInt32(message.UserRole)));
             }
@@ -54,7 +59,7 @@ namespace ViewModel
         /// Async function that checks for new messages
         /// </summary>
         /// <returns>Nothing</returns>
-        public async Task RefreshChatMessages()
+        private async Task RefreshChatMessages()
         {
             // Automatically updating chat
             while (true)

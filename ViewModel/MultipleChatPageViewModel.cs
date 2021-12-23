@@ -22,7 +22,7 @@ namespace ViewModel
         private ObservableCollection<Chat> _chats;
         private MessageJSON _selectedChatMessages;
 
-        public string ChatTextInput { get; private set; }
+        public string ChatTextInput { get; set; }
         public List<MessageJSON> ShownChatMessages { get; private set; }
         public string CurrenCustomerName { get; private set; }
 
