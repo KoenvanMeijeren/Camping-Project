@@ -83,6 +83,7 @@ namespace ViewModel
         public ReservationPaymentViewModel()
         {
             this.CampingGuests = new ObservableCollection<CampingGuest>();
+            this._status = "null";
             
             ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent += this.OnReservationGuestsConfirmedEvent;
             SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
@@ -142,7 +143,7 @@ namespace ViewModel
         /// <summary>
         /// Opens next page and inserts the reservation when payment is done.
         /// </summary>
-        private async void ExecuteCreateReservationPaymentTest()
+        private async void ExecuteCreateReservationPayment()
         {
             // run a method in another thread
             await this.CreateReservationPaymentRequest();
@@ -176,13 +177,18 @@ namespace ViewModel
 
         }
 
+        private bool CanExecuteCreateReservationPayment()
+        {
+            return !this._status.Equals("open");
+        }
+
         private void ExecuteCustomerPaymentGoBackReservation()
         {
             ReservationPaymentViewModel.ReservationGuestGoBackEvent?.Invoke(this, new ReservationGuestEventArgs(this.Reservation, this.CampingGuests));
             this.CampingGuests.Clear();
         }
 
-        public ICommand CreateReservationPayment => new RelayCommand(ExecuteCreateReservationPaymentTest);
+        public ICommand CreateReservationPayment => new RelayCommand(ExecuteCreateReservationPayment, CanExecuteCreateReservationPayment);
 
         public ICommand CustomerPaymentGoBackReservation => new RelayCommand(ExecuteCustomerPaymentGoBackReservation);
 
