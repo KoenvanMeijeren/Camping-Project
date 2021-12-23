@@ -133,6 +133,9 @@ namespace ViewModel
 
         #endregion
 
+        /// <summary>
+        /// Inserts Reservation and CampingGuests into the database.
+        /// </summary>
         public void InsertReservationAndGuests()
         {
             this.Reservation.Insert();

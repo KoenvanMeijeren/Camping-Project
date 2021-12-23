@@ -88,6 +88,9 @@ namespace ViewModel
             this.CampingCustomer = CurrentUser.CampingCustomer;
         }
 
+        /// <summary>
+        /// Creates payment request and opens the link.
+        /// </summary>
         private async Task CreateReservationPaymentRequest()
         {
             //creates payment request and opens paymentlink
@@ -110,29 +113,24 @@ namespace ViewModel
 
         }
 
+        /// <summary>
+        /// Fills _status with current payment status.
+        /// </summary>
         private async Task GetReservationPaymentRequestId()
         {
             PaymentResponse result = await _paymentClient.GetPaymentAsync(_paymentResponse.Id);
             _status = result.Status;
         }
 
+        /// <summary>
+        /// Opens next page when payment is done.
+        /// </summary>
         public async void ExecuteCreateReservationPaymentTest()
         {
             // run a method in another thread
             await CreateReservationPaymentRequest();
 
-
-            //insert Reservation and campingGuests
-            /*this.Reservation.Insert();
-            var lastReservation = this.Reservation.SelectLast();
-            CampingGuest campingGuest = new CampingGuest();
-
-            foreach (var guest in this.CampingGuests)
-            {
-                guest.Insert();
-                var lastGuest = campingGuest.SelectLast();
-                (new ReservationCampingGuest(lastReservation, lastGuest)).Insert();
-            }*/
+            //checks if payment is completed
             bool canContinue = false;
             while (canContinue == false)
             {
@@ -142,7 +140,7 @@ namespace ViewModel
                     ReservationConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(Reservation, CampingGuests));
                     canContinue = true;
                 }
-                if (_status.Equals("failed") || _status.Equals("canceled"))
+                if (_status.Equals("failed") || _status.Equals("canceled") || _status.Equals("expired"))
                 {
                     ReservationFailedEvent?.Invoke(this, new ReservationEventArgs(Reservation));
                     canContinue = true;
