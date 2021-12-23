@@ -34,16 +34,24 @@ namespace ViewModel
         {
             // Executes when user has logged in
             SignInViewModel.SignInEvent += ExecuteChatAfterLogin;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+
+        }
+
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+            //TODO: stop running task
         }
 
         public void ExecuteChatAfterLogin(object o, AccountEventArgs accountEventArgs)
         {
-            this.ChatConversation = this._chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
-            if (this.ChatConversation == null)
+            if (CurrentUser.Account.Rights == AccountRights.Admin)
             {
                 return;
             }
-            
+
+            this.ChatConversation = _chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
             this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this.ChatConversation.Messages);
 
             // Loops through all 'old'/already sent messages
@@ -65,7 +73,7 @@ namespace ViewModel
             while (true)
             {
                 // Fetch the messages from the database
-                string GetChatMessages = ChatConversation.GetChatMessagesForCampingGuest(CurrentUser.CampingCustomer.Account);
+                string GetChatMessages = ChatConversation.GetChatMessagesForCampingCustomer(CurrentUser.CampingCustomer.Account);
                 // Convert database JSON value to List<MesssageJson>
                 List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
 

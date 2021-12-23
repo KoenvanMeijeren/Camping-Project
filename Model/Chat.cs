@@ -59,7 +59,7 @@ namespace Model
         {
         }
 
-        public Chat(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus) : this("-1", owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus , "Klant")
+        public Chat(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus) : this("-1", owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus, "Klant")
         {
         }
 
@@ -120,7 +120,7 @@ namespace Model
             return this.ToModel(result);
         }
 
-        public string GetChatMessagesForCampingGuest(Account account)
+        public string GetChatMessagesForCampingCustomer(Account account)
         {
             Query query = new Query($"SELECT {ColumnMessage} FROM {TableName} WHERE {ColumnCustomerAccount} = @campingCustomerId");
             query.AddParameter("campingCustomerId", account.Id);
@@ -132,6 +132,7 @@ namespace Model
         public bool UpdateChat(string json)
         {
             return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus));
+            
         }
 
         public bool Update(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus)
@@ -205,13 +206,7 @@ namespace Model
         /// <inheritdoc/>
         protected override string BaseSelectQuery()
         {
-            //TODO: kijken welke manier van gegevens ophalen sneller gaat
-            //string query = $"SELECT * FROM {TableName} CH ";
-            string query = $"SELECT CH.{ColumnId}, CH.{ColumnOwnerAccount}, CH.{ColumnCustomerAccount}, CH.{ColumnMessage}," +
-                $" CH.{ColumnLastMessageSeenCustomer}, CH.{ColumnLastMessageSeenOwner}, CH.{ColumnOwnerStatus}, CH.{ColumnCustomerStatus},  CH.{ColumnIsSolved}," +
-                $" CC.{CampingCustomer.ColumnFirstName}, CC.{CampingCustomer.ColumnLastName}";
-            query += $" FROM {TableName} CH ";
-
+            string query = $"SELECT * FROM {TableName} CH ";
             query += $" LEFT JOIN {Account.TableName} AC on CH.{Chat.ColumnCustomerAccount} = AC.{Account.ColumnId}";
             query += $" INNER JOIN {CampingCustomer.TableName} CC ON AC.{Account.ColumnId} = CC.{CampingCustomer.ColumnAccount}";
 
