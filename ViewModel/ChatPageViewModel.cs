@@ -38,6 +38,11 @@ namespace ViewModel
 
         public void ExecuteChatAfterLogin(object o, AccountEventArgs accountEventArgs)
         {
+            if (CurrentUser.Account.Rights == AccountRights.Admin)
+            {
+                return;
+            }
+
             this.ChatConversation = _chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
             this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this.ChatConversation.Messages);
 

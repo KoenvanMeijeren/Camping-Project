@@ -49,7 +49,7 @@
                     <Label Height="29" FontSize="16" FontWeight="Black" FontFamily="Century Gothic" Content="Klantnaam"/>
                 </StackPanel>
 
-                <StackPanel x:Name="ChatField" DataContext="{Binding SelectedChatMessages}" Height="384" Background="#f8faf7" Margin="0,10,0,0" Width="552">
+                <StackPanel x:Name="ChatField" DataContext="{Binding ShownChatMessages}" Height="384" Background="#f8faf7" Margin="0,10,0,0" Width="552">
                     <Label Content="{Binding Message}"/>
                 </StackPanel>
 

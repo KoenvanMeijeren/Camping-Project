@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ViewModel;
+using ViewModel.EventArguments;
 
 namespace Visualization
 {
@@ -23,6 +25,43 @@ namespace Visualization
         public MultipleChatPage()
         {
             InitializeComponent();
+            MultipleChatPageViewModel.OpenChatEvent += CreateChatTextBlocKEvent;
+            MultipleChatPageViewModel.NewSelectedChatEvent += NewSelectedChateEven;
+        }
+
+        /// <summary>
+        /// Function that displays new chatmessage in chat
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">ChatEventArgs(string, who sent it)</param>
+        private void CreateChatTextBlocKEvent(object sender, ChatEventArgs e)
+        {
+            var textblock = new TextBlock();
+            var brushConverter = new BrushConverter();
+
+            textblock.Text = e.message;
+            textblock.Padding = new System.Windows.Thickness(7);
+            textblock.FontFamily = new FontFamily("Century Gothic");
+
+            if (e.messageSender.Equals(MessageSender.Receiver))
+            {
+                textblock.Background = (Brush)brushConverter.ConvertFrom("#f2f2f2");
+                textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            }
+
+            if (e.messageSender.Equals(MessageSender.Sender))
+            {
+                textblock.Background = (Brush)brushConverter.ConvertFrom("#f0f8ff");
+                textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                ChatTextBox.Clear();
+            }
+
+            ChatField.Children.Add(textblock);
+        }
+
+        private void NewSelectedChateEven(object sender, ChatEventArgs e)
+        {
+            ChatField.Children.Clear();
         }
     }
 }

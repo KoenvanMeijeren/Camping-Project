@@ -58,6 +58,7 @@ namespace Model
             this.OwnerStatus = ownerStatus;
             this.CustomerStatus = customerStatus;
             this.CustomerName = name;
+            this.IsSolved = 0;
         }
 
         /// <summary>
@@ -110,10 +111,10 @@ namespace Model
 
         public bool UpdateChat(string json)
         {
-            return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus));
+            return base.Update(Chat.ToDictionary(this.Owner, this.Customer, json, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus, this.IsSolved));
         }
 
-        public bool Update(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus)
+        public bool Update(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus, int isSolved)
         {
             this.Owner = owner;
             this.Customer = customer;
@@ -123,7 +124,7 @@ namespace Model
             this.OwnerStatus = ownerStatus;
             this.CustomerStatus = customerStatus;
 
-            return base.Update(Chat.ToDictionary(owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus));
+            return base.Update(Chat.ToDictionary(owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus, isSolved));
         }
 
         /// <inheritdoc/>
@@ -162,10 +163,10 @@ namespace Model
         /// <inheritdoc/>
         protected override Dictionary<string, string> ToDictionary()
         {
-            return Chat.ToDictionary(this.Owner, this.Customer, this.Messages, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus);
+            return Chat.ToDictionary(this.Owner, this.Customer, this.Messages, this.LastMessageSeenOwner, this.LastMessageSeenCustomer, this.OwnerStatus, this.CustomerStatus, this.IsSolved);
         }
 
-        private static Dictionary<string, string> ToDictionary(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus)
+        private static Dictionary<string, string> ToDictionary(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus, int isSolved)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>
             {
@@ -175,7 +176,8 @@ namespace Model
                 {ColumnLastMessageSeenOwner, DateTimeParser.TryParseToDatabaseDateTimeFormat(ownerLastSeen)},
                 {ColumnLastMessageSeenCustomer, DateTimeParser.TryParseToDatabaseDateTimeFormat(customerLastSeen)},
                 {ColumnOwnerStatus, ((int)ownerStatus).ToString()},
-                {ColumnCustomerStatus, ((int)customerStatus).ToString()}
+                {ColumnCustomerStatus, ((int)customerStatus).ToString()},
+                {ColumnIsSolved, isSolved.ToString() }
             };
 
             return dictionary;
