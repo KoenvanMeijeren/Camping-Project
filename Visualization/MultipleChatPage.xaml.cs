@@ -22,6 +22,7 @@ namespace Visualization
     /// </summary>
     public partial class MultipleChatPage : Page
     {
+        private const double _maxWidthTextblock = 390.00;
         public MultipleChatPage()
         {
             InitializeComponent();
@@ -42,16 +43,18 @@ namespace Visualization
             textblock.Text = e.message;
             textblock.Padding = new System.Windows.Thickness(7);
             textblock.FontFamily = new FontFamily("Century Gothic");
+            textblock.TextWrapping = TextWrapping.Wrap;
+            textblock.MaxWidth = _maxWidthTextblock;
 
             if (e.messageSender.Equals(MessageSender.Receiver))
             {
-                textblock.Background = (Brush)brushConverter.ConvertFrom("#f2f2f2");
+                textblock.Background = (Brush)brushConverter.ConvertFrom("#f0f8ff");
                 textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             }
 
             if (e.messageSender.Equals(MessageSender.Sender))
             {
-                textblock.Background = (Brush)brushConverter.ConvertFrom("#f0f8ff");
+                textblock.Background = (Brush)brushConverter.ConvertFrom("#f2f2f2"); 
                 textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 ChatTextBox.Clear();
             }

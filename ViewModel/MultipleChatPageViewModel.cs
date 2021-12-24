@@ -116,6 +116,10 @@ namespace ViewModel
             this.RefreshSelectedChatMessages();
         }
 
+        /// <summary>
+        /// Updates chatlist 
+        /// </summary>
+        /// <returns></returns>
         private async Task RefreshChats()
         {
             // Automatically updating chats

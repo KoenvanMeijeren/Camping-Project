@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using ViewModel;
 using ViewModel.EventArguments;
@@ -10,6 +11,7 @@ namespace Visualization
     /// </summary>
     public partial class ChatPage : Page
     {
+        private const double _maxWidthTextblock = 390.00;
         public ChatPage()
         {
             this.InitializeComponent();
@@ -30,6 +32,8 @@ namespace Visualization
             textblock.Text = e.message;
             textblock.Padding = new System.Windows.Thickness(7);
             textblock.FontFamily = new FontFamily("Century Gothic");
+            textblock.TextWrapping = TextWrapping.Wrap;
+            textblock.MaxWidth = _maxWidthTextblock;
 
             if (e.messageSender.Equals(MessageSender.Receiver))
             {
