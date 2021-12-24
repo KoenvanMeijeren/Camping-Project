@@ -107,13 +107,7 @@ namespace Model
             this.ParseInputDates(checkInDate, checkOutDate);
             
             this.Id = successId ? numericId : -1;
-            // Add one, else it doesn't include the customer
             this.NumberOfPeople = successPeople ? numericPeople : 0;
-            if (this.Id == -1 && campingCustomer != null)
-            {
-                this.NumberOfPeople++;
-            }
-            
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.TotalPrice = this.CalculateTotalPrice();
@@ -237,7 +231,7 @@ namespace Model
             dictionary.TryGetValue(Accommodation.ColumnPrefix, out string prefix);
             dictionary.TryGetValue(Accommodation.ColumnName, out string name);
             
-            dictionary.TryGetValue(CampingPlace.ColumnId, out string placeNumber);
+            dictionary.TryGetValue(CampingPlace.ColumnNumber, out string placeNumber);
             dictionary.TryGetValue(CampingPlace.ColumnSurface, out string surface);
             dictionary.TryGetValue(CampingPlace.ColumnExtraNightPrice, out string extraNightPrice);
             

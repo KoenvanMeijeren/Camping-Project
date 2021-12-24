@@ -319,7 +319,7 @@ namespace ViewModel
         /// </summary>
         private void ExecuteCustomerGuestReservation()
         {
-            this._reservation.UpdatePeopleCount(this._numberOfAddedGuest + 1);
+            this._reservation.UpdatePeopleCount(this.CampingGuests.Count + 1);
             ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(this.Reservation, this.CampingGuests));
 
             this.ResetInput();

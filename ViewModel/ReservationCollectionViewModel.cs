@@ -47,9 +47,10 @@ namespace ViewModel
                 }
 
                 this._minTotalPrice = value;
+                this._selectedReservation = null;
+                
+                // This triggers the on property changed event.
                 this.SetOverview();
-
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -64,9 +65,10 @@ namespace ViewModel
                 }
 
                 this._maxTotalPrice = value;
-                this.SetOverview();
+                this._selectedReservation = null;
 
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                // This triggers the on property changed event.
+                this.SetOverview();
             }
         }
 
@@ -81,9 +83,9 @@ namespace ViewModel
                 }
 
                 this._guests = value;
+                
+                // This triggers the on property changed event.
                 this.SetOverview();
-
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -100,13 +102,15 @@ namespace ViewModel
                 int daysDifference = this._checkOutDate.Subtract(this._checkInDate).Days;
                 
                 this._checkInDate = value;
-                this.SetOverview();
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-
                 if (daysDifference > 0)
                 {
-                    this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
+                    this._checkOutDate = this._checkInDate.AddDays(daysDifference);
                 }
+
+                this._selectedReservation = null;
+
+                // This triggers the on property changed event.
+                this.SetOverview();
             }
         }
 
@@ -121,13 +125,15 @@ namespace ViewModel
                 }
 
                 this._checkOutDate = value;
-                this.SetOverview();
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-
                 if (this._checkOutDate < this.CheckInDate)
                 {
-                    this.CheckInDate = this._checkOutDate.AddDays(-1);
+                    this._checkInDate = this._checkOutDate.AddDays(-1);
                 }
+                
+                this._selectedReservation = null;
+
+                // This triggers the on property changed event.
+                this.SetOverview();
             }
         }
         
@@ -157,8 +163,9 @@ namespace ViewModel
                 }
 
                 this._selectedAccommodation = value;
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                
+                this._selectedReservation = null;
+
+                // This triggers the on property changed event.
                 this.SetOverview();
             }
         }
@@ -169,6 +176,11 @@ namespace ViewModel
             set
             {
                 this._selectedReservation = value;
+                if (value == null)
+                {
+                    return;
+                }
+                
                 ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation));
             }
         }
@@ -260,6 +272,8 @@ namespace ViewModel
             {
                 this.Reservations.Add(reservation);
             }
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
         #endregion
