@@ -47,7 +47,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-        public static event EventHandler<UpdateModelEventArgs<Chat>> UpdatedChat;
         public static event EventHandler<ChatEventArgs> SendChatEvent;
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
 
@@ -58,7 +57,7 @@ namespace ViewModel
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             this.ChatTextInput = "";
             this.ChatMessages = new List<MessageJSON>();
-            this.StopAsyncTask = false;
+            this.StopAsyncTask = true;
             this.ChatConversation = new Chat();
         }
 
@@ -69,7 +68,7 @@ namespace ViewModel
         /// <param name="e"></param>
         private void OnSignOutEvent(object sender, EventArgs e)
         {
-            this.StopAsyncTask = true;
+            this.StopAsyncTask = false;
         }
 
         public void ExecuteChatAfterLogin(object o, AccountEventArgs accountEventArgs)
@@ -78,11 +77,10 @@ namespace ViewModel
             {
                 return;
             }
+            this.StopAsyncTask = false ;
 
             this.ChatConversation = _chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
             this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this.ChatConversation.Messages);
-
-            UpdatedChat?.Invoke(this, new UpdateModelEventArgs<Chat>(this.ChatConversation, true, false));
 
             // Loops through all 'old'/already sent messages
             foreach(var message in this.ChatMessages)
@@ -100,7 +98,7 @@ namespace ViewModel
         private async Task RefreshChatMessages()
         {
             // Automatically updating chat
-            while (StopAsyncTask)
+            while (!StopAsyncTask)
             {
                 // Fetch the messages from the database
                 string GetChatMessages = ChatConversation.GetChatMessagesForCampingCustomer(CurrentUser.CampingCustomer.Account);

@@ -94,6 +94,7 @@ namespace ViewModel
 
         public MultipleChatPageViewModel()
         {
+            SignInViewModel.SignInEvent += ExecuteChatAfterLogin;
             this._shownChatMessages = new List<MessageJSON>();
             this.ChatTextInput = "";
             this._chats = GetAllChats();
@@ -101,15 +102,30 @@ namespace ViewModel
             this.StopAsyncTask = false;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             this.RefreshChatMessages();
-            //this.RefreshChats();
+            this.RefreshChats();
 
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
-            ChatPageViewModel.UpdatedChat += this.OnUpdateChats;
         }
 
-        private void OnUpdateChats(object sender, UpdateModelEventArgs<Chat> e)
+        private void ExecuteChatAfterLogin(object sender, AccountEventArgs e)
         {
-            e.UpdateCollection(this.Chats);
+            this.StopAsyncTask = false;
+        }
+
+        public async Task RefreshChats()
+        {
+            // Automatically updating chats
+            while (!StopAsyncTask)
+            {
+                ObservableCollection<Chat> chatDb = GetAllChats();
+                if (this._chats.Count != chatDb.Count)//Check for new chats
+                {
+                    this.Chats = chatDb;
+                }
+
+                // Async wait before executing this again
+                await Task.Delay(_refreshRateInMilliseconds);
+            }
         }
 
         /// <summary>
@@ -167,7 +183,7 @@ namespace ViewModel
             }
 
             // Automatically updating chats
-            while (StopAsyncTask)
+            while (!StopAsyncTask)
             {               
                 foreach (Chat chatConversation in _chats)
                 {
@@ -191,13 +207,10 @@ namespace ViewModel
                         }
 
                         // Overwrite the old list with messages to the full new list with messages in chat object
-                        foreach (var chat in this._chats.Where(c => c.Customer.Id == chatConversation.Customer.Id))
-                        {
-                            chat.Messages = ChatToJSON(GetChatMessagesToList); 
-                        }
+                        UpdateChat(chatConversation, GetChatMessagesToList);
 
-                        //update chat and displaying messages
-                        NewChatContentEvent?.Invoke(this, null);
+                         //update chat and displaying messages
+                         NewChatContentEvent?.Invoke(this, null);
                         if (chatConversation.Customer.Id == this._selectedChat.Customer.Id)
                         {
                             GetChatConversation();
@@ -206,6 +219,14 @@ namespace ViewModel
                     // Async wait before executing this again
                     await Task.Delay(_refreshRateInMilliseconds);
                 }
+            }
+        }
+
+        private void UpdateChat(Chat chatConversation, List<MessageJSON> chatMessages)
+        {
+            foreach (var chat in this._chats.Where(c => c.Customer.Id == chatConversation.Customer.Id))
+            {
+                chat.Messages = ChatToJSON(chatMessages);
             }
         }
 
@@ -241,21 +262,21 @@ namespace ViewModel
             string sentMessage = this.ChatTextInput;
 
             //Check if the message was sent by guest or owner
-            MessageSender sndr = (this.SelectedChat.Customer.Id.Equals(CurrentUser.Account.Id)) ? MessageSender.Sender : MessageSender.Receiver;
+            MessageSender sndr = (this._selectedChat.Customer.Id.Equals(CurrentUser.Account.Id)) ? MessageSender.Sender : MessageSender.Receiver;
 
             // Displays message on screen
             this.ExecuteSendChatEvent(sentMessage, sndr);
 
             // Add message to whole conversation
             this._shownChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
-
+            UpdateChat(this._selectedChat, _shownChatMessages);
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
             this.UpdateChatInDatabase();
         }
 
         /// <summary>
-        /// Updates the chat converstion.
+        /// Updates the chat conversation.
         /// </summary>
         private void UpdateChatInDatabase()
         {
