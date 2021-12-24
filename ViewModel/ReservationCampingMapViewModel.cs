@@ -174,17 +174,21 @@ namespace ViewModel
             this._accommodations = new ObservableCollection<string>();
 
             this.InitializeInternalCampingFields();
-            this.InitializeOverview();
             this.InitializeAccommodations();
             this._checkInDate = DateTime.Today;
             this._checkOutDate = DateTime.Today.AddDays(1);
-            
-            // This calls the on property changed event.
-            this.SelectedAccommodation = SelectAll;
+            this._selectedAccommodation = SelectAll;
+            this.InitializeOverview();
 
             ReservationPaymentViewModel.ReservationConfirmedEvent += this.ReservationCampingGuestViewModelOnReservationConfirmedEvent;
             ManageCampingMapViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
             ManageAccommodationViewModel.AccommodationStringsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+            ManageReservationViewModel.ReservationUpdated += this.ManageReservationViewModelOnReservationUpdated;
+        }
+
+        private void ManageReservationViewModelOnReservationUpdated(object sender, UpdateModelEventArgs<Reservation> e)
+        {
+            this.InitializeOverview();
         }
 
         private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
@@ -215,10 +219,12 @@ namespace ViewModel
             if (e.Removed)
             {
                 campingField.CampingPlace = null;
+                this.InitializeOverview();
                 return;
             }
             
             campingField.CampingPlace = e.Model;
+            this.InitializeOverview();
         }
 
         private void ReservationCampingGuestViewModelOnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> e)
