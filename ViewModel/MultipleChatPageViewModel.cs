@@ -21,7 +21,7 @@ namespace ViewModel
         private ObservableCollection<Chat> _chats;
         private List<MessageJSON> _shownChatMessages;
         private int _refreshRateInMilliseconds = 2000;
-        private bool StopAsyncTask = false;
+        private bool StopAsyncTask;
         private string _chatTextInput;
         public static event EventHandler<ChatEventArgs> NewChatContentEvent;
         public static event EventHandler<ChatEventArgs> SendChatEvent;
@@ -155,12 +155,8 @@ namespace ViewModel
         public async Task RefreshChats()
         {
             // Automatically updating chats
-            while (true)
+            while (StopAsyncTask)
             {
-                if (this.StopAsyncTask)
-                {
-                    break;
-                }
                 ObservableCollection<Chat> chatDb = GetAllChats();
                if (this._chats.Count != chatDb.Count)//Check for new chats
                {
@@ -185,15 +181,10 @@ namespace ViewModel
             }
 
             // Automatically updating chats
-            while (true)
+            while (StopAsyncTask)
             {               
                 foreach (Chat chatConversation in _chats)
                 {
-                    if (this.StopAsyncTask)
-                    {
-                        break;
-                    }
-
                     List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
                     // Fetch the messages from the database
                     string GetChatMessagesFromDb = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);

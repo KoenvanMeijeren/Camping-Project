@@ -34,7 +34,7 @@
                     <Label Height="29" FontSize="16" FontWeight="Black" FontFamily="Century Gothic">Campingeigenaar</Label>
                 </StackPanel>
 
-                <ScrollViewer Height="350px" Width="566">
+                <ScrollViewer Height="350px">
                     <StackPanel x:Name="ChatField" Background="#f8faf7"/>
                 </ScrollViewer>
 
