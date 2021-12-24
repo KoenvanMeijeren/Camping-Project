@@ -48,7 +48,7 @@
                     <Image Source="Images/user_stock.PNG" Margin="10, 0, 10, 0"/>
                     <Label Height="29" FontSize="16" FontWeight="Black" FontFamily="Century Gothic" Content="{Binding CurrentCustomerName}"/>
                 </StackPanel>
-                <ScrollViewer Height="350px">
+                <ScrollViewer Height="350px" Width="566">
                     <StackPanel x:Name="ChatField" Background="#f8faf7" Margin="0,10,0,0" Width="552"/>
                 </ScrollViewer>
 
