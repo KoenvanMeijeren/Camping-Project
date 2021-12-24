@@ -305,6 +305,5 @@ namespace ViewModel
         }
         
         #endregion
-        
     }
 }

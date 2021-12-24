@@ -22,6 +22,7 @@ namespace Model
         public string Message { get; private set; }
         public string MessageSentTime { get; private set; }
         public string UserRole { get; private set; }
+        public const string EmptyJson = "[]";
 
         public MessageJSON(string message, string userRole)
         {
@@ -88,36 +89,27 @@ namespace Model
             {
                 return null;
             }
-            
-            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomerAccount} = @campingCustomerId");
-            query.AddParameter("campingCustomerId", customer.Account.Id);
-            var result = query.SelectFirst();
+ 
+            var result = this.SelectByCustomer(customer);
 
             // Check chat is already created
             if (result != null)
             {
-                return this.ToModel(result);
+                return result;
             }
 
             CampingOwner campingOwner = new CampingOwner();
+            var chat = new Chat(campingOwner.SelectLast().Account, customer.Account, MessageJSON.EmptyJson, DateTime.Now, DateTime.Now, ChatStatus.Offline, ChatStatus.Offline);
+            chat.Insert();
 
-            this.Owner = campingOwner.SelectLast().Account;
-            this.Customer = customer.Account;
-            // Empty JSON
-            this.Messages = "[]";
-            this.LastMessageSeenOwner = DateTime.Now;
-            this.LastMessageSeenCustomer = DateTime.Now;
-            this.OwnerStatus = ChatStatus.Offline;
-            this.CustomerStatus = ChatStatus.Offline;
+            return this.SelectByCustomer(customer);
+        }
 
-            this.Insert();
-
-            //TODO: Dit later aanpassen, nu geen tijd voor (return this werkte niet)
-            Query query2 = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomerAccount} = @campingCustomerId");
-            query2.AddParameter("campingCustomerId", customer.Account.Id);
-            var result2 = query.SelectFirst();
-
-            return this.ToModel(result);
+        public Chat SelectByCustomer(CampingCustomer customer)
+        {
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnCustomerAccount} = @campingCustomerId");
+            query.AddParameter("campingCustomerId", customer.Account.Id);
+            return this.ToModel(query.SelectFirst());
         }
 
         public string GetChatMessagesForCampingCustomer(Account account)

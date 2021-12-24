@@ -18,9 +18,7 @@ namespace ViewModel
     public class ContactViewModel : ObservableObject
     {
         #region Fields
-        
         private readonly Camping _campingModel = new();
-
         #endregion
 
         #region Properties
@@ -69,28 +67,15 @@ namespace ViewModel
 
         #endregion
 
-        #region Chat button
-        public ICommand ChatButton => new RelayCommand(ExecuteGoToChat);
+        #region Events
         public static event EventHandler FromContactToChatEvent;
-        #endregion
-
-        #region Social media buttons
-        // Defined this way so it is possible to add parameters to function in a RelayCommand
-        public ICommand FacebookButton => new RelayCommand<object>((x) => ExecuteLink(this.FacebookLink));
-        public ICommand InstagramButton => new RelayCommand<object>((x) => ExecuteLink(this.InstagramLink));
-        public ICommand TwitterButton => new RelayCommand<object>((x) => ExecuteLink(this.TwitterLink));
-
         public static event EventHandler<LinkEventArgs> LinkEvent;
         #endregion
 
+        #region View construction
         public ContactViewModel()
         {
             ViewModel.CurrentCamping.CurrentCampingSetEvent += this.CurrentCampingOnCurrentCampingSetEvent;
-        }
-
-        private void CurrentCampingOnCurrentCampingSetEvent(object sender, UpdateModelEventArgs<Camping> e)
-        {
-            this.CurrentCamping = e.Model;
         }
 
         private void FillContactViewModel(Camping camping)
@@ -106,16 +91,16 @@ namespace ViewModel
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
-        /// <summary>
-        /// Returns the camping object.
-        /// </summary>
-        /// <returns>Camping object, latest camping inserted in database (should only be one)</returns>
-        public virtual Camping GetCamping()
+        private void CurrentCampingOnCurrentCampingSetEvent(object sender, UpdateModelEventArgs<Camping> e)
         {
-            return this._campingModel.SelectLast();
+            this.CurrentCamping = e.Model;
         }
+        #endregion
 
-        #region Chat
+        #region Commands
+        // Button to Chat
+        public ICommand ChatButton => new RelayCommand(ExecuteGoToChat);
+
         /// <summary>
         /// Event that fires the go to chat.
         /// </summary>
@@ -123,9 +108,12 @@ namespace ViewModel
         {
             ContactViewModel.FromContactToChatEvent?.Invoke(this, EventArgs.Empty);
         }
-        #endregion
 
-        #region Social media
+        // Defined this way so it is possible to add parameters to function in a RelayCommand
+        public ICommand FacebookButton => new RelayCommand<object>((x) => ExecuteLink(this.FacebookLink));
+        public ICommand InstagramButton => new RelayCommand<object>((x) => ExecuteLink(this.InstagramLink));
+        public ICommand TwitterButton => new RelayCommand<object>((x) => ExecuteLink(this.TwitterLink));
+
         /// <summary>
         /// Event that fires the link to the View.
         /// </summary>
@@ -133,6 +121,17 @@ namespace ViewModel
         private void ExecuteLink(string href)
         {
             ContactViewModel.LinkEvent?.Invoke(this, new LinkEventArgs(href));
+        }
+        #endregion
+
+        #region Database interaction
+        /// <summary>
+        /// Returns the camping object.
+        /// </summary>
+        /// <returns>Camping object, latest camping inserted in database (should only be one)</returns>
+        public virtual Camping GetCamping()
+        {
+            return this._campingModel.SelectLast();
         }
         #endregion
     }

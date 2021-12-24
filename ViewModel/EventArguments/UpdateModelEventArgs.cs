@@ -19,6 +19,10 @@ namespace ViewModel.EventArguments
             this.Removed = removed;
         }
 
+        /// <summary>
+        /// Updating a collection by removing and inserting the collectionitem therefore initializing onpropertychanged
+        /// </summary>
+        /// <param name="models"></param>
         public void UpdateCollection(Collection<T> models)
         {
             if (this.Inserted)
