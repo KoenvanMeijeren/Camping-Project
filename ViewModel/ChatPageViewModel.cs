@@ -53,7 +53,7 @@ namespace ViewModel
         public ChatPageViewModel()
         {
             // Executes when user has logged in
-            SignInViewModel.SignInEvent += ExecuteChatAfterLogin;
+            SignInViewModel.SignInEvent += this.ExecuteChatAfterLogin;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             this.ChatTextInput = "";
             this.ChatMessages = new List<MessageJSON>();
@@ -98,7 +98,7 @@ namespace ViewModel
         private async Task RefreshChatMessages()
         {
             // Automatically updating chat
-            while (!StopAsyncTask)
+            while (!this.StopAsyncTask)
             {
                 // Fetch the messages from the database
                 string GetChatMessages = ChatConversation.GetChatMessagesForCampingCustomer(CurrentUser.CampingCustomer.Account);
