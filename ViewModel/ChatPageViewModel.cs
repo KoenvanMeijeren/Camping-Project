@@ -102,6 +102,10 @@ namespace ViewModel
             {
                 // Fetch the messages from the database
                 string GetChatMessages = ChatConversation.GetChatMessagesForCampingCustomer(CurrentUser.CampingCustomer.Account);
+    /*            if(GetChatMessages ==null || GetChatMessages.Length > 0)
+                {
+                    continue;
+                }*/
                 // Convert database JSON value to List<MesssageJson>
                 List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
 

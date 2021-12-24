@@ -192,36 +192,38 @@ namespace ViewModel
             {               
                 foreach (Chat chatConversation in _chats)
                 {
-                    if(chatConversation != this._selectedChat)
+                    if (this._selectedChat.Customer.Id != chatConversation.Customer.Id)
                     {
-                        continue;
-                    }
+                        List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
+                        // Fetch the messages from the database
+                        string GetChatMessagesFromDb = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
 
-                    List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
-                    // Fetch the messages from the database
-                    string GetChatMessagesFromDb = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
-                    // Convert database JSON value to List<MesssageJson>
-                    List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessagesFromDb);
+                        /*                  if (chatConversation != this._selectedChat || GetChatMessagesFromDb == null || GetChatMessagesFromDb.Length > 0)
+                                          {
+                                              continue;
+                                          }*/
 
-                    // Check if the current chat does NOT match with chats in database (aka new message)
-                    if (!_chatMessagesInApplication.Count.Equals(GetChatMessagesToList.Count))
-                    {
-                        // Calculate the amount of new messages
-                        int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - _chatMessagesInApplication.Count;
+                        // Convert database JSON value to List<MesssageJson>
+                        List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessagesFromDb);
 
-                        /*// Loop ONLY from first new message, to last new message
-                        for (int i = _chatMessagesInApplication.Count; i < GetChatMessagesToList.Count; i++)
+                        // Check if the current chat does NOT match with chats in database (aka new message)
+                        if (!_chatMessagesInApplication.Count.Equals(GetChatMessagesToList.Count))
                         {
-                            MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
-                            this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
-                        }*/
+                            // Calculate the amount of new messages
+                            int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - _chatMessagesInApplication.Count;
 
-                        // Overwrite the old list with messages to the full new list with messages in chat object
-                        UpdateChat(chatConversation, GetChatMessagesToList);
+                            /*// Loop ONLY from first new message, to last new message
+                            for (int i = _chatMessagesInApplication.Count; i < GetChatMessagesToList.Count; i++)
+                            {
+                                MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
+                                this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
+                            }*/
 
-                         //update chat and displaying messages
-                         
-                    }
+                            // Overwrite the old list with messages to the full new list with messages in chat object
+                            UpdateChat(chatConversation, GetChatMessagesToList);
+                        }
+                    }                       
+                   
                     // Async wait before executing this again
                     await Task.Delay(_refreshRateInMilliseconds);
                 }
@@ -240,9 +242,14 @@ namespace ViewModel
                 if(this._selectedChat != null)
                 {
                     List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
+                    string GetChatMessages = this._selectedChat.GetChatMessagesForCampingCustomer(this._selectedChat.Customer);
+
+                  /*  if (GetChatMessages == null || GetChatMessages.Length > 0)
+                    {
+                        continue;
+                    }*/
 
                     // Fetch the messages from the database
-                    string GetChatMessages = this._selectedChat.GetChatMessagesForCampingCustomer(this._selectedChat.Customer);
                     // Convert database JSON value to List<MesssageJson>
                     List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
 
