@@ -217,7 +217,7 @@ namespace ViewModel
             }
 
             this.PageTitle = "Reservering " + this._reservation.Id + " bijwerken";
-            this._numberOfPeople = CampingGuests.Count.ToString();
+            this._numberOfPeople = this._reservation.NumberOfPeople.ToString();
             this._selectedCampingPlace = this._reservation.CampingPlace;
             this._location = this._reservation.CampingPlace.Location;
             this._totalPrice = this._reservation.TotalPriceString;
@@ -308,6 +308,8 @@ namespace ViewModel
                 context = "Reservering is door omstandigheden niet volledig verwijderd";
                 caption = "Reservering is mogelijk geheel verwijderd";
             }
+            
+            ManageReservationViewModel.ReservationUpdated?.Invoke(this, new UpdateModelEventArgs<Reservation>(this._reservation, false, true));
             MessageBox.Show(context, caption, MessageBoxButton.OK);
             
             this.ExecuteGoToDashBoard();
