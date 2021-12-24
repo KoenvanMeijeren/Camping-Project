@@ -15,6 +15,7 @@ using System.ComponentModel;
 
 namespace ViewModel
 {
+    //From customer perspective
     public enum MessageSender
     {
         Sender = 0,
@@ -47,6 +48,8 @@ namespace ViewModel
             }
         }
         public static event EventHandler<UpdateModelEventArgs<Chat>> UpdatedChat;
+        public static event EventHandler<ChatEventArgs> SendChatEvent;
+        public static event EventHandler<ChatEventArgs> OpenChatEvent;
 
         public ChatPageViewModel()
         {
@@ -78,7 +81,9 @@ namespace ViewModel
 
             this.ChatConversation = _chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
             this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this.ChatConversation.Messages);
+
             UpdatedChat?.Invoke(this, new UpdateModelEventArgs<Chat>(this.ChatConversation, true, false));
+
             // Loops through all 'old'/already sent messages
             foreach(var message in this.ChatMessages)
             {
@@ -138,8 +143,7 @@ namespace ViewModel
 
         // Send chat button
         public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute, CanExecuteSendChatButtonExecute);
-        public static event EventHandler<ChatEventArgs> SendChatEvent;
-        public static event EventHandler<ChatEventArgs> OpenChatEvent;
+
 
         private bool CanExecuteSendChatButtonExecute()
         {

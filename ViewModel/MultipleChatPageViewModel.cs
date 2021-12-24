@@ -183,7 +183,7 @@ namespace ViewModel
                         // Calculate the amount of new messages
                         int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - _chatMessagesInApplication.Count;
 
-                        // Loop from first new message, to last new message
+                        // Loop ONLY from first new message, to last new message
                         for (int i = _chatMessagesInApplication.Count; i < GetChatMessagesToList.Count; i++)
                         {
                             MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);

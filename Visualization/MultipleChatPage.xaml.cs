@@ -46,13 +46,13 @@ namespace Visualization
             if (e.messageSender.Equals(MessageSender.Receiver))
             {
                 textblock.Background = (Brush)brushConverter.ConvertFrom("#f2f2f2");
-                textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             }
 
             if (e.messageSender.Equals(MessageSender.Sender))
             {
                 textblock.Background = (Brush)brushConverter.ConvertFrom("#f0f8ff");
-                textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 ChatTextBox.Clear();
             }
 
