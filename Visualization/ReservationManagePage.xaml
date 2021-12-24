@@ -24,7 +24,7 @@
             </ListView.View>
         </ListView>
 
-        <Label Content="Toevoegen campingasten" HorizontalAlignment="Left" Margin="104,49,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="35" Width="264" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <Label Content="Campingasten" HorizontalAlignment="Left" Margin="104,49,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="35" Width="264" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
 
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="492,37,95,346" CornerRadius="15,15,15,15" Background="White"/>
 
@@ -47,6 +47,7 @@
 
         <Button Height="33" Content ="Terug" Command="{Binding GoBackToDashboard}"  Margin="73,575,592,26" Style="{StaticResource DefaultButtonTheme}"/>
 
-        <Button Height ="33" Content ="Bijwerken" Command="{Binding UpdateReservation}" Style="{StaticResource DefaultButtonTheme}" Margin="599,571,65,30"/>
+        <Button Height="33" Content="Verwijderen" Command="{Binding DeleteReservation}" Style="{StaticResource DefaultButtonTheme}" Margin="450,571,215,30"/>
+        <Button Height="33" Content="Opslaan" Command="{Binding UpdateReservation}" Style="{StaticResource DefaultButtonTheme}" Margin="600,571,65,30"/>
     </Grid>
 </Page>
