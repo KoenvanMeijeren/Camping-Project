@@ -307,7 +307,7 @@ namespace ViewModel
             this._checkInDateTime = e.Reservation.CheckInDatetime;
             this._checkOutDateTime = e.Reservation.CheckOutDatetime;
             this._campingPlace = e.Reservation.CampingPlace;
-            this._selectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
+            this._selectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace}";
             
             //Removes the customer from NumberOfPeople.
             this._amountOfGuests = (e.Reservation.NumberOfPeople - 1).ToString();
@@ -339,7 +339,7 @@ namespace ViewModel
             this._campingPlace = args.CampingPlace;
             
             this._currentUserCustomer = CurrentUser.CampingCustomer;
-            this._selectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace.Location}";
+            this._selectedCampingPlace = $"Reservering van {this._checkInDateTime.ToShortDateString()} tot {this._checkOutDateTime.ToShortDateString()} in verblijf {this._campingPlace}";
             
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }

@@ -48,8 +48,25 @@ namespace Model
         public string CheckInDate { get; private set; }
         public string CheckOutDate { get; private set; }
 
-        public List<ReservationCampingGuest> CampingGuests { get; private set; }
+        private List<ReservationCampingGuest> _campingGuests;
+        public List<ReservationCampingGuest> CampingGuests
+        {
+            get
+            {
+                if (this._campingGuests != null && this._campingGuests.Any())
+                {
+                    return this._campingGuests;
+                }
 
+                this._campingGuests = this._reservationCampingGuestModel.SelectByReservation(this);
+                
+                return this._campingGuests;
+            }
+            private set => this._campingGuests = value;
+        }
+
+        private readonly ReservationCampingGuest _reservationCampingGuestModel = new ReservationCampingGuest();
+        
         /// <summary>
         /// Constructs this object for accessing the select methods.
         /// </summary>
@@ -90,13 +107,7 @@ namespace Model
             this.ParseInputDates(checkInDate, checkOutDate);
             
             this.Id = successId ? numericId : UndefinedId;
-            // Add one, else it doesn't include the customer
             this.NumberOfPeople = successPeople ? numericPeople : 0;
-            if (this.Id == UndefinedId && campingCustomer != null)
-            {
-                this.NumberOfPeople++;
-            }
-            
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.TotalPrice = this.CalculateTotalPrice();
@@ -167,6 +178,12 @@ namespace Model
             return this.Collection;
         }
 
+        public bool UpdatePeopleCount(int people)
+        {
+            this.NumberOfPeople = people;
+            return true;
+        }
+        
         public bool Update()
         {
             return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid, this.ReservationDeletedTime, this.CheckInDatetime, this.CheckOutDatetime);
@@ -214,7 +231,7 @@ namespace Model
             dictionary.TryGetValue(Accommodation.ColumnPrefix, out string prefix);
             dictionary.TryGetValue(Accommodation.ColumnName, out string name);
             
-            dictionary.TryGetValue(CampingPlace.ColumnId, out string placeNumber);
+            dictionary.TryGetValue(CampingPlace.ColumnNumber, out string placeNumber);
             dictionary.TryGetValue(CampingPlace.ColumnSurface, out string surface);
             dictionary.TryGetValue(CampingPlace.ColumnExtraNightPrice, out string extraNightPrice);
             
@@ -241,9 +258,7 @@ namespace Model
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, phoneNumber, firstName, lastName);
 
             Reservation reservation = new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, (ReservationColumnStatus)Int32.Parse(reservationDeleted), (ReservationColumnStatus)Int32.Parse(reservationPaid), (ReservationColumnStatus)Int32.Parse(reservationRestitutionPaid), reservationDeletedTime, checkInDate, checkOutDate);
-            
-            ReservationCampingGuest reservationCampingGuestModel = new ReservationCampingGuest();
-            reservation.CampingGuests = reservationCampingGuestModel.SelectByReservation(reservation);
+            reservation.CampingGuests = this._reservationCampingGuestModel.SelectByReservation(reservation);
 
             return reservation;
         }

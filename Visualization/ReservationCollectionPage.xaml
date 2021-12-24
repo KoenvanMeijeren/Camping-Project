@@ -32,7 +32,7 @@
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="ID" Width="75" DisplayMemberBinding="{Binding Id}" />
-                        <GridViewColumn Header="Verblijf" Width="75" DisplayMemberBinding="{Binding CampingPlace.Location}" />
+                        <GridViewColumn Header="Verblijf" Width="75" DisplayMemberBinding="{Binding CampingPlace}" />
                         <GridViewColumn Header="Klantnummer" Width="100" DisplayMemberBinding="{Binding CampingCustomer.Id}" />
                         <GridViewColumn Header="Personen" Width="100" DisplayMemberBinding="{Binding NumberOfPeople}" />
                         <GridViewColumn Header="Begindatum" Width="100" DisplayMemberBinding="{Binding CheckInDate}" />

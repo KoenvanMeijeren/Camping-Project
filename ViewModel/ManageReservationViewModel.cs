@@ -31,11 +31,43 @@ namespace ViewModel
         
         private DateTime _checkInDate, _checkOutDate;
         private string _numberOfPeople;
-        
+        private string _location;
+        private string _totalPrice;
+
+        private ObservableCollection<CampingGuest> _campingGuests;
+
         #endregion
-        
+
         #region Properties
         public string PageTitle { get; private set; }
+
+        public string TotalPrice {
+            get => this._totalPrice;
+            set
+            {
+                if (Equals(value, this._totalPrice))
+                {
+                    return;
+                }
+
+                this._totalPrice = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
+        public string Location {
+            get => this._location;
+            set
+            {
+                if (Equals(value, this._location))
+                {
+                    return;
+                }
+
+                this._location = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
 
         public string NumberOfPeople
         {
@@ -106,6 +138,21 @@ namespace ViewModel
             }
         }
 
+        public ObservableCollection<CampingGuest> CampingGuests
+        {
+            get => this._campingGuests;
+            private set
+            {
+                if (Equals(value, this._campingGuests))
+                {
+                    return;
+                }
+
+                this._campingGuests = value;
+                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            }
+        }
+
         #endregion
 
         #region Events
@@ -120,6 +167,7 @@ namespace ViewModel
         public ManageReservationViewModel()
         {
             this.CampingPlaces = new ObservableCollection<CampingPlace>();
+            this.CampingGuests = new ObservableCollection<CampingGuest>();
             this.InitializeAvailableCampingPlaces();
 
             ReservationCollectionViewModel.ManageReservationEvent += this.OnManageReservationEvent;
@@ -152,21 +200,33 @@ namespace ViewModel
 
         private void OnManageReservationEvent(object sender, ReservationEventArgs args)
         {
+
             if (args.Reservation == null)
             {
                 return;
             }
-            
+
+
             this._reservation = args.Reservation;
             this._campingCustomer = this._reservation.CampingCustomer;
-            
+
+            this.CampingGuests.Clear();
+            foreach (var reservationCampingGuest in this._reservation.CampingGuests)
+            {
+                this._campingGuests.Add(reservationCampingGuest.CampingGuest);
+            }
+
             this.PageTitle = "Reservering " + this._reservation.Id + " bijwerken";
             this._numberOfPeople = this._reservation.NumberOfPeople.ToString();
             this._selectedCampingPlace = this._reservation.CampingPlace;
+            this._location = this._reservation.CampingPlace.Location;
+            this._totalPrice = this._reservation.TotalPriceString;
+
             this._checkInDate = this._reservation.CheckInDatetime;
             
             // This triggers the on property changed event.
             this.CheckOutDate = this._reservation.CheckOutDatetime;
+
         }
         
         #endregion
@@ -248,6 +308,8 @@ namespace ViewModel
                 context = "Reservering is door omstandigheden niet volledig verwijderd";
                 caption = "Reservering is mogelijk geheel verwijderd";
             }
+            
+            ManageReservationViewModel.ReservationUpdated?.Invoke(this, new UpdateModelEventArgs<Reservation>(this._reservation, false, true));
             MessageBox.Show(context, caption, MessageBoxButton.OK);
             
             this.ExecuteGoToDashBoard();
