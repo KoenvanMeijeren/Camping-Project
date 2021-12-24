@@ -21,11 +21,10 @@ namespace ViewModel
         private ObservableCollection<Chat> _chats;
         private List<MessageJSON> _shownChatMessages;
         private int _refreshRateInMilliseconds = 2000;
-        private bool StopAsyncTask;
+        private bool _stopAsyncTask;
         private string _chatTextInput;
         public static event EventHandler<ChatEventArgs> NewChatContentEvent;
         public static event EventHandler<ChatEventArgs> SendChatEvent;
-
 
         #region properties
         public string CurrentCustomerName { get; private set; }
@@ -91,25 +90,40 @@ namespace ViewModel
         }
         #endregion
 
-
         public MultipleChatPageViewModel()
         {
+            SignInViewModel.SignInEvent += this.ExecuteChatAfterLogin;
             this._shownChatMessages = new List<MessageJSON>();
             this.ChatTextInput = "";
             this._chats = GetAllChats();
             this.CurrentCustomerName = "Klant";
-            this.StopAsyncTask = false;
+            this._stopAsyncTask = false;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             this.RefreshChatMessages();
-            //this.RefreshChats();
+            this.RefreshChats();
 
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
-            ChatPageViewModel.UpdatedChat += this.OnUpdateChats;
         }
 
-        private void OnUpdateChats(object sender, UpdateModelEventArgs<Chat> e)
+        private void ExecuteChatAfterLogin(object sender, AccountEventArgs e)
         {
-            e.UpdateCollection(this.Chats);
+            this._stopAsyncTask = false;
+        }
+
+        private async Task RefreshChats()
+        {
+            // Automatically updating chats
+            while (!this._stopAsyncTask)
+            {
+                ObservableCollection<Chat> chatDb = this.GetAllChats();
+                if (this._chats.Count != chatDb.Count)//Check for new chats
+                {
+                    this.Chats = chatDb;
+                }
+
+                // Async wait before executing this again
+                await Task.Delay(this._refreshRateInMilliseconds);
+            }
         }
 
         /// <summary>
@@ -119,7 +133,7 @@ namespace ViewModel
         /// <param name="e"></param>
         private void OnSignOutEvent(object sender, EventArgs e)
         {
-            this.StopAsyncTask = true;
+            this._stopAsyncTask = true;
         }
 
         /// <summary>
@@ -128,13 +142,13 @@ namespace ViewModel
         /// <returns></returns>
         private ObservableCollection<Chat> GetAllChats()
         {
-            return new ObservableCollection<Chat>(_chatModel.Select());
+            return new ObservableCollection<Chat>(this._chatModel.Select());
         }
 
         /// <summary>
         /// This method will load the messages in a textblock on the screen
         /// </summary>
-        public void DisplayMessages()
+        private void DisplayMessages()
         {
             // Loops through all 'old'/already sent messages
             foreach (var message in this.ShownChatMessages)
@@ -150,7 +164,7 @@ namespace ViewModel
         {
             this._shownChatMessages.Clear();
             this.ShownChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
-            DisplayMessages();
+            this.DisplayMessages();
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
@@ -158,7 +172,7 @@ namespace ViewModel
         /// Async function that checks for new messages
         /// </summary>
         /// <returns>Nothing</returns>
-        public async Task RefreshChatMessages()
+        private async Task RefreshChatMessages()
         {           
             //check if currentuser is campingowner
             if (CurrentUser.Account == null || CurrentUser.Account.Rights == AccountRights.Customer) 
@@ -167,45 +181,50 @@ namespace ViewModel
             }
 
             // Automatically updating chats
-            while (StopAsyncTask)
+            while (!this._stopAsyncTask)
             {               
-                foreach (Chat chatConversation in _chats)
+                foreach (Chat chatConversation in this._chats)
                 {
-                    List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
+                    List<MessageJSON> chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
                     // Fetch the messages from the database
-                    string GetChatMessagesFromDb = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
+                    string chatMessagesFromDb = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
                     // Convert database JSON value to List<MesssageJson>
-                    List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessagesFromDb);
+                    List<MessageJSON> chatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(chatMessagesFromDb);
 
                     // Check if the current chat does NOT match with chats in database (aka new message)
-                    if (!_chatMessagesInApplication.Count.Equals(GetChatMessagesToList.Count))
+                    if (!chatMessagesInApplication.Count.Equals(chatMessages.Count))
                     {
                         // Calculate the amount of new messages
-                        int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - _chatMessagesInApplication.Count;
+                        int differenceBetweenCountOfMessages = chatMessages.Count - chatMessagesInApplication.Count;
 
                         // Loop ONLY from first new message, to last new message
-                        for (int i = _chatMessagesInApplication.Count; i < GetChatMessagesToList.Count; i++)
+                        for (int i = chatMessagesInApplication.Count; i < chatMessages.Count; i++)
                         {
-                            MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
-                            this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
+                            MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(chatMessages[i].UserRole);
+                            this.ExecuteSendChatEvent(chatMessages[i].Message, chatMessageSender);
                         }
 
                         // Overwrite the old list with messages to the full new list with messages in chat object
-                        foreach (var chat in this._chats.Where(c => c.Customer.Id == chatConversation.Customer.Id))
-                        {
-                            chat.Messages = ChatToJSON(GetChatMessagesToList); 
-                        }
+                        this.UpdateChatInApplication(chatConversation, chatMessages);
 
-                        //update chat and displaying messages
+                         //update chat and displaying messages
                         NewChatContentEvent?.Invoke(this, null);
                         if (chatConversation.Customer.Id == this._selectedChat.Customer.Id)
                         {
-                            GetChatConversation();
+                            this.GetChatConversation();
                         }
                     }
                     // Async wait before executing this again
-                    await Task.Delay(_refreshRateInMilliseconds);
+                    await Task.Delay(this._refreshRateInMilliseconds);
                 }
+            }
+        }
+
+        private void UpdateChatInApplication(Chat chatConversation, List<MessageJSON> chatMessages)
+        {
+            foreach (var chat in this._chats.Where(c => c.Customer.Id == chatConversation.Customer.Id))
+            {
+                chat.Messages = this.ChatToJson(chatMessages);
             }
         }
 
@@ -214,7 +233,7 @@ namespace ViewModel
         /// </summary>
         /// <returns>String in JSON format with all messages in current chat</returns>
         /// 
-        public string ChatToJSON(List<MessageJSON> messages)
+        private string ChatToJson(List<MessageJSON> messages)
         {
             return JsonConvert.SerializeObject(messages, Formatting.Indented);
         }
@@ -229,7 +248,7 @@ namespace ViewModel
 
         private bool CanExecuteSendChatButtonExecute()
         {
-            return this.ChatTextInput.Length > 0 && _selectedChat!=null;
+            return this.ChatTextInput.Length > 0 && this._selectedChat!=null;
         }
 
         /// <summary>
@@ -241,21 +260,21 @@ namespace ViewModel
             string sentMessage = this.ChatTextInput;
 
             //Check if the message was sent by guest or owner
-            MessageSender sndr = (this.SelectedChat.Customer.Id.Equals(CurrentUser.Account.Id)) ? MessageSender.Sender : MessageSender.Receiver;
+            MessageSender sender = (this._selectedChat.Customer.Id.Equals(CurrentUser.Account.Id)) ? MessageSender.Sender : MessageSender.Receiver;
 
             // Displays message on screen
-            this.ExecuteSendChatEvent(sentMessage, sndr);
+            this.ExecuteSendChatEvent(sentMessage, sender);
 
             // Add message to whole conversation
-            this._shownChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
-
+            this._shownChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sender).ToString()));
+            this.UpdateChatInApplication(this._selectedChat, this._shownChatMessages);
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
             this.UpdateChatInDatabase();
         }
 
         /// <summary>
-        /// Updates the chat converstion.
+        /// Updates the chat conversation.
         /// </summary>
         private void UpdateChatInDatabase()
         {
