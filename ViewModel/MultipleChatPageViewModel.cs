@@ -207,7 +207,7 @@ namespace ViewModel
                         }
 
                         // Overwrite the old list with messages to the full new list with messages in chat object
-                        UpdateChat(chatConversation, GetChatMessagesToList);
+                        UpdateChatInApplication(chatConversation, GetChatMessagesToList);
 
                          //update chat and displaying messages
                          NewChatContentEvent?.Invoke(this, null);
@@ -222,7 +222,7 @@ namespace ViewModel
             }
         }
 
-        private void UpdateChat(Chat chatConversation, List<MessageJSON> chatMessages)
+        private void UpdateChatInApplication(Chat chatConversation, List<MessageJSON> chatMessages)
         {
             foreach (var chat in this._chats.Where(c => c.Customer.Id == chatConversation.Customer.Id))
             {
@@ -269,7 +269,7 @@ namespace ViewModel
 
             // Add message to whole conversation
             this._shownChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
-            UpdateChat(this._selectedChat, _shownChatMessages);
+            UpdateChatInApplication(this._selectedChat, _shownChatMessages);
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
             this.UpdateChatInDatabase();
