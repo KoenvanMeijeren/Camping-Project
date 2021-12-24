@@ -21,7 +21,7 @@ namespace Model
         {
         }
 
-        public CampingOwner(Account account, string firstName, string lastName) : this("-1", account, firstName, lastName)
+        public CampingOwner(Account account, string firstName, string lastName) : this(UndefinedId.ToString(), account, firstName, lastName)
         {
         }
 
@@ -29,7 +29,7 @@ namespace Model
         {
             bool success = int.TryParse(id, out int numericId);
 
-            this.Id = success ? numericId : -1;
+            this.Id = success ? numericId : UndefinedId;
             this.Account = account;
             this.FirstName = firstName;
             this.LastName = lastName;

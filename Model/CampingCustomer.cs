@@ -36,7 +36,7 @@ namespace Model
             
         }
 
-        public CampingCustomer(Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName): this("-1", account, address, birthdate, phoneNumber, firstName, lastName)
+        public CampingCustomer(Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName): this(UndefinedId.ToString(), account, address, birthdate, phoneNumber, firstName, lastName)
         {
 
         }
@@ -46,7 +46,7 @@ namespace Model
             bool success = int.TryParse(id, out int idNumeric);
             bool successDate = DateTime.TryParse(birthdate, out DateTime dateTime);
             
-            this.Id = success ? idNumeric : -1;
+            this.Id = success ? idNumeric : UndefinedId;
             this.Account = account;
             this.Address = address;
             this.Birthdate = successDate ? dateTime : DateTime.MinValue;
@@ -151,7 +151,7 @@ namespace Model
                 {ColumnLastName, lastName}
             };
 
-            if (account != null && account.Id != -1)
+            if (account != null && account.Id != UndefinedId)
             {
                 dictionary.Add(ColumnAccount, account.Id.ToString());
             }

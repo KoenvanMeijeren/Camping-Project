@@ -32,7 +32,7 @@ namespace Model
             
         }
         
-        public Accommodation(string prefix, string name): this("-1", prefix, name)
+        public Accommodation(string prefix, string name): this(UndefinedId.ToString(), prefix, name)
         {
         }
         
@@ -40,7 +40,7 @@ namespace Model
         {
             bool success = int.TryParse(id, out int idNumeric);
             
-            this.Id = success ? idNumeric : -1;
+            this.Id = success ? idNumeric : UndefinedId;
             this.Prefix = prefix;
             this.Name = name;
             

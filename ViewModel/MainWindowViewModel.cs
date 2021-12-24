@@ -9,7 +9,8 @@ namespace ViewModel
     {
 
         #region Fields
-        private string _title, _subtitle, _subSubtitle, _color;
+        private string _title, _subtitle, _subSubtitle, _temporaryApplicationColor;
+        private const string TemporaryApplicationColor = "#000000";
         #endregion
 
         #region Properties
@@ -63,15 +64,15 @@ namespace ViewModel
 
         public string Color
         {
-            get => this._color;
+            get => this._temporaryApplicationColor;
             private set
             {
-                if (Equals(value, this._color))
+                if (Equals(value, this._temporaryApplicationColor))
                 {
                     return;
                 }
 
-                this._color = value;
+                this._temporaryApplicationColor = value;
 
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
@@ -84,7 +85,7 @@ namespace ViewModel
             this._subtitle = ConfigReader.GetSetting("Subtitle");
             this._subSubtitle = ConfigReader.GetSetting("SubSubtitle");
             this._title = this.Subtitle + " " + this.SubSubtitle;
-            this._color = "#000000";
+            this._temporaryApplicationColor = TemporaryApplicationColor;
 
             CurrentCamping.CurrentCampingSetEvent += OnCurrentCampingSetEvent;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
@@ -97,7 +98,7 @@ namespace ViewModel
             this._subtitle = ConfigReader.GetSetting("Subtitle");
             this._subSubtitle = "\n" + CurrentCamping.Camping.Name;
             this._title = this.Subtitle + " " + this.SubSubtitle;
-            this._color = CurrentCamping.Camping.Color;
+            this._temporaryApplicationColor = CurrentCamping.Camping.Color;
 
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }

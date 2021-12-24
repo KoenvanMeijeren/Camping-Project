@@ -82,7 +82,7 @@ namespace Model
         /// <param name="campingPlace">The camping place.</param>
         /// <param name="checkInDate">The check in date.</param>
         /// <param name="checkOutDate">The check out date.</param>
-        public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, string checkInDate, string checkOutDate) : this("-1", numberOfPeople, campingCustomer, campingPlace, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False, null, checkInDate, checkOutDate)
+        public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, string checkInDate, string checkOutDate) : this(UndefinedId.ToString(), numberOfPeople, campingCustomer, campingPlace, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False, null, checkInDate, checkOutDate)
         {
         }
         
@@ -106,7 +106,7 @@ namespace Model
             DateTime dateTime = DateTimeParser.TryParse(reservationDeletedTime);
             this.ParseInputDates(checkInDate, checkOutDate);
             
-            this.Id = successId ? numericId : -1;
+            this.Id = successId ? numericId : UndefinedId;
             this.NumberOfPeople = successPeople ? numericPeople : 0;
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;

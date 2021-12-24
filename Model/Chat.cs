@@ -60,14 +60,14 @@ namespace Model
         {
         }
 
-        public Chat(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus) : this("-1", owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus, "Klant")
+        public Chat(Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus) : this(UndefinedId.ToString(), owner, customer, messages, ownerLastSeen, customerLastSeen, ownerStatus, customerStatus, "Klant")
         {
         }
 
         public Chat(string id, Account owner, Account customer, string messages, DateTime ownerLastSeen, DateTime customerLastSeen, ChatStatus ownerStatus, ChatStatus customerStatus, string name) : base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int idNumeric);
-            this.Id = success ? idNumeric : -1;
+            this.Id = success ? idNumeric : UndefinedId;
             this.Owner = owner;
             this.Customer = customer;
             this.Messages = messages;

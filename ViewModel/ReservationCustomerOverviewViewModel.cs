@@ -153,15 +153,13 @@ namespace ViewModel
 
         private void SignInViewModelOnSignInEvent(object sender, AccountEventArgs e)
         {
-            this._customerId = CurrentUser.CampingCustomer != null ? CurrentUser.CampingCustomer.Id : -1;
-            
+            this._customerId = CurrentUser.CampingCustomer != null ? CurrentUser.CampingCustomer.Id : ModelBase<Reservation>.UndefinedId;
             this.InitializeReservations();
         }
 
         private void ReservationCustomerFormViewModelOnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> e)
         {
             e.UpdateCollection(this.ReservationsCollection);
-
             this.SelectedReservation = e.Model;
         }
 

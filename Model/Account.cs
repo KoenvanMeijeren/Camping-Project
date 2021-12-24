@@ -34,7 +34,7 @@ namespace Model
         {
         }
 
-        public Account(string email, string password, string rights) : this ("-1", email, password, rights)
+        public Account(string email, string password, string rights) : this (UndefinedId.ToString(), email, password, rights)
         {
         }
 
@@ -43,7 +43,7 @@ namespace Model
             bool successId = int.TryParse(id, out int idNumeric);
             bool successRights = int.TryParse(rights, out int rightsNumeric);
             
-            this.Id = successId ? idNumeric : -1;
+            this.Id = successId ? idNumeric : UndefinedId;
             this.Email = email;
             this.Password = password;
 

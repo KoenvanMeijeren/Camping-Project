@@ -33,7 +33,7 @@ namespace Model
         {
         }
         
-        public CampingPlace(string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType): this("-1", number, surface, extraNightPrice, campingPlaceType)
+        public CampingPlace(string number, string surface, string extraNightPrice, CampingPlaceType campingPlaceType): this(UndefinedId.ToString(), number, surface, extraNightPrice, campingPlaceType)
         {
         }
         
@@ -50,7 +50,7 @@ namespace Model
                 standardNightPrice = campingPlaceType.StandardNightPrice;
             }
 
-            this.Id = successId ? numericId : -1;
+            this.Id = successId ? numericId : UndefinedId;
             this.Number = successNumber ? numericNumber : 0;
             this.Surface = successSurface ? numericSurface : 0;
             this.ExtraNightPrice = successExtraNightPrice ? numericExtraNightPrice : 0;
