@@ -198,11 +198,6 @@ namespace ViewModel
                         // Fetch the messages from the database
                         string GetChatMessagesFromDb = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
 
-                        /*                  if (chatConversation != this._selectedChat || GetChatMessagesFromDb == null || GetChatMessagesFromDb.Length > 0)
-                                          {
-                                              continue;
-                                          }*/
-
                         // Convert database JSON value to List<MesssageJson>
                         List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessagesFromDb);
 
@@ -211,13 +206,6 @@ namespace ViewModel
                         {
                             // Calculate the amount of new messages
                             int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - _chatMessagesInApplication.Count;
-
-                            /*// Loop ONLY from first new message, to last new message
-                            for (int i = _chatMessagesInApplication.Count; i < GetChatMessagesToList.Count; i++)
-                            {
-                                MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
-                                this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
-                            }*/
 
                             // Overwrite the old list with messages to the full new list with messages in chat object
                             UpdateChat(chatConversation, GetChatMessagesToList);
@@ -243,11 +231,6 @@ namespace ViewModel
                 {
                     List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
                     string GetChatMessages = this._selectedChat.GetChatMessagesForCampingCustomer(this._selectedChat.Customer);
-
-                  /*  if (GetChatMessages == null || GetChatMessages.Length > 0)
-                    {
-                        continue;
-                    }*/
 
                     // Fetch the messages from the database
                     // Convert database JSON value to List<MesssageJson>
@@ -281,6 +264,11 @@ namespace ViewModel
             }
         }
 
+        /// <summary>
+        /// Updates chat messages 
+        /// </summary>
+        /// <param name="chatConversation">chat that needs updated chatmessages</param>
+        /// <param name="chatMessages">new chat message list</param>
         private void UpdateChat(Chat chatConversation, List<MessageJSON> chatMessages)
         {
             foreach (var chat in this._chats.Where(c => c.Customer.Id == chatConversation.Customer.Id))
