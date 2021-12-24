@@ -87,21 +87,19 @@ namespace ViewModel
             this._status = "null";
             
             ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent += this.OnReservationGuestsConfirmedEvent;
-            SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
         }
 
         private void OnReservationGuestsConfirmedEvent(object sender, ReservationGuestEventArgs args)
         {
             this.Reservation = args.Reservation;
+            
+            this.CampingGuests.Clear();
             foreach (var campingGuest in args.CampingGuests)
             {
                 this.CampingGuests.Add(campingGuest);
             }
-        }
 
-        private void SignInViewModelOnSignInEvent(object sender, AccountEventArgs e)
-        {
-            this.CampingCustomer = CurrentUser.CampingCustomer;
+            this.CampingCustomer = args.Reservation.CampingCustomer;
         }
 
         #endregion

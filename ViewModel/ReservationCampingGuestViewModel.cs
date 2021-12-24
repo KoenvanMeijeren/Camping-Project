@@ -194,6 +194,12 @@ namespace ViewModel
             ReservationCustomerFormViewModel.ReservationGuestEvent += this.OnReservationGuestEvent;
             ReservationPaymentViewModel.ReservationGuestGoBackEvent += this.OnReservationGuestGoBackEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += ReservationPaymentViewModelOnReservationConfirmedEvent;
+        }
+
+        private void ReservationPaymentViewModelOnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> e)
+        {
+            this.CampingGuests.Clear();
         }
 
         private void ResetInput()
@@ -223,7 +229,7 @@ namespace ViewModel
         private void OnReservationGuestEvent(object sender, ReservationEventArgs args)
         {
             this._reservation = args.Reservation;
-            this._numberOfAddedGuest = this.CampingGuests.Count();
+            this._numberOfAddedGuest = 0;
             
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
@@ -270,6 +276,7 @@ namespace ViewModel
             string birthDate = this.BirthDate.ToShortDateString();
 
             CampingGuest campingGuest = new CampingGuest(this.FirstNameGuest, this.LastNameGuest, birthDate);
+            this.ResetInput();
             
             //Removes the customer from NumberOfPeople.
             if (this._numberOfAddedGuest >= (this.Reservation.CampingPlace.Type.GuestLimit - 1))
@@ -280,8 +287,6 @@ namespace ViewModel
             
             this._numberOfAddedGuest++;
             this.CampingGuests.Add(campingGuest);
-
-            this.ResetInput();
         }
 
         private bool CanExecuteAddGuestReservation()
@@ -314,6 +319,7 @@ namespace ViewModel
         /// </summary>
         private void ExecuteCustomerGuestReservation()
         {
+            this._reservation.UpdatePeopleCount(this.CampingGuests.Count + 1);
             ReservationCampingGuestViewModel.ReservationGuestsConfirmedEvent?.Invoke(this, new ReservationGuestEventArgs(this.Reservation, this.CampingGuests));
 
             this.ResetInput();
