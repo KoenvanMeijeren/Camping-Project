@@ -37,13 +37,13 @@
 
         <Label Content="Aantal personen:" HorizontalAlignment="Left" Margin="504,180,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="30" Width="116" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
         <Label Content="{Binding NumberOfPeople}" HorizontalAlignment="Left" Margin="619,180,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="30" Width="84" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
-        <Label Content="Locatie:" HorizontalAlignment="Left" Margin="504,210,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="30" Width="116" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <Label Content="Verblijf:" HorizontalAlignment="Left" Margin="504,210,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="30" Width="116" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
         <Label Content="{Binding Location}" HorizontalAlignment="Left" Margin="619,210,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="30" Width="84" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
         <Label Content="Totale prijs:" HorizontalAlignment="Left" Margin="504,240,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="30" Width="116" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
         <Label Content="{Binding TotalPrice}" HorizontalAlignment="Left" Margin="620,240,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="30" Width="84" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
 
         <Label Content="Reservering bewerken:" HorizontalAlignment="Left" Margin="505,49,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" Height="32" Width="173" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" RenderTransformOrigin="0.328,0.587"/>
-        <Label Content="Locatie" Margin="539,176,351,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" Height="34" />
+        <Label Content="Verblijf" Margin="539,176,351,0" VerticalAlignment="Top" FontFamily="Century Gothic"  FontSize="16" Height="34" />
 
         <Button Height="33" Content ="Terug" Command="{Binding GoBackToDashboard}"  Margin="73,575,592,26" Style="{StaticResource DefaultButtonTheme}"/>
 

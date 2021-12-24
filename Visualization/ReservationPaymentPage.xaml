@@ -25,8 +25,8 @@
         <Label x:Name="Type" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="600,136,133,474" Content="{Binding Reservation.CampingPlace.Type.Id}"/>
         <Label Content="Oppervlakte:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="514,164,219,446" />
         <Label x:Name="Surface" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="600,164,133,446" Content="{Binding Reservation.CampingPlace.SurfaceReadable}" />
-        <Label Content="Locatie:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="514,188,219,422"/>
-        <Label x:Name="Location"  FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="600,188,133,422" Content="{Binding Reservation.CampingPlace.Location}" />
+        <Label Content="Verblijf:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="514,188,219,422"/>
+        <Label x:Name="Location"  FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="600,188,133,422" Content="{Binding Reservation.CampingPlace}" />
         <Label Content="Totale prijs:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="514,212,219,398"/>
         <Label x:Name="TotalPrice" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="600,212,133,398" Content="{Binding Reservation.TotalPriceString}" />
 
