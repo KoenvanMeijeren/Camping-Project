@@ -46,6 +46,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
+        public static event EventHandler<UpdateModelEventArgs<Chat>> UpdatedChat;
 
         public ChatPageViewModel()
         {
@@ -55,6 +56,7 @@ namespace ViewModel
             this.ChatTextInput = "";
             this.ChatMessages = new List<MessageJSON>();
             this.StopAsyncTask = false;
+            this.ChatConversation = new Chat();
         }
 
         /// <summary>
@@ -76,7 +78,7 @@ namespace ViewModel
 
             this.ChatConversation = _chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
             this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this.ChatConversation.Messages);
-
+            UpdatedChat?.Invoke(this, new UpdateModelEventArgs<Chat>(this.ChatConversation, true, false));
             // Loops through all 'old'/already sent messages
             foreach(var message in this.ChatMessages)
             {

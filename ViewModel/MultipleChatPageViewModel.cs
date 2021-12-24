@@ -101,9 +101,15 @@ namespace ViewModel
             this.StopAsyncTask = false;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             this.RefreshChatMessages();
-            this.RefreshChats();
+            //this.RefreshChats();
 
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+            ChatPageViewModel.UpdatedChat += this.OnUpdateChats;
+        }
+
+        private void OnUpdateChats(object sender, UpdateModelEventArgs<Chat> e)
+        {
+            e.UpdateCollection(this.Chats);
         }
 
         /// <summary>
@@ -146,26 +152,6 @@ namespace ViewModel
             this.ShownChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
             DisplayMessages();
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-        }
-
-        /// <summary>
-        /// Async function that checks for new chats
-        /// </summary>
-        /// <returns>Nothing</returns>
-        public async Task RefreshChats()
-        {
-            // Automatically updating chats
-            while (StopAsyncTask)
-            {
-                ObservableCollection<Chat> chatDb = GetAllChats();
-               if (this._chats.Count != chatDb.Count)//Check for new chats
-               {
-                    this.Chats = chatDb;
-               }
-
-                // Async wait before executing this again
-                await Task.Delay(_refreshRateInMilliseconds);
-            }
         }
 
         /// <summary>
