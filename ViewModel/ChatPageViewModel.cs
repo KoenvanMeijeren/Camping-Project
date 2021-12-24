@@ -24,6 +24,7 @@ namespace ViewModel
     public class ChatPageViewModel : ObservableObject
     {
         private string _chatTextInput;
+        private bool StopAsyncTask = false;
         public List<MessageJSON> ChatMessages { get; private set; }
 
         private Chat _chatModel = new Chat();
@@ -53,11 +54,12 @@ namespace ViewModel
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             this.ChatTextInput = "";
             this.ChatMessages = new List<MessageJSON>();
+            this.StopAsyncTask = false;
         }
 
         private void OnSignOutEvent(object sender, EventArgs e)
         {
-            //TODO: stop running task
+            this.StopAsyncTask = true;
         }
 
         public void ExecuteChatAfterLogin(object o, AccountEventArgs accountEventArgs)
@@ -88,6 +90,10 @@ namespace ViewModel
             // Automatically updating chat
             while (true)
             {
+                if (this.StopAsyncTask)
+                {
+                    break;
+                }
                 // Fetch the messages from the database
                 string GetChatMessages = ChatConversation.GetChatMessagesForCampingCustomer(CurrentUser.CampingCustomer.Account);
                 // Convert database JSON value to List<MesssageJson>

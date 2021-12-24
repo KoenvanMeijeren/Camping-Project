@@ -18,11 +18,10 @@ namespace ViewModel
     {
         private Chat _selectedChat;
         private readonly Chat _chatModel = new Chat();
-        
         private ObservableCollection<Chat> _chats;
         private List<MessageJSON> _shownChatMessages;        
         private int _refreshRateInMilliseconds = 2000;
-
+        private bool StopAsyncTask = false;
         private string _chatTextInput;
         public string CurrentCustomerName { get; private set; }
         public static event EventHandler<ChatEventArgs> NewChatContentEvent;
@@ -95,14 +94,22 @@ namespace ViewModel
 
         public MultipleChatPageViewModel()
         {
-            //TODO: fetch all chats from database, where unsolved?
             this._shownChatMessages = new List<MessageJSON>();
             this.ChatTextInput = "";
             this._chats = GetAllChats();
             this.CurrentCustomerName = "Klant";
+            this.StopAsyncTask = false;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            this.RefreshChatMessages();//always listen for new chat messages?
+            this.RefreshChatMessages();
             this.RefreshChats();
+
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+        }
+
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            //TODO: close async tasks
+            this.StopAsyncTask = true;
         }
 
         /// <summary>
@@ -146,6 +153,10 @@ namespace ViewModel
             // Automatically updating chats
             while (true)
             {
+                if (this.StopAsyncTask)
+                {
+                    break;
+                }
                 ObservableCollection<Chat> chatDb = GetAllChats();
                if (this._chats.Count != chatDb.Count)//Check for new chats
                {
@@ -162,7 +173,7 @@ namespace ViewModel
         /// </summary>
         /// <returns>Nothing</returns>
         public async Task RefreshChatMessages()
-        {
+        {           
             //check if currentuser is campingowner
             if (CurrentUser.Account == null || CurrentUser.Account.Rights == AccountRights.Customer) 
             {
@@ -174,6 +185,11 @@ namespace ViewModel
             {               
                 foreach (Chat chatConversation in _chats)
                 {
+                    if (this.StopAsyncTask)
+                    {
+                        break;
+                    }
+
                     List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
                     // Fetch the messages from the database
                     string GetChatMessagesFromDb = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
@@ -232,7 +248,7 @@ namespace ViewModel
 
         private bool CanExecuteSendChatButtonExecute()
         {
-            return this.ChatTextInput.Length > 0;
+            return this.ChatTextInput.Length > 0 && _selectedChat!=null;
         }
 
         /// <summary>
