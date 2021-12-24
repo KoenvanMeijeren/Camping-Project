@@ -74,7 +74,8 @@ namespace ViewModel
             UnknownImage = "CampingFieldImage-Unknown.png";
 
         #endregion
-        
+
+        #region Constructors
         public CampingMapItemViewModel(CampingPlace campingPlace)
         {
             this.LocationNumber = campingPlace.Number;
@@ -92,7 +93,9 @@ namespace ViewModel
             // Setting this property calls the on property changed event.
             this.BackgroundColor = backgroundColor;
         }
+        #endregion
 
+        #region Commands
         public void Update(CampingPlace campingPlace)
         {
             this.CampingPlace = campingPlace;
@@ -116,5 +119,6 @@ namespace ViewModel
                 _ => UnknownImage
             };
         }
+        #endregion
     }
 }
