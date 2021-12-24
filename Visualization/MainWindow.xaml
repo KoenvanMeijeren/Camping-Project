@@ -6,13 +6,24 @@
         xmlns:local="clr-namespace:Visualization"
         xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="650" Width="1000">
+        Title="{Binding Title}" Height="690" Width="1000" 
+        ResizeMode="CanResize"
+        WindowStyle="None"
+        WindowState="Normal">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome 
+        CaptionHeight="0"
+        ResizeBorderThickness="5" />
+    </WindowChrome.WindowChrome>
 
     <Window.DataContext>
         <viewModel:MainWindowViewModel />
     </Window.DataContext>
 
-    <Grid Background="{Binding Color}">
+    <Grid Background="{Binding Color}" MouseDown="Window_MouseDown">
+
+
         <Grid x:Name="Menu" HorizontalAlignment="Left" Width="180" MinWidth="180" MaxWidth="180" Background="White">
             <Label Content="{Binding Subtitle}" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22" Grid.ColumnSpan="2"/>
             <Label Content="{Binding SubSubtitle}" HorizontalAlignment="Left" Margin="26,19,0,0" VerticalAlignment="Top" FontWeight="ExtraBold" FontFamily="Century Gothic" Height="71" Width="137" FontSize="22" Foreground="{Binding Color}" Grid.ColumnSpan="2"/>
@@ -35,6 +46,29 @@
             </StackPanel>
 
         </Grid>
-        <Frame x:Name="MainFrame" Margin="180,0,0,0" MinHeight="634.04" MaxHeight="634.04" MinWidth="820" MaxWidth="820" HorizontalAlignment="Center" VerticalAlignment="Center" NavigationUIVisibility="Hidden"/>
+        <Frame x:Name="MainFrame" MinHeight="634.04" MaxHeight="634.04" MinWidth="820" MaxWidth="820" NavigationUIVisibility="Hidden" Margin="180,0,0,0" Height="662" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Grid x:Name="TitleBar" Height="40" VerticalAlignment="Top" Background="{Binding Color}" Margin="180,0,0,0">
+            <StackPanel VerticalAlignment="Stretch" FlowDirection="RightToLeft" Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel.Background>
+                    <SolidColorBrush Opacity="1"/>
+                </StackPanel.Background>
+                <Button x:Name="CloseButton" Width="40" Click="CloseButton_Click" Style="{StaticResource WindowBarButtonTheme}">
+                    <StackPanel>
+                        <Image x:Name="CloseImage" Source="/Icons/Cross.png" Stretch="Fill" StretchDirection="Both" Width="20" Height="20"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="MaximizeButton" Width="40" Click="MaximizeButton_Click" Style="{StaticResource WindowBarButtonTheme}">
+                    <StackPanel>
+                        <Image x:Name="MaximizeImage" Source="/Icons/Maximize.png" Stretch="Fill" StretchDirection="Both" Width="15" Height="15"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="MinimizeButton" Width="40" Click="MinimizeButton_Click" Style="{StaticResource WindowBarButtonTheme}">
+                    <StackPanel>
+                        <Image x:Name="MinimizeImage" Source="/Icons/Minimize.png" Stretch="Fill" StretchDirection="Both" Width="15" Height="18"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </Window>

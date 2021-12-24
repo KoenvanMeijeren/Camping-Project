@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icons\Cross.png" />
+    <None Remove="Icons\Maximize.png" />
+    <None Remove="Icons\MaximizeReverse.png" />
+    <None Remove="Icons\Minimize.png" />
     <None Remove="Images\maps.PNG" />
     <None Remove="Images\user_stock.png" />
     <None Remove="Images\caravan-solid.png" />
@@ -32,6 +36,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Icons\Cross.png" />
+    <Content Include="Icons\Maximize.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\MaximizeReverse.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Icons\Minimize.png" />
     <Resource Include="Images\maps.PNG" />
     <Resource Include="Images\user_stock.png" />
     <Resource Include="Images\caravan-solid.png" />

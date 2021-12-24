@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Model;
 using ViewModel;
 using ViewModel.EventArguments;
@@ -99,6 +101,37 @@ namespace Visualization
             this.ManageCampingCustomerButton.Visibility = Visibility.Collapsed;
         }
 
+        #region title bar events
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            switch (this.WindowState)
+            {
+                case WindowState.Normal:
+                    this.WindowState = WindowState.Maximized;
+                    break;
+
+                case WindowState.Maximized:
+                    this.WindowState = WindowState.Normal;
+                    break;
+            }
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = System.Windows.WindowState.Minimized;
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
+        }
+        #endregion
         #region Menubutton checked events
         private void SignInMenuButton_Checked(object sender, RoutedEventArgs e)
         {
