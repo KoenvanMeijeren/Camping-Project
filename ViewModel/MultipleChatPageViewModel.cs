@@ -101,9 +101,15 @@ namespace ViewModel
             this.StopAsyncTask = false;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             this.RefreshChatMessages();
-            this.RefreshChats();
+            //this.RefreshChats();
 
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+            ChatPageViewModel.UpdatedChat += this.OnUpdateChats;
+        }
+
+        private void OnUpdateChats(object sender, UpdateModelEventArgs<Chat> e)
+        {
+            e.UpdateCollection(this.Chats);
         }
 
         /// <summary>
@@ -149,26 +155,6 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// Async function that checks for new chats
-        /// </summary>
-        /// <returns>Nothing</returns>
-        public async Task RefreshChats()
-        {
-            // Automatically updating chats
-            while (StopAsyncTask)
-            {
-                ObservableCollection<Chat> chatDb = GetAllChats();
-               if (this._chats.Count != chatDb.Count)//Check for new chats
-               {
-                    this.Chats = chatDb;
-               }
-
-                // Async wait before executing this again
-                await Task.Delay(_refreshRateInMilliseconds);
-            }
-        }
-
-        /// <summary>
         /// Async function that checks for new messages
         /// </summary>
         /// <returns>Nothing</returns>
@@ -197,7 +183,7 @@ namespace ViewModel
                         // Calculate the amount of new messages
                         int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - _chatMessagesInApplication.Count;
 
-                        // Loop from first new message, to last new message
+                        // Loop ONLY from first new message, to last new message
                         for (int i = _chatMessagesInApplication.Count; i < GetChatMessagesToList.Count; i++)
                         {
                             MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
