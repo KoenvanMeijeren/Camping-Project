@@ -66,8 +66,9 @@ namespace ViewModel
                 {
                     return;
                 }
-
+                
                 this._chats = value;
+
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
@@ -93,21 +94,26 @@ namespace ViewModel
         public MultipleChatPageViewModel()
         {
             SignInViewModel.SignInEvent += this.ExecuteChatAfterLogin;
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+
             this._shownChatMessages = new List<MessageJSON>();
             this.ChatTextInput = "";
             this._chats = GetAllChats();
             this.CurrentCustomerName = "Klant";
             this._stopAsyncTask = false;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            this.RefreshChatMessages();
+            this.RefreshAllChatMessages();
             this.RefreshChats();
+            this.RefreshSelectedChatMessages();
 
-            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
         }
 
         private void ExecuteChatAfterLogin(object sender, AccountEventArgs e)
         {
             this._stopAsyncTask = false;
+            this.RefreshAllChatMessages();
+            this.RefreshChats();
+            this.RefreshSelectedChatMessages();
         }
 
         private async Task RefreshChats()
@@ -118,7 +124,10 @@ namespace ViewModel
                 ObservableCollection<Chat> chatDb = this.GetAllChats();
                 if (this._chats.Count != chatDb.Count)//Check for new chats
                 {
+                    var selectedchat = this.SelectedChat;
+                    this._chats.Clear();
                     this.Chats = chatDb;
+                    this.SelectedChat = selectedchat;
                 }
 
                 // Async wait before executing this again
@@ -172,7 +181,7 @@ namespace ViewModel
         /// Async function that checks for new messages
         /// </summary>
         /// <returns>Nothing</returns>
-        private async Task RefreshChatMessages()
+        private async Task RefreshAllChatMessages()
         {           
             //check if currentuser is campingowner
             if (CurrentUser.Account == null || CurrentUser.Account.Rights == AccountRights.Customer) 
@@ -185,42 +194,87 @@ namespace ViewModel
             {               
                 foreach (Chat chatConversation in this._chats)
                 {
-                    List<MessageJSON> chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
+                    if(this._selectedChat != null && this._selectedChat.Customer.Id != chatConversation.Customer.Id)
+                    {
+                        continue;//move to next chat
+                    }
+                    
+                    List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
                     // Fetch the messages from the database
-                    string chatMessagesFromDb = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
+                    string GetChatMessagesFromDb = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
+
                     // Convert database JSON value to List<MesssageJson>
-                    List<MessageJSON> chatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(chatMessagesFromDb);
+                    List<MessageJSON> chatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessagesFromDb);
 
                     // Check if the current chat does NOT match with chats in database (aka new message)
-                    if (!chatMessagesInApplication.Count.Equals(chatMessages.Count))
+                    if (!_chatMessagesInApplication.Count.Equals(chatMessages.Count))
                     {
                         // Calculate the amount of new messages
-                        int differenceBetweenCountOfMessages = chatMessages.Count - chatMessagesInApplication.Count;
-
-                        // Loop ONLY from first new message, to last new message
-                        for (int i = chatMessagesInApplication.Count; i < chatMessages.Count; i++)
-                        {
-                            MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(chatMessages[i].UserRole);
-                            this.ExecuteSendChatEvent(chatMessages[i].Message, chatMessageSender);
-                        }
+                        int differenceBetweenCountOfMessages = chatMessages.Count - _chatMessagesInApplication.Count;
 
                         // Overwrite the old list with messages to the full new list with messages in chat object
-                        this.UpdateChatInApplication(chatConversation, chatMessages);
-
-                         //update chat and displaying messages
-                        NewChatContentEvent?.Invoke(this, null);
-                        if (chatConversation.Customer.Id == this._selectedChat.Customer.Id)
-                        {
-                            this.GetChatConversation();
-                        }
+                        UpdateChatInList(chatConversation, chatMessages);
                     }
+                                           
+                   
                     // Async wait before executing this again
-                    await Task.Delay(this._refreshRateInMilliseconds);
+                    await Task.Delay(_refreshRateInMilliseconds);
                 }
             }
         }
 
-        private void UpdateChatInApplication(Chat chatConversation, List<MessageJSON> chatMessages)
+        /// <summary>
+        /// Async function that checks for new messages in  SELECTED chat
+        /// </summary>
+        /// <returns>Nothing</returns>
+        private async Task RefreshSelectedChatMessages()
+        {
+            // Automatically updating chat
+            while (!this._stopAsyncTask)
+            {
+                if(this._selectedChat != null)
+                {
+                    List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
+                    string GetChatMessages = this._selectedChat.GetChatMessagesForCampingCustomer(this._selectedChat.Customer);
+
+                    // Fetch the messages from the database
+                    // Convert database JSON value to List<MesssageJson>
+                    List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
+
+                    // Check if the current chat does NOT match with chats in database (aka new message)
+                    if (!_chatMessagesInApplication.Count.Equals(GetChatMessagesToList.Count))
+                    {
+                        // Calculate the amount of new messages
+                        int differenceBetweenCountOfMessages = GetChatMessagesToList.Count - _chatMessagesInApplication.Count;
+
+                        // Loop from first new message, to last new message
+                        for (int i = _chatMessagesInApplication.Count; i < GetChatMessagesToList.Count; i++)
+                        {
+                            MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(GetChatMessagesToList[i].UserRole);
+                            this.ExecuteSendChatEvent(GetChatMessagesToList[i].Message, chatMessageSender);
+                        }
+                        // Overwrite the old list with messages to the full new list with messages
+                        UpdateChatInList(this._selectedChat, GetChatMessagesToList);
+
+                        NewChatContentEvent?.Invoke(this, null);
+                        if (this._selectedChat.Customer.Id == this._selectedChat.Customer.Id)
+                        {
+                            this.GetChatConversation();
+                        }
+                    }
+                }                
+
+                // Async wait before executing this again
+                await Task.Delay(_refreshRateInMilliseconds);
+            }
+        }
+
+        /// <summary>
+        /// Updates chat messages 
+        /// </summary>
+        /// <param name="chatConversation">chat that needs updated chatmessages</param>
+        /// <param name="chatMessages">new chat message list</param>
+        private void UpdateChatInList(Chat chatConversation, List<MessageJSON> chatMessages)
         {
             foreach (var chat in this._chats.Where(c => c.Customer.Id == chatConversation.Customer.Id))
             {
@@ -267,7 +321,7 @@ namespace ViewModel
 
             // Add message to whole conversation
             this._shownChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sender).ToString()));
-            this.UpdateChatInApplication(this._selectedChat, this._shownChatMessages);
+            this.UpdateChatInList(this._selectedChat, this._shownChatMessages);
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
             this.UpdateChatInDatabase();
