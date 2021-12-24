@@ -25,8 +25,8 @@ namespace ViewModel
 
         private string _chatTextInput;
         public string CurrentCustomerName { get; private set; }
-        public static event EventHandler<ChatEventArgs> OpenChatEvent;
         public static event EventHandler<ChatEventArgs> NewChatContentEvent;
+        public static event EventHandler<ChatEventArgs> SendChatEvent;
 
 
         #region properties
@@ -122,7 +122,7 @@ namespace ViewModel
             // Loops through all 'old'/already sent messages
             foreach (var message in this.ShownChatMessages)
             {
-                OpenChatEvent?.Invoke(this, new ChatEventArgs(message.Message, (MessageSender)Convert.ToInt32(message.UserRole)));
+                SendChatEvent?.Invoke(this, new ChatEventArgs(message.Message, (MessageSender)Convert.ToInt32(message.UserRole)));
             }            
         }
 
@@ -228,7 +228,7 @@ namespace ViewModel
 
         // Send chat button
         public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute, CanExecuteSendChatButtonExecute);
-        public static event EventHandler<ChatEventArgs> SendChatEvent;
+        
 
         private bool CanExecuteSendChatButtonExecute()
         {
