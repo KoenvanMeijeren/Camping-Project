@@ -213,7 +213,7 @@ namespace ViewModel
             this.InfoAmountOfGuests = (reservation.CampingGuests.Count + 1).ToString();
             this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
             this.InfoSurface = reservation.CampingPlace.Surface.ToString(CultureInfo.InvariantCulture);
-            this.InfoLocation = reservation.CampingPlace.Location;
+            this.InfoLocation = reservation.CampingPlace.ToString();
             this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
         }
 

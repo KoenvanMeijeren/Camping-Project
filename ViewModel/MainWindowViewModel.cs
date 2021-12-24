@@ -9,14 +9,10 @@ namespace ViewModel
     {
 
         #region Fields
-        
         private string _title, _subtitle, _subSubtitle, _color;
-
-        
         #endregion
 
         #region Properties
-
         public string Title
         {
             get => this._title;
@@ -80,9 +76,9 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-
         #endregion
 
+        #region View construction
         public MainWindowViewModel()
         {
             this._subtitle = ConfigReader.GetSetting("Subtitle");
@@ -93,7 +89,9 @@ namespace ViewModel
             CurrentCamping.CurrentCampingSetEvent += OnCurrentCampingSetEvent;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
+        #endregion
 
+        #region Commands
         public void OnCurrentCampingSetEvent(object sender, EventArgs e)
         {
             this._subtitle = ConfigReader.GetSetting("Subtitle");
@@ -103,5 +101,6 @@ namespace ViewModel
 
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
+        #endregion
     }
 }

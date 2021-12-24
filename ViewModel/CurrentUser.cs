@@ -12,11 +12,29 @@ namespace ViewModel
     /// </summary>
     public static class CurrentUser
     {
+        #region Properties
         public static Account Account { get; private set; }
         public static CampingCustomer CampingCustomer { get; private set; }
         public static CampingOwner CampingOwner { get; private set; }
-        public static event EventHandler CurrentUserSetEvent;
+        #endregion
 
+        #region Events
+        public static event EventHandler CurrentUserSetEvent;
+        #endregion
+
+        #region Input
+        /// <summary>
+        /// Empties the current user, usually done on log out.
+        /// </summary>
+        public static void EmptyCurrentUser()
+        {
+            CurrentUser.Account = null;
+            CurrentUser.CampingCustomer = null;
+            CurrentUser.CampingOwner = null;
+        }
+        #endregion
+
+        #region Commands
         /// <summary>
         /// Sets the current camping customer user.
         /// </summary>
@@ -42,15 +60,6 @@ namespace ViewModel
 
             CurrentUserSetEvent?.Invoke(null, EventArgs.Empty);
         }
-
-        /// <summary>
-        /// Empties the current user, usually done on log out.
-        /// </summary>
-        public static void EmptyCurrentUser()
-        {
-            CurrentUser.Account = null;
-            CurrentUser.CampingCustomer = null;
-            CurrentUser.CampingOwner = null;
-        }
+        #endregion
     }
 }
