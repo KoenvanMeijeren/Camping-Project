@@ -94,7 +94,7 @@ namespace ViewModel
 
         public MultipleChatPageViewModel()
         {
-            SignInViewModel.SignInEvent += ExecuteChatAfterLogin;
+            SignInViewModel.SignInEvent += this.ExecuteChatAfterLogin;
             this._shownChatMessages = new List<MessageJSON>();
             this.ChatTextInput = "";
             this._chats = GetAllChats();
@@ -115,7 +115,7 @@ namespace ViewModel
         public async Task RefreshChats()
         {
             // Automatically updating chats
-            while (!StopAsyncTask)
+            while (!this.StopAsyncTask)
             {
                 ObservableCollection<Chat> chatDb = GetAllChats();
                 if (this._chats.Count != chatDb.Count)//Check for new chats
@@ -166,7 +166,7 @@ namespace ViewModel
         {
             this._shownChatMessages.Clear();
             this.ShownChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
-            DisplayMessages();
+            this.DisplayMessages();
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
@@ -183,9 +183,9 @@ namespace ViewModel
             }
 
             // Automatically updating chats
-            while (!StopAsyncTask)
+            while (!this.StopAsyncTask)
             {               
-                foreach (Chat chatConversation in _chats)
+                foreach (Chat chatConversation in this._chats)
                 {
                     List<MessageJSON> _chatMessagesInApplication = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
                     // Fetch the messages from the database
@@ -207,13 +207,13 @@ namespace ViewModel
                         }
 
                         // Overwrite the old list with messages to the full new list with messages in chat object
-                        UpdateChatInApplication(chatConversation, GetChatMessagesToList);
+                        this.UpdateChatInApplication(chatConversation, GetChatMessagesToList);
 
                          //update chat and displaying messages
-                         NewChatContentEvent?.Invoke(this, null);
+                        NewChatContentEvent?.Invoke(this, null);
                         if (chatConversation.Customer.Id == this._selectedChat.Customer.Id)
                         {
-                            GetChatConversation();
+                            this.GetChatConversation();
                         }
                     }
                     // Async wait before executing this again
@@ -250,7 +250,7 @@ namespace ViewModel
 
         private bool CanExecuteSendChatButtonExecute()
         {
-            return this.ChatTextInput.Length > 0 && _selectedChat!=null;
+            return this.ChatTextInput.Length > 0 && this._selectedChat!=null;
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace ViewModel
 
             // Add message to whole conversation
             this._shownChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sndr).ToString()));
-            UpdateChatInApplication(this._selectedChat, _shownChatMessages);
+            this.UpdateChatInApplication(this._selectedChat, _shownChatMessages);
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
             this.UpdateChatInDatabase();
