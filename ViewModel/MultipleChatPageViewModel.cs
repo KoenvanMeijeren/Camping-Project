@@ -19,16 +19,16 @@ namespace ViewModel
         private Chat _selectedChat;
         private readonly Chat _chatModel = new Chat();
         private ObservableCollection<Chat> _chats;
-        private List<MessageJSON> _shownChatMessages;        
+        private List<MessageJSON> _shownChatMessages;
         private int _refreshRateInMilliseconds = 2000;
         private bool StopAsyncTask = false;
         private string _chatTextInput;
-        public string CurrentCustomerName { get; private set; }
         public static event EventHandler<ChatEventArgs> NewChatContentEvent;
         public static event EventHandler<ChatEventArgs> SendChatEvent;
 
 
         #region properties
+        public string CurrentCustomerName { get; private set; }
         public string ChatTextInput
         {
             get => this._chatTextInput;
@@ -106,9 +106,13 @@ namespace ViewModel
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
         }
 
+        /// <summary>
+        /// stop async tasks when logging out
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnSignOutEvent(object sender, EventArgs e)
         {
-            //TODO: close async tasks
             this.StopAsyncTask = true;
         }
 
