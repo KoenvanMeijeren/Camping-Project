@@ -18,18 +18,17 @@ namespace ViewModel
     {
         private Chat _selectedChat;
         private readonly Chat _chatModel = new Chat();
-        
         private ObservableCollection<Chat> _chats;
-        private List<MessageJSON> _shownChatMessages;        
+        private List<MessageJSON> _shownChatMessages;
         private int _refreshRateInMilliseconds = 2000;
-
+        private bool StopAsyncTask;
         private string _chatTextInput;
-        public string CurrentCustomerName { get; private set; }
-        public static event EventHandler<ChatEventArgs> OpenChatEvent;
         public static event EventHandler<ChatEventArgs> NewChatContentEvent;
+        public static event EventHandler<ChatEventArgs> SendChatEvent;
 
 
         #region properties
+        public string CurrentCustomerName { get; private set; }
         public string ChatTextInput
         {
             get => this._chatTextInput;
@@ -95,14 +94,26 @@ namespace ViewModel
 
         public MultipleChatPageViewModel()
         {
-            //TODO: fetch all chats from database, where unsolved?
             this._shownChatMessages = new List<MessageJSON>();
             this.ChatTextInput = "";
             this._chats = GetAllChats();
             this.CurrentCustomerName = "Klant";
+            this.StopAsyncTask = false;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-            this.RefreshChatMessages();//always listen for new chat messages?
+            this.RefreshChatMessages();
             this.RefreshChats();
+
+            AccountViewModel.SignOutEvent += this.OnSignOutEvent;
+        }
+
+        /// <summary>
+        /// stop async tasks when logging out
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnSignOutEvent(object sender, EventArgs e)
+        {
+            this.StopAsyncTask = true;
         }
 
         /// <summary>
@@ -122,7 +133,7 @@ namespace ViewModel
             // Loops through all 'old'/already sent messages
             foreach (var message in this.ShownChatMessages)
             {
-                OpenChatEvent?.Invoke(this, new ChatEventArgs(message.Message, (MessageSender)Convert.ToInt32(message.UserRole)));
+                SendChatEvent?.Invoke(this, new ChatEventArgs(message.Message, (MessageSender)Convert.ToInt32(message.UserRole)));
             }            
         }
 
@@ -144,7 +155,7 @@ namespace ViewModel
         public async Task RefreshChats()
         {
             // Automatically updating chats
-            while (true)
+            while (StopAsyncTask)
             {
                 ObservableCollection<Chat> chatDb = GetAllChats();
                if (this._chats.Count != chatDb.Count)//Check for new chats
@@ -162,7 +173,7 @@ namespace ViewModel
         /// </summary>
         /// <returns>Nothing</returns>
         public async Task RefreshChatMessages()
-        {
+        {           
             //check if currentuser is campingowner
             if (CurrentUser.Account == null || CurrentUser.Account.Rights == AccountRights.Customer) 
             {
@@ -170,7 +181,7 @@ namespace ViewModel
             }
 
             // Automatically updating chats
-            while (true)
+            while (StopAsyncTask)
             {               
                 foreach (Chat chatConversation in _chats)
                 {
@@ -228,11 +239,11 @@ namespace ViewModel
 
         // Send chat button
         public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute, CanExecuteSendChatButtonExecute);
-        public static event EventHandler<ChatEventArgs> SendChatEvent;
+        
 
         private bool CanExecuteSendChatButtonExecute()
         {
-            return this.ChatTextInput.Length > 0;
+            return this.ChatTextInput.Length > 0 && _selectedChat!=null;
         }
 
         /// <summary>
