@@ -101,7 +101,7 @@ namespace ViewModel
             while (!StopAsyncTask)
             {
                 // Fetch the messages from the database
-                string GetChatMessages = ChatConversation.GetChatMessagesForCampingCustomer(CurrentUser.CampingCustomer.Account);
+                string GetChatMessages = ChatConversation.GetChatMessagesForCampingCustomer(this.ChatConversation.Customer);
 
                 // Convert database JSON value to List<MesssageJson>
                 List<MessageJSON> GetChatMessagesToList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
