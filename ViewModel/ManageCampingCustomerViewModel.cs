@@ -16,7 +16,26 @@ namespace ViewModel
     public class ManageCampingCustomerViewModel : ObservableObject
     {
         #region Fields
+        private const string FirstNameRequiredString = "Voornaam is een verplicht veld";
+        private const string LastNameRequiredString = "Achternaam is een verplicht veld";
+        private const string InvalidBirthdateString = "Ongeldige geboortedatum";
+        private const string InvalidBirthdateTooYoungString = "U bent te jong om te reserveren";
+        private const string PhoneNumberRequiredString = "Telefoonnummer is een verplicht veld";
+        private const string PhoneNumberInvalidString = "Ongeldig telefoonnummer";
+        private const string StreetNameRequiredString = "Straatnaam is een verplicht veld";
+        private const string PostalCodeRequiredString = "Postcode is een verplicht veld";
+        private const string PostalCodeInvalidString = "Ongeldige postcode";
+        private const string PlaceRequiredString = "Plaatsnaam is een verplicht veld";
 
+        private const string CampingCustomerAddString = "Campingklant toevoegen";
+        private const string CampingCustomerEditString = "Campingklant bewerken";
+        private const string CampingCustomerEditString1 = "Campingklant";
+        private const string CampingCustomerEditString2 = "bewerken";
+        private const string CampingCustomerEditedSuccessfullyString2 = "De campingklanten zijn succesvol bijgewerkt.";
+        private const string CampingCustomerDeleteString = "Campingklant verwijderen";
+        private const string CampingCustomerDeleteQuestionString1 = "Weet u zeker dat u de campingklant";
+        private const string CampingCustomerDeleteQuestionString2 = "wilt verwijderen?";
+        
         private readonly CampingCustomer _campingCustomerModel = new CampingCustomer();
 
         private ObservableCollection<CampingCustomer> _campingCustomers = new ObservableCollection<CampingCustomer>();
@@ -24,7 +43,6 @@ namespace ViewModel
         
         private string _firstName, _lastName, _phoneNumber, _street, _postalCode, _place, _campingCustomerError, _editTitle;
         private DateTime _birthdate;
-
         #endregion
 
         #region Properties
@@ -43,7 +61,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-
         public string EditTitle
         {
             get => this._editTitle;
@@ -58,7 +75,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-
         public ObservableCollection<CampingCustomer> CampingCustomers
         {
             get => this._campingCustomers;
@@ -73,7 +89,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-        
         public CampingCustomer SelectedCampingCustomer
         {
             get => this._selectedCampingCustomer;
@@ -90,7 +105,6 @@ namespace ViewModel
                 this.FillFields(this._selectedCampingCustomer);
             }
         }
-
         public string FirstName
         {
             get => this._firstName;
@@ -107,11 +121,10 @@ namespace ViewModel
                 this.CampingCustomerError = "";
                 if (!Validation.IsInputFilled(this._firstName))
                 {
-                    this.CampingCustomerError = "Voornaam is een verplicht veld";
+                    this.CampingCustomerError = FirstNameRequiredString;
                 }
             }
         }
-
         public string LastName
         {
             get => this._lastName;
@@ -128,11 +141,10 @@ namespace ViewModel
                 this.CampingCustomerError = "";
                 if (!Validation.IsInputFilled(this._lastName))
                 {
-                    this.CampingCustomerError = "Achternaam is een verplicht veld";
+                    this.CampingCustomerError = LastNameRequiredString;
                 }
             }
         }
-
         public DateTime Birthdate
         {
             get => this._birthdate;
@@ -149,15 +161,14 @@ namespace ViewModel
                 this.CampingCustomerError = "";
                 if (!Validation.IsBirthdateValid(this._birthdate))
                 {
-                    this.CampingCustomerError = "Ongeldig geboortedatum";
+                    this.CampingCustomerError = InvalidBirthdateString;
                 }
                 else if (!Validation.IsBirthdateAdult(this._birthdate))
                 {
-                    this.CampingCustomerError = "U bent te jong om te reserveren";
+                    this.CampingCustomerError = InvalidBirthdateTooYoungString;
                 }
             }
         }
-        
         public string PhoneNumber
         {
             get => this._phoneNumber;
@@ -174,15 +185,14 @@ namespace ViewModel
                 this.CampingCustomerError = "";
                 if (!Validation.IsInputFilled(this._phoneNumber))
                 {
-                    this.CampingCustomerError = "Telefoonnummer is een verplicht veld";
+                    this.CampingCustomerError = PhoneNumberRequiredString;
                 }
                 else if (!Validation.IsNumber(this._phoneNumber))
                 {
-                    this.CampingCustomerError = "Ongeldig telefoonnummer";
+                    this.CampingCustomerError = PhoneNumberInvalidString;
                 }
             }
         }
-
         public string Street
         {
             get => this._street;
@@ -199,11 +209,10 @@ namespace ViewModel
                 this.CampingCustomerError = "";
                 if (!Validation.IsInputFilled(this._street))
                 {
-                    this.CampingCustomerError = "Straatnaam is een verplicht veld";
+                    this.CampingCustomerError = StreetNameRequiredString;
                 }
             }
         }
-
         public string PostalCode
         {
             get => this._postalCode;
@@ -220,15 +229,14 @@ namespace ViewModel
                 this.CampingCustomerError = "";
                 if (!Validation.IsInputFilled(this._postalCode))
                 {
-                    this.CampingCustomerError = "Postcode is een verplicht veld";
+                    this.CampingCustomerError = PostalCodeRequiredString;
                 }
                 else if (!RegexHelper.IsPostalcodeValid(this._postalCode))
                 {
-                    this.CampingCustomerError = "Ongeldig postcode";
+                    this.CampingCustomerError = PostalCodeInvalidString;
                 }
             }
         }
-
         public string Place
         {
             get => this._place;
@@ -245,11 +253,10 @@ namespace ViewModel
                 this.CampingCustomerError = "";
                 if (!Validation.IsInputFilled(this._place))
                 {
-                    this.CampingCustomerError = "Plaatsnaam is een verplicht veld";
+                    this.CampingCustomerError = PlaceRequiredString;
                 }
             }
         }
-        
         #endregion
 
         #region View construction
@@ -257,7 +264,7 @@ namespace ViewModel
         public ManageCampingCustomerViewModel()
         {
             this._campingCustomers = new ObservableCollection<CampingCustomer>();
-            this._editTitle = "Campingklant toevoegen";
+            this._editTitle = CampingCustomerAddString;
          
             // This calls the on property changed event.
             this.InitializeCampingCustomers();
@@ -283,7 +290,7 @@ namespace ViewModel
                 return;
             }
 
-            this._editTitle = $"Campingklant {campingCustomer} bewerken";
+            this._editTitle = $"{CampingCustomerEditString1} {campingCustomer} {CampingCustomerEditString2}";
             this._firstName = campingCustomer.FirstName;
             this._lastName = campingCustomer.LastName;
             this._birthdate = campingCustomer.Birthdate;
@@ -297,7 +304,7 @@ namespace ViewModel
 
         private void ResetInput()
         {
-            this._editTitle = "Campingklant toevoegen";
+            this._editTitle = CampingCustomerAddString;
             this._selectedCampingCustomer = null;
             this._firstName = string.Empty;
             this._lastName = string.Empty;
@@ -314,7 +321,6 @@ namespace ViewModel
         #endregion
 
         #region Commands
-        
         private void ExecuteCancelEditAction()
         {
             this.ResetInput();
@@ -356,7 +362,7 @@ namespace ViewModel
             
             this.ResetInput();
             
-            MessageBox.Show("De campingklanten zijn succesvol bijgewerkt.", "Campingklanten bewerken");
+            MessageBox.Show(CampingCustomerEditedSuccessfullyString2, CampingCustomerEditString);
         }
         private bool CanExecuteEditSave()
         {
@@ -373,7 +379,7 @@ namespace ViewModel
 
         private void ExecuteDelete()
         {
-            var result = MessageBox.Show($"Weet u zeker dat u de campingklant {this.SelectedCampingCustomer} wilt verwijderen?", "Campingklant verwijderen", MessageBoxButton.YesNo);
+            var result = MessageBox.Show($"{CampingCustomerDeleteQuestionString1} {this.SelectedCampingCustomer} {CampingCustomerDeleteQuestionString2}", CampingCustomerDeleteString, MessageBoxButton.YesNo);
             if (result != MessageBoxResult.Yes)
             {
                 return;
@@ -389,17 +395,13 @@ namespace ViewModel
         }
 
         public ICommand Delete => new RelayCommand(ExecuteDelete, CanExecuteDelete);
-
         #endregion
 
         #region Database interaction
-
         public virtual IEnumerable<CampingCustomer> GetCampingCustomers()
         {
             return this._campingCustomerModel.Select();
         }
-
         #endregion
-        
     }
 }

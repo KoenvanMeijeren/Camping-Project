@@ -25,7 +25,7 @@ namespace Model
 
         }
 
-        public ReservationCampingGuest(Reservation reservation, CampingGuest campingGuest): this("-1", reservation, campingGuest)
+        public ReservationCampingGuest(Reservation reservation, CampingGuest campingGuest): this(UndefinedId.ToString(), reservation, campingGuest)
         {
 
         }
@@ -34,7 +34,7 @@ namespace Model
         {
             bool successId = int.TryParse(id, out int numericId);
             
-            this.Id = successId ? numericId : -1;
+            this.Id = successId ? numericId : UndefinedId;
             this.Reservation = reservation;
             this.CampingGuest = campingGuest;
         }

@@ -26,7 +26,7 @@ namespace Model
 
         }
 
-        public CampingPlaceType(string guestLimit, string standardNightPrice, Accommodation accommodation): this("-1", guestLimit, standardNightPrice, accommodation)
+        public CampingPlaceType(string guestLimit, string standardNightPrice, Accommodation accommodation): this(UndefinedId.ToString(), guestLimit, standardNightPrice, accommodation)
         {
 
         }
@@ -37,7 +37,7 @@ namespace Model
             bool successGuestLimit = int.TryParse(guestLimit, out int numericGuestLimit);
             bool successStandardNightPrice = float.TryParse(standardNightPrice, out float numericStandardNightPrice);
             
-            this.Id = successId ? numericId : -1;
+            this.Id = successId ? numericId : UndefinedId;
             this.GuestLimit = successGuestLimit ? numericGuestLimit : 0;
             this.StandardNightPrice = successStandardNightPrice ? numericStandardNightPrice : 0;
             this.Accommodation = accommodation;

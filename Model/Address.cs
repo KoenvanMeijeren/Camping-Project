@@ -33,7 +33,7 @@ namespace Model
         {
             bool success = int.TryParse(id, out int idNumeric);
             
-            this.Id = success ? idNumeric : -1;
+            this.Id = success ? idNumeric : UndefinedId;
             this.Street = address;
             this.PostalCode = postalCode;
             this.Place = place;
@@ -98,7 +98,7 @@ namespace Model
             }
             
             // Reset all data, in order to prepare updating the address.
-            this.Id = -1;
+            this.Id = UndefinedId;
             this.Street = street;
             this.PostalCode = postalCode;
             this.Place = place;

@@ -393,7 +393,7 @@ namespace ViewModel
 
             var customer = new CampingCustomer(this._currentUserCustomer?.Id.ToString(), this._currentUserCustomer?.Account, address, this.Birthdate.ToShortDateString(), this.PhoneNumber, this.FirstName,
                 this.LastName);
-            if (customer.Id == -1)
+            if (customer.Id == ModelBase<Reservation>.UndefinedId)
             {
                 customer.Insert();
                 customer = customer.SelectLast();

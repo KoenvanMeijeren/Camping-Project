@@ -10,6 +10,7 @@ namespace ViewModel
 
         #region Fields
         private string _title, _subtitle, _subSubtitle, _color;
+        private const string ColorString = "#000000";
         #endregion
 
         #region Properties
@@ -84,7 +85,7 @@ namespace ViewModel
             this._subtitle = ConfigReader.GetSetting("Subtitle");
             this._subSubtitle = ConfigReader.GetSetting("SubSubtitle");
             this._title = this.Subtitle + " " + this.SubSubtitle;
-            this._color = "#000000";
+            this._color = ColorString;
 
             CurrentCamping.CurrentCampingSetEvent += OnCurrentCampingSetEvent;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));

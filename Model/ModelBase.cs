@@ -16,10 +16,9 @@ namespace Model
     public abstract class ModelBase<T> : IModel
     {
         public int Id { get; protected set; }
-        
         protected List<T> Collection = new List<T>();
-
         protected readonly string Table, PrimaryKey;
+        public const int UndefinedId = -1;
         
         /// <summary>
         /// Constructs a new model base object.

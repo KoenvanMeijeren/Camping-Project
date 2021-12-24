@@ -17,6 +17,21 @@ namespace ViewModel
     public class ManageAccommodationViewModel : ObservableObject
     {
         #region Fields
+        private const int MaxPrefixLength = 2;
+        private const string PrefixRequiredFieldString = "Prefix is een verplicht veld";
+        private const string PrefixLengthMaxString1 = "Prefix mag maximaal";
+        private const string PrefixLengthMaxString2 = "letters bevatten";
+        private const string PrefixNotUniqueString = "Prefix moet uniek zijn";
+
+        private const string NameRequiredFieldString = "Naam is een verplicht veld";
+
+        private const string AccommodationAddString = "Accommodatie toevoegen";
+        private const string AccommodationEditString1 = "Accommodatie";
+        private const string AccommodationEditString2 = "bewereken";
+        private const string AccommodationEditSuccessfullString = "De accommodaties zijn succesvol bijgewerkt.";
+        private const string AccommodationDeleteString = "Accommodatie verwijderen";
+        private const string AccommodationDeleteQuestionString1 = "Weet u zeker dat u de accommodatie";
+        private const string AccommodationDeleteQuestionString2 = "wilt verwijderen?";
 
         private readonly Accommodation _accommodationModel = new Accommodation();
 
@@ -24,11 +39,9 @@ namespace ViewModel
         private Accommodation _selectedAccommodation;
         
         private string _name, _prefix, _accommodationError, _editTitle;
-
         #endregion
 
         #region Properties
-
         public string AccommodationError
         {
             get => this._accommodationError;
@@ -43,7 +56,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-
         public string EditTitle
         {
             get => this._editTitle;
@@ -58,7 +70,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-
         public ObservableCollection<Accommodation> Accommodations
         {
             get => this._accommodations;
@@ -73,7 +84,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-        
         public Accommodation SelectedAccommodation
         {
             get => this._selectedAccommodation;
@@ -90,7 +100,6 @@ namespace ViewModel
                 this.FillFields(this._selectedAccommodation);
             }
         }
-        
         public string Prefix
         {
             get => this._prefix;
@@ -107,13 +116,13 @@ namespace ViewModel
                 this.AccommodationError = "";
                 if (!Validation.IsInputFilled(this._prefix))
                 {
-                    this.AccommodationError = "Prefix is een verplicht veld";
+                    this.AccommodationError = PrefixRequiredFieldString;
                     return;
                 }
 
-                if (!Validation.IsInputBelowMaxLength(this._prefix, 2))
+                if (!Validation.IsInputBelowMaxLength(this._prefix, MaxPrefixLength))
                 {
-                    this.AccommodationError = "Prefix mag maximaal 2 letters bevatten";
+                    this.AccommodationError = $"{PrefixLengthMaxString1} {MaxPrefixLength} {PrefixLengthMaxString2}";
                     return;
                 }
 
@@ -124,11 +133,10 @@ namespace ViewModel
                 
                 if (!this.IsPrefixUnique())
                 {
-                    this.AccommodationError = "Prefix moet uniek zijn";
+                    this.AccommodationError = PrefixNotUniqueString;
                 }
             }
         }
-
         public string Name
         {
             get => this._name;
@@ -145,37 +153,31 @@ namespace ViewModel
                 this.AccommodationError = "";
                 if (!Validation.IsInputFilled(this._name))
                 {
-                    this.AccommodationError = "Naam is een verplicht veld";
+                    this.AccommodationError = NameRequiredFieldString;
                 }
             }
         }
-
         #endregion
         
         #region Events
-
         public static event EventHandler<UpdateModelEventArgs<Accommodation>> AccommodationsUpdated;
         public static event EventHandler<UpdateModelEventArgs<Accommodation>> AccommodationStringsUpdated;
-
         #endregion
 
         #region View construction
-
         public ManageAccommodationViewModel()
         {
-            this._editTitle = "Accommodatie toevoegen";
+            this._editTitle = AccommodationAddString;
          
             // This triggers the on property changed event call.
             this.InitializeAccommodations();
             
             ManageAccommodationViewModel.AccommodationsUpdated += ManageAccommodationViewModelOnAccommodationsUpdated;
         }
-
         private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
         {
             e.UpdateCollection(this.Accommodations);
         }
-
         /// <summary>
         /// Sets the available accommodations. Calling this method should be avoided, because this is a heavy method.
         /// </summary>
@@ -187,7 +189,6 @@ namespace ViewModel
                 this.Accommodations.Add(accommodation);
             }
         }
-        
         private void FillFields(Accommodation accommodation)
         {
             if (accommodation == null)
@@ -196,7 +197,7 @@ namespace ViewModel
                 return;
             }
 
-            this._editTitle = $"Accommodatie {accommodation} bewerken";
+            this._editTitle = $"{AccommodationEditString1} {accommodation} {AccommodationEditString2}";
 
             this._prefix = accommodation.Prefix;
             this._name = accommodation.Name;
@@ -206,7 +207,7 @@ namespace ViewModel
 
         private void ResetInput()
         {
-            this._editTitle = "Accommodatie toevoegen";
+            this._editTitle = AccommodationAddString;
             this._selectedAccommodation = null;
             this._prefix = string.Empty;
             this._name = string.Empty;
@@ -235,7 +236,7 @@ namespace ViewModel
             if (this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix != this.Prefix && !this.IsPrefixUnique() 
                 || (this.SelectedAccommodation == null && !this.IsPrefixUnique()))
             {
-                this.AccommodationError = "Prefix moet uniek zijn";
+                this.AccommodationError = PrefixNotUniqueString;
                 return;
             }
             
@@ -259,7 +260,7 @@ namespace ViewModel
             }
             
             this.ResetInput();
-            MessageBox.Show("De accommodaties zijn succesvol bijgewerkt.", "Accommodatie bewerken");
+            MessageBox.Show(AccommodationEditSuccessfullString, $"{AccommodationEditString1} {AccommodationEditString2}");
         }
         private bool CanExecuteEditSave()
         {
@@ -271,7 +272,7 @@ namespace ViewModel
 
         private void ExecuteDelete()
         {
-            var result = MessageBox.Show($"Weet u zeker dat u de accommodatie {this.SelectedAccommodation} wilt verwijderen?", "Accommodatie verwijderen", MessageBoxButton.YesNo);
+            var result = MessageBox.Show($"{AccommodationDeleteQuestionString1} {this.SelectedAccommodation} {AccommodationDeleteQuestionString2}", AccommodationDeleteString, MessageBoxButton.YesNo);
             if (result != MessageBoxResult.Yes)
             {
                 return;

@@ -35,7 +35,7 @@ namespace Model
             
         }
         
-        public Camping(string name, Address address, CampingOwner campingOwner, string phoneNumber, string email, string facebook, string twitter, string instagram, string color) : this("-1", name, address, campingOwner, phoneNumber, email, facebook, twitter, instagram, color)
+        public Camping(string name, Address address, CampingOwner campingOwner, string phoneNumber, string email, string facebook, string twitter, string instagram, string color) : this(UndefinedId.ToString(), name, address, campingOwner, phoneNumber, email, facebook, twitter, instagram, color)
         {
         }
         
@@ -43,7 +43,7 @@ namespace Model
         {
             bool success = int.TryParse(id, out int idNumeric);
             
-            this.Id = success ? idNumeric : -1;
+            this.Id = success ? idNumeric : UndefinedId;
             this.Name = name;
             this.Address = address;
             this.CampingOwner = campingOwner;

@@ -5,6 +5,10 @@ namespace SystemCore
     public static class Validation
     {
         public const int AdultAge = 18;
+        private const int InvalidBirthdateYear = 1900;
+        private const int InvalidBirthdateMonth = 01;
+        private const int InvalidBirthdateDay = 01;
+        
         
         public static bool IsInputFilled(string input)
         {
@@ -28,7 +32,8 @@ namespace SystemCore
 
         public static bool IsBirthdateValid(DateTime birthdate)
         {
-            return !(birthdate < new DateTime(1900, 01, 01)) && !(birthdate > DateTime.Now);
+            return !(birthdate < new DateTime(InvalidBirthdateYear, InvalidBirthdateMonth, InvalidBirthdateDay)) &&
+                   !(birthdate > DateTime.Now);
         }
 
         public static bool IsBirthdateAdult(DateTime birthdate)
