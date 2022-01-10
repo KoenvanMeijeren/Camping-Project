@@ -68,6 +68,7 @@ namespace ViewModel
         /// <param name="e"></param>
         private void OnSignOutEvent(object sender, EventArgs e)
         {
+            this.ChatMessages.Clear();
             this._stopAsyncTask = false;
         }
 
