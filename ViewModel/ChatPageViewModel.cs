@@ -61,6 +61,7 @@ namespace ViewModel
 
         public static event EventHandler<ChatEventArgs> SendChatEvent;
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
+        public static event EventHandler<EventArgs> CleanChatEvent;
         
         public static event EventHandler FromChatToContactEvent;
 
@@ -87,9 +88,10 @@ namespace ViewModel
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSignOutEvent(object sender, EventArgs e)
-        {
-            this._chatMessages.Clear();
-            this._stopAsyncTask = false;
+        {           
+            this._stopAsyncTask = true;
+            this.ChatMessages.Clear();
+            CleanChatEvent?.Invoke(this, new EventArgs());
         }
 
         private void ExecuteChatAfterLogin(object sender, AccountEventArgs accountEventArgs)

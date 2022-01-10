@@ -242,7 +242,7 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// Async function that checks for new messages in  SELECTED chat
+        /// Async function that checks for new messages in SELECTED chat
         /// </summary>
         /// <returns>Nothing</returns>
         private async Task RefreshSelectedChatMessages()
