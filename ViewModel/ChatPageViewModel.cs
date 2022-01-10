@@ -24,14 +24,21 @@ namespace ViewModel
 
     public class ChatPageViewModel : ObservableObject
     {
-        private string _chatTextInput;
-        private bool _stopAsyncTask;
-        public List<MessageJSON> ChatMessages { get; private set; }
+        #region Fields
 
         private readonly Chat _chatModel = new Chat();
-        public Chat ChatConversation { get; private set; }
+        
+        private string _chatTextInput;
+        private bool _stopAsyncTask;
+
+        private List<MessageJSON> _chatMessages;
+        private Chat _chatConversation;
 
         private readonly int _refreshRateInMilliseconds = 2000;
+        
+        #endregion
+
+        #region Properties
 
         public string ChatTextInput
         {
@@ -47,15 +54,28 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
+
+        #endregion
+
+        #region Events
+
         public static event EventHandler<ChatEventArgs> SendChatEvent;
         public static event EventHandler<ChatEventArgs> OpenChatEvent;
+        
+        public static event EventHandler FromChatToContactEvent;
+
+        #endregion
+
+        #region View constructions
 
         public ChatPageViewModel()
         {
-            this.ChatTextInput = "";
-            this.ChatMessages = new List<MessageJSON>();
+            this._chatMessages = new List<MessageJSON>();
             this._stopAsyncTask = true;
-            this.ChatConversation = new Chat();
+            this._chatConversation = new Chat();
+            
+            // This triggers the on property changed event.
+            this.ChatTextInput = "";
             
             SignInViewModel.SignInEvent += this.ExecuteChatAfterLogin;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
@@ -68,7 +88,7 @@ namespace ViewModel
         /// <param name="e"></param>
         private void OnSignOutEvent(object sender, EventArgs e)
         {
-            this.ChatMessages.Clear();
+            this._chatMessages.Clear();
             this._stopAsyncTask = false;
         }
 
@@ -78,13 +98,17 @@ namespace ViewModel
             {
                 return;
             }
-            this._stopAsyncTask = false ;
-
-            this.ChatConversation = this._chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
-            this.ChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this.ChatConversation.Messages);
+            
+            this._stopAsyncTask = false;
+            this._chatConversation = this._chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
+            this._chatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this._chatConversation.Messages);
+            if (this._chatMessages == null)
+            {
+                return;
+            }
 
             // Loops through all 'old'/already sent messages
-            foreach(var message in this.ChatMessages)
+            foreach(var message in this._chatMessages)
             {
                 OpenChatEvent?.Invoke(this, new ChatEventArgs(message.Message, (MessageSender)Convert.ToInt32(message.UserRole)));
             }
@@ -101,26 +125,23 @@ namespace ViewModel
             // Automatically updating chat
             while (!this._stopAsyncTask)
             {
-                // Fetch the messages from the database
-                string GetChatMessages = this.ChatConversation.GetChatMessagesForCampingCustomer(this.ChatConversation.Customer);
+                // Fetch the messages from the database.
+                string dbChatMessages = this._chatConversation.GetChatMessagesForCampingCustomer(this._chatConversation.Customer);
 
-                // Convert database JSON value to List<MesssageJson>
-                List<MessageJSON> messageList = JsonConvert.DeserializeObject<List<MessageJSON>>(GetChatMessages);
+                // Convert database JSON value to List<MessageJson>
+                List<MessageJSON> messageList = JsonConvert.DeserializeObject<List<MessageJSON>>(dbChatMessages);
 
                 // Check if the current chat does NOT match with chats in database (aka new message)
-                if (!this.ChatMessages.Count.Equals(messageList.Count))
+                if (messageList != null && !this._chatMessages.Count.Equals(messageList.Count))
                 {
-                    // Calculate the amount of new messages
-                    int differenceBetweenCountOfMessages = messageList.Count - this.ChatMessages.Count;
-
                     // Loop from first new message, to last new message
-                    for (int i = this.ChatMessages.Count; i < messageList.Count; i++)
+                    for (int i = this._chatMessages.Count; i < messageList.Count; i++)
                     {
                         MessageSender chatMessageSender = (MessageSender)Convert.ToInt32(messageList[i].UserRole);
                         this.ExecuteSendChatEvent(messageList[i].Message, chatMessageSender);
                     }
                     // Overwrite the old list with messages to the full new list with messages
-                    this.ChatMessages = messageList;
+                    this._chatMessages = messageList;
                 }
 
                 // Async wait before executing this again
@@ -128,11 +149,12 @@ namespace ViewModel
             }
         }
 
-        // Close chat button
-        public ICommand CloseChatButton => new RelayCommand(ExecuteCloseChat);
-        public static event EventHandler FromChatToContactEvent;
+        #endregion
 
-        // Send chat button
+        #region Commands
+
+        public ICommand CloseChatButton => new RelayCommand(ExecuteCloseChat);
+
         public ICommand SendChatButton => new RelayCommand(SendChatButtonExecute, CanExecuteSendChatButtonExecute);
 
         private bool CanExecuteSendChatButtonExecute()
@@ -149,13 +171,13 @@ namespace ViewModel
             string sentMessage = this.ChatTextInput;
 
             //Check if the message was sent by guest or owner
-            MessageSender sender = (this.ChatConversation.Customer.Id.Equals(CurrentUser.Account.Id)) ? MessageSender.Sender : MessageSender.Receiver;
+            MessageSender sender = (this._chatConversation.Customer.Id.Equals(CurrentUser.Account.Id)) ? MessageSender.Sender : MessageSender.Receiver;
 
             // Displays message on screen
             this.ExecuteSendChatEvent(sentMessage, sender);
 
             // Add message to whole conversation
-            this.ChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sender).ToString()));
+            this._chatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sender).ToString()));
 
             this.UpdateChatInDatabase();
         }
@@ -165,7 +187,7 @@ namespace ViewModel
         /// </summary>
         private void UpdateChatInDatabase()
         {
-            this.ChatConversation.UpdateChat(JsonConvert.SerializeObject(this.ChatMessages, Formatting.Indented));
+            this._chatConversation.UpdateChat(JsonConvert.SerializeObject(this._chatMessages, Formatting.Indented));
         }
 
         /// <summary>
@@ -173,7 +195,7 @@ namespace ViewModel
         /// </summary>
         private void ExecuteCloseChat()
         {
-            FromChatToContactEvent?.Invoke(this, EventArgs.Empty);
+            ChatPageViewModel.FromChatToContactEvent?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -183,7 +205,9 @@ namespace ViewModel
         /// <param name="messageSender">ENUM of who sent the message</param>
         private void ExecuteSendChatEvent(string message, MessageSender messageSender)
         {
-            SendChatEvent?.Invoke(this, new ChatEventArgs(message, messageSender));
+            ChatPageViewModel.SendChatEvent?.Invoke(this, new ChatEventArgs(message, messageSender));
         }
+
+        #endregion
     }
 }
