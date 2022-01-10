@@ -10,7 +10,7 @@ namespace ViewModel
 
         #region Fields
         private string _title, _subtitle, _subSubtitle, _temporaryApplicationColor;
-        private const string TemporaryApplicationColor = "#000000";
+        private const string TemporaryApplicationColor = "#006837";
         #endregion
 
         #region Properties
@@ -95,6 +95,11 @@ namespace ViewModel
         #region Commands
         public void OnCurrentCampingSetEvent(object sender, EventArgs e)
         {
+            if (CurrentCamping.Camping == null)
+            {
+                return;
+            }
+            
             this._subtitle = ConfigReader.GetSetting("Subtitle");
             this._subSubtitle = "\n" + CurrentCamping.Camping.Name;
             this._title = this.Subtitle + " " + this.SubSubtitle;

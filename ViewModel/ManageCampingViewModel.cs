@@ -253,7 +253,8 @@ namespace ViewModel
                    && Validation.IsInputFilled(this.Facebook)
                    && Validation.IsInputFilled(this.Twitter)
                    && Validation.IsInputFilled(this.Instagram)
-                   && Validation.IsInputFilled(this.Color);
+                   && Validation.IsInputFilled(this.Color)
+                   && this.Camping != null;
         }
 
         public ICommand EditSave => new RelayCommand(ExecuteEditSave, CanExecuteEditSave);
