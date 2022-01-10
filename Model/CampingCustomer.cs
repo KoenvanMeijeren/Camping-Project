@@ -44,12 +44,11 @@ namespace Model
         public CampingCustomer(string id, Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int idNumeric);
-            bool successDate = DateTime.TryParse(birthdate, out DateTime dateTime);
             
             this.Id = success ? idNumeric : UndefinedId;
             this.Account = account;
             this.Address = address;
-            this.Birthdate = successDate ? dateTime : DateTime.MinValue;
+            this.Birthdate = DateTimeParser.TryParse(birthdate);
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;
