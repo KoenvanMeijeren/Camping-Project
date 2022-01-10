@@ -44,7 +44,7 @@ namespace ViewModel
         
         public AccountViewModel()
         {
-            CurrentUser.CurrentUserSetEvent += OnCurrentUserSetEvent;
+            CurrentUser.SetCurrentUserEvent += OnSetCurrentUserEvent;
             AccountUpdateViewModel.UpdateConfirmEvent += OnUpdateConfirmEvent;
         }
 
@@ -71,7 +71,7 @@ namespace ViewModel
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
-        private void OnCurrentUserSetEvent(object sender, EventArgs e)
+        private void OnSetCurrentUserEvent(object sender, EventArgs e)
         {
             this.SetOverview();
         }
