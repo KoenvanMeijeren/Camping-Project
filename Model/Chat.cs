@@ -37,14 +37,14 @@ namespace Model
         public const string
             TableName = "Chat",
             ColumnId = "ChatID",
-            ColumnOwnerAccount = "OwnerAccountID",
-            ColumnCustomerAccount = "CustomerAccountID",
-            ColumnMessage = "Messages",
-            ColumnLastMessageSeenOwner = "OwnerLastSeen",
-            ColumnLastMessageSeenCustomer = "CustomerLastSeen",
-            ColumnCustomerStatus = "CustomerStatus",
-            ColumnOwnerStatus = "OwnerStatus",
-            ColumnIsSolved = "IsSolved";
+            ColumnOwnerAccount = "ChatOwnerAccountID",
+            ColumnCustomerAccount = "ChatCustomerAccountID",
+            ColumnMessage = "ChatMessages",
+            ColumnLastMessageSeenOwner = "ChatOwnerLastSeen",
+            ColumnLastMessageSeenCustomer = "ChatCustomerLastSeen",
+            ColumnCustomerStatus = "ChatCustomerStatus",
+            ColumnOwnerStatus = "ChatOwnerStatus",
+            ColumnIsSolved = "ChatIsSolved";
 
         public Account Owner { get; private set; }
         public Account Customer { get; private set; }
