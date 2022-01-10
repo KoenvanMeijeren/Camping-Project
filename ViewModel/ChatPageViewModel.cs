@@ -90,8 +90,8 @@ namespace ViewModel
         private void OnSignOutEvent(object sender, EventArgs e)
         {           
             this._stopAsyncTask = true;
-            this.ChatMessages.Clear();
-            CleanChatEvent?.Invoke(this, new EventArgs());
+            this._chatMessages.Clear();
+            CleanChatEvent?.Invoke(this, EventArgs.Empty);
         }
 
         private void ExecuteChatAfterLogin(object sender, AccountEventArgs accountEventArgs)
