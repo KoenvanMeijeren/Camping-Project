@@ -114,27 +114,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.AccommodationError = "";
-                if (!Validation.IsInputFilled(this._prefix))
-                {
-                    this.AccommodationError = PrefixRequiredFieldString;
-                    return;
-                }
-
-                if (!Validation.IsInputBelowMaxLength(this._prefix, MaxPrefixLength))
-                {
-                    this.AccommodationError = $"{PrefixLengthMaxString1} {MaxPrefixLength} {PrefixLengthMaxString2}";
-                    return;
-                }
-
-                if ((this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix == value))
-                {
-                    return;
-                }
-                
-                if (!this.IsPrefixUnique())
-                {
-                    this.AccommodationError = PrefixNotUniqueString;
-                }
+                this.ValidatePrefix(value);
             }
         }
         public string Name
@@ -218,6 +198,35 @@ namespace ViewModel
 
         #endregion
 
+        #region Input validation
+
+        private void ValidatePrefix(string prefix)
+        {
+            if (!Validation.IsInputFilled(prefix))
+            {
+                this.AccommodationError = PrefixRequiredFieldString;
+                return;
+            }
+
+            if (!Validation.IsInputBelowMaxLength(prefix, MaxPrefixLength))
+            {
+                this.AccommodationError = $"{PrefixLengthMaxString1} {MaxPrefixLength} {PrefixLengthMaxString2}";
+                return;
+            }
+
+            if ((this.SelectedAccommodation != null && this.SelectedAccommodation.Prefix == prefix))
+            {
+                return;
+            }
+                
+            if (!this.IsPrefixUnique())
+            {
+                this.AccommodationError = PrefixNotUniqueString;
+            }
+        }
+
+        #endregion
+        
         #region Commands
         
         private void ExecuteCancelEditAction()
@@ -264,8 +273,15 @@ namespace ViewModel
         }
         private bool CanExecuteEditSave()
         {
-            return Validation.IsInputFilled(this.Name) 
+            bool canSave = Validation.IsInputFilled(this.Name) 
                    && Validation.IsInputFilled(this.Prefix);
+            if (!canSave)
+            {
+                return false;
+            }
+            
+            this.ValidatePrefix(this.Prefix);
+            return string.IsNullOrEmpty(this._accommodationError);
         }
 
         public ICommand EditSave => new RelayCommand(ExecuteEditSave, CanExecuteEditSave);
