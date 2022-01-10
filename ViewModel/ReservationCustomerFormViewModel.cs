@@ -300,10 +300,10 @@ namespace ViewModel
             SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
             ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            CurrentUser.CurrentUserSetEvent += this.CurrentUserOnCurrentUserSetEvent;
+            CurrentUser.SetCurrentUserEvent += this.SetCurrentUserOnSetCurrentUserEvent;
         }
 
-        private void CurrentUserOnCurrentUserSetEvent(object sender, EventArgs e)
+        private void SetCurrentUserOnSetCurrentUserEvent(object sender, EventArgs e)
         {
             this.FillInputWithCustomerData(CurrentUser.CampingCustomer);
         }

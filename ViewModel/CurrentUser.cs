@@ -19,7 +19,7 @@ namespace ViewModel
         #endregion
 
         #region Events
-        public static event EventHandler CurrentUserSetEvent;
+        public static event EventHandler SetCurrentUserEvent;
         #endregion
 
         #region Input
@@ -45,7 +45,7 @@ namespace ViewModel
             CurrentUser.Account = account;
             CurrentUser.CampingCustomer = campingCustomer;
 
-            CurrentUserSetEvent?.Invoke(null, EventArgs.Empty);
+            SetCurrentUserEvent?.Invoke(null, EventArgs.Empty);
         }
         
         /// <summary>
@@ -58,7 +58,7 @@ namespace ViewModel
             CurrentUser.Account = account;
             CurrentUser.CampingOwner = campingOwner;
 
-            CurrentUserSetEvent?.Invoke(null, EventArgs.Empty);
+            SetCurrentUserEvent?.Invoke(null, EventArgs.Empty);
         }
         #endregion
     }
