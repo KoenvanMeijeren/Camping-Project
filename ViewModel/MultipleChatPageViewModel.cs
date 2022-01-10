@@ -83,10 +83,15 @@ namespace ViewModel
                 }
 
                 this._selectedChat = value;
+                if (value == null)
+                {
+                    return;
+                }
+                
                 this.CurrentCustomerName = this._selectedChat.CustomerName;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-                NewChatContentEvent?.Invoke(this, null);
-                GetChatConversation();               
+                MultipleChatPageViewModel.NewChatContentEvent?.Invoke(this, null);
+                this.GetChatConversation();               
             }
         }
         #endregion
@@ -97,11 +102,12 @@ namespace ViewModel
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
 
             this._shownChatMessages = new List<MessageJSON>();
-            this.ChatTextInput = "";
-            this._chats = GetAllChats();
+            this._chatTextInput = "";
+            this._chats = this.GetAllChats();
             this.CurrentCustomerName = "Klant";
             this._stopAsyncTask = false;
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+            
             this.RefreshAllChatMessages();
             this.RefreshChats();
             this.RefreshSelectedChatMessages();
@@ -117,7 +123,7 @@ namespace ViewModel
         }
 
         /// <summary>
-        /// Updates chatlist 
+        /// Updates chats. 
         /// </summary>
         /// <returns></returns>
         private async Task RefreshChats()
@@ -125,8 +131,10 @@ namespace ViewModel
             // Automatically updating chats
             while (!this._stopAsyncTask)
             {
-                ObservableCollection<Chat> chatDb = this.GetAllChats();
-                if (this._chats.Count != chatDb.Count)//Check for new chats
+                var chatDb = this.GetAllChats();
+                
+                // Check for new chats
+                if (this._chats.Count != chatDb.Count())
                 {
                     var selectedchat = this.SelectedChat;
                     this._chats.Clear();
