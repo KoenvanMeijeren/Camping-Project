@@ -90,6 +90,7 @@ namespace Model
             this.GuestLimit = successGuestLimit ? numericGuestLimit : 0;
             this.StandardNightPrice = successStandardNightPrice ? numericStandardNightPrice : 0;
             this.Accommodation = accommodation;
+            this.StandardNightPriceReadable = $"€ {this.StandardNightPrice}";
 
             return base.Update(CampingPlaceType.ToDictionary(this.GuestLimit, this.StandardNightPrice, this.Accommodation));
         }
