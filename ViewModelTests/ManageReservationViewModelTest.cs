@@ -26,7 +26,7 @@ namespace ViewModelTests
         [SetUp]
         public void Setup()
         {
-            this._manageReservationViewModelMock = new();
+            this._manageReservationViewModelMock = new Mock<ManageReservationViewModel>();
 
             Account account = new Account("1", "admin", "nimda", "0");
             Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");

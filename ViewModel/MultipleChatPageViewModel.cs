@@ -22,7 +22,7 @@ namespace ViewModel
         
         private Chat _selectedChat;
         private ObservableCollection<Chat> _chats;
-        private List<MessageJSON> _shownChatMessages;
+        private List<MessageJson> _shownChatMessages;
         private string _chatTextInput;
         
         private bool _stopAsyncTask;
@@ -47,7 +47,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
-        public List<MessageJSON> ShownChatMessages
+        public List<MessageJson> ShownChatMessages
         {
             get => this._shownChatMessages;
             set
@@ -118,7 +118,7 @@ namespace ViewModel
             SignInViewModel.SignInEvent += this.ExecuteChatAfterLogin;
             AccountViewModel.SignOutEvent += this.OnSignOutEvent;
 
-            this._shownChatMessages = new List<MessageJSON>();
+            this._shownChatMessages = new List<MessageJson>();
             this._chatTextInput = "";
             this._chats = this.GetAllChats();
             this.CurrentCustomerName = "Klant";
@@ -192,7 +192,7 @@ namespace ViewModel
         private void GetChatConversation()
         {
             this._shownChatMessages.Clear();
-            this.ShownChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
+            this.ShownChatMessages = JsonConvert.DeserializeObject<List<MessageJson>>(this._selectedChat.Messages);
             this.DisplayMessages();
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
@@ -220,13 +220,13 @@ namespace ViewModel
                         continue;
                     }
                     
-                    List<MessageJSON> loadedChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(chatConversation.Messages);
+                    List<MessageJson> loadedChatMessages = JsonConvert.DeserializeObject<List<MessageJson>>(chatConversation.Messages);
                     
                     // Fetch the messages from the database
                     string dbChatMessages = chatConversation.GetChatMessagesForCampingCustomer(chatConversation.Customer);
 
                     // Convert database JSON value to List<MessageJson>
-                    List<MessageJSON> chatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(dbChatMessages);
+                    List<MessageJson> chatMessages = JsonConvert.DeserializeObject<List<MessageJson>>(dbChatMessages);
 
                     // Check if the current chat does NOT match with chats in database (aka new message)
                     if (loadedChatMessages != null && chatMessages != null && !loadedChatMessages.Count.Equals(chatMessages.Count))
@@ -253,11 +253,11 @@ namespace ViewModel
                 if(this._selectedChat != null)
                 {
                     // Fetch the messages from the database.
-                    List<MessageJSON> loadedChatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this._selectedChat.Messages);
+                    List<MessageJson> loadedChatMessages = JsonConvert.DeserializeObject<List<MessageJson>>(this._selectedChat.Messages);
                     string dbChatMessages = this._selectedChat.GetChatMessagesForCampingCustomer(this._selectedChat.Customer);
                     
                     // Convert database JSON value to List<MessageJson>
-                    List<MessageJSON> chatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(dbChatMessages);
+                    List<MessageJson> chatMessages = JsonConvert.DeserializeObject<List<MessageJson>>(dbChatMessages);
 
                     // Check if the current chat does NOT match with chats in database (aka new message)
                     if (loadedChatMessages != null && chatMessages != null && !loadedChatMessages.Count.Equals(chatMessages.Count))
@@ -286,7 +286,7 @@ namespace ViewModel
         /// </summary>
         /// <param name="chatConversation">chat that needs updated chat messages</param>
         /// <param name="chatMessages">new chat message list</param>
-        private void UpdateChatInList(Chat chatConversation, List<MessageJSON> chatMessages)
+        private void UpdateChatInList(Chat chatConversation, List<MessageJson> chatMessages)
         {
             foreach (var chat in this._chats.Where(chat => chat.Customer.Id == chatConversation.Customer.Id))
             {
@@ -299,7 +299,7 @@ namespace ViewModel
         /// </summary>
         /// <returns>String in JSON format with all messages in current chat</returns>
         /// 
-        private string ChatToJson(List<MessageJSON> messages)
+        private string ChatToJson(List<MessageJson> messages)
         {
             return JsonConvert.SerializeObject(messages, Formatting.Indented);
         }
@@ -332,7 +332,7 @@ namespace ViewModel
             this.ExecuteSendChatEvent(sentMessage, sender);
 
             // Add message to whole conversation
-            this._shownChatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sender).ToString()));
+            this._shownChatMessages.Add(new MessageJson(sentMessage, Convert.ToInt32(sender).ToString()));
             this.UpdateChatInList(this._selectedChat, this._shownChatMessages);
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 

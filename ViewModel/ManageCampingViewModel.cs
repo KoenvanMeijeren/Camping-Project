@@ -206,7 +206,7 @@ namespace ViewModel
             CurrentCamping.CurrentCampingSetEvent += CurrentCampingOnCurrentCampingSetEvent;
         }
 
-        private void CurrentCampingOnCurrentCampingSetEvent(object? sender, UpdateModelEventArgs<Camping> e)
+        private void CurrentCampingOnCurrentCampingSetEvent(object sender, UpdateModelEventArgs<Camping> e)
         {
             this.Camping = e.Model;
         }

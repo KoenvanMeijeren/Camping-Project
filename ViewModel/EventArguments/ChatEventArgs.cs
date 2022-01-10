@@ -9,13 +9,13 @@ namespace ViewModel.EventArguments
     public class ChatEventArgs : EventArgs
     {
 
-        public String message;
-        public MessageSender messageSender;
+        public readonly string Message;
+        public readonly MessageSender MessageSender;
 
         public ChatEventArgs(string message, MessageSender messageSender)
         {
-            this.message = message;
-            this.messageSender = messageSender;
+            this.Message = message;
+            this.MessageSender = messageSender;
         }
     }
 }

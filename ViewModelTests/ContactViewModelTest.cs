@@ -17,8 +17,8 @@ namespace ViewModelTests
         [SetUp]
         public void Setup()
         {
-            this._campingModelMock = new();
-            this._contactViewModel = new();
+            this._campingModelMock = new Mock<ContactViewModel>();
+            this._contactViewModel = new ContactViewModel();
 
             ContactViewModel.FromContactToChatEvent += ContactViewModelToChatEvent;
 

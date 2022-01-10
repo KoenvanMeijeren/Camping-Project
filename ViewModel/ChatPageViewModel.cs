@@ -31,10 +31,10 @@ namespace ViewModel
         private string _chatTextInput;
         private bool _stopAsyncTask;
 
-        private List<MessageJSON> _chatMessages;
+        private List<MessageJson> _chatMessages;
         private Chat _chatConversation;
 
-        private readonly int _refreshRateInMilliseconds = 2000;
+        private const int RefreshRateInMilliseconds = 2000;
         
         #endregion
 
@@ -70,7 +70,7 @@ namespace ViewModel
 
         public ChatPageViewModel()
         {
-            this._chatMessages = new List<MessageJSON>();
+            this._chatMessages = new List<MessageJson>();
             this._stopAsyncTask = true;
             this._chatConversation = new Chat();
             
@@ -101,7 +101,7 @@ namespace ViewModel
             
             this._stopAsyncTask = false;
             this._chatConversation = this._chatModel.SelectOrCreateNewChatForLoggedInUser(CurrentUser.CampingCustomer);
-            this._chatMessages = JsonConvert.DeserializeObject<List<MessageJSON>>(this._chatConversation.Messages);
+            this._chatMessages = JsonConvert.DeserializeObject<List<MessageJson>>(this._chatConversation.Messages);
             if (this._chatMessages == null)
             {
                 return;
@@ -129,7 +129,7 @@ namespace ViewModel
                 string dbChatMessages = this._chatConversation.GetChatMessagesForCampingCustomer(this._chatConversation.Customer);
 
                 // Convert database JSON value to List<MessageJson>
-                List<MessageJSON> messageList = JsonConvert.DeserializeObject<List<MessageJSON>>(dbChatMessages);
+                List<MessageJson> messageList = JsonConvert.DeserializeObject<List<MessageJson>>(dbChatMessages);
 
                 // Check if the current chat does NOT match with chats in database (aka new message)
                 if (messageList != null && !this._chatMessages.Count.Equals(messageList.Count))
@@ -145,7 +145,7 @@ namespace ViewModel
                 }
 
                 // Async wait before executing this again
-                await Task.Delay(this._refreshRateInMilliseconds);
+                await Task.Delay(RefreshRateInMilliseconds);
             }
         }
 
@@ -177,7 +177,7 @@ namespace ViewModel
             this.ExecuteSendChatEvent(sentMessage, sender);
 
             // Add message to whole conversation
-            this._chatMessages.Add(new MessageJSON(sentMessage, Convert.ToInt32(sender).ToString()));
+            this._chatMessages.Add(new MessageJson(sentMessage, Convert.ToInt32(sender).ToString()));
 
             this.UpdateChatInDatabase();
         }

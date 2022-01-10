@@ -17,14 +17,14 @@ namespace Model
     /// <summary>
     /// This class defines each chat message sent by the user or owner of the camping.
     /// </summary>
-    public class MessageJSON
+    public class MessageJson
     {
         public string Message { get; private set; }
         public string MessageSentTime { get; private set; }
         public string UserRole { get; private set; }
         public const string EmptyJson = "[]";
 
-        public MessageJSON(string message, string userRole)
+        public MessageJson(string message, string userRole)
         {
             this.Message = message;
             this.MessageSentTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -99,7 +99,7 @@ namespace Model
             }
 
             CampingOwner campingOwner = new CampingOwner();
-            var chat = new Chat(campingOwner.SelectLast().Account, customer.Account, MessageJSON.EmptyJson, DateTime.Now, DateTime.Now, ChatStatus.Offline, ChatStatus.Offline);
+            var chat = new Chat(campingOwner.SelectLast().Account, customer.Account, MessageJson.EmptyJson, DateTime.Now, DateTime.Now, ChatStatus.Offline, ChatStatus.Offline);
             chat.Insert();
 
             return this.SelectByCustomer(customer);

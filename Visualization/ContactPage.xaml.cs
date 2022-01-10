@@ -36,7 +36,7 @@ namespace Visualization
 
         private void ButtonClickOpenHref(object sender, LinkEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(e.href)
+            Process.Start(new ProcessStartInfo(e.Href)
             {
                 UseShellExecute = true
             });

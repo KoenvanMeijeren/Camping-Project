@@ -25,7 +25,7 @@ namespace ViewModelTests
                 new CampingCustomer("1", account, address, "19/10/21", "0341124354", "John", "Doe"),
                 new CampingCustomer("2", account, address, "10/10/15", "0341124354", "Teddy", "Pleiter"),
                 new CampingCustomer("3", account, address, "19/03/19", "0341124354", "Jessica", "Dijksma"),
-                new CampingCustomer("4", account, address, "23/03/16", "0341124354", "Jessica", "Pleiter"),
+                new CampingCustomer("4", account, address, "23/03/16", "0341124354", "Jessica", "Pleiter")
             };
 
             this._manageCampingCustomerViewModel.Setup(x => x.GetCampingCustomers()).Returns(this._campingCustomers);

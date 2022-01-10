@@ -8,11 +8,11 @@ namespace ViewModel.EventArguments
 {
     public class LinkEventArgs : EventArgs
     {
-        public string href;
+        public readonly string Href;
 
         public LinkEventArgs(string href)
         {
-            this.href = href;
+            this.Href = href;
         }
     }
 }
