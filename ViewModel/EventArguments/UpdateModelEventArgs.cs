@@ -20,7 +20,10 @@ namespace ViewModel.EventArguments
         }
 
         /// <summary>
-        /// Updating a collection by removing and inserting the collectionitem therefore initializing onpropertychanged
+        /// Updates a collection based on the attributes of the given model.
+        ///
+        /// When inserted just add it. When removed, just removed it. But when updated do both. This triggers the on
+        /// property changed as few times as possible.
         /// </summary>
         /// <param name="models"></param>
         public void UpdateCollection(Collection<T> models)
