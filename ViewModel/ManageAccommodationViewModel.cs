@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Castle.Core.Internal;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Model;
@@ -282,7 +281,7 @@ namespace ViewModel
             }
             
             this.ValidatePrefix(this.Prefix);
-            return this._accommodationError.IsNullOrEmpty();
+            return string.IsNullOrEmpty(this._accommodationError);
         }
 
         public ICommand EditSave => new RelayCommand(ExecuteEditSave, CanExecuteEditSave);
