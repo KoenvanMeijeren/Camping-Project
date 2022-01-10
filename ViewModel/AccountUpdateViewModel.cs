@@ -201,11 +201,11 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.UpdateError = "";
-                if (!Validation.IsInputFilled(_phoneNumber))
+                if (!Validation.IsInputFilled(this._phoneNumber))
                 {
                     this.UpdateError = "Telefoonnummer is een verplicht veld";
                 }
-                else if (!Validation.IsNumber(_phoneNumber))
+                else if (!Validation.IsNumber(this._phoneNumber))
                 {
                     this.UpdateError = "Ongeldig telefoonnummer";
                 }
