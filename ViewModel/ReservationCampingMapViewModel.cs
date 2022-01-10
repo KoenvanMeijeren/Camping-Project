@@ -24,7 +24,7 @@ namespace ViewModel
         private readonly Accommodation _accommodationModel = new Accommodation();
         private readonly Reservation _reservationModel = new Reservation();
 
-        public const string 
+        private const string 
             SelectAll = "Alle",
             ColorAvailable = "#FF68C948",
             ColorFilteredOut = "#4D4D4D",
@@ -184,6 +184,12 @@ namespace ViewModel
             ManageCampingMapViewModel.CampingPlacesUpdated += this.ManageCampingPlaceViewModelOnCampingPlacesUpdated;
             ManageAccommodationViewModel.AccommodationStringsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
             ManageReservationViewModel.ReservationUpdated += this.ManageReservationViewModelOnReservationUpdated;
+            ManageCampingPlaceTypeViewModel.CampingPlaceTypesUpdated += this.ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated;
+        }
+
+        private void ManageCampingPlaceTypeViewModelOnCampingPlaceTypesUpdated(object sender, UpdateModelEventArgs<CampingPlaceType> e)
+        {
+            this.InitializeOverview();
         }
 
         private void ManageReservationViewModelOnReservationUpdated(object sender, UpdateModelEventArgs<Reservation> e)
