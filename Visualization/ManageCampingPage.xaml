@@ -18,11 +18,11 @@
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="180,94,180,82" CornerRadius="15,15,15,15" Background="White"/>
 
         <Label Content="Camping beheer" HorizontalAlignment="Left" Margin="201,111,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="34"/>
-        <Label Content="Campingnaam" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="202,159,0,0" Height="25"/>
+        <Label Content="Campingnaam *" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="202,159,0,0" Height="25"/>
         <TextBox Text="{Binding CampingName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="CampingNameTextbox" HorizontalAlignment="Left" Height="20" Margin="207,189,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
-        <Label Content="Email" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="202,240,0,0" Height="25"/>
+        <Label Content="Email *" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="202,240,0,0" Height="25"/>
         <TextBox Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="EmailTextbox" HorizontalAlignment="Left" Height="20" Margin="207,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
-        <Label Content="Telefoonnummer" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="202,321,0,0" Height="25"/>
+        <Label Content="Telefoonnummer *" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="202,321,0,0" Height="25"/>
         <TextBox Text="{Binding Phonenumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="PhonenumberTextbox" HorizontalAlignment="Left" Height="20" Margin="207,351,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <Label Content="Facebook" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="427,159,0,0" Height="25"/>
         <TextBox Text="{Binding Facebook, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="FacebookTextbox" HorizontalAlignment="Left" Height="20" Margin="432,189,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
@@ -31,11 +31,13 @@
         <Label Content="Instagram" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="427,321,0,0" Height="25"/>
         <TextBox Text="{Binding Instagram, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="InstagramTextbox" HorizontalAlignment="Left" Height="20" Margin="432,351,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <xctk:ColorPicker SelectedColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="207,430,428,182" x:Name="ColorPicker" Background="White" BorderBrush="Black" DropDownBorderBrush="White" HeaderBackground="White" TabBackground="White" SelectedColorChanged="ColorPicker_Background_SelectedColorChanged" DropDownBackground="White" Foreground="Black" HeaderForeground="Black" TabForeground="Black" FontFamily="Century Gothic" FontWeight="Bold"/>
-        <Label Content="Kleur" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="202,396,0,0" Height="29" Width="41"/>
+        <Label Content="Kleur *" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="202,396,0,0" Height="29" Width="54"/>
         <Button Command="{Binding EditSave}" x:Name="Confirm" Content="Opslaan" Margin="432,486,203,115"  Style="{StaticResource DefaultButtonTheme}"/>
         <Button Command="{Binding EditCancel}" x:Name="Cancel" Content="Annuleer" Margin="207,487,428,114"  Style="{StaticResource DefaultButtonTheme}"/>
-        
+
         <Label Content="{Binding Error}" x:Name="ErrorLabel"  HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="378,116,0,0" Height="24" Foreground="#FFD00000" HorizontalContentAlignment="Right" Width="248"/>
+        <Label Content="* = verplicht" HorizontalAlignment="Left" Margin="201,456,0,0" VerticalAlignment="Top"/>
+
 
     </Grid>
 </Page>

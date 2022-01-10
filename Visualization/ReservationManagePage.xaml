@@ -28,11 +28,11 @@
 
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="492,37,95,346" CornerRadius="15,15,15,15" Background="White"/>
 
-        <Label Content="Start datum:" HorizontalAlignment="Left" Margin="504,84,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="32" Width="81" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <Label Content="Start datum*:" HorizontalAlignment="Left" Margin="504,84,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="32" Width="88" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
         <DatePicker x:Name="StartDatePicker" Height="23" Margin="592,89,112,522" DisplayDate="2021-01-01" Foreground="Black" BorderBrush="Black" SelectedDate="{Binding CheckInDate}" />
-        <Label Content="Eind datum:" HorizontalAlignment="Left" Margin="504,116,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="30" Width="85" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <Label Content="Eind datum*:" HorizontalAlignment="Left" Margin="504,116,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="30" Width="85" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
         <DatePicker x:Name="EndDatePicker" Height="23" Margin="592,123,111,488" DisplayDate="2021-01-01" Foreground="Black" BorderBrush="Black" SelectedDate="{Binding CheckOutDate}" />
-        <Label Content="Type:" HorizontalAlignment="Left" Margin="504,146,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="32" Width="85" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <Label Content="Type*:" HorizontalAlignment="Left" Margin="504,146,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="32" Width="85" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
         <ComboBox SelectedItem="{Binding SelectedCampingPlace}" ItemsSource="{Binding CampingPlaces}" HorizontalAlignment="Left" Height="20" Margin="592,155,0,0" VerticalAlignment="Top" Width="102" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black"/>
 
         <Label Content="Aantal personen:" HorizontalAlignment="Left" Margin="504,180,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontSize="12" Height="30" Width="116" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
@@ -49,5 +49,6 @@
 
         <Button Height="33" Content="Verwijderen" Command="{Binding DeleteReservation}" Style="{StaticResource DefaultButtonTheme}" Margin="450,571,215,30"/>
         <Button Height="33" Content="Opslaan" Command="{Binding UpdateReservation}" Style="{StaticResource DefaultButtonTheme}" Margin="600,571,65,30"/>
+        <Label Content="* = verplicht" HorizontalAlignment="Left" Margin="625,260,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Page>

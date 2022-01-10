@@ -132,10 +132,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.Error = "";
-                if (!Validation.IsInputFilled(this._facebook))
-                {
-                    this.Error = "Facebook link is een verplicht veld";
-                }
             }
         }
 
@@ -153,10 +149,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.Error = "";
-                if (!Validation.IsInputFilled(this._twitter))
-                {
-                    this.Error = "Twitter link is een verplicht veld";
-                }
             }
         }
 
@@ -174,10 +166,6 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.Error = "";
-                if (!Validation.IsInputFilled(this._instagram))
-                {
-                    this.Error = "Instagram link is een verplicht veld";
-                }
             }
         }
 
@@ -268,9 +256,6 @@ namespace ViewModel
                    && Validation.IsInputFilled(this.Email)
                    && RegexHelper.IsEmailValid(this.Email)
                    && Validation.IsInputFilled(this.Phonenumber)
-                   && Validation.IsInputFilled(this.Facebook)
-                   && Validation.IsInputFilled(this.Twitter)
-                   && Validation.IsInputFilled(this.Instagram)
                    && Validation.IsInputFilled(this.Color)
                    && this.Camping != null 
                    && this.ValidatePhoneNumber(this.Phonenumber);
