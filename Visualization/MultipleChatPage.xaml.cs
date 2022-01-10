@@ -40,19 +40,19 @@ namespace Visualization
             var textblock = new TextBlock();
             var brushConverter = new BrushConverter();
 
-            textblock.Text = e.message;
+            textblock.Text = e.Message;
             textblock.Padding = new System.Windows.Thickness(7);
             textblock.FontFamily = new FontFamily("Century Gothic");
             textblock.TextWrapping = TextWrapping.Wrap;
             textblock.MaxWidth = _maxWidthTextblock;
 
-            if (e.messageSender.Equals(MessageSender.Receiver))
+            if (e.MessageSender.Equals(MessageSender.Receiver))
             {
                 textblock.Background = (Brush)brushConverter.ConvertFrom("#f0f8ff");
                 textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             }
 
-            if (e.messageSender.Equals(MessageSender.Sender))
+            if (e.MessageSender.Equals(MessageSender.Sender))
             {
                 textblock.Background = (Brush)brushConverter.ConvertFrom("#f2f2f2"); 
                 textblock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;

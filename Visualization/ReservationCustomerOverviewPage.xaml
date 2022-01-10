@@ -8,7 +8,7 @@
             d:DesignHeight="450" d:DesignWidth="800"
        Title="Reservering overzicht" Height="634.04" Width="820" MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04">
     <Page.Resources>
-        <Style x:Key="removedHeader" TargetType="{x:Type GridViewColumnHeader}">
+        <Style TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Visibility" Value="Collapsed" />
         </Style>
     </Page.Resources>

@@ -20,7 +20,7 @@ namespace ViewModelTests
         [SetUp]
         public void Setup()
         {
-            this._reservationCollectionMock = new();
+            this._reservationCollectionMock = new Mock<ReservationCollectionViewModel>();
             Account account = new Account("1", "admin", "nimda", "0");
             Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
             CampingCustomer campingCustomer = new CampingCustomer("1", account, address, "19/10/21", "testPhoneNumber", "testFirstName", "testLastName");

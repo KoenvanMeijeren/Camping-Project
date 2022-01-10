@@ -14,7 +14,7 @@
 
     <Grid MinWidth="805" MaxWidth="800" MinHeight="634.04" MaxHeight="634.04">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="90,35,378,82" CornerRadius="15,15,15,15" Background="White"/>
-        <ListView x:Name="GuestList"  Margin="108,89,398,151" Background="White" FontFamily="Century Gothic" FontWeight="Bold" ItemsSource="{Binding CampingGuests}" SelectedItem="{Binding SelectedCampingGuest}"  >
+        <ListView x:Name="GuestList"  Margin="108,89,398,151" Background="White" FontFamily="Century Gothic" FontWeight="Bold" ItemsSource="{Binding CampingGuests}"  >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Voornaam" Width="90" DisplayMemberBinding="{Binding FirstName}" />
