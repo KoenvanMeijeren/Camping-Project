@@ -114,10 +114,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.Error = "";
-                if (!Validation.IsInputFilled(this._phoneNumber))
-                {
-                    this.Error = "Telefoonnummer is een verplicht veld";
-                }
+                this.ValidatePhoneNumber(value);
             }
         }
 
@@ -228,6 +225,27 @@ namespace ViewModel
         }
         #endregion
 
+        #region Input validation
+
+        private bool ValidatePhoneNumber(string phoneNumber)
+        {
+            if (!Validation.IsInputFilled(phoneNumber))
+            {
+                this.Error = "Telefoonnummer is een verplicht veld";
+                return false;
+            }
+            
+            if (!Validation.IsNumber(phoneNumber))
+            {
+                this.Error = "Telefoonnummer is ongeldig";
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion
+        
         #region Commands 
         private void ExecuteCancelEditAction()
         {
@@ -254,7 +272,8 @@ namespace ViewModel
                    && Validation.IsInputFilled(this.Twitter)
                    && Validation.IsInputFilled(this.Instagram)
                    && Validation.IsInputFilled(this.Color)
-                   && this.Camping != null;
+                   && this.Camping != null 
+                   && this.ValidatePhoneNumber(this.Phonenumber);
         }
 
         public ICommand EditSave => new RelayCommand(ExecuteEditSave, CanExecuteEditSave);

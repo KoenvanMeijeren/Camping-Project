@@ -159,14 +159,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.CampingCustomerError = "";
-                if (!Validation.IsBirthdateValid(this._birthdate))
-                {
-                    this.CampingCustomerError = InvalidBirthdateString;
-                }
-                else if (!Validation.IsBirthdateAdult(this._birthdate))
-                {
-                    this.CampingCustomerError = InvalidBirthdateTooYoungString;
-                }
+                this.ValidateBirthdate(value);
             }
         }
         public string PhoneNumber
@@ -183,14 +176,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.CampingCustomerError = "";
-                if (!Validation.IsInputFilled(this._phoneNumber))
-                {
-                    this.CampingCustomerError = PhoneNumberRequiredString;
-                }
-                else if (!Validation.IsNumber(this._phoneNumber))
-                {
-                    this.CampingCustomerError = PhoneNumberInvalidString;
-                }
+                this.ValidatePhoneNumber(value);
             }
         }
         public string Street
@@ -227,14 +213,7 @@ namespace ViewModel
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
 
                 this.CampingCustomerError = "";
-                if (!Validation.IsInputFilled(this._postalCode))
-                {
-                    this.CampingCustomerError = PostalCodeRequiredString;
-                }
-                else if (!RegexHelper.IsPostalcodeValid(this._postalCode))
-                {
-                    this.CampingCustomerError = PostalCodeInvalidString;
-                }
+                this.ValidatePostalCode(value);
             }
         }
         public string Place
@@ -320,6 +299,61 @@ namespace ViewModel
 
         #endregion
 
+        #region Input validation
+
+        private bool ValidateBirthdate(DateTime birthdate)
+        {
+            if (!Validation.IsBirthdateValid(birthdate))
+            {
+                this.CampingCustomerError = InvalidBirthdateString;
+                return false;
+            }
+
+            if (!Validation.IsBirthdateAdult(birthdate))
+            {
+                this.CampingCustomerError = InvalidBirthdateTooYoungString;
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidatePhoneNumber(string phoneNumber)
+        {
+            if (!Validation.IsInputFilled(phoneNumber))
+            {
+                this.CampingCustomerError = PhoneNumberRequiredString;
+                return false;
+            }
+            
+            if (!Validation.IsNumber(phoneNumber))
+            {
+                this.CampingCustomerError = PhoneNumberInvalidString;
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidatePostalCode(string postalCode)
+        {
+            if (!Validation.IsInputFilled(postalCode))
+            {
+                this.CampingCustomerError = PostalCodeRequiredString;
+                return false;
+            }
+
+            if (!RegexHelper.IsPostalcodeValid(postalCode))
+            {
+                this.CampingCustomerError = PostalCodeInvalidString;
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion
+        
         #region Commands
         private void ExecuteCancelEditAction()
         {
@@ -372,7 +406,10 @@ namespace ViewModel
                    && Validation.IsInputFilled(this.Street)
                    && Validation.IsInputFilled(this.PostalCode)
                    && Validation.IsInputFilled(this.Place)
-                   && Validation.IsBirthdateValid(this.Birthdate);
+                   && Validation.IsBirthdateValid(this.Birthdate)
+                   && this.ValidateBirthdate(this.Birthdate) 
+                   && this.ValidatePhoneNumber(this.PhoneNumber)
+                   && this.ValidatePostalCode(this.PostalCode);
         }
 
         public ICommand EditSave => new RelayCommand(ExecuteEditSave, CanExecuteEditSave);
