@@ -339,6 +339,7 @@ namespace ViewModel
             this._checkOutDate = DateTime.Today.AddDays(1);
             this._minNightPrice = "";
             this._maxNightPrice = "";
+            this._guests = "";
             
             this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
