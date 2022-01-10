@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using ViewModel;
@@ -12,11 +13,13 @@ namespace Visualization
     public partial class ChatPage : Page
     {
         private const double _maxWidthTextblock = 390.00;
+
         public ChatPage()
         {
             this.InitializeComponent();
             ChatPageViewModel.OpenChatEvent += this.CreateChatTextBlocKEvent;
             ChatPageViewModel.SendChatEvent += this.CreateChatTextBlocKEvent;
+            ChatPageViewModel.CleanChatEvent += this.CleanChatEvent;
         }
 
         /// <summary>
@@ -49,6 +52,11 @@ namespace Visualization
             }
 
             ChatField.Children.Add(textblock);
+        }
+
+        private void CleanChatEvent(object sender, EventArgs e)
+        {
+            ChatField.Children.Clear();
         }
     }
 }

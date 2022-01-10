@@ -38,6 +38,7 @@ namespace Visualization
         private readonly ManageCampingPlaceTypePage _manageCampingPlaceTypePage;
         private readonly ManageAccommodationPage _manageAccommodationPage;
 
+
         public MainWindow()
         {
             this.InitializeComponent();

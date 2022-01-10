@@ -26,7 +26,7 @@ namespace Visualization
         public MultipleChatPage()
         {
             InitializeComponent();
-            MultipleChatPageViewModel.NewChatContentEvent += this.NewSelectedChateEven;
+            MultipleChatPageViewModel.NewChatContentEvent += this.NewSelectedChatEvent;
             MultipleChatPageViewModel.SendChatEvent += this.CreateChatTextBlocKEvent;
         }
 
@@ -62,7 +62,7 @@ namespace Visualization
             ChatField.Children.Add(textblock);
         }
 
-        private void NewSelectedChateEven(object sender, ChatEventArgs e)
+        private void NewSelectedChatEvent(object sender, ChatEventArgs e)
         {
             ChatField.Children.Clear();
         }
