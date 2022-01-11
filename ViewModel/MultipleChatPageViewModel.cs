@@ -271,8 +271,8 @@ namespace ViewModel
                         
                         // Overwrite the old list with messages to the full new list with messages
                         this.UpdateChatInList(this._selectedChat, chatMessages);
-                        this.GetChatConversation();
                         MultipleChatPageViewModel.NewChatContentEvent?.Invoke(this, null);
+                        this.GetChatConversation();
                     }
                 }                
 
