@@ -27,7 +27,7 @@ namespace ViewModel
 
         private const string AccommodationAddString = "Accommodatie toevoegen";
         private const string AccommodationEditString1 = "Accommodatie";
-        private const string AccommodationEditString2 = "bewereken";
+        private const string AccommodationEditString2 = "bewerken";
         private const string AccommodationEditSuccessfullString = "De accommodaties zijn succesvol bijgewerkt.";
         private const string AccommodationDeleteString = "Accommodatie verwijderen";
         private const string AccommodationDeleteQuestionString1 = "Weet u zeker dat u de accommodatie";

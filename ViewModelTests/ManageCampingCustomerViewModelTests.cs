@@ -19,10 +19,10 @@ namespace ViewModelTests
             this._manageCampingCustomerViewModel = new Mock<ManageCampingCustomerViewModel>();
 
             Account account = new Account("1", "admin", "nimda", "0");
-            Address address = new Address("1", "testAddress", "testPostalCode", "testPlace");
+            Address address = new Address("1", "testAddress", "1234BH", "testPlace");
             this._campingCustomers = new List<CampingCustomer>
             {
-                new CampingCustomer("1", account, address, "19/10/21", "0341124354", "John", "Doe"),
+                new CampingCustomer("1", account, address, "19/10/2001", "0341124354", "John", "Doe"),
                 new CampingCustomer("2", account, address, "10/10/15", "0341124354", "Teddy", "Pleiter"),
                 new CampingCustomer("3", account, address, "19/03/19", "0341124354", "Jessica", "Dijksma"),
                 new CampingCustomer("4", account, address, "23/03/16", "0341124354", "Jessica", "Pleiter")
@@ -60,10 +60,10 @@ namespace ViewModelTests
             Assert.AreEqual("Campingklant John Doe bewerken", this._manageCampingCustomerViewModel.Object.EditTitle);
             Assert.AreEqual("John", this._manageCampingCustomerViewModel.Object.FirstName);
             Assert.AreEqual("Doe", this._manageCampingCustomerViewModel.Object.LastName);
-            Assert.AreEqual(new DateTime(2021, 10, 19), this._manageCampingCustomerViewModel.Object.Birthdate);
+            Assert.AreEqual(new DateTime(2001, 10, 19), this._manageCampingCustomerViewModel.Object.Birthdate);
             Assert.AreEqual("0341124354", this._manageCampingCustomerViewModel.Object.PhoneNumber);
             Assert.AreEqual("testAddress", this._manageCampingCustomerViewModel.Object.Street);
-            Assert.AreEqual("testPostalCode", this._manageCampingCustomerViewModel.Object.PostalCode);
+            Assert.AreEqual("1234BH", this._manageCampingCustomerViewModel.Object.PostalCode);
             Assert.AreEqual("testPlace", this._manageCampingCustomerViewModel.Object.Place);
             Assert.IsNull(this._manageCampingCustomerViewModel.Object.CampingCustomerError);
             Assert.IsTrue(this._manageCampingCustomerViewModel.Object.EditSave.CanExecute(null));

@@ -22,7 +22,7 @@ namespace ViewModel
         private readonly Accommodation _accommodationModel = new Accommodation();
         private readonly Reservation _reservationModel = new Reservation();
         
-        private const string SelectAll = "Alle";
+        public const string SelectAll = "Alle";
 
         private readonly ObservableCollection<string> _accommodations;
 
