@@ -48,8 +48,25 @@ namespace Model
         public string CheckInDate { get; private set; }
         public string CheckOutDate { get; private set; }
 
-        public List<ReservationCampingGuest> CampingGuests { get; private set; }
+        private List<ReservationCampingGuest> _campingGuests;
+        public List<ReservationCampingGuest> CampingGuests
+        {
+            get
+            {
+                if (this._campingGuests != null && this._campingGuests.Any())
+                {
+                    return this._campingGuests;
+                }
 
+                this._campingGuests = this._reservationCampingGuestModel.SelectByReservation(this);
+                
+                return this._campingGuests;
+            }
+            private set => this._campingGuests = value;
+        }
+
+        private readonly ReservationCampingGuest _reservationCampingGuestModel = new ReservationCampingGuest();
+        
         /// <summary>
         /// Constructs this object for accessing the select methods.
         /// </summary>
@@ -65,7 +82,7 @@ namespace Model
         /// <param name="campingPlace">The camping place.</param>
         /// <param name="checkInDate">The check in date.</param>
         /// <param name="checkOutDate">The check out date.</param>
-        public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, string checkInDate, string checkOutDate) : this("-1", numberOfPeople, campingCustomer, campingPlace, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False, null, checkInDate, checkOutDate)
+        public Reservation(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, string checkInDate, string checkOutDate) : this(UndefinedId.ToString(), numberOfPeople, campingCustomer, campingPlace, ReservationColumnStatus.False, ReservationColumnStatus.False, ReservationColumnStatus.False, null, checkInDate, checkOutDate)
         {
         }
         
@@ -89,14 +106,8 @@ namespace Model
             DateTime dateTime = DateTimeParser.TryParse(reservationDeletedTime);
             this.ParseInputDates(checkInDate, checkOutDate);
             
-            this.Id = successId ? numericId : -1;
-            // Add one, else it doesn't include the customer
+            this.Id = successId ? numericId : UndefinedId;
             this.NumberOfPeople = successPeople ? numericPeople : 0;
-            if (this.Id == -1 && campingCustomer != null)
-            {
-                this.NumberOfPeople++;
-            }
-            
             this.CampingCustomer = campingCustomer;
             this.CampingPlace = campingPlace;
             this.TotalPrice = this.CalculateTotalPrice();
@@ -156,7 +167,7 @@ namespace Model
         /// <inheritdoc/>
         public override IEnumerable<Reservation> Select()
         {
-            Query query = new Query(this.BaseSelectQuery() + $" ORDER BY {ColumnCheckInDate}");
+            Query query = new Query(this.BaseSelectQuery() + $" WHERE {ColumnDeleted} = 0 ORDER BY {ColumnCheckInDate}");
             var items = query.Select();
             this.Collection = new List<Reservation>();
             foreach (Dictionary<string, string> dictionary in items)
@@ -167,6 +178,12 @@ namespace Model
             return this.Collection;
         }
 
+        public bool UpdatePeopleCount(int people)
+        {
+            this.NumberOfPeople = people;
+            return true;
+        }
+        
         public bool Update()
         {
             return this.Update(this.NumberOfPeople.ToString(), this.CampingCustomer, this.CampingPlace, this.ReservationDeleted, this.ReservationPaid, this.ReservationRestitutionPaid, this.ReservationDeletedTime, this.CheckInDatetime, this.CheckOutDatetime);
@@ -174,6 +191,16 @@ namespace Model
         
         public bool Update(string numberOfPeople, CampingCustomer campingCustomer, CampingPlace campingPlace, ReservationColumnStatus reservationDeleted, ReservationColumnStatus reservationPaid, ReservationColumnStatus reservationRestitutionPaid, DateTime? reservationDeletedTime, DateTime checkInDate, DateTime checkOutDate)
         {
+            this.NumberOfPeople = int.Parse(numberOfPeople);
+            this.CampingCustomer = campingCustomer;
+            this.CampingPlace = campingPlace;
+            this.ReservationDeleted = reservationDeleted;
+            this.ReservationPaid = reservationPaid;
+            this.ReservationRestitutionPaid = reservationRestitutionPaid;
+            this.ReservationDeletedTime = reservationDeletedTime;
+            this.CheckInDatetime = checkInDate;
+            this.CheckOutDatetime = checkOutDate;
+            
             return base.Update(Reservation.ToDictionary(numberOfPeople, campingCustomer, campingPlace, reservationDeleted, reservationPaid, reservationRestitutionPaid, reservationDeletedTime, checkInDate, checkOutDate));
         }
 
@@ -204,7 +231,7 @@ namespace Model
             dictionary.TryGetValue(Accommodation.ColumnPrefix, out string prefix);
             dictionary.TryGetValue(Accommodation.ColumnName, out string name);
             
-            dictionary.TryGetValue(CampingPlace.ColumnId, out string placeNumber);
+            dictionary.TryGetValue(CampingPlace.ColumnNumber, out string placeNumber);
             dictionary.TryGetValue(CampingPlace.ColumnSurface, out string surface);
             dictionary.TryGetValue(CampingPlace.ColumnExtraNightPrice, out string extraNightPrice);
             
@@ -231,9 +258,7 @@ namespace Model
             CampingCustomer campingCustomer = new CampingCustomer(campingCustomerId, account, customerAddress, birthdate, phoneNumber, firstName, lastName);
 
             Reservation reservation = new Reservation(reservationId, peopleCount, campingCustomer, campingPlace, (ReservationColumnStatus)Int32.Parse(reservationDeleted), (ReservationColumnStatus)Int32.Parse(reservationPaid), (ReservationColumnStatus)Int32.Parse(reservationRestitutionPaid), reservationDeletedTime, checkInDate, checkOutDate);
-            
-            ReservationCampingGuest reservationCampingGuestModel = new ReservationCampingGuest();
-            reservation.CampingGuests = reservationCampingGuestModel.SelectByReservation(reservation);
+            reservation.CampingGuests = this._reservationCampingGuestModel.SelectByReservation(reservation);
 
             return reservation;
         }

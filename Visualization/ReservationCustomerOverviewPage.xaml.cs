@@ -10,9 +10,9 @@ namespace Visualization
     /// <summary>
     /// Interaction logic for ReservationOverviewPage.xaml
     /// </summary>
-    public partial class ReservationOverviewPage : Page
+    public partial class ReservationCustomerOverviewPage : Page
     {
-        public ReservationOverviewPage()
+        public ReservationCustomerOverviewPage()
         {
             this.InitializeComponent();
         }

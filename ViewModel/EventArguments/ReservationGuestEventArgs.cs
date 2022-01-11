@@ -1,19 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Model;
 
 namespace ViewModel.EventArguments
 {
     public class ReservationGuestEventArgs : EventArgs
     {
-        public Address Address { get; private set; }
-        public CampingCustomer CampingCustomer { get; private set; }
         public Reservation Reservation { get; private set; }
+        public IEnumerable<CampingGuest> CampingGuests { get; private set; }
 
-        public ReservationGuestEventArgs(Address address, CampingCustomer campingCustomer, Reservation reservation)
+        public ReservationGuestEventArgs(Reservation reservation, IEnumerable<CampingGuest> campingGuests)
         {
-            this.Address = address;
-            this.CampingCustomer = campingCustomer;
             this.Reservation = reservation;
+            this.CampingGuests = campingGuests;
         }
     }
 }

@@ -24,34 +24,17 @@ namespace ViewModel
         
         private const string SelectAll = "Alle";
 
-        private readonly ObservableCollection<string> _campingPlaceTypes;
-        public ObservableCollection<ReservationViewModel> Reservations { get; private set; }
-        public static event EventHandler<ReservationEventArgs> ManageReservationEvent;
-        
-        private ReservationViewModel _selectedReservation;
-        public ReservationViewModel SelectedReservation
-        {
-            get => _selectedReservation;
-            set
-            {
-                if (value == null || Equals(value, this._selectedReservation))
-                {
-                    return;
-                }
+        private readonly ObservableCollection<string> _accommodations;
 
-                this._selectedReservation = value;
-                ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation.Reservation));
-            }
-        }
+        private Reservation _selectedReservation;
 
-
-        
         private DateTime _checkOutDate, _checkInDate;
-        private string _minTotalPrice, _maxTotalPrice, _selectedCampingPlaceType, _guests;
+        private string _minTotalPrice, _maxTotalPrice, _selectedAccommodation, _guests;
 
         #endregion
 
         #region Properties
+        public ObservableCollection<Reservation> Reservations { get; private set; }
 
         public string MinTotalPrice
         {
@@ -64,9 +47,10 @@ namespace ViewModel
                 }
 
                 this._minTotalPrice = value;
+                this._selectedReservation = null;
+                
+                // This triggers the on property changed event.
                 this.SetOverview();
-
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -81,9 +65,10 @@ namespace ViewModel
                 }
 
                 this._maxTotalPrice = value;
-                this.SetOverview();
+                this._selectedReservation = null;
 
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                // This triggers the on property changed event.
+                this.SetOverview();
             }
         }
 
@@ -98,9 +83,9 @@ namespace ViewModel
                 }
 
                 this._guests = value;
+                
+                // This triggers the on property changed event.
                 this.SetOverview();
-
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
@@ -117,13 +102,15 @@ namespace ViewModel
                 int daysDifference = this._checkOutDate.Subtract(this._checkInDate).Days;
                 
                 this._checkInDate = value;
-                this.SetOverview();
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-
                 if (daysDifference > 0)
                 {
-                    this.CheckOutDate = this._checkInDate.AddDays(daysDifference);
+                    this._checkOutDate = this._checkInDate.AddDays(daysDifference);
                 }
+
+                this._selectedReservation = null;
+
+                // This triggers the on property changed event.
+                this.SetOverview();
             }
         }
 
@@ -138,76 +125,134 @@ namespace ViewModel
                 }
 
                 this._checkOutDate = value;
-                this.SetOverview();
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
-
                 if (this._checkOutDate < this.CheckInDate)
                 {
-                    this.CheckInDate = this._checkOutDate.AddDays(-1);
+                    this._checkInDate = this._checkOutDate.AddDays(-1);
                 }
+                
+                this._selectedReservation = null;
+
+                // This triggers the on property changed event.
+                this.SetOverview();
             }
         }
         
-        public ObservableCollection<string> CampingPlaceTypes
+        public ObservableCollection<string> Accommodations
         {
-            get => this._campingPlaceTypes;
+            get => this._accommodations;
             private init
             {
-                if (Equals(value, this._campingPlaceTypes))
+                if (Equals(value, this._accommodations))
                 {
                     return;
                 }
                 
-                this._campingPlaceTypes = value;
+                this._accommodations = value;
                 this.OnPropertyChanged(new PropertyChangedEventArgs(null));
             }
         }
 
-        public string SelectedCampingPlaceType
+        public string SelectedAccommodation
         {
-            get => this._selectedCampingPlaceType;
+            get => this._selectedAccommodation;
             set
             {
-                if (Equals(value, this._selectedCampingPlaceType))
+                if (Equals(value, this._selectedAccommodation))
                 {
                     return;
                 }
 
-                this._selectedCampingPlaceType = value;
+                this._selectedAccommodation = value;
+                this._selectedReservation = null;
+
+                // This triggers the on property changed event.
                 this.SetOverview();
+            }
+        }
+        
+        public Reservation SelectedReservation
+        {
+            get => _selectedReservation;
+            set
+            {
+                this._selectedReservation = value;
+                if (value == null)
+                {
+                    return;
+                }
                 
-                this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+                ManageReservationEvent?.Invoke(this, new ReservationEventArgs(this._selectedReservation));
             }
         }
 
         #endregion
 
+        #region Events
+
+        public static event EventHandler<ReservationEventArgs> ManageReservationEvent;
+
+        #endregion
+
+        #region View construction
+
         public ReservationCollectionViewModel()
         {
-            this.Reservations = new ObservableCollection<ReservationViewModel>();
-            this.CampingPlaceTypes = new ObservableCollection<string> {
-                SelectAll
-            };
+            this.Reservations = new ObservableCollection<Reservation>();
+            this._accommodations = new ObservableCollection<string>();
             
-            //Loop through rows in Accommodation table
-            foreach (var accommodationDatabaseRow in this._accommodationModel.Select())
-            {
-                this.CampingPlaceTypes.Add(accommodationDatabaseRow.Name);
-            }
-
-            this.SelectedCampingPlaceType = SelectAll;
-            
+            this.InitializeAccommodations();
             DateTime date = DateTime.Today;
-            this.CheckInDate = new DateTime(date.Year, date.Month, 1);
-            this.CheckOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
+            this._checkInDate = new DateTime(date.Year, date.Month, 1);
+            this._checkOutDate = this.CheckInDate.AddMonths(1).AddDays(-1);
+            
+            // This calls the on property changed event.
+            this.SelectedAccommodation = SelectAll;
 
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
-            ManageReservationViewModel.UpdateReservationCollection += OnReservationConfirmedEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.OnReservationConfirmedEvent;
+            ManageAccommodationViewModel.AccommodationStringsUpdated += this.ManageAccommodationViewModelOnAccommodationsUpdated;
+            ManageReservationViewModel.ReservationUpdated += this.ManageReservationViewModelOnReservationUpdated;
         }
 
-        private void OnReservationConfirmedEvent(object sender, ReservationEventArgs args)
+        private void ManageReservationViewModelOnReservationUpdated(object sender, UpdateModelEventArgs<Reservation> e)
         {
-            this.SetOverview();
+            e.UpdateCollection(this.Reservations);
+            
+            this._selectedReservation = e.Model;
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
+        }
+
+        private void ManageAccommodationViewModelOnAccommodationsUpdated(object sender, UpdateModelEventArgs<Accommodation> e)
+        {
+            if (e.Inserted)
+            {
+                this.Accommodations.Add(e.Model.ToString());
+            }
+            else if (e.Removed)
+            {
+                this.Accommodations.Remove(e.Model.ToString());
+            }
+            
+            // This calls the on property changed event.
+            this.SelectedAccommodation = SelectAll;
+        }
+
+        private void OnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> args)
+        {
+            args.UpdateCollection(this.Reservations);
+        }
+
+        /// <summary>
+        /// Sets the available accommodations. Calling this method should be avoided, because this is a heavy method.
+        /// </summary>
+        private void InitializeAccommodations()
+        {
+            this.Accommodations.Clear();
+            
+            this.Accommodations.Add(SelectAll);
+            foreach (var accommodation in this.GetAccommodations())
+            {
+                this.Accommodations.Add(accommodation.ToString());
+            }
         }
 
         private void SetOverview()
@@ -215,21 +260,25 @@ namespace ViewModel
             this.Reservations.Clear();
 
             bool ReservationsFilter(Reservation reservation) => 
-                (this.SelectedCampingPlaceType.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this.SelectedCampingPlaceType)) 
+                (this._selectedAccommodation != null && (this._selectedAccommodation.Equals(SelectAll) || reservation.CampingPlace.Type.Accommodation.Name.Equals(this._selectedAccommodation)))
                 && (!int.TryParse(this.MinTotalPrice, out int min) || reservation.TotalPrice >= min) 
                 && (!int.TryParse(this.MaxTotalPrice, out int max) || reservation.TotalPrice <= max) 
                 && (this.CheckInDate == DateTime.MinValue || reservation.CheckInDatetime >= this.CheckInDate)
                 && (this.CheckOutDate == DateTime.MinValue || reservation.CheckOutDatetime <= this.CheckOutDate)
                 && (!int.TryParse(this.Guests, out int guests) || reservation.NumberOfPeople >= guests);
 
-            var reservationItems = this._reservationModel.Select().Where(ReservationsFilter);
+            var reservationItems = this.GetReservations().Where(ReservationsFilter);
             foreach (var reservation in reservationItems)
             {
-                this.Reservations.Add(new ReservationViewModel(reservation));
+                this.Reservations.Add(reservation);
             }
+            
+            this.OnPropertyChanged(new PropertyChangedEventArgs(null));
         }
 
-    
+        #endregion
+
+        #region Commands
 
         private void ExecuteCreatePdf()
         {
@@ -255,18 +304,18 @@ namespace ViewModel
                 reservationTable.AddCell("Prijs");
                 reservationTable.AddCell("Aanwezig");
 
-                reservationTable.AddCell(reservation.Reservation.Id.ToString());
-                reservationTable.AddCell(reservation.Reservation.CampingPlace.ToString());
-                reservationTable.AddCell(reservation.Reservation.CampingCustomer.FirstName + " " + reservation.Reservation.CampingCustomer.LastName);
-                reservationTable.AddCell(reservation.Reservation.CheckInDate);
-                reservationTable.AddCell(reservation.Reservation.CheckOutDate);
-                reservationTable.AddCell(" €" + reservation.Reservation.TotalPrice.ToString(CultureInfo.InvariantCulture));
+                reservationTable.AddCell(reservation.Id.ToString());
+                reservationTable.AddCell(reservation.CampingPlace.ToString());
+                reservationTable.AddCell(reservation.CampingCustomer.FirstName + " " + reservation.CampingCustomer.LastName);
+                reservationTable.AddCell(reservation.CheckInDate);
+                reservationTable.AddCell(reservation.CheckOutDate);
+                reservationTable.AddCell(" €" + reservation.TotalPrice.ToString(CultureInfo.InvariantCulture));
                 reservationTable.AddCell(" ");
 
                 document.Add(reservationTable);
 
                 //Should be used for the CampingGuest table
-                var campingGuests = reservation.Reservation.CampingGuests;
+                var campingGuests = reservation.CampingGuests;
                 if (!campingGuests.Any())
                 {
                     continue;
@@ -285,22 +334,27 @@ namespace ViewModel
                 document.Add(campingGuestTable);
             }
 
-    
-
             document.Close();
 
             Process.Start("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", "file:///" + appData + "\\Downloads\\Reserveringen%20Overzicht.pdf");
         }
 
         public ICommand CreatePdf => new RelayCommand(ExecuteCreatePdf);
-    }
-    public class ReservationViewModel
-    {
-        public Reservation Reservation { get; private init; }
 
-        public ReservationViewModel(Reservation reservation)
+        #endregion
+
+        #region Database interaction
+
+        public virtual IEnumerable<Reservation> GetReservations()
         {
-            this.Reservation = reservation;
+            return this._reservationModel.Select();
         }
+        
+        public virtual IEnumerable<Accommodation> GetAccommodations()
+        {
+            return this._accommodationModel.Select();
+        }
+
+        #endregion
     }
 }

@@ -27,13 +27,16 @@ namespace Model
         public string PhoneNumber  { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
+        public string FullName { get; private set; }
+        
+        public string BirthdateReadable { get; private set; }
         
         public CampingCustomer(): base(TableName, ColumnId)
         {
             
         }
 
-        public CampingCustomer(Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName): this("-1", account, address, birthdate, phoneNumber, firstName, lastName)
+        public CampingCustomer(Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName): this(UndefinedId.ToString(), account, address, birthdate, phoneNumber, firstName, lastName)
         {
 
         }
@@ -41,17 +44,47 @@ namespace Model
         public CampingCustomer(string id, Account account, Address address, string birthdate, string phoneNumber, string firstName, string lastName): base(TableName, ColumnId)
         {
             bool success = int.TryParse(id, out int idNumeric);
-            bool successDate = DateTime.TryParse(birthdate, out DateTime dateTime);
             
-            this.Id = success ? idNumeric : -1;
+            this.Id = success ? idNumeric : UndefinedId;
             this.Account = account;
             this.Address = address;
-            this.Birthdate = successDate ? dateTime : DateTime.MinValue;
+            this.Birthdate = DateTimeParser.TryParse(birthdate);
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;
+            this.BirthdateReadable = this.Birthdate.ToShortDateString();
+
+            if (firstName == null || lastName == null)
+            {
+                return;
+            }
+            
+            this.FullName = firstName + " " + lastName;
         }
 
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return this.FullName;
+        }
+
+        public bool HasReservations()
+        {
+            return this.HasReservations(this);
+        }
+
+        public bool HasReservations(CampingCustomer campingCustomer)
+        {
+            string queryString = $"SELECT * FROM {Reservation.TableName}";
+            queryString += $" WHERE {Reservation.ColumnCustomer} = @{ColumnId} ";
+
+            Query query = new Query(queryString);
+            query.AddParameter(ColumnId, campingCustomer.Id);
+            var results = query.Select();
+
+            return results != null && results.Any();
+        }
+        
         public bool Update()
         {
             return base.Update(CampingCustomer.ToDictionary(this.Account, this.Address, this.Birthdate, this.PhoneNumber, this.FirstName, this.LastName));
@@ -65,6 +98,7 @@ namespace Model
             this.PhoneNumber = phoneNumber;
             this.FirstName = firstName;
             this.LastName = lastName;
+            this.FullName = firstName + " " + lastName;
 
             return base.Update(CampingCustomer.ToDictionary(account, address, birthdate, phoneNumber, firstName, lastName));
         }
@@ -116,7 +150,7 @@ namespace Model
                 {ColumnLastName, lastName}
             };
 
-            if (account != null)
+            if (account != null && account.Id != UndefinedId)
             {
                 dictionary.Add(ColumnAccount, account.Id.ToString());
             }

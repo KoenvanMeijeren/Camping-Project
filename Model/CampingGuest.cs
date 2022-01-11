@@ -26,7 +26,7 @@ namespace Model
         {
         }
 
-        public CampingGuest(string firstName, string lastName, string birthdate) : this("-1", firstName, lastName, birthdate)
+        public CampingGuest(string firstName, string lastName, string birthdate) : this(UndefinedId.ToString(), firstName, lastName, birthdate)
         {
         }
 
@@ -34,7 +34,7 @@ namespace Model
         {
             bool success = int.TryParse(id, out int numericId);
             
-            this.Id = success ? numericId : -1;
+            this.Id = success ? numericId : UndefinedId;
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Birthdate = DateTimeParser.TryParse(birthdate);

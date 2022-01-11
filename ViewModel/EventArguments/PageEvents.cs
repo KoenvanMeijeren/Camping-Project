@@ -24,9 +24,7 @@ namespace ViewModel.EventArguments
         {
             base.OnEndPage(writer, document);
             
-            // @TODO: Select camping based on current camping.
-            Camping campingModel = new Camping();
-            var results = campingModel.SelectLast();
+            var camping = CurrentCamping.Camping;
 
             // Initialize header and footer template.
             this._contentByte = writer.DirectContentUnder;
@@ -35,7 +33,7 @@ namespace ViewModel.EventArguments
             this._templates.Add(templateBottom);
             this._templates.Add(templateTop);
 
-            Image image = Image.GetInstance(".\\Images\\caravan-solid.png");
+            Image image = Image.GetInstance(".\\Icons\\caravan.png");
             image.SetAbsolutePosition(36, 800);
             BaseFont baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
 
@@ -44,7 +42,7 @@ namespace ViewModel.EventArguments
             this._contentByte.AddImage(image);
             this._contentByte.SetFontAndSize(baseFont, 20);
             this._contentByte.SetTextMatrix(document.LeftMargin, document.PageSize.GetTop(document.TopMargin));
-            this._contentByte.ShowText("Reserveringsoverzicht: " + results.Name);
+            this._contentByte.ShowText("Reserveringsoverzicht: " + camping.Name);
             this._contentByte.EndText();
             this._contentByte.AddTemplate(templateTop, document.LeftMargin, document.PageSize.GetTop(document.TopMargin));
             

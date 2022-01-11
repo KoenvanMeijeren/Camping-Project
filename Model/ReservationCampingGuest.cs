@@ -25,7 +25,7 @@ namespace Model
 
         }
 
-        public ReservationCampingGuest(Reservation reservation, CampingGuest campingGuest): this("-1", reservation, campingGuest)
+        public ReservationCampingGuest(Reservation reservation, CampingGuest campingGuest): this(UndefinedId.ToString(), reservation, campingGuest)
         {
 
         }
@@ -34,7 +34,7 @@ namespace Model
         {
             bool successId = int.TryParse(id, out int numericId);
             
-            this.Id = successId ? numericId : -1;
+            this.Id = successId ? numericId : UndefinedId;
             this.Reservation = reservation;
             this.CampingGuest = campingGuest;
         }
@@ -99,7 +99,7 @@ namespace Model
             dictionary.TryGetValue(Accommodation.ColumnPrefix, out string prefix);
             dictionary.TryGetValue(Accommodation.ColumnName, out string name);
             
-            dictionary.TryGetValue(CampingPlace.ColumnId, out string placeNumber);
+            dictionary.TryGetValue(CampingPlace.ColumnNumber, out string placeNumber);
             dictionary.TryGetValue(CampingPlace.ColumnSurface, out string surface);
             dictionary.TryGetValue(CampingPlace.ColumnExtraNightPrice, out string extraNightPrice);
             

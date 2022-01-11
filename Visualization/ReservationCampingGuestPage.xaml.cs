@@ -22,7 +22,7 @@ namespace Visualization
     {
         public ReservationCampingGuestPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }

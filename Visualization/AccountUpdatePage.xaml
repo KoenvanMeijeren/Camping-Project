@@ -12,7 +12,7 @@
         <viewModel:AccountUpdateViewModel/>
     </Page.DataContext>
 
-    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="15,15,15,15" Background="White" Margin="114,117,106,107">
             <Label Content="Accountgegevens wijzigen" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Margin="25,17,0,0"/>
         </Border>
@@ -34,8 +34,8 @@
         <Label Content="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="EmailTextbox" HorizontalAlignment="Left" Height="32" Margin="469,212,0,0" VerticalAlignment="Top" Width="210" FontFamily="Century Gothic"/>
         <Label Content="{Binding UpdateError}" x:Name="ErrorText"  HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="372,139,0,0" Height="25" Foreground="#FFD00000" HorizontalContentAlignment="Right" Width="310"/>
 
-        <Button Command="{Binding UpdateConfirm}" x:Name="UpdateConfirmButton" Content="Bevestig" Margin="472,406,138,193"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White"/>
-        <Button Command="{Binding UpdateCancel}" Name="UpdateCancelButton" Content="Annuleren" Margin="472,454,138,144"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
+        <Button Command="{Binding UpdateConfirm}" x:Name="UpdateConfirmButton" Content="Bevestig" Margin="472,406,138,193" Style="{StaticResource DefaultButtonTheme}"/>
+        <Button Command="{Binding UpdateCancel}" Name="UpdateCancelButton" Content="Annuleren" Margin="472,454,138,144" Style="{StaticResource DefaultButtonTheme}"/>
 
     </Grid>
 </Page>

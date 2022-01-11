@@ -13,7 +13,7 @@
         <viewModel:SignUpViewModel/>
     </Page.DataContext>
 
-    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" CornerRadius="15,15,15,15" Background="White" Margin="114,117,106,107">
             <Label Content="Registreren" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Margin="25,17,0,0"/>
         </Border>
@@ -28,7 +28,7 @@
         <Label Content="Straat*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="140,356,0,0" Height="25"/>
         <TextBox Text="{Binding Street, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="StreetTextbox" HorizontalAlignment="Left" Height="20" Margin="145,383,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <Label Content="Postcode*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="140,442,0,0" Height="25"/>
-        <TextBox Text="{Binding Postalcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="PostalcodeTextbox" HorizontalAlignment="Left" Height="20" Margin="145,469,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
+        <TextBox Text="{Binding PostalCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="PostalcodeTextbox" HorizontalAlignment="Left" Height="20" Margin="145,469,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <Label Content="Plaatsnaam*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="283,442,0,0" Height="25"/>
         <TextBox Text="{Binding Place, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="PlaceTextbox" HorizontalAlignment="Left" Height="20" Margin="288,469,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="122" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <Label Content="Email*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="467,185,0,0" Height="25"/>
@@ -37,7 +37,7 @@
         <PasswordBox  KeyUp="PasswordTextChanged" x:Name="Passwordbox" HorizontalAlignment="Left" Height="20" Margin="472,297,0,0" VerticalAlignment="Top" Width="210" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
         <Label Content="Bevestig wachtwoord*" HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="467,356,0,0" Height="25"/>
         <PasswordBox  KeyUp="ConfirmPasswordTextChanged" x:Name="ConfirmPasswordbox" HorizontalAlignment="Left" Height="20" Margin="472,383,0,0" VerticalAlignment="Top" Width="210" FontFamily="Century Gothic" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
-        <Button Command="{Binding Register}" x:Name="RegisterButton" Content="Registreer" Margin="472,454,138,145"  BorderThickness="0,0,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" />
+        <Button Command="{Binding Register}" x:Name="RegisterButton" Content="Registreer" Margin="472,454,138,145" Style="{StaticResource DefaultButtonTheme}" />
         <Label Content="{Binding RegisterError}" x:Name="ErrorText"  HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" Margin="258,139,0,0" Height="25" Foreground="#FFD00000" HorizontalContentAlignment="Right" Width="424"/>
 
 

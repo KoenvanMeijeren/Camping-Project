@@ -13,19 +13,19 @@
         <viewModel:ReservationCampingGuestViewModel/>
     </Page.DataContext>
 
-    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" Background="#FF006837" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid MinWidth="820" MaxWidth="820" MinHeight="634.04" MaxHeight="634.04" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="124,37,340,92" CornerRadius="15,15,15,15" Background="White">
             <ListView x:Name="GuestList"  Margin="29,63,28,62" Background="White" FontFamily="Century Gothic" FontWeight="Bold" ItemsSource="{Binding CampingGuests}" SelectedItem="{Binding SelectedCampingGuest}"  >
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Voornaam" Width="90" DisplayMemberBinding="{Binding FirstName, Mode=OneWay}" />
-                        <GridViewColumn Header="Achternaam" Width="90" DisplayMemberBinding="{Binding LastName, Mode=OneWay}" />
-                        <GridViewColumn Header="Geboortedatum" Width="120" DisplayMemberBinding="{Binding BirthdateReadable , Mode=OneWay}" />
+                        <GridViewColumn Header="Voornaam" Width="90" DisplayMemberBinding="{Binding FirstName}" />
+                        <GridViewColumn Header="Achternaam" Width="90" DisplayMemberBinding="{Binding LastName}" />
+                        <GridViewColumn Header="Geboortedatum" Width="120" DisplayMemberBinding="{Binding BirthdateReadable}" />
                     </GridView>
                 </ListView.View>
             </ListView>
         </Border>
-        <Button x:Name="RemoveGuestButton" Content="Verwijder" Height ="30" Width="170" Margin="154,498,496,106"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding RemoveGuestReservation}"/>
+        <Button x:Name="RemoveGuestButton" Content="Verwijder" Height ="30" Width="170" Margin="154,498,496,106"  Style="{StaticResource DefaultButtonTheme}" Command="{Binding RemoveGuestReservation}"/>
 
         <Label Content="Toevoegen campingasten" HorizontalAlignment="Left" Margin="149,53,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="16" Height="35" Width="264" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="507,37,126,405" CornerRadius="15,15,15,15" Background="White"/>
@@ -36,16 +36,16 @@
         <Label x:Name="EndDate" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CheckOutDate, Mode=OneWay}" Margin="604,100,129,510"/>
         <Label Content="Type:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,124,216,486"/>
         <Label x:Name="Type" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Type.Accommodation.Name, Mode=OneWay}" Margin="604,124,129,486"/>
-        <Label Content="Oppervlakte:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,148,216,462"/>
-        <Label x:Name="Surface" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Surface, Mode=OneWay}" Margin="604,148,129,462"/>
-        <Label Content="Locatie:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,172,216,438"/>
-        <Label x:Name="Location"  FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Location, Mode=OneWay}" Margin="604,172,129,438"/>
+        <Label Content="Gasten limiet:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,148,216,462"/>
+        <Label x:Name="Surface" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace.Type.GuestLimit, Mode=OneWay}" Margin="604,148,129,462"/>
+        <Label Content="Verblijf:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,172,216,438"/>
+        <Label x:Name="Location"  FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content="{Binding Reservation.CampingPlace, Mode=OneWay}" Margin="604,172,129,438"/>
         <Label Content="Totale prijs:" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Margin="517,196,216,414"/>
         <Label x:Name="TotalPrice" FontFamily="Century Gothic" FontWeight="Normal" FontSize="12" Content ="{Binding Reservation.TotalPriceString, Mode=OneWay}" Margin="604,196,129,414"/>
         <Border BorderThickness="0,0,0,0" BorderBrush="White" Margin="507,248,126,92" CornerRadius="15,15,15,15" Background="White"/>
         <Label Content="Voeg gast toe:" HorizontalAlignment="Left" Margin="519,255,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="13" Height="29" Width="200" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
-        <Button Content="Terug" Height ="30" Margin="124,569,518,35"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding CustomerGuestGoBackReservation, Mode=OneWay}" />
-        <Button Content="Bevestig" Height ="30" Margin="507,569,126,35"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding AddCustomerReservation, Mode=OneWay}" />
+        <Button Content="Terug" Height ="30" Margin="124,569,518,35"  Style="{StaticResource DefaultButtonTheme}" Command="{Binding CustomerGuestGoBackReservation, Mode=OneWay}" />
+        <Button Content="Bevestig" Height ="30" Margin="507,569,126,35"  Style="{StaticResource DefaultButtonTheme}" Command="{Binding AddCustomerReservation, Mode=OneWay}" />
         <Label Content="Voornaam*" HorizontalAlignment="Left" Margin="520,293,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12" Height="30" Width="100"/>
         <Label Content="Achternaam*" HorizontalAlignment="Left" Margin="520,359,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12" Height="30" Width="100" RenderTransformOrigin="0.418,0.847"/>
         <TextBox x:Name="CustomerLastName" Text="{Binding FirstNameGuest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="24"  Width="150" VerticalAlignment="Top" HorizontalAlignment="Left" FontFamily="Century Gothic" Margin="524,324,0,0" BorderThickness="0,0,0,2" BorderBrush="Black" Foreground="Black" SelectionBrush="Black"/>
@@ -54,7 +54,7 @@
 
         <Label Content="Geboortedatum*" HorizontalAlignment="Left" Margin="519,425,0,0" VerticalAlignment="Top" FontFamily="Century Gothic" FontWeight="Bold" FontSize="12" Height="30" Width="126" RenderTransformOrigin="0.418,0.847"/>
         <DatePicker x:Name="BirthDateDatePicker" Height="23" Margin="524,460,146,151" DisplayDate="2021-01-01" SelectedDate="{Binding BirthDate}"  Foreground="Black" BorderBrush="Black" />
-        <Button x:Name="AddGuestButton" Content="Voeg toe" Height ="30" Margin="524,498,146,106"  BorderThickness="0,1,0,0" FontFamily="Century Gothic" Background="Black" Foreground="White" Command="{Binding AddGuestReservation}"/>
+        <Button x:Name="AddGuestButton" Content="Voeg toe" Height ="30" Margin="524,498,146,106"  Style="{StaticResource DefaultButtonTheme}" Command="{Binding AddGuestReservation}"/>
         <Label Content="{Binding AmountOfPeopleError}" Margin="518,276,0,0" Foreground="Red" FontFamily="Century Gothic" FontWeight="Bold" FontSize="9" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.703,0.519" Width="170" Height="19"/>
         <Label Content="{Binding FirstNameError}" Margin="612,297,0,0" Foreground="Red" FontFamily="Century Gothic" FontWeight="Bold" FontSize="9" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.703,0.519" Width="82" Height="19"/>
         <Label Content="{Binding LastNameError}" Margin="612,363,0,0" Foreground="Red" FontFamily="Century Gothic" FontWeight="Bold" FontSize="9" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.703,0.519" Width="82" Height="19"/>

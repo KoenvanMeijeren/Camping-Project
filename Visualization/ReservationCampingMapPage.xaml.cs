@@ -12,17 +12,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ViewModel;
 
 namespace Visualization
 {
     /// <summary>
-    /// Interaction logic for ReservationUpdateDeletePage.xaml
+    /// Interaction logic for ReservationCampingMapPage.xaml
     /// </summary>
-    public partial class ReservationUpdateDeletePage : Page
+    public partial class ReservationCampingMapPage : Page
     {
-        public ReservationUpdateDeletePage()
+        public ReservationCampingMapPage()
         {
             InitializeComponent();
+        }
+
+        private void CampingFieldClicked(object sender, MouseButtonEventArgs e)
+        {
+            ReservationCampingMapViewModel viewModel = (ReservationCampingMapViewModel)this.DataContext;
+            string selectedImage = ((Image)sender).Name;
+            viewModel.StartReservation(selectedImage);
         }
     }
 }

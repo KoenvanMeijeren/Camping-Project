@@ -18,12 +18,17 @@ namespace ViewModel
 {
     public class ReservationCustomerOverviewViewModel : ObservableObject
     {
+        #region Fields
+
         private int _customerId;
         private readonly Reservation _reservationModel = new Reservation();
         
         private ObservableCollection<Reservation> _reservationsCollection;
         private Reservation _selectedReservation;
+        
         private ObservableCollection<ReservationCampingGuest> _campingGuestCollection;
+
+        #endregion
 
         #region Properties
         private string _infoId = "ID: ";
@@ -138,22 +143,31 @@ namespace ViewModel
 
             SignInViewModel.SignInEvent += this.SignInViewModelOnSignInEvent;
             AccountViewModel.SignOutEvent += this.AccountViewModelOnSignOutEvent;
-            ReservationCampingGuestViewModel.ReservationConfirmedEvent += this.ReservationCustomerFormViewModelOnReservationConfirmedEvent;
+            ReservationPaymentViewModel.ReservationConfirmedEvent += this.ReservationCustomerFormViewModelOnReservationConfirmedEvent;
         }
 
-        private void AccountViewModelOnSignOutEvent(object? sender, EventArgs e)
+        private void AccountViewModelOnSignOutEvent(object sender, EventArgs e)
         {
             this.SelectedReservation = null;
         }
 
-        private void SignInViewModelOnSignInEvent(object? sender, AccountEventArgs e)
+        private void SignInViewModelOnSignInEvent(object sender, AccountEventArgs e)
         {
-            this._customerId = CurrentUser.CampingCustomer != null ? CurrentUser.CampingCustomer.Id : -1;
-            
-            this.ReservationCustomerFormViewModelOnReservationConfirmedEvent(sender, null);
+            this._customerId = CurrentUser.CampingCustomer != null ? CurrentUser.CampingCustomer.Id : ModelBase<Reservation>.UndefinedId;
+            this.InitializeReservations();
         }
 
-        private void ReservationCustomerFormViewModelOnReservationConfirmedEvent(object? sender, ReservationEventArgs e)
+        private void ReservationCustomerFormViewModelOnReservationConfirmedEvent(object sender, UpdateModelEventArgs<Reservation> e)
+        {
+            e.UpdateCollection(this.ReservationsCollection);
+            this.SelectedReservation = e.Model;
+        }
+
+        /// <summary>
+        /// Sets the available reservations. Calling this method should be avoided, because this is a heavy
+        /// method.
+        /// </summary>
+        private void InitializeReservations()
         {
             this.ReservationsCollection.Clear();
             
@@ -197,7 +211,7 @@ namespace ViewModel
             this.InfoAmountOfGuests = (reservation.CampingGuests.Count + 1).ToString();
             this.InfoAccommodationType = reservation.CampingPlace.Type.Accommodation.Name;
             this.InfoSurface = reservation.CampingPlace.Surface.ToString(CultureInfo.InvariantCulture);
-            this.InfoLocation = reservation.CampingPlace.Location;
+            this.InfoLocation = reservation.CampingPlace.ToString();
             this.InfoTotalPrice = reservation.TotalPrice.ToString(CultureInfo.InvariantCulture);
         }
 
@@ -216,7 +230,7 @@ namespace ViewModel
         }
         #endregion
 
-        #region Delete reservation
+        #region Commands
         /// <summary>
         /// Check if user can delete the reservation
         /// </summary>
@@ -262,7 +276,10 @@ namespace ViewModel
             
             this.ReservationsCollection.Remove(this._selectedReservation);
             
-            this.SelectedReservation = this.ReservationsCollection[0];
+            if (this.ReservationsCollection.Any())
+            {
+                this.SelectedReservation = this.ReservationsCollection[0];
+            }
 
             MessageBox.Show($"Reservering geannuleerd. Het restitutiebedrag van €{restitutionValue},- wordt binnen vijf werkdagen op uw rekening gestort.", "Restitutie", MessageBoxButton.OK, MessageBoxImage.Information);
         }
