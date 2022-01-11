@@ -34,7 +34,17 @@ namespace ViewModelTests
                 new CampingPlace("8", "1", "60", "0", new CampingPlaceType("2", "50", new Accommodation("TE", "Tent")))
             };
 
-            this._reservations = new();
+            List<Accommodation> accommodations = new List<Accommodation>()
+            {
+                new Accommodation("CA", "Caravan"),
+                new Accommodation("CH", "Chalet"),
+                new Accommodation("CH", "Chalet"),
+                new Accommodation("CA", "Camper"),
+                new Accommodation("CA", "Camper"),
+                new Accommodation("TE", "Tent"),
+            };
+
+            this._reservations = new List<Reservation>();
             int i = 1;
             foreach (var campingPlace in campingPlaces)
             {
@@ -43,6 +53,9 @@ namespace ViewModelTests
             }
 
             this._reservationCollectionMock.Setup(x => x.GetReservations()).Returns(this._reservations);
+            this._reservationCollectionMock.Setup(x => x.GetAccommodations()).Returns(accommodations);
+            this._reservationCollectionMock.Object.CheckInDate = DateTime.MinValue;
+            this._reservationCollectionMock.Object.CheckOutDate = DateTime.MinValue;
         }
 
         [Test]
